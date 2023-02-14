@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "fave-recode"
+version = "0.1.0"
+description = "Recoding segmental information in TextGrids"
+authors = ["JoFrhwld <JoFrhwld@gmail.com>"]
+license = "GPLv3"
+readme = "README.md"
+packages = [{include = "fave-recode"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+praatio = "^6.0.0"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
