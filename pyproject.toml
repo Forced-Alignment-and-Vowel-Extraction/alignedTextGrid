@@ -5,7 +5,7 @@ description = "Recoding segmental information in TextGrids"
 authors = ["JoFrhwld <JoFrhwld@gmail.com>"]
 license = "GPLv3"
 readme = "README.md"
-packages = [{include = "fave-recode"}]
+packages = [{include = "fave_recode"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -24,6 +24,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 addopts = [
-    "--import-mode=importlib",
+    "--import-mode=importlib"
 ]
 testpaths = "tests"
