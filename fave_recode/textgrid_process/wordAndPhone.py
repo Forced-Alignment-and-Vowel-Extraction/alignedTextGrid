@@ -1,4 +1,6 @@
 from praatio.utilities.constants import Interval
+from praatio.data_classes.interval_tier import IntervalTier
+import numpy as np
 
 class SequenceInterval:
     def __init__(self, Interval = Interval(None, None, None), focus = True):
