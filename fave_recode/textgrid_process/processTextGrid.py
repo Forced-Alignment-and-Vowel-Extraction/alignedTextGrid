@@ -7,6 +7,7 @@ class speakerTiers:
     def __init__(self, tierNames):
         self.tierNames = tierNames
         self.splitTierNames = [splitTierInfo(x) for x in tierNames]
+        self.tierNames = [" - ".join(x) for x in self.splitTierNames]
 
     def __iter__(self):
         self._current = 0
@@ -56,8 +57,6 @@ def splitTierInfo(tierName: str) -> Union[List[str], List[None]]:
         else:
             out = ["Speaker", tierName]
         return(out)
-
-
 
 if __name__ == "__main__":
     pass
