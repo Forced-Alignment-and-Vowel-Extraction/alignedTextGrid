@@ -9,7 +9,7 @@ class SequenceInterval:
             self.fol = self.__class__(focus=False)
             self.prev = self.__class__(focus=False)
 
-    def set_next(self, next_int):
+    def set_fol(self, next_int):
         if isinstance(next_int, self.__class__):
             self.fol = next_int
         elif isinstance(next_int, Interval):
@@ -26,7 +26,7 @@ class SequenceInterval:
             raise Exception(f"Previous segment must be an instance of {self.__class__.__name__} or Interval")
     
     def set_final(self):
-        self.set_next(Interval(None, None, "#"))  
+        self.set_fol(Interval(None, None, "#"))  
 
     def set_initial(self):
         self.set_prev(Interval(None, None, "#"))
@@ -60,7 +60,7 @@ class Word(SequenceInterval):
             if idx == len(self.PhoneList)-1:
                 p.set_final()
             else:
-                p.set_next(self.PhoneList[idx+1])
+                p.set_fol(self.PhoneList[idx+1])
     
     @property
     def phones(self):
