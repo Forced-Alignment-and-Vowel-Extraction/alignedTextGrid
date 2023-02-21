@@ -52,7 +52,17 @@ class Word(SequenceInterval):
             if isinstance(phone, Phone):
                 phone.set_word(self)
         self.PhoneList = PhoneList
+        for idx, p in enumerate(self.PhoneList):
+            if idx == 0:
+                p.set_initial()
+            else:
+                p.set_prev(self.PhoneList[idx-1])
+            if idx == len(self.PhoneList)-1:
+                p.set_final()
+            else:
+                p.set_next(self.PhoneList[idx+1])
     
     @property
     def phones(self):
-        return [p.label for p in self.PhoneList]            
+        return [p.label for p in self.PhoneList]
+    
