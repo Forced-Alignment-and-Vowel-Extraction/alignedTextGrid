@@ -1,36 +1,29 @@
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
-from sequences import SequenceInterval
+from alignedTextGrid.sequences.sequences import SequenceInterval
 import numpy as np
 
 class Phone(SequenceInterval):
     def __init__(self, Interval = Interval(None, None, None), focus = True):
          super().__init__(Interval, focus)
+         self.set_word = super().set_super_instance
 
-    def set_word(self, word):
-        if isinstance(word, Word):
-            self.inword = word
+    @property
+    def inword(self):
+        return self.super_instance
 
 class Word(SequenceInterval):
-    def __init__(self, Interval = Interval(None, None, None), PhoneList = [Phone()], focus = True):
+    def __init__(self, Interval = Interval(None, None, None), focus = True):
         super().__init__(Interval, focus)
-        for phone in PhoneList:
-            if isinstance(phone, Phone):
-                phone.set_word(self)
-        self.PhoneList = PhoneList
-        for idx, p in enumerate(self.PhoneList):
-            if idx == 0:
-                p.set_initial()
-            else:
-                p.set_prev(self.PhoneList[idx-1])
-            if idx == len(self.PhoneList)-1:
-                p.set_final()
-            else:
-                p.set_fol(self.PhoneList[idx+1])
+        self.set_phones = super().set_subset_list
+    
+    @property
+    def phone_list(self):
+        return self.subset_list
     
     @property
     def phones(self):
-        return [p.label for p in self.PhoneList]
+        return [p.label for p in self.phone_list]
 
 def crunchTiers(phoneTier, wordTier):
     """
@@ -60,7 +53,11 @@ def crunchTiers(phoneTier, wordTier):
 
     for w, ps in zip(word_entries, phone_parts):
         plist = [Phone(p) for p in ps]
-        thisw = Word(w, plist)
+        for p in plist:
+            p.set_superset_class(Word())
+        thisw = Word(w)
+        thisw.set_subset_class(Phone())
+        thisw.set_phones(plist)
         word_list += [thisw]
 
     for idx, w in enumerate(word_list):
