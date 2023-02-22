@@ -118,3 +118,23 @@ class SequenceInterval:
 
     def return_interval(self):
         return Interval(self.start, self.end, self.label)
+
+class Top(SequenceInterval):
+    def __init__(self, Interval=Interval(None, None, None), focus=False):
+        super().__init__(Interval, focus)
+
+    def set_superset_class(self):
+        pass
+
+    def set_super_instance(self):
+        pass
+
+class Bottom(SequenceInterval):
+    def __init__(self, Interval=Interval(None, None, None), focus=False):
+        super().__init__(Interval, focus)
+
+    def set_subset_class(self):
+        pass
+    
+    def set_subset_list(self):
+        pass
