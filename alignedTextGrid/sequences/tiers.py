@@ -1,7 +1,9 @@
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
+from praatio.data_classes.textgrid import Textgrid
 from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
 import numpy as np
+
 
 
 class SequenceTier:
@@ -70,6 +72,14 @@ class SequenceTier:
     def get_interval_at_time(self, time):
         out_idx = np.searchsorted(self.starts, time, side = "left") - 1
         return out_idx
+    
+    def save_as_tg(self, name, save_path):
+        all_intervals = [entry.return_interval for entry in self.entry_list]
+        interval_tier = IntervalTier(name = name, entries = all_intervals)
+        out_tg = Textgrid()
+        out_tg.addTier(IntervalTier)
+        out_tg.save(save_path, "long_textgrid")
+
 
 class RelatedTiers:
     def __init__(
@@ -99,3 +109,12 @@ class RelatedTiers:
 
     def __getitem__(self, idx):
         return self.tier_list[idx]
+
+    def show_structure(self):
+        tab = "  "
+        for idx, tier in enumerate(self.tier_list):
+            if idx == 0:
+                print(f"{tier.superset_class.__class__.__name__}(\n")
+            print(f"{tab*(idx+1)}{tier.entry_class.__class__.__name__}(\n")
+            if idx == len(self.tier_list)-1:
+                print(f"{tab*(idx+2)}{tier.subset_class.__class__.__name__}(\n")
