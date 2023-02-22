@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "fave-recode"
+name = "alignedTextGrid"
 version = "0.1.0"
-description = "Recoding segmental information in TextGrids"
+description = "Classes for defining sequential information from TextGrids"
 authors = ["JoFrhwld <JoFrhwld@gmail.com>"]
 license = "GPLv3"
 readme = "README.md"
-packages = [{include = "fave_recode"}]
+packages = [{include = "alignedTextGrid"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
