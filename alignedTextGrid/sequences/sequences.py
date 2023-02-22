@@ -20,6 +20,26 @@ class SequenceInterval:
         self.subset_class = None
         self.super_instance = None
         self.subset_list = None
+    
+    def __repr__(self) -> str:
+        out_string = f"Class {self.__class__.__name__}, label: {self.label}"
+        if self.superset_class:
+            out_string += f", .superset_class: {self.superset_class.__class__.__name__}"
+            if self.super_instance:
+                out_string += f", .super_instance: {self.super_instance.label}"
+            else:
+                out_string += f", .super_instance, None"            
+        else:
+            out_string += ", .superset_class: None"     
+        if self.subset_class:
+            out_string += f", .subset_class: {self.subset_class.__class__.__name__}"
+            if self.subset_list:
+                sub_labels = [x.label for x in self.subset_list]
+                out_string += f", .subset_list: {repr(sub_labels)}"
+        else:
+            out_string += ", .subset_class: None"
+        return out_string
+    
 
     def set_superset_class(self, superset_class = None):
         if superset_class:
