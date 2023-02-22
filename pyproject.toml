@@ -6,6 +6,10 @@ authors = ["JoFrhwld <JoFrhwld@gmail.com>"]
 license = "GPLv3"
 readme = "README.md"
 packages = [{include = "alignedTextGrid"}]
+exclude = [
+    "notebools/",
+    "examples/"
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
