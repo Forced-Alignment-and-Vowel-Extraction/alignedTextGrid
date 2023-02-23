@@ -10,9 +10,9 @@ class SequenceTier:
     def __init__(
         self,
         entry_list = [Interval(None, None, None)],
-        entry_class = SequenceInterval(),
-        superset_class = Top(),
-        subset_class = Bottom()
+        entry_class = SequenceInterval,
+        superset_class = Top,
+        subset_class = Bottom
     ):
         self.entry_list = entry_list
         self.entry_class = entry_class
@@ -22,11 +22,12 @@ class SequenceTier:
         self.entry_list = [self.entry_list[idx] for idx in entry_order]
         self.sequence_list = []
         for entry in self.entry_list:
-            this_seq = self.entry_class.__class__(entry)
+            this_seq = self.entry_class(entry)
             this_seq.set_superset_class(self.superset_class)
             this_seq.set_subset_class(self.subset_class)
             self.sequence_list += [this_seq]
         for idx,seq in enumerate(self.sequence_list):
+            seq.set_feature("tier_index", idx)
             if idx == 0:
                 seq.set_initial()
             else:
@@ -48,7 +49,7 @@ class SequenceTier:
         raise StopIteration
 
     def __repr__(self):
-        return f"Sequence tier of {self.entry_class.__class__.__name__}; .superset_class: {self.superset_class.__class__.__name__}; .subset_class: {self.subset_class.__class__.__name__}"
+        return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
 
     def __getitem__(self, idx):
         return self.sequence_list[idx]
@@ -114,7 +115,7 @@ class RelatedTiers:
         tab = "  "
         for idx, tier in enumerate(self.tier_list):
             if idx == 0:
-                print(f"{tier.superset_class.__class__.__name__}(\n")
-            print(f"{tab*(idx+1)}{tier.entry_class.__class__.__name__}(\n")
+                print(f"{tier.superset_class.__name__}(\n")
+            print(f"{tab*(idx+1)}{tier.entry_class.__name__}(\n")
             if idx == len(self.tier_list)-1:
-                print(f"{tab*(idx+2)}{tier.subset_class.__class__.__name__}(\n")
+                print(f"{tab*(idx+2)}{tier.subset_class.__name__}(\n")
