@@ -20,8 +20,12 @@ class SequenceInterval:
         
         if superset_class:
             self.set_superset_class(superset_class)
+        else:
+            self.set_superset_class(Top)
         if subset_class:
             self.set_subset_class(subset_class)
+        else:
+            self.set_subset_class(Bottom)
 
         self.subset_list = []
         self.super_instance= None
