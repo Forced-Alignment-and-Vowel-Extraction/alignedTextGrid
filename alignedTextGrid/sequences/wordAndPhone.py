@@ -4,8 +4,8 @@ from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
 import numpy as np
 
 class Phone(SequenceInterval):
-    def __init__(self, Interval = Interval(None, None, None), focus = True):
-         super().__init__(Interval, focus)
+    def __init__(self, Interval = Interval(None, None, None)):
+         super().__init__(Interval)
          self.set_word = super().set_super_instance
          self.set_superset_class(Word)
          self.set_subset_class(Bottom)
@@ -17,10 +17,9 @@ class Phone(SequenceInterval):
 class Word(SequenceInterval):
     def __init__(
             self, 
-            Interval = Interval(None, None, None), 
-            focus = True
+            Interval = Interval(None, None, None)
         ):
-        super().__init__(Interval, focus)
+        super().__init__(Interval)
         self.set_phones = super().set_subset_list
         self.set_superset_class(Top)
         self.set_subset_class(Phone)

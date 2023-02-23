@@ -7,16 +7,14 @@ class SequenceInterval:
     def __init__(
         self, 
         Interval = Interval(None, None, None), 
-        focus = True,
         superset_class = None,
         subset_class = None
     ):
+        if not Interval:
+            Interval = Interval(None, None, None)
         self.start = Interval.start
         self.end = Interval.end
         self.label = Interval.label
-        if focus:
-            self.fol = self.__class__(focus=False)
-            self.prev = self.__class__(focus=False)
         
         if superset_class:
             self.set_superset_class(superset_class)
@@ -82,17 +80,13 @@ class SequenceInterval:
     
     def set_subset_list(self, subset_list = None):
         if subset_list:
-            if len(self.subset_list) == 0:
-                if all([subint.__class__.__name__ == self.subset_class.__name__ for subint in subset_list]):
-                    self.subset_list = subset_list
-                    for element in subset_list:
-                        element.set_super_instance(self)
-                    self._set_subset_precedence()
-                else:
-                    subset_class_set = set([x.__class__.__name__ for x in subset_list])
-                    raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
+            if all([subint.__class__.__name__ == self.subset_class.__name__ for subint in subset_list]):
+                for element in subset_list:
+                    self.append_subset_list(element)
+                self._set_subset_precedence()
             else:
-                raise Exception("The subset_list was already set")
+                subset_class_set = set([x.__class__.__name__ for x in subset_list])
+                raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
         else:
             warnings.warn("No subset list provided")
 
@@ -130,24 +124,20 @@ class SequenceInterval:
     def set_fol(self, next_int):
         if isinstance(next_int, self.__class__):
             self.fol = next_int
-        elif isinstance(next_int, Interval):
-            self.fol = self.__class__(next_int, focus = False)
         else:
             raise Exception(f"Following segment must be an instance of {self.__class__.__name__} or Interval")
 
     def set_prev(self, prev_int):
         if isinstance(prev_int, self.__class__):
             self.prev = prev_int
-        elif isinstance(prev_int, Interval):
-            self.prev = self.__class__(prev_int, focus = False)
         else:
             raise Exception(f"Previous segment must be an instance of {self.__class__.__name__} or Interval")
     
     def set_final(self):
-        self.set_fol(Interval(None, None, "#"))  
+        self.set_fol(self.__class__(Interval(None, None, "#")))  
 
     def set_initial(self):
-        self.set_prev(Interval(None, None, "#"))
+        self.set_prev(self.__class__(Interval(None, None, "#")))
 
     def set_feature(self, feature, value):
         setattr(self, feature, value)
@@ -156,8 +146,8 @@ class SequenceInterval:
         return Interval(self.start, self.end, self.label)
 
 class Top(SequenceInterval):
-    def __init__(self, Interval=Interval(None, None, None), focus=False):
-        super().__init__(Interval, focus)
+    def __init__(self, Interval=Interval(None, None, None)):
+        super().__init__(Interval)
 
     def set_superset_class(self):
         pass
@@ -166,8 +156,8 @@ class Top(SequenceInterval):
         pass
 
 class Bottom(SequenceInterval):
-    def __init__(self, Interval=Interval(None, None, None), focus=False):
-        super().__init__(Interval, focus)
+    def __init__(self, Interval=Interval(None, None, None)):
+        super().__init__(Interval)
 
     def set_subset_class(self):
         pass

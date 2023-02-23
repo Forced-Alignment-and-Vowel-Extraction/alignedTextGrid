@@ -10,14 +10,17 @@ class SequenceTier:
     def __init__(
         self,
         entry_list = [Interval(None, None, None)],
-        entry_class = SequenceInterval,
-        superset_class = Top,
-        subset_class = Bottom
+        entry_class = SequenceInterval
+        # superset_class = Top,
+        # subset_class = Bottom
     ):
-        self.entry_list = entry_list
+        if isinstance(entry_list, IntervalTier):
+            self.entry_list = entry_list.entries
+        else:
+            self.entry_list = entry_list
         self.entry_class = entry_class
-        self.superset_class = superset_class
-        self.subset_class = subset_class
+        self.superset_class = self.entry_class(Interval = Interval(None, None, None)).superset_class
+        self.subset_class =  self.entry_class(Interval = Interval(None, None, None)).subset_class
         entry_order = np.argsort(self.starts)
         self.entry_list = [self.entry_list[idx] for idx in entry_order]
         self.sequence_list = []
