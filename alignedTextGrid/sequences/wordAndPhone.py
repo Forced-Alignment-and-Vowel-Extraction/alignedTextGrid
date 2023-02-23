@@ -1,6 +1,6 @@
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
-from alignedTextGrid.sequences.sequences import SequenceInterval
+from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
 import numpy as np
 
 class Phone(SequenceInterval):
