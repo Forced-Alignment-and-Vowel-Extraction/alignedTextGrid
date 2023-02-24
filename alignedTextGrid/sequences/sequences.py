@@ -60,9 +60,9 @@ class SequenceInterval:
     """    
     def __init__(
         self, 
-        Interval = Interval(None, None, None), 
-        superset_class = None,
-        subset_class = None
+        Interval: Interval = Interval(None, None, None), 
+        superset_class: type = None,
+        subset_class: type = None
     ):
         if not Interval:
             Interval = Interval(None, None, None)
@@ -102,6 +102,20 @@ class SequenceInterval:
         return out_string
     
     def set_superset_class(self, superset_class = None):
+        """_Sets the superset class type_
+
+        Parameters
+        ----------
+        superset_class : _type_, optional
+            _description_, by default None
+
+        Raises
+        ------
+        Exception
+            _description_
+        Exception
+            _description_
+        """
         if superset_class:
             if SequenceInterval in inspect.getmro(superset_class):
                 if not superset_class.__name__ == self.__class__.__name__:
@@ -112,6 +126,20 @@ class SequenceInterval:
                 raise Exception(f"Sequence {self.__class__.__name__} superset_class must be subclass of SequenceInterval. {superset_class.__name__} was given.")
 
     def set_subset_class(self, subset_class = None):
+        """_summary_
+
+        Parameters
+        ----------
+        subset_class : _type_, optional
+            _description_, by default None
+
+        Raises
+        ------
+        Exception
+            _description_
+        Exception
+            _description_
+        """
         if subset_class:
             if SequenceInterval in inspect.getmro(subset_class):
                 if not subset_class.__name__ == self.__class__.__name__:
@@ -122,6 +150,18 @@ class SequenceInterval:
                 raise Exception(f"Sequence {self.__class__.__name__} subset_class must be subclass of SequenceInterval. {subset_class.__name__} was given.")
     
     def set_super_instance(self, super_instance = None):
+        """_summary_
+
+        Parameters
+        ----------
+        super_instance : _type_, optional
+            _description_, by default None
+
+        Raises
+        ------
+        Exception
+            _description_
+        """
         if super_instance:
             if super_instance.__class__.__name__ == self.superset_class.__name__:
                 if not super_instance is self.super_instance:
@@ -133,6 +173,18 @@ class SequenceInterval:
             warnings.warn("No superset instance provided")
     
     def set_subset_list(self, subset_list = None):
+        """_summary_
+
+        Parameters
+        ----------
+        subset_list : _type_, optional
+            _description_, by default None
+
+        Raises
+        ------
+        Exception
+            _description_
+        """
         if subset_list:
             if all([subint.__class__.__name__ == self.subset_class.__name__ for subint in subset_list]):
                 for element in subset_list:
@@ -145,6 +197,18 @@ class SequenceInterval:
             warnings.warn("No subset list provided")
 
     def append_subset_list(self, subset_instance):
+        """_summary_
+
+        Parameters
+        ----------
+        subset_instance : _type_
+            _description_
+
+        Raises
+        ------
+        Exception
+            _description_
+        """
         if subset_instance:
             if subset_instance.__class__.__name__ == self.subset_class.__name__:
                 if not subset_instance in self.subset_list:
@@ -176,30 +240,81 @@ class SequenceInterval:
             self.subset_list = [self.subset_list[idx] for idx in item_order]        
 
     def set_fol(self, next_int):
+        """_summary_
+
+        Parameters
+        ----------
+        next_int : _type_
+            _description_
+
+        Raises
+        ------
+        Exception
+            _description_
+        """
         if isinstance(next_int, self.__class__):
             self.fol = next_int
         else:
             raise Exception(f"Following segment must be an instance of {self.__class__.__name__} or Interval")
 
     def set_prev(self, prev_int):
+        """_summary_
+
+        Parameters
+        ----------
+        prev_int : _type_
+            _description_
+
+        Raises
+        ------
+        Exception
+            _description_
+        """
         if isinstance(prev_int, self.__class__):
             self.prev = prev_int
         else:
             raise Exception(f"Previous segment must be an instance of {self.__class__.__name__} or Interval")
     
     def set_final(self):
+        """_summary_
+        """
         self.set_fol(self.__class__(Interval(None, None, "#")))  
 
     def set_initial(self):
+        """_summary_
+        """
         self.set_prev(self.__class__(Interval(None, None, "#")))
 
     def set_feature(self, feature, value):
+        """_summary_
+
+        Parameters
+        ----------
+        feature : _type_
+            _description_
+        value : _type_
+            _description_
+        """
         setattr(self, feature, value)
 
     def return_interval(self):
+        """_summary_
+
+        Returns
+        -------
+        _type_
+            _description_
+        """
         return Interval(self.start, self.end, self.label)
 
 class Top(SequenceInterval):
+    """_summary_
+
+    Parameters
+    ----------
+    SequenceInterval : _type_
+        _description_
+    """
     def __init__(self, Interval=Interval(None, None, None)):
         super().__init__(Interval)
 
@@ -210,6 +325,13 @@ class Top(SequenceInterval):
         pass
 
 class Bottom(SequenceInterval):
+    """_summary_
+
+    Parameters
+    ----------
+    SequenceInterval : _type_
+        _description_
+    """
     def __init__(self, Interval=Interval(None, None, None)):
         super().__init__(Interval)
 
