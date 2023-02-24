@@ -4,6 +4,60 @@ import numpy as np
 import inspect
 import warnings
 class SequenceInterval:
+    """
+    A class to describe an interval with precedence relationships and hierarchical relationships
+
+    Parameters
+    ----------
+    Interval : praatio.utilities.constants.Interval
+        A praat textgrid Interval
+    superset_class : type
+        The superset class for this class. Needs to be a subclass of SequenceInterval
+    subset_class : type
+        The subset class for this class. Needs to be a subclass of SequenceInterval
+
+    Attributes
+    ----------
+    start : float
+        Start time of the interval
+    end : float
+        End time of the interval
+    label : str
+        Label of the interval
+    fol : SequenceInterval
+        Instance of the following interval. Is the same subclass as the current instance.
+    prev : SequenceInterval
+        Instance of the previous interval. Is the same subclass as current instance.
+    super_instance : SequenceInterval
+        The instance of the superset. Cannot be the same subclass as the current instance.
+    subset_list : List[SequenceInterval]
+        A list of subset instances. Cannot be the same subclass of the current instance.
+    
+    Methods
+    -------
+    set_superset_class(superset_class = Top)
+        Set the superset class for the instance. 
+    set_super_instance(super_instance = None)
+        Sets the upwards hierarchical from this instance to another
+    set_subset_class(subset_class = Bottom)
+        Sets the subset class for the instance.
+    set_subset_list(subset_list = [None])
+        Sets the downwards hierarchical relationship between this instance to a list of others.
+    append_subset_list(subset_instance = None)
+        Appends a new instance to the subset list
+    set_fol(next_int = None)
+        Defines the following relationship for the current instance
+    set_prev(next_int = None)
+        Defines the preceding relationship for the current instance
+    set_initial()
+        Define the current instance as initial in the subset list
+    set_final()
+        Define the current instance as final in the subset list
+    set_feature(feature = None, value = None)
+        Set an arbitrary attribute named `feature` with the value `value`.
+    return_interval()
+        Return the current instance as a `praatio.utilities.constants.Interval`.
+    """    
     def __init__(
         self, 
         Interval = Interval(None, None, None), 
