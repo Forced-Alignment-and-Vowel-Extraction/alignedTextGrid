@@ -117,13 +117,16 @@ class SequenceInterval:
             _description_
         """
         if superset_class:
-            if SequenceInterval in inspect.getmro(superset_class):
-                if not superset_class.__name__ == self.__class__.__name__:
-                    self.superset_class = superset_class
+            if not self.__class__ is Top:
+                if issubclass(superset_class, SequenceInterval):
+                    if not superset_class is self.__class__:
+                        self.superset_class = superset_class
+                    else:
+                        raise Exception(f"Sequence {self.__class__.__name__} can't have {superset_class.__name__} as its superset class.")
                 else:
-                    raise Exception(f"Sequence {self.__class__.__name__} can't have {superset_class.__name__} as its superset class.")
+                    raise Exception(f"Sequence {self.__class__.__name__} superset_class must be subclass of SequenceInterval. {superset_class.__name__} was given.")
             else:
-                raise Exception(f"Sequence {self.__class__.__name__} superset_class must be subclass of SequenceInterval. {superset_class.__name__} was given.")
+                self.superset_class = None
 
     def set_subset_class(self, subset_class = None):
         """_summary_
@@ -141,13 +144,16 @@ class SequenceInterval:
             _description_
         """
         if subset_class:
-            if SequenceInterval in inspect.getmro(subset_class):
-                if not subset_class.__name__ == self.__class__.__name__:
-                    self.subset_class = subset_class
+            if not self.__class__ is Bottom:
+                if issubclass(subset_class, SequenceInterval):
+                    if not subset_class is self.__class__:
+                        self.subset_class = subset_class
+                    else:
+                        raise Exception(f"Sequence {self.__class__.__name__} can't have {subset_class.__name__} as its subset class.")
                 else:
-                    raise Exception(f"Sequence {self.__class__.__name__} can't have {subset_class.__name__} as its subset class.")
+                    raise Exception(f"Sequence {self.__class__.__name__} subset_class must be subclass of SequenceInterval. {subset_class.__name__} was given.")
             else:
-                raise Exception(f"Sequence {self.__class__.__name__} subset_class must be subclass of SequenceInterval. {subset_class.__name__} was given.")
+                self.subset_class = None
     
     def set_super_instance(self, super_instance = None):
         """_summary_
@@ -163,7 +169,7 @@ class SequenceInterval:
             _description_
         """
         if super_instance:
-            if super_instance.__class__.__name__ == self.superset_class.__name__:
+            if isinstance(super_instance, self.superset_class):
                 if not super_instance is self.super_instance:
                     self.super_instance = super_instance
                     self.super_instance.append_subset_list(self)
@@ -186,7 +192,7 @@ class SequenceInterval:
             _description_
         """
         if subset_list:
-            if all([subint.__class__.__name__ == self.subset_class.__name__ for subint in subset_list]):
+            if all([isinstance(subint, self.subset_class) for subint in subset_list]):
                 for element in subset_list:
                     self.append_subset_list(element)
                 self._set_subset_precedence()
@@ -210,7 +216,7 @@ class SequenceInterval:
             _description_
         """
         if subset_instance:
-            if subset_instance.__class__.__name__ == self.subset_class.__name__:
+            if isinstance(subset_instance, self.subset_class):
                 if not subset_instance in self.subset_list:
                     self.subset_list.append(subset_instance)
                     if not self is subset_instance.super_instance:
@@ -318,11 +324,11 @@ class Top(SequenceInterval):
     def __init__(self, Interval=Interval(None, None, None)):
         super().__init__(Interval)
 
-    def set_superset_class(self):
-        pass
+    # def set_superset_class(self):
+    #     pass
 
-    def set_super_instance(self):
-        pass
+    # def set_super_instance(self):
+    #     pass
 
 class Bottom(SequenceInterval):
     """_summary_
@@ -335,8 +341,8 @@ class Bottom(SequenceInterval):
     def __init__(self, Interval=Interval(None, None, None)):
         super().__init__(Interval)
 
-    def set_subset_class(self):
-        pass
+    # def set_subset_class(self):
+    #     pass
     
-    def set_subset_list(self):
-        pass
+    # def set_subset_list(self):
+    #     pass
