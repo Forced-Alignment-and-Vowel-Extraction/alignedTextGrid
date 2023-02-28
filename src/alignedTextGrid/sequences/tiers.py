@@ -3,14 +3,38 @@ from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
 from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
 import numpy as np
-
+from typing import Type
 
 
 class SequenceTier:
+    """_A sequence tier_
+
+    Given a `praatio` `IntervalTier` or list of `Interval`s, creates
+    `entry_class` instances for every interval.
+
+    Args:
+        entry_list (list[Interval] | IntervalTier, optional): 
+            A list of interval entries. Defaults to [Interval(None, None, None)].
+        entry_class (Type[SequenceInterval], optional): 
+            The sequence class for this tier. Defaults to SequenceInterval.
+    
+    Attributes:
+        sequence_list (list[SequenceInterval]):
+        entry_class (Type[SequenceInterval]):
+        superset_class (Type[SequenceInterval]):
+        subset_class (Type[SequenceInterval]):
+        starts (list[float]):
+        ends (list[float]):
+        xmin (float):
+        xmax (float):
+        [] : Indexable. Returns a SequenceInterval
+        : Iterable
+
+    """
     def __init__(
         self,
-        entry_list = [Interval(None, None, None)],
-        entry_class = SequenceInterval
+        entry_list: list[Interval] | IntervalTier = [Interval(None, None, None)],
+        entry_class: Type[SequenceInterval] = SequenceInterval
         # superset_class = Top,
         # subset_class = Bottom
     ):
@@ -74,10 +98,24 @@ class SequenceTier:
         return self.sequence_list[-1].end
 
     def get_interval_at_time(self, time):
+        """_Gets interval index at specified time_
+
+        Args:
+            time (float): time at which to get an interval
+
+        Returns:
+            (int): Index of the interval
+        """
         out_idx = np.searchsorted(self.starts, time, side = "left") - 1
         return out_idx
     
     def save_as_tg(self, name, save_path):
+        """_Saves as a textgrid_
+
+        Args:
+            name (str): Name of interval tier
+            save_path (str): Output path
+        """
         all_intervals = [entry.return_interval for entry in self.entry_list]
         interval_tier = IntervalTier(name = name, entries = all_intervals)
         out_tg = Textgrid()
@@ -86,9 +124,18 @@ class SequenceTier:
 
 
 class RelatedTiers:
+    """_Relates tiers_
+
+    Args:
+        top_to_bottom (list[SequenceTier]): A list of sequence tiers that are 
+            meant to be in hierarchical relationships with eachother
+    
+    Attributes:
+        [] : Indexable. Returns a SequenceTier
+    """
     def __init__(
         self,
-        top_to_bottom = [SequenceTier(), SequenceTier()]
+        top_to_bottom: list[SequenceTier] = [SequenceTier(), SequenceTier()]
     ):
         self.tier_list = top_to_bottom
         for idx, tier in enumerate(top_to_bottom):
@@ -115,6 +162,8 @@ class RelatedTiers:
         return self.tier_list[idx]
 
     def show_structure(self):
+        """_Show the hierarchical structure_
+        """
         tab = "  "
         for idx, tier in enumerate(self.tier_list):
             if idx == 0:

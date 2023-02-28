@@ -5,7 +5,7 @@ description = "Classes for defining sequential information from TextGrids"
 authors = ["JoFrhwld <JoFrhwld@gmail.com>"]
 license = "GPLv3"
 readme = "README.md"
-packages = [{include = "alignedTextGrid"}]
+packages = [{include = "alignedTextGrid", from="src"}]
 exclude = [
     "notebools/",
     "examples/"
@@ -22,6 +22,11 @@ numpy = "^1.24.2"
 jupyter = "^1.0.0"
 pytest = "^7.2.1"
 importlib = "^1.0.4"
+mkdocs = "^1.4.2"
+mkdocstrings = {version = ">=0.18", extras = ["python"]}
+mkdocs-gen-files = "^0.4.0"
+mkdocs-literate-nav = "^0.6.0"
+mkdocs-material = "^9.0.15"
 
 [build-system]
 requires = ["poetry-core"]

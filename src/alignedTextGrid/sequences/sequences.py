@@ -1,5 +1,6 @@
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
+from typing import Type
 import numpy as np
 import inspect
 import warnings
@@ -7,56 +8,26 @@ class SequenceInterval:
     """
     A class to describe an interval with precedence relationships and hierarchical relationships
 
-    Parameters
-    ----------
-    Interval : praatio.utilities.constants.Interval
-        A praat textgrid Interval
-    superset_class : type
-        The superset class for this class. Needs to be a subclass of SequenceInterval
-    subset_class : type
-        The subset class for this class. Needs to be a subclass of SequenceInterval
+    Parameters:
+        Interval: A Praat textgrid Interval
+        superset_class (Type[SequenceInterval]): The superset class. Defaults to `Top`
+        subset_class (Type[SequenceInterval]): The subset class. Defaults to `Bottom`
 
-    Attributes
-    ----------
-    start : float
-        Start time of the interval
-    end : float
-        End time of the interval
-    label : str
-        Label of the interval
-    fol : SequenceInterval
-        Instance of the following interval. Is the same subclass as the current instance.
-    prev : SequenceInterval
-        Instance of the previous interval. Is the same subclass as current instance.
-    super_instance : SequenceInterval
-        The instance of the superset. Cannot be the same subclass as the current instance.
-    subset_list : List[SequenceInterval]
-        A list of subset instances. Cannot be the same subclass of the current instance.
-    
-    Methods
-    -------
-    set_superset_class(superset_class = Top)
-        Set the superset class for the instance. 
-    set_super_instance(super_instance = None)
-        Sets the upwards hierarchical from this instance to another
-    set_subset_class(subset_class = Bottom)
-        Sets the subset class for the instance.
-    set_subset_list(subset_list = [None])
-        Sets the downwards hierarchical relationship between this instance to a list of others.
-    append_subset_list(subset_instance = None)
-        Appends a new instance to the subset list
-    set_fol(next_int = None)
-        Defines the following relationship for the current instance
-    set_prev(next_int = None)
-        Defines the preceding relationship for the current instance
-    set_initial()
-        Define the current instance as initial in the subset list
-    set_final()
-        Define the current instance as final in the subset list
-    set_feature(feature = None, value = None)
-        Set an arbitrary attribute named `feature` with the value `value`.
-    return_interval()
-        Return the current instance as a `praatio.utilities.constants.Interval`.
+    Attributes:
+        start (float):
+            Start time of the interval
+        end (float):
+            End time of the interval
+        label (str):
+            Label of the interval
+        fol (SequenceInterval):
+            Instance of the following interval. Is the same subclass as the current instance.
+        prev (SequenceInterval): 
+            Instance of the previous interval. Is the same subclass as current instance.
+        super_instance (SequenceInterval): 
+            The instance of the superset. Cannot be the same subclass as the current instance.
+        subset_list (List[SequenceInterval]): 
+            A list of subset instances. Cannot be the same subclass of the current instance.
     """    
     def __init__(
         self, 
@@ -101,20 +72,17 @@ class SequenceInterval:
             out_string += ", .subset_class: None"
         return out_string
     
-    def set_superset_class(self, superset_class = None):
-        """_Sets the superset class type_
+    def set_superset_class(
+            self, 
+            superset_class: type = None
+        ):
+        """_Set the superset class_
 
-        Parameters
-        ----------
-        superset_class : _type_, optional
-            _description_, by default None
+        Args:
+            superset_class (Type[SequenceInterval], optional): 
+                Must be a subclass of Sequence Interval, but not the *same* class as the
+                current instance. Defaults to None.
 
-        Raises
-        ------
-        Exception
-            _description_
-        Exception
-            _description_
         """
         if superset_class:
             if not self.__class__ is Top:
@@ -131,17 +99,10 @@ class SequenceInterval:
     def set_subset_class(self, subset_class = None):
         """_summary_
 
-        Parameters
-        ----------
-        subset_class : _type_, optional
-            _description_, by default None
-
-        Raises
-        ------
-        Exception
-            _description_
-        Exception
-            _description_
+        Args:
+            subset_class (Type[SequenceInterval], optional): 
+                Must be a subclass of SequenceInterval, but not the *same* as the current instance.
+                Defaults to None.
         """
         if subset_class:
             if not self.__class__ is Bottom:
@@ -156,17 +117,12 @@ class SequenceInterval:
                 self.subset_class = None
     
     def set_super_instance(self, super_instance = None):
-        """_summary_
+        """_Sets the specific superset relationship_
 
-        Parameters
-        ----------
-        super_instance : _type_, optional
-            _description_, by default None
-
-        Raises
-        ------
-        Exception
-            _description_
+        Args:
+            super_instance (SegmentInterval, optional): 
+                Sets the superset relationship between this object and `super_instance` object.
+                Current object is appended to `super_instance`'s subset list.
         """
         if super_instance:
             if isinstance(super_instance, self.superset_class):
@@ -179,17 +135,13 @@ class SequenceInterval:
             warnings.warn("No superset instance provided")
     
     def set_subset_list(self, subset_list = None):
-        """_summary_
+        """_Appends all objects to the `subset_list`_
 
-        Parameters
-        ----------
-        subset_list : _type_, optional
-            _description_, by default None
-
-        Raises
-        ------
-        Exception
-            _description_
+        Args:
+            subset_list (List[SequenceInterval], optional): 
+                A list of SequenceInterval subclass objects. Cannot be the
+                same subclass of the current object. Current object is
+                set as the `super_instance` of all objects in the list.
         """
         if subset_list:
             if all([isinstance(subint, self.subset_class) for subint in subset_list]):
@@ -202,19 +154,17 @@ class SequenceInterval:
         else:
             warnings.warn("No subset list provided")
 
-    def append_subset_list(self, subset_instance):
-        """_summary_
+    def append_subset_list(self, subset_instance = None):
+        """_Append a single item to subset list_
 
-        Parameters
-        ----------
-        subset_instance : _type_
-            _description_
-
-        Raises
-        ------
-        Exception
-            _description_
+        Args:
+            subset_instance (SequenceInterval): 
+                The SequenceInterval subclass instance to append to the
+                `subset_list`. Current object is set as `super_instance`
+                to `subset_instance`. Precedence relationships within
+                `subset_list` are reset.
         """
+
         if subset_instance:
             if isinstance(subset_instance, self.subset_class):
                 if not subset_instance in self.subset_list:
@@ -226,7 +176,10 @@ class SequenceInterval:
                 raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {subset_instance.__class__.__name__}")
             
     def _set_subset_precedence(self):
-         ## This could be a location for a check
+        """_summary_
+            Private method. Sorts subset list and re-sets precedence 
+            relationshops.
+        """
         self._sort_subsetlist()
         if len(self.subset_list) > 0:
             for idx, p in enumerate(self.subset_list):
@@ -240,23 +193,20 @@ class SequenceInterval:
                     p.set_fol(self.subset_list[idx+1])
 
     def _sort_subsetlist(self):
+        """_summary_
+            Private method. Sorts the subset_list
+        """
         if len(self.subset_list) > 0:
             item_starts = [x.start for x in self.subset_list]
             item_order = np.argsort(item_starts)
             self.subset_list = [self.subset_list[idx] for idx in item_order]        
 
     def set_fol(self, next_int):
-        """_summary_
+        """_Sets the following instance_
 
-        Parameters
-        ----------
-        next_int : _type_
-            _description_
-
-        Raises
-        ------
-        Exception
-            _description_
+        Args:
+            next_int (SequenceInterval): 
+                Sets the `next_int` as the `fol` interval.
         """
         if isinstance(next_int, self.__class__):
             self.fol = next_int
@@ -264,17 +214,11 @@ class SequenceInterval:
             raise Exception(f"Following segment must be an instance of {self.__class__.__name__} or Interval")
 
     def set_prev(self, prev_int):
-        """_summary_
+        """_Sets the previous intance_
 
-        Parameters
-        ----------
-        prev_int : _type_
-            _description_
-
-        Raises
-        ------
-        Exception
-            _description_
+        Args:
+            prev_int (SequenceInterval):
+                Sets the `prev_int` as the `prev` interval
         """
         if isinstance(prev_int, self.__class__):
             self.prev = prev_int
@@ -282,44 +226,42 @@ class SequenceInterval:
             raise Exception(f"Previous segment must be an instance of {self.__class__.__name__} or Interval")
     
     def set_final(self):
-        """_summary_
+        """_Sets the current object as having no `fol` interval_
         """
         self.set_fol(self.__class__(Interval(None, None, "#")))  
 
     def set_initial(self):
-        """_summary_
+        """_Sets the current object as having no `prev` interval_
         """
         self.set_prev(self.__class__(Interval(None, None, "#")))
 
     def set_feature(self, feature, value):
-        """_summary_
+        """_Sets arbitrary object attribute_
 
-        Parameters
-        ----------
-        feature : _type_
-            _description_
-        value : _type_
-            _description_
+        This will be most useful for creating custom subclasses.
+
+        Args:
+            feature (str): New attribute name
+            value (Any): New attribute value
         """
         setattr(self, feature, value)
 
     def return_interval(self):
-        """_summary_
+        """_Return current object as `Interval`_
+        
+        Will be useful for saving back to textgrid
 
-        Returns
-        -------
-        _type_
-            _description_
+        Returns:
+            (praatio.utilities.constants.Interval): A `praatio` `Interval` object
         """
         return Interval(self.start, self.end, self.label)
 
 class Top(SequenceInterval):
-    """_summary_
+    """_A top level interval class_
+    
+    This is a special subclass intended to be the `superset_class` 
+    for classes at the top of the hierarchy.
 
-    Parameters
-    ----------
-    SequenceInterval : _type_
-        _description_
     """
     def __init__(self, Interval=Interval(None, None, None)):
         super().__init__(Interval)
@@ -331,12 +273,11 @@ class Top(SequenceInterval):
     #     pass
 
 class Bottom(SequenceInterval):
-    """_summary_
+    """_A bottom level interval class_
 
-    Parameters
-    ----------
-    SequenceInterval : _type_
-        _description_
+    This is a special subclass intended to be the `subset_class` 
+    for classes at the bottom of the hierarchy.
+
     """
     def __init__(self, Interval=Interval(None, None, None)):
         super().__init__(Interval)
