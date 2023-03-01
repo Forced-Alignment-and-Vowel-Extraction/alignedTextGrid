@@ -23,11 +23,12 @@ numpy = "^1.24.2"
 jupyter = "^1.0.0"
 pytest = "^7.2.1"
 importlib = "^1.0.4"
+
+[tool.poetry.group.docs.dependencies]
 mkdocs = "^1.4.2"
 mkdocstrings = {version = ">=0.18", extras = ["python"]}
 mkdocs-gen-files = "^0.4.0"
 mkdocs-literate-nav = "^0.6.0"
-quarto = "^0.1.0"
 mkdocs-jupyter = "<9.0.0"
 
 [build-system]
