@@ -8,7 +8,8 @@ readme = "README.md"
 packages = [{include = "alignedTextGrid", from="src"}]
 exclude = [
     "notebools/",
-    "examples/"
+    "examples/",
+    "docs/"
 ]
 
 [tool.poetry.dependencies]
@@ -26,7 +27,8 @@ mkdocs = "^1.4.2"
 mkdocstrings = {version = ">=0.18", extras = ["python"]}
 mkdocs-gen-files = "^0.4.0"
 mkdocs-literate-nav = "^0.6.0"
-mkdocs-material = "^9.0.15"
+quarto = "^0.1.0"
+mkdocs-jupyter = "<9.0.0"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,16 +1,30 @@
 site_name: Aligned TextGrid
 
+docs_dir: "doc_src"
+site_dir: "docs"
+
 theme:
   name: "material"
 
 nav:
   - 'Home': index.md
+  - 'Usage' : usage/
   - 'Code Reference': reference/
 
 plugins:
   - gen-files:
       scripts:
-        - docs/gen_ref_pages.py  # 
+        - doc_src/gen_ref_pages.py  # 
+  - mkdocs-jupyter        
   - literate-nav:
       nav_file: SUMMARY.md
   - mkdocstrings
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
