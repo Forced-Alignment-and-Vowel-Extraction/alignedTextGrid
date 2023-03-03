@@ -219,7 +219,37 @@ class SequenceInterval:
         if len(self.subset_list) > 0:
             item_starts = [x.start for x in self.subset_list]
             item_order = np.argsort(item_starts)
-            self.subset_list = [self.subset_list[idx] for idx in item_order]        
+            self.subset_list = [self.subset_list[idx] for idx in item_order]
+
+    ### Subset Properties
+    @property
+    def sub_starts(self):
+        if len(self.subset_list) > 0:
+            start_arr = np.array([
+                seg.start for seg in self.subset_list
+            ])
+            return start_arr
+        else:
+            return np.array([])
+        
+    @property
+    def sub_ends(self):
+        if len(self.subset_list) > 0:
+            end_arr = np.array([
+                seg.end for seg in self.subset_list
+            ])
+            return end_arr
+        else:
+            return np.array([])
+    
+    @property
+    def sub_labels(self):
+        if len(self.subset_list) > 0:
+            lab_list = [seg.label for seg in self.subset_list]
+            return lab_list
+        else:
+            return []
+              
 
     # Precedence Methods
     def set_fol(self, next_int):
