@@ -18,8 +18,6 @@ class Phone(SequenceInterval):
     """
     def __init__(self, Interval = Interval(None, None, None)):
          super().__init__(Interval)
-         self.set_superset_class(Word)
-         self.set_subset_class(Bottom)
 
     def set_word(
             self, 
@@ -55,8 +53,6 @@ class Word(SequenceInterval):
             Interval = Interval(None, None, None)
         ):
         super().__init__(Interval)
-        self.set_superset_class(Top)
-        self.set_subset_class(Phone)
     
     def set_phones(self, phone_list):
         """_Convenience function to set the phones_
@@ -73,3 +69,9 @@ class Word(SequenceInterval):
     @property
     def phones(self):
         return [p.label for p in self.phone_list]
+    
+Word.set_superset_class(Top)
+Word.set_subset_class(Phone)
+Phone.set_subset_class(Bottom)
+# not necessary
+# Phone.set_superset_class(Word)
