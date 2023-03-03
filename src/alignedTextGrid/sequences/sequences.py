@@ -18,7 +18,7 @@ class SequenceInterval:
             Start time of the interval
         end (float):
             End time of the interval
-        label (str):
+        label (Any):
             Label of the interval
         fol (SequenceInterval):
             Instance of the following interval. Is the same subclass as the current instance.
@@ -28,6 +28,14 @@ class SequenceInterval:
             The instance of the superset. Cannot be the same subclass as the current instance.
         subset_list (List[SequenceInterval]): 
             A list of subset instances. Cannot be the same subclass of the current instance.
+        sub_starts (numpy.ndarray):
+            A numpy array of start times for the subset list
+        sub_ends (numpy.ndarray):
+            A numpy array of end times for the subset list
+        sub_labels (List[Any]):
+            A list of labels from the subset list
+        [] :
+            Indexes into the `subset_list`
     """    
 
     # utilities
