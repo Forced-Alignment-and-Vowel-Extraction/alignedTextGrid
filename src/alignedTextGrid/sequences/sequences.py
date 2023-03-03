@@ -29,6 +29,8 @@ class SequenceInterval:
         subset_list (List[SequenceInterval]): 
             A list of subset instances. Cannot be the same subclass of the current instance.
     """    
+
+    # utilities
     def __init__(
         self, 
         Interval: Interval = Interval(None, None, None), 
@@ -87,6 +89,8 @@ class SequenceInterval:
             out_string += ", .subset_class: None"
         return out_string
     
+    # Hierarchy methods
+    ## Superset Methods
     def set_superset_class(
             self, 
             superset_class: type = None
@@ -111,6 +115,25 @@ class SequenceInterval:
             else:
                 self.superset_class = None
 
+    def set_super_instance(self, super_instance = None):
+        """_Sets the specific superset relationship_
+
+        Args:
+            super_instance (SegmentInterval, optional): 
+                Sets the superset relationship between this object and `super_instance` object.
+                Current object is appended to `super_instance`'s subset list.
+        """
+        if super_instance:
+            if isinstance(super_instance, self.superset_class):
+                if not super_instance is self.super_instance:
+                    self.super_instance = super_instance
+                    self.super_instance.append_subset_list(self)
+            else:
+                raise Exception(f"The superset_class was defined as {self.superset_class.__name__}, but provided super_instance was {super_instance.__class__.__name__}")
+        else:
+            warnings.warn("No superset instance provided")                
+
+    ## Subset Methods
     def set_subset_class(self, subset_class = None):
         """_summary_
 
@@ -130,24 +153,6 @@ class SequenceInterval:
                     raise Exception(f"Sequence {self.__class__.__name__} subset_class must be subclass of SequenceInterval. {subset_class.__name__} was given.")
             else:
                 self.subset_class = None
-    
-    def set_super_instance(self, super_instance = None):
-        """_Sets the specific superset relationship_
-
-        Args:
-            super_instance (SegmentInterval, optional): 
-                Sets the superset relationship between this object and `super_instance` object.
-                Current object is appended to `super_instance`'s subset list.
-        """
-        if super_instance:
-            if isinstance(super_instance, self.superset_class):
-                if not super_instance is self.super_instance:
-                    self.super_instance = super_instance
-                    self.super_instance.append_subset_list(self)
-            else:
-                raise Exception(f"The superset_class was defined as {self.superset_class.__name__}, but provided super_instance was {super_instance.__class__.__name__}")
-        else:
-            warnings.warn("No superset instance provided")
     
     def set_subset_list(self, subset_list = None):
         """_Appends all objects to the `subset_list`_
@@ -216,6 +221,7 @@ class SequenceInterval:
             item_order = np.argsort(item_starts)
             self.subset_list = [self.subset_list[idx] for idx in item_order]        
 
+    # Precedence Methods
     def set_fol(self, next_int):
         """_Sets the following instance_
 
@@ -250,6 +256,7 @@ class SequenceInterval:
         """
         self.set_prev(self.__class__(Interval(None, None, "#")))
 
+    ## Extensions and Saving
     def set_feature(self, feature, value):
         """_Sets arbitrary object attribute_
 
