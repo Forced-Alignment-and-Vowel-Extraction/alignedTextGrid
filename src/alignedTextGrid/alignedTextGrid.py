@@ -5,6 +5,7 @@ Module containing AlignedTextGrid class
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
+from praatio.textgrid import openTextgrid
 from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
 from alignedTextGrid.sequences.tiers import SequenceTier, RelatedTiers
 from typing import Type, Sequence
@@ -22,13 +23,19 @@ class AlignedTextGrid:
         entry_classes: 
             Sequence[Sequence[Type[SequenceInterval]]] |
             Sequence[Type[SequenceInterval]]
-              = ((None),)
+              = [SequenceInterval]
     ):
         self.entry_classes = entry_classes
         if textgrid:
             self.tg_tiers = self._nestify_tiers(textgrid)
-        #self.tier_groups
+        elif textgrid_path:
+            tg = openTextgrid(
+                fnFullPath=textgrid_path, 
+                includeEmptyIntervals=True
+            )
+            self.tg_tiers = self._nestify_tiers(tg)
 
+        self.tier_groups = self._relate_tiers()
 
     def _nestify_tiers(
         self,
@@ -52,8 +59,11 @@ class AlignedTextGrid:
         return tier_list
 
     def _relate_tiers(self):
+        tier_groups = []
         for tier_group, classes in zip(self.tg_tiers, self.entry_classes):
             tier_list = []
             for tier, entry_class in zip(tier_group, classes):
                 tier_list.append(SequenceTier(tier, entry_class))
+            tier_groups.append(RelatedTiers(tier_list))
+        return tier_groups
             

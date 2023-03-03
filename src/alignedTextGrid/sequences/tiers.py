@@ -4,7 +4,7 @@ from praatio.data_classes.textgrid import Textgrid
 from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
 import numpy as np
 from typing import Type
-
+import warnings
 
 class SequenceTier:
     """_A sequence tier_
@@ -150,11 +150,14 @@ class RelatedTiers:
                 
                 starts = np.searchsorted(lower_starts, upper_starts, side = "left")
                 ends = np.searchsorted(lower_ends, upper_ends, side = "right")
+                if not np.all(starts[1:] == ends[:-1]):
+                    warnings.warn("Some intervals on subset tier have no superset instance")
 
                 lower_sequences = [lower_tier[starts[idx]:ends[idx]] for idx,_ in enumerate(upper_tier)]
-
+                
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
+                    u.validate()
 
     def __getitem__(self, idx):
         return self.tier_list[idx]
