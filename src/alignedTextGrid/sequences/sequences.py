@@ -1,3 +1,8 @@
+"""
+Module includes the `SequenceInterval` base class as well as 
+`Top` and `Bottom` classes.
+"""
+
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from typing import Type

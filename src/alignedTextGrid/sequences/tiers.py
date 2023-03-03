@@ -4,7 +4,7 @@ from praatio.data_classes.textgrid import Textgrid
 from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
 import numpy as np
 from typing import Type
-
+import warnings
 
 class SequenceTier:
     """_A sequence tier_
@@ -13,7 +13,7 @@ class SequenceTier:
     `entry_class` instances for every interval.
 
     Args:
-        entry_list (list[Interval] | IntervalTier, optional): 
+        tier (list[Interval] | IntervalTier, optional): 
             A list of interval entries. Defaults to [Interval(None, None, None)].
         entry_class (Type[SequenceInterval], optional): 
             The sequence class for this tier. Defaults to SequenceInterval.
@@ -33,13 +33,15 @@ class SequenceTier:
     """
     def __init__(
         self,
-        entry_list: list[Interval] | IntervalTier = [Interval(None, None, None)],
+        tier: list[Interval] | IntervalTier = [Interval(None, None, None)],
         entry_class: Type[SequenceInterval] = SequenceInterval
     ):
-        if isinstance(entry_list, IntervalTier):
-            self.entry_list = entry_list.entries
+        if isinstance(tier, IntervalTier):
+            self.entry_list = tier.entries
+            self.name = tier.name
         else:
-            self.entry_list = entry_list
+            self.entry_list = tier
+            self.name = entry_class.__name__
         self.entry_class = entry_class
         self.superset_class = self.entry_class.superset_class
         self.subset_class =  self.entry_class.subset_class
@@ -107,17 +109,22 @@ class SequenceTier:
         out_idx = np.searchsorted(self.starts, time, side = "left") - 1
         return out_idx
     
-    def save_as_tg(self, name, save_path):
+    def return_tier(self):
+        all_intervals = [entry.return_interval() for entry in self.sequence_list]
+        interval_tier = IntervalTier(name = self.name, entries = all_intervals)
+        return interval_tier
+
+    
+    def save_as_tg(self, save_path):
         """_Saves as a textgrid_
 
         Args:
             name (str): Name of interval tier
             save_path (str): Output path
         """
-        all_intervals = [entry.return_interval for entry in self.entry_list]
-        interval_tier = IntervalTier(name = name, entries = all_intervals)
+        interval_tier = self.return_tier()
         out_tg = Textgrid()
-        out_tg.addTier(IntervalTier)
+        out_tg.addTier(tier = interval_tier)
         out_tg.save(save_path, "long_textgrid")
 
 
@@ -150,14 +157,28 @@ class RelatedTiers:
                 
                 starts = np.searchsorted(lower_starts, upper_starts, side = "left")
                 ends = np.searchsorted(lower_ends, upper_ends, side = "right")
+                if not np.all(starts[1:] == ends[:-1]):
+                    warnings.warn("Some intervals on subset tier have no superset instance")
 
                 lower_sequences = [lower_tier[starts[idx]:ends[idx]] for idx,_ in enumerate(upper_tier)]
-
+                
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
+                    u.validate()
 
     def __getitem__(self, idx):
         return self.tier_list[idx]
+        
+    def __iter__(self):
+        self._idx = 0
+        return self
+
+    def __next__(self):
+        if self._idx < len(self.tier_list):
+            out = self.tier_list[self._idx]
+            self._idx += 1
+            return(out)
+        raise StopIteration
     
     def _arrange_tiers(
             self, 
@@ -191,3 +212,4 @@ class RelatedTiers:
             print(f"{tab*(idx+1)}{tier.entry_class.__name__}(\n")
             if idx == len(self.tier_list)-1:
                 print(f"{tab*(idx+2)}{tier.subset_class.__name__}(\n")
+    
