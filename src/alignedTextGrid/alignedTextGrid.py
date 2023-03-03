@@ -8,7 +8,7 @@ from praatio.data_classes.textgrid import Textgrid
 from praatio.textgrid import openTextgrid
 from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
 from alignedTextGrid.sequences.tiers import SequenceTier, RelatedTiers
-from typing import Type, Sequence
+from typing import Type, Sequence, Literal
 import numpy as np
 import warnings
 
@@ -66,4 +66,28 @@ class AlignedTextGrid:
                 tier_list.append(SequenceTier(tier, entry_class))
             tier_groups.append(RelatedTiers(tier_list))
         return tier_groups
-            
+    
+    def return_textgrid(self):
+        out_tg = Textgrid()
+        for group in self.tier_groups:
+            for tier in group:
+                out_tg.addTier(tier = tier.return_tier())
+        return out_tg
+
+    def save_textgrid(
+            self, 
+            save_path: str,
+            format : Literal[
+                "short_textgrid", 
+                "long_textgrid", 
+                "json", 
+                "textgrid_json"
+                ] 
+            = "long_textgrid"
+        ):
+        out_tg = self.return_textgrid()
+        out_tg.save(
+            fn = save_path,
+            format = format,
+            includeBlankSpaces = True
+        )
