@@ -35,16 +35,14 @@ class SequenceTier:
         self,
         entry_list: list[Interval] | IntervalTier = [Interval(None, None, None)],
         entry_class: Type[SequenceInterval] = SequenceInterval
-        # superset_class = Top,
-        # subset_class = Bottom
     ):
         if isinstance(entry_list, IntervalTier):
             self.entry_list = entry_list.entries
         else:
             self.entry_list = entry_list
         self.entry_class = entry_class
-        self.superset_class = self.entry_class(Interval = Interval(None, None, None)).superset_class
-        self.subset_class =  self.entry_class(Interval = Interval(None, None, None)).subset_class
+        self.superset_class = self.entry_class.superset_class
+        self.subset_class =  self.entry_class.subset_class
         entry_order = np.argsort(self.starts)
         self.entry_list = [self.entry_list[idx] for idx in entry_order]
         self.sequence_list = []
@@ -135,15 +133,15 @@ class RelatedTiers:
     """
     def __init__(
         self,
-        top_to_bottom: list[SequenceTier] = [SequenceTier(), SequenceTier()]
+        tiers: list[SequenceTier] = [SequenceTier(), SequenceTier()]
     ):
-        self.tier_list = top_to_bottom
-        for idx, tier in enumerate(top_to_bottom):
-            if idx == len(top_to_bottom)-1:
+        self.tier_list = self._arrange_tiers(tiers)
+        for idx, tier in enumerate(self.tier_list):
+            if idx == len(self.tier_list)-1:
                 break
             else:
-                upper_tier = top_to_bottom[idx]
-                lower_tier = top_to_bottom[idx+1]
+                upper_tier = self.tier_list[idx]
+                lower_tier = self.tier_list[idx+1]
 
                 upper_starts = upper_tier.starts
                 upper_ends = upper_tier.ends
@@ -160,6 +158,28 @@ class RelatedTiers:
 
     def __getitem__(self, idx):
         return self.tier_list[idx]
+    
+    def _arrange_tiers(
+            self, 
+            tiers: list[SequenceTier]
+        ):
+        """_Arranges tiers by hierarchy_
+
+        Args:
+            tiers (list[SequenceTier]): _description_
+        """
+        top_to_bottom = []
+        to_arrange = len(tiers)
+        top_idx = [x.superset_class for x in tiers].index(Top)
+        top_to_bottom.append(tiers[top_idx])
+        to_arrange += -1
+        while to_arrange > 0:
+            curr = top_to_bottom[-1]
+            next_idx = [x.entry_class for x in tiers].index(curr.subset_class)
+            top_to_bottom.append(tiers[next_idx])
+            to_arrange += -1
+        return(top_to_bottom)
+
 
     def show_structure(self):
         """_Show the hierarchical structure_
