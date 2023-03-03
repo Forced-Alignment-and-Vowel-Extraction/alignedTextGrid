@@ -91,8 +91,7 @@ class SequenceInterval:
         if self.subset_class:
             out_string += f", .subset_class: {self.subset_class.__name__}"
             if self.subset_list:
-                sub_labels = [x.label for x in self.subset_list]
-                out_string += f", .subset_list: {repr(sub_labels)}"
+                out_string += f", .subset_list: {repr(self.sub_labels)}"
         else:
             out_string += ", .subset_class: None"
         return out_string
@@ -225,7 +224,7 @@ class SequenceInterval:
             Private method. Sorts the subset_list
         """
         if len(self.subset_list) > 0:
-            item_starts = [x.start for x in self.subset_list]
+            item_starts = self.sub_starts
             item_order = np.argsort(item_starts)
             self.subset_list = [self.subset_list[idx] for idx in item_order]
 
