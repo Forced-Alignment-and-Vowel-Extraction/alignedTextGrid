@@ -256,7 +256,42 @@ class SequenceInterval:
             return lab_list
         else:
             return []
-              
+    
+    ## Subset Validation
+    def validate(self):
+        validation_concerns = []
+        if len(self.subset_list) == 0:
+            return True
+        else:
+            if not np.allclose(self.start, self.sub_starts[0]):
+                if self.start < self.sub_starts:
+                    validation_concerns.append(
+                        "First subset interval starts after current interval"
+                    )
+                else:
+                    validation_concerns.append(
+                        "First subset interval starts before current interval"
+                    )
+            if not np.allclose(self.end, self.sub_ends[-1]):
+                if self.end > self.sub_ends[-1]:
+                    validation_concerns.append(
+                        "Last subset interval ends before current interval"
+                    )
+                else:
+                    validation_concerns.append(
+                        "Last subset interval ends after current interval"
+                    )
+            if not np.allclose(self.sub_starts[1:], self.sub_ends[:-1]):
+                validation_concerns.append(
+                    "Not all subintervals fit snugly"
+                )
+            ## prepping messages
+            if len(validation_concerns) == 0:
+                return True
+            else:
+                validation_warn = "\n".join(validation_concerns)
+                warnings.warn(validation_warn)
+                return False
 
     # Precedence Methods
     def set_fol(self, next_int):
