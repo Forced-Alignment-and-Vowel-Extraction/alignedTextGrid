@@ -62,8 +62,8 @@ class SequenceInterval:
         self.subset_list = []
         self.super_instance= None
 
-    # def __contains__(self, item):
-    #     return item in self.subset_list
+    def __contains__(self, item):
+        return item in self.subset_list
 
     def __getitem__(self, idx):
         return self.subset_list[idx]
@@ -82,7 +82,7 @@ class SequenceInterval:
             return this_seg
         else:
             raise StopIteration
-
+    
     def __repr__(self) -> str:
         out_string = f"Class {self.__class__.__name__}, label: {self.label}"
         if self.superset_class:
@@ -139,7 +139,12 @@ class SequenceInterval:
                 Sets the superset relationship between this object and `super_instance` object.
                 Current object is appended to `super_instance`'s subset list.
         """
-        if super_instance:
+
+        ## I know this isn't best practice
+        ## but for some reason just having 
+        ## `if super_instance` breaks with 
+        ## __len__ defined that uses self.subset_list ...
+        if not super_instance is None:
             if isinstance(super_instance, self.superset_class):
                 if not super_instance is self.super_instance:
                     self.super_instance = super_instance
@@ -183,6 +188,7 @@ class SequenceInterval:
                 set as the `super_instance` of all objects in the list.
         """
         if subset_list:
+            self.subset_list = []
             if all([isinstance(subint, self.subset_class) for subint in subset_list]):
                 for element in subset_list:
                     self.append_subset_list(element)
@@ -203,8 +209,11 @@ class SequenceInterval:
                 to `subset_instance`. Precedence relationships within
                 `subset_list` are reset.
         """
-
-        if subset_instance:
+        ## I know this isn't best practice
+        ## but for some reason just having 
+        ## `if super_instance` breaks with 
+        ## __len__ defined... 
+        if not subset_instance is None:
             if isinstance(subset_instance, self.subset_class):
                 if not subset_instance in self.subset_list:
                     self.subset_list.append(subset_instance)

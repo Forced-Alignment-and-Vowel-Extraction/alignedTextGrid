@@ -58,7 +58,7 @@ class AlignedTextGrid:
             self.tg_tiers = self._nestify_tiers(tg)
 
         self.tier_groups = self._relate_tiers()
-
+    
     def __contains__(self, item):
         return item in self.tier_groups
     
@@ -134,6 +134,10 @@ class AlignedTextGrid:
             tier_groups.append(RelatedTiers(tier_list))
         return tier_groups
     
+    @property
+    def tier_names(self):
+        return [x.tier_names for x in self.tier_groups]
+
     def return_textgrid(self) -> Textgrid:
         """_Convert this `AlignedTextGrid` to a `praatio` `Textgrid`_
         
