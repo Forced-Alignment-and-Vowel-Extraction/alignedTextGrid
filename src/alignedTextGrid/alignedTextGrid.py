@@ -59,6 +59,32 @@ class AlignedTextGrid:
 
         self.tier_groups = self._relate_tiers()
 
+    def __contains__(self, item):
+        return item in self.tier_groups
+    
+    def __getitem__(self, idx):
+        return self.tier_groups[idx]
+        
+    def __iter__(self):
+        self._idx = 0
+        return self
+
+    def __len__(self):
+        return len(self.tier_groups)
+
+    def __next__(self):
+        if self._idx < len(self.tier_groups):
+            out = self.tier_groups[self._idx]
+            self._idx += 1
+            return(out)
+        raise StopIteration
+    
+    def __repr__(self):
+        n_groups = len(self.tier_groups)
+        n_tiers = [len(x) for x in self.tier_groups]
+        entry_classes = [[x.__name__ for x in y] for y in self.entry_classes]
+        return f"AlignedTextGrid with {n_groups} groups, each with {repr(n_tiers)} tiers. {repr(entry_classes)}"
+
     def _nestify_tiers(
         self,
         textgrid: Textgrid
