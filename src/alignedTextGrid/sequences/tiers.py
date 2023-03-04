@@ -29,8 +29,10 @@ class SequenceTier:
         subset_class (Type[SequenceInterval]):
         starts (np.ndarray[np.float64]):
         ends (np.ndarray[np.float64]):
+        labels (list[str]): 
         xmin (float):
         xmax (float):
+        name (str):
         [] : Indexable. Returns a SequenceInterval
         : Iterable
 
@@ -68,9 +70,18 @@ class SequenceTier:
             else:
                 seq.set_fol(self.sequence_list[idx+1])
 
+    def __contains__(self, item):
+        return item in self.sequence_list
+    
+    def __getitem__(self, idx):
+        return self.sequence_list[idx]
+    
     def __iter__(self):
         self._idx = 0
         return self
+
+    def __len__(self):
+        return len(self.sequence_list)
 
     def __next__(self):
         if self._idx < len(self.sequence_list):
@@ -82,9 +93,6 @@ class SequenceTier:
     def __repr__(self):
         return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
 
-    def __getitem__(self, idx):
-        return self.sequence_list[idx]
-
     @property
     def starts(self):
         return np.array([x.start for x in self.entry_list])
@@ -92,6 +100,10 @@ class SequenceTier:
     @property
     def ends(self):
         return np.array([x.end for x in self.entry_list])
+    
+    @property
+    def labels(self):
+        return [x.label for x in self.entry_list]
 
     @property
     def xmin(self):
@@ -156,6 +168,10 @@ class RelatedTiers:
     Attributes:
         tier_list (list[SequenceTier]): List of sequence tiers that have been
             related.
+        entry_classes (list[Type[SequenceInterval]]): 
+            A list of the entry classes for each tier.
+        tier_names (list[str]): 
+            A list of tier names
         [] : Indexable. Returns a SequenceTier
     """
     def __init__(
@@ -186,6 +202,9 @@ class RelatedTiers:
                     u.set_subset_list(l)
                     u.validate()
 
+    def __contains__(self, item):
+        return item in self.tier_list
+    
     def __getitem__(self, idx):
         return self.tier_list[idx]
         
@@ -193,12 +212,20 @@ class RelatedTiers:
         self._idx = 0
         return self
 
+    def __len__(self):
+        return len(self.tier_list)
+
     def __next__(self):
         if self._idx < len(self.tier_list):
             out = self.tier_list[self._idx]
             self._idx += 1
             return(out)
         raise StopIteration
+    
+    def __repr__(self):
+        n_tiers = len(self.tier_list)
+        classes = [x.__name__ for x in self.entry_classes]
+        return f"RelatedTiers with {n_tiers} tiers. {repr(classes)}"
     
     def _arrange_tiers(
             self, 
@@ -221,6 +248,13 @@ class RelatedTiers:
             to_arrange += -1
         return(top_to_bottom)
 
+    @property
+    def entry_classes(self):
+        return [x.entry_class for x in self.tier_list]
+    
+    @property
+    def tier_names(self):
+        return [x.name for x in self.tier_list]
 
     def show_structure(self):
         """_Show the hierarchical structure_
