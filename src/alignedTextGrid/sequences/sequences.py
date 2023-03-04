@@ -75,6 +75,9 @@ class SequenceInterval:
     def __len__(self):
         return len(self.subset_list)
     
+    def __len__(self):
+        return len(self.subset_list)
+    
     def __next__(self):
         if self.current < len(self.subset_list):
             this_seg = self.subset_list[self.current]
