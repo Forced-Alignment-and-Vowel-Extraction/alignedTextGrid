@@ -72,6 +72,9 @@ class SequenceTier:
         self._idx = 0
         return self
 
+    def __len__(self):
+        return len(self.sequence_list)
+
     def __next__(self):
         if self._idx < len(self.sequence_list):
             out = self.sequence_list[self._idx]
@@ -192,6 +195,9 @@ class RelatedTiers:
     def __iter__(self):
         self._idx = 0
         return self
+
+    def __len__(self):
+        return len(self.tier_list)
 
     def __next__(self):
         if self._idx < len(self.tier_list):
