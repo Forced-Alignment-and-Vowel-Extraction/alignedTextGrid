@@ -62,9 +62,18 @@ class SequenceInterval:
         self.subset_list = []
         self.super_instance= None
 
+    # def __contains__(self, item):
+    #     return item in self.subset_list
+
+    def __getitem__(self, idx):
+        return self.subset_list[idx]
+
     def __iter__(self):
         self.current = 0
         return self
+    
+    def __len__(self):
+        return len(self.subset_list)
     
     def __next__(self):
         if self.current < len(self.subset_list):
@@ -73,9 +82,6 @@ class SequenceInterval:
             return this_seg
         else:
             raise StopIteration
-
-    def __getitem__(self, idx):
-        return self.subset_list[idx]
 
     def __repr__(self) -> str:
         out_string = f"Class {self.__class__.__name__}, label: {self.label}"
