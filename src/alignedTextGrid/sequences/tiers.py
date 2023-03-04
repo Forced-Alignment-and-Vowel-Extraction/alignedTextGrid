@@ -1,3 +1,7 @@
+"""
+Module for TextGrid tier classes that contain `SequenceInterval`s
+"""
+
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
@@ -23,8 +27,8 @@ class SequenceTier:
         entry_class (Type[SequenceInterval]):
         superset_class (Type[SequenceInterval]):
         subset_class (Type[SequenceInterval]):
-        starts (list[float]):
-        ends (list[float]):
+        starts (np.ndarray[np.float64]):
+        ends (np.ndarray[np.float64]):
         xmin (float):
         xmax (float):
         [] : Indexable. Returns a SequenceInterval
@@ -83,11 +87,11 @@ class SequenceTier:
 
     @property
     def starts(self):
-        return [x.start for x in self.entry_list]
+        return np.array([x.start for x in self.entry_list])
 
     @property
     def ends(self):
-        return [x.end for x in self.entry_list]
+        return np.array([x.end for x in self.entry_list])
 
     @property
     def xmin(self):
@@ -97,7 +101,10 @@ class SequenceTier:
     def xmax(self):
         return self.sequence_list[-1].end
 
-    def get_interval_at_time(self, time):
+    def get_interval_at_time(
+            self, 
+            time: float
+        ) -> int:
         """_Gets interval index at specified time_
 
         Args:
@@ -109,17 +116,28 @@ class SequenceTier:
         out_idx = np.searchsorted(self.starts, time, side = "left") - 1
         return out_idx
     
-    def return_tier(self):
+    def return_tier(self) -> IntervalTier:
+        """_Returns a `praatio` interval tier_
+
+        Returns:
+            (praatio.data_classes.interval_tier.IntervalTier):
+                A `praatio` interval tier. Useful for saving results
+                back as a Praat TextGrid.
+        """
         all_intervals = [entry.return_interval() for entry in self.sequence_list]
         interval_tier = IntervalTier(name = self.name, entries = all_intervals)
         return interval_tier
 
     
-    def save_as_tg(self, save_path):
+    def save_as_tg(
+            self, 
+            save_path: str
+        ):
         """_Saves as a textgrid_
 
+        Uses `praatio.data_classes.textgrid.Textgrid.save()` method.
+
         Args:
-            name (str): Name of interval tier
             save_path (str): Output path
         """
         interval_tier = self.return_tier()
@@ -132,10 +150,12 @@ class RelatedTiers:
     """_Relates tiers_
 
     Args:
-        top_to_bottom (list[SequenceTier]): A list of sequence tiers that are 
+        tiers (list[SequenceTier]): A list of sequence tiers that are 
             meant to be in hierarchical relationships with eachother
     
     Attributes:
+        tier_list (list[SequenceTier]): List of sequence tiers that have been
+            related.
         [] : Indexable. Returns a SequenceTier
     """
     def __init__(
@@ -183,7 +203,7 @@ class RelatedTiers:
     def _arrange_tiers(
             self, 
             tiers: list[SequenceTier]
-        ):
+        ) -> list[SequenceTier]:
         """_Arranges tiers by hierarchy_
 
         Args:

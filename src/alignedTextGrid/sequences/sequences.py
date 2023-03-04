@@ -41,6 +41,11 @@ class SequenceInterval:
             Indexes into the `subset_list`
     """    
 
+    # Ultimately, both of these class variables should be be
+    # set to subclasses of SequenceInterval, but that can't be
+    # done in the class definition since those subclasses
+    # can't exist until after both SequenceVariable
+    # and those subclasses have been created.
     superset_class = None
     subset_class = None
 
@@ -259,7 +264,25 @@ class SequenceInterval:
             return []
     
     ## Subset Validation
-    def validate(self):
+    def validate(self) -> bool:
+        """_Validate the subset list_
+        Validation checks to see if
+
+        1. The first item in `subset_list` starts at the same time as `self`.
+        If not, does it start before or after `self.start`
+        2. The last item in `subset_list` ends at the same time as `self`.
+        If not, does it end before or after `self.end`.
+        3. Do all of the subset intervals fit "snugly" inside of the superset,
+        that is, with no gaps or overlaps.
+
+        This doesn't raise any exceptions, but does issue a warning for any
+        checks that don't pass.
+
+        Returns:
+            (bool):
+                - `True` if all checks pass, or if the `subset_list` is empty.
+                - `False` if any checks fail.
+        """
         validation_concerns = []
         if len(self.subset_list) == 0:
             return True
@@ -295,17 +318,20 @@ class SequenceInterval:
                 return False
 
     # Precedence Methods
-    def set_fol(self, next_int):
+    def set_fol(
+            self, next_int):
         """_Sets the following instance_
 
         Args:
             next_int (SequenceInterval): 
                 Sets the `next_int` as the `fol` interval.
+                Must be of the same class as the current object.
+                That is, `next_int.__class__ is self.__class__`
         """
-        if isinstance(next_int, self.__class__):
+        if next_int.__class__ is self.__class__:
             self.fol = next_int
         else:
-            raise Exception(f"Following segment must be an instance of {self.__class__.__name__} or Interval")
+            raise Exception(f"Following segment must be an instance of {self.__class__.__name__}")
 
     def set_prev(self, prev_int):
         """_Sets the previous intance_
@@ -313,19 +339,27 @@ class SequenceInterval:
         Args:
             prev_int (SequenceInterval):
                 Sets the `prev_int` as the `prev` interval
+                Must be of the same class as the current object.
+                That is, `prev_int.__class__ is self.__class__`                
         """
-        if isinstance(prev_int, self.__class__):
+        if prev_int.__class__ is self.__class__:
             self.prev = prev_int
         else:
-            raise Exception(f"Previous segment must be an instance of {self.__class__.__name__} or Interval")
+            raise Exception(f"Previous segment must be an instance of {self.__class__.__name__}")
     
     def set_final(self):
         """_Sets the current object as having no `fol` interval_
+        
+        While `self.fol` is defined for these intervals, the actual
+        instance does not appear in `self.super_instance.subset_list`
         """
         self.set_fol(self.__class__(Interval(None, None, "#")))  
 
     def set_initial(self):
         """_Sets the current object as having no `prev` interval_
+
+        While `self.prev` is defined for these intervals, the actual 
+        instance does not appear in `self.super_instance.subset_list`
         """
         self.set_prev(self.__class__(Interval(None, None, "#")))
 
@@ -341,7 +375,7 @@ class SequenceInterval:
         """
         setattr(self, feature, value)
 
-    def return_interval(self):
+    def return_interval(self) -> Interval:
         """_Return current object as `Interval`_
         
         Will be useful for saving back to textgrid
@@ -361,12 +395,6 @@ class Top(SequenceInterval):
     def __init__(self, Interval=Interval(None, None, None)):
         super().__init__(Interval)
 
-    # def set_superset_class(self):
-    #     pass
-
-    # def set_super_instance(self):
-    #     pass
-
 class Bottom(SequenceInterval):
     """_A bottom level interval class_
 
@@ -377,5 +405,7 @@ class Bottom(SequenceInterval):
     def __init__(self, Interval=Interval(None, None, None)):
         super().__init__(Interval)
 
+# This is how the default behavior of `SequenceInterval` 
+# with respect to subset and superset classes is controlled
 SequenceInterval.set_superset_class(Top)
 SequenceInterval.set_subset_class(Bottom)
