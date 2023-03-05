@@ -59,8 +59,13 @@ class SequenceInterval:
         self.start = Interval.start
         self.end = Interval.end
         self.label = Interval.label
-        self.set_final()
-        self.set_initial()
+        
+        ## prevent infinite recursion
+        if self.label != "#":
+            self.set_final()
+        if self.label != "#":
+            self.set_initial()
+
         self.subset_list = []
         self.super_instance= None
 
