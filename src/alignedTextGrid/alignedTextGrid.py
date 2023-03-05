@@ -151,6 +151,22 @@ class AlignedTextGrid:
     @property
     def xmax(self):
         return np.array([tgroup.xmax for tgroup in self.tier_groups]).max()
+    
+    def get_intervals_at_time(
+            self, 
+            time: float
+        ) -> list[list[int]]:
+        """_Get interval indices at time_
+        
+        Returns a nested list of intervals at `time` for each tier.
+        
+        Args:
+            time (float): time
+
+        Returns:
+            (list[list[int]]): a nested list of interval indices.
+        """
+        return [tgroup.get_intervals_at_time(time) for tgroup in self.tier_groups]
 
     def return_textgrid(self) -> Textgrid:
         """_Convert this `AlignedTextGrid` to a `praatio` `Textgrid`_

@@ -127,6 +127,8 @@ class SequenceTier:
             (int): Index of the interval
         """
         out_idx = np.searchsorted(self.starts, time, side = "left") - 1
+        if np.allclose(self.starts[out_idx+1], time):
+            out_idx = out_idx+1
         return out_idx
     
     def return_tier(self) -> IntervalTier:
@@ -269,6 +271,21 @@ class RelatedTiers:
     def xmax(self):
         return np.array([tier.xmax for tier in self.tier_list]).min()
 
+    def get_intervals_at_time(
+            self, 
+            time: float
+        ) -> list[int]:
+        """_Get intervals at time_
+
+        Returns a list of intervals at `time` for each tier.
+
+        Args:
+            time (float): Time in intervals
+
+        Returns:
+            (list[int]): A list of interval indices, one for each tier in `tier_list`
+        """
+        return [tier.get_interval_at_time(time) for tier in self.tier_list]
 
     def show_structure(self):
         """_Show the hierarchical structure_
