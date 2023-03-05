@@ -59,6 +59,8 @@ class SequenceInterval:
         self.start = Interval.start
         self.end = Interval.end
         self.label = Interval.label
+        self.set_final()
+        self.set_initial()
         self.subset_list = []
         self.super_instance= None
 
