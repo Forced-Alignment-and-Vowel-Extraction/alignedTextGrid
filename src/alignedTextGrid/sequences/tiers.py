@@ -172,6 +172,10 @@ class RelatedTiers:
             A list of the entry classes for each tier.
         tier_names (list[str]): 
             A list of tier names
+        xmax (float):
+            Maximum time
+        xmin (float):
+            Minimum time
         [] : Indexable. Returns a SequenceTier
     """
     def __init__(
@@ -255,6 +259,15 @@ class RelatedTiers:
     @property
     def tier_names(self):
         return [x.name for x in self.tier_list]
+    
+    @property
+    def xmin(self):
+        return np.array([tier.xmin for tier in self.tier_list]).min()
+    
+    @property
+    def xmax(self):
+        return np.array([tier.xmax for tier in self.tier_list]).min()
+
 
     def show_structure(self):
         """_Show the hierarchical structure_
