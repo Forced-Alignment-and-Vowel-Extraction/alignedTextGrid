@@ -39,4 +39,5 @@ build-backend = "poetry.core.masonry.api"
 addopts = [
     "--import-mode=importlib"
 ]
+pythonpath = "src"
 testpaths = "tests"
