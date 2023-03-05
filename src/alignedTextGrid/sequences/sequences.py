@@ -60,6 +60,9 @@ class SequenceInterval:
         self.end = Interval.end
         self.label = Interval.label
         
+        self.fol = None
+        self.prev = None
+
         ## prevent infinite recursion
         if self.label != "#":
             self.set_final()
@@ -350,10 +353,17 @@ class SequenceInterval:
                 Must be of the same class as the current object.
                 That is, `next_int.__class__ is self.__class__`
         """
-        if next_int.__class__ is self.__class__:
-            self.fol = next_int
-        else:
-            raise Exception(f"Following segment must be an instance of {self.__class__.__name__}")
+        if not self.label == "#":
+            if next_int.__class__ is self.__class__:
+                if not next_int is self:
+                    if not self.fol is next_int:
+                        self.fol = next_int
+                    if not self is next_int.prev:
+                        next_int.set_prev(self)
+                else:
+                    raise Exception(f"A segment can't follow itself.")
+            else:
+                raise Exception(f"Following segment must be an instance of {self.__class__.__name__}")
 
     def set_prev(self, prev_int):
         """_Sets the previous intance_
@@ -364,10 +374,17 @@ class SequenceInterval:
                 Must be of the same class as the current object.
                 That is, `prev_int.__class__ is self.__class__`                
         """
-        if prev_int.__class__ is self.__class__:
-            self.prev = prev_int
-        else:
-            raise Exception(f"Previous segment must be an instance of {self.__class__.__name__}")
+        if not self.label == "#":
+            if prev_int.__class__ is self.__class__:
+                if not prev_int is self:
+                    if not self.prev is prev_int:
+                        self.prev = prev_int
+                    if not self is prev_int.fol:
+                        prev_int.set_fol(self)
+                else:
+                    raise Exception("A segment can't precede itself.")
+            else:
+                raise Exception(f"Previous segment must be an instance of {self.__class__.__name__}")
     
     def set_final(self):
         """_Sets the current object as having no `fol` interval_
