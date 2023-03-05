@@ -123,7 +123,7 @@ class TestPrecedence:
                 Interval: Interval = Interval(None, None, None)):
             super().__init__(Interval = Interval)
     
-    def test_fol_success(self):
+    def test_fol_prev_success(self):
         A1 = self.LocalClassA()
         A2 = self.LocalClassA()
 
@@ -132,5 +132,155 @@ class TestPrecedence:
         except Exception as exc:
             assert False, f"{exc}"
         
-        assert A1.fol is A2
+        assert A1.fol  is A2
         assert A2.prev is A1
+
+        try: 
+            A1.set_prev(A2)
+        except Exception as exc:
+            assert False, f"{exc}"
+        
+        assert A1.prev is A2
+        assert A2.fol  is A1
+    
+    def test_fol_prev_exception(self):
+        A1 = self.LocalClassA()
+        B2 = self.LocalClassB()
+
+        with pytest.raises(Exception):
+            A1.set_fol(B2)
+
+        with pytest.raises(Exception):
+            A1.set_prev(B2)
+
+class TestHierarchy:
+
+    class UpperClass(SequenceInterval):
+        def __init__(
+                self, 
+                Interval: Interval = Interval(None, None, None)
+            ):
+            super().__init__(Interval)
+    
+    class LowerClass(SequenceInterval):
+        def __init__(
+                self, 
+                Interval: Interval = Interval(None, None, None)
+            ):
+            super().__init__(Interval)
+
+    UpperClass.set_subset_class(LowerClass)
+
+    def test_super_instance(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+
+        try:
+            lower1.set_super_instance(upper1)
+        except Exception as exc:
+            assert False, f"{exc}"
+        
+        assert lower1.super_instance is upper1
+        assert lower1 in upper1
+
+        try:
+            lower2.set_super_instance(upper1)
+        except Exception as exc:
+            assert False, f"{exc}"
+
+        assert lower2.super_instance is upper1
+        assert lower2 in upper1
+
+        assert lower1.fol is lower2
+        assert lower2.prev is lower1
+
+    def test_subset_instance(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+
+        try:
+            upper1.append_subset_list(lower1)
+        except Exception as exc:
+            assert False, f"{exc}"
+        
+        assert lower1.super_instance is upper1
+        assert lower1 in upper1
+
+        try:
+            upper1.set_subset_list([lower2, lower1])
+        except Exception as exc:
+            assert False, f"{exc}"
+        
+        assert lower1.super_instance is upper1
+        assert lower1 in upper1
+        assert lower2.super_instance is upper1
+        assert lower2 in upper1
+        assert lower1.fol is lower2
+        assert lower2.prev is lower1
+
+    def test_hierarchy_strictness(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+
+        with pytest.raises(Exception):
+            upper1.set_super_instance(lower1)
+        
+        with pytest.raises(Exception):
+            lower1.append_subset_list(upper1)
+        
+        with pytest.raises(Exception):
+            lower1.set_super_instance(lower1)
+        
+        with pytest.raises(Exception):
+            lower1.append_subset_list(lower1)
+
+    def test_validation(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        gap = self.LowerClass(Interval(6,10,"gap"))
+        overlap = self.LowerClass(Interval(4,10,"overlap"))
+        snug = self.LowerClass(Interval(5,10,"snug"))
+
+        upper1.set_subset_list([lower1, snug])
+        assert upper1.validate()
+
+        upper1.set_subset_list([lower1, gap])
+        assert not upper1.validate()
+
+        upper1.set_subset_list([lower1, overlap])
+        assert not upper1.validate()
+
+class TestIteration:
+    class UpperClass(SequenceInterval):
+        def __init__(
+                self, 
+                Interval: Interval = Interval(None, None, None)
+            ):
+            super().__init__(Interval)
+    
+    class LowerClass(SequenceInterval):
+        def __init__(
+                self, 
+                Interval: Interval = Interval(None, None, None)
+            ):
+            super().__init__(Interval)
+
+    UpperClass.set_subset_class(LowerClass)
+
+    def test_iter(self):
+        upper1 = self.UpperClass(Interval(0, 10, "one"))
+        for x in range(10):
+            upper1.append_subset_list(
+                self.LowerClass(Interval(x, x+1, str(x)))
+            )
+
+        try:
+            for item in upper1:
+                pass
+        except Exception as exc:
+            assert False, f"{exc}"
+        
+        labels = [x.label for x in upper1]
+        assert len(labels) == 10
