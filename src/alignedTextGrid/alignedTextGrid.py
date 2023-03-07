@@ -36,6 +36,12 @@ class AlignedTextGrid:
             The entry classes for each tier within a tier group.
         tier_groups (list[RelatedTiers]):
             a list of `RelatedTiers`
+        xmax (float):
+            Maximum time
+        xmin (float):
+            Minimum time
+        [] :
+            indexable            
     """
 
     def __init__(
@@ -137,6 +143,30 @@ class AlignedTextGrid:
     @property
     def tier_names(self):
         return [x.tier_names for x in self.tier_groups]
+
+    @property
+    def xmin(self):
+        return np.array([tgroup.xmin for tgroup in self.tier_groups]).min()
+
+    @property
+    def xmax(self):
+        return np.array([tgroup.xmax for tgroup in self.tier_groups]).max()
+    
+    def get_intervals_at_time(
+            self, 
+            time: float
+        ) -> list[list[int]]:
+        """_Get interval indices at time_
+        
+        Returns a nested list of intervals at `time` for each tier.
+        
+        Args:
+            time (float): time
+
+        Returns:
+            (list[list[int]]): a nested list of interval indices.
+        """
+        return [tgroup.get_intervals_at_time(time) for tgroup in self.tier_groups]
 
     def return_textgrid(self) -> Textgrid:
         """_Convert this `AlignedTextGrid` to a `praatio` `Textgrid`_

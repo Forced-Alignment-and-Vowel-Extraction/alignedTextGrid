@@ -16,6 +16,8 @@ class SequenceTier:
     Given a `praatio` `IntervalTier` or list of `Interval`s, creates
     `entry_class` instances for every interval.
 
+    Every `SequenceInterval` in the tier gets enriched with its `tier_index`.
+
     Args:
         tier (list[Interval] | IntervalTier, optional): 
             A list of interval entries. Defaults to [Interval(None, None, None)].
@@ -35,11 +37,10 @@ class SequenceTier:
         name (str):
         [] : Indexable. Returns a SequenceInterval
         : Iterable
-
     """
     def __init__(
         self,
-        tier: list[Interval] | IntervalTier = [Interval(None, None, None)],
+        tier: list[Interval] | IntervalTier = [],
         entry_class: Type[SequenceInterval] = SequenceInterval
     ):
         if isinstance(tier, IntervalTier):
@@ -92,7 +93,7 @@ class SequenceTier:
 
     def __repr__(self):
         return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
-
+                
     @property
     def starts(self):
         return np.array([x.start for x in self.entry_list])
@@ -107,11 +108,17 @@ class SequenceTier:
 
     @property
     def xmin(self):
-        return self.sequence_list[0].start
+        if len(self.sequence_list) > 0:
+            return self.sequence_list[0].start
+        else:
+            return None
     
     @property
     def xmax(self):
-        return self.sequence_list[-1].end
+        if len(self.sequence_list) > 0:
+            return self.sequence_list[-1].end
+        else:
+            return None
 
     def get_interval_at_time(
             self, 
@@ -126,6 +133,8 @@ class SequenceTier:
             (int): Index of the interval
         """
         out_idx = np.searchsorted(self.starts, time, side = "left") - 1
+        if np.allclose(self.starts[out_idx+1], time):
+            out_idx = out_idx+1
         return out_idx
     
     def return_tier(self) -> IntervalTier:
@@ -172,11 +181,15 @@ class RelatedTiers:
             A list of the entry classes for each tier.
         tier_names (list[str]): 
             A list of tier names
+        xmax (float):
+            Maximum time
+        xmin (float):
+            Minimum time
         [] : Indexable. Returns a SequenceTier
     """
     def __init__(
         self,
-        tiers: list[SequenceTier] = [SequenceTier(), SequenceTier()]
+        tiers: list[SequenceTier] = [SequenceTier()]
     ):
         self.tier_list = self._arrange_tiers(tiers)
         for idx, tier in enumerate(self.tier_list):
@@ -243,6 +256,8 @@ class RelatedTiers:
         to_arrange += -1
         while to_arrange > 0:
             curr = top_to_bottom[-1]
+            if curr.subset_class is Bottom:
+                break
             next_idx = [x.entry_class for x in tiers].index(curr.subset_class)
             top_to_bottom.append(tiers[next_idx])
             to_arrange += -1
@@ -255,6 +270,30 @@ class RelatedTiers:
     @property
     def tier_names(self):
         return [x.name for x in self.tier_list]
+    
+    @property
+    def xmin(self):
+        return np.array([tier.xmin for tier in self.tier_list]).min()
+    
+    @property
+    def xmax(self):
+        return np.array([tier.xmax for tier in self.tier_list]).min()
+
+    def get_intervals_at_time(
+            self, 
+            time: float
+        ) -> list[int]:
+        """_Get intervals at time_
+
+        Returns a list of intervals at `time` for each tier.
+
+        Args:
+            time (float): Time in intervals
+
+        Returns:
+            (list[int]): A list of interval indices, one for each tier in `tier_list`
+        """
+        return [tier.get_interval_at_time(time) for tier in self.tier_list]
 
     def show_structure(self):
         """_Show the hierarchical structure_
