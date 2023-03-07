@@ -5,7 +5,7 @@ Module includes the `SequenceInterval` base class as well as
 
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
-from typing import Type
+from typing import Type, Any
 import numpy as np
 import inspect
 import warnings
@@ -59,6 +59,16 @@ class SequenceInterval:
         self.start = Interval.start
         self.end = Interval.end
         self.label = Interval.label
+        
+        self.fol = None
+        self.prev = None
+
+        ## prevent infinite recursion
+        if self.label != "#":
+            self.set_final()
+        if self.label != "#":
+            self.set_initial()
+
         self.subset_list = []
         self.super_instance= None
 
@@ -117,8 +127,10 @@ class SequenceInterval:
                 current instance. Defaults to None.
 
         """
-        if superset_class:
-            if not cls is Top:
+        if not superset_class is None:
+            if cls is Top:
+                cls.superset_class = None
+            else:
                 if issubclass(superset_class, SequenceInterval):
                     if not superset_class is cls:
                         cls.superset_class = superset_class
@@ -128,8 +140,8 @@ class SequenceInterval:
                         raise Exception(f"Sequence {cls.__name__} can't have {superset_class.__name__} as its superset class.")
                 else:
                     raise Exception(f"Sequence {cls.__name__} superset_class must be subclass of SequenceInterval. {superset_class.__name__} was given.")
-            else:
-                cls.superset_class = None
+        else:
+            cls.superset_class = None
 
     def set_super_instance(self, super_instance = None):
         """_Sets the specific superset relationship_
@@ -165,7 +177,9 @@ class SequenceInterval:
                 Defaults to None.
         """
         if subset_class:
-            if not cls is Bottom:
+            if cls is Bottom:
+                cls.subset_class = None
+            else:
                 if issubclass(subset_class, SequenceInterval):
                     if not subset_class is cls:
                         cls.subset_class = subset_class
@@ -175,8 +189,8 @@ class SequenceInterval:
                         raise Exception(f"Sequence {cls.__name__} can't have {subset_class.__name__} as its subset class.")
                 else:
                     raise Exception(f"Sequence {cls.__name__} subset_class must be subclass of SequenceInterval. {subset_class.__name__} was given.")
-            else:
-                cls.subset_class = None
+        else:
+            cls.subset_class = None
     
     def set_subset_list(self, subset_list = None):
         """_Appends all objects to the `subset_list`_
@@ -343,10 +357,17 @@ class SequenceInterval:
                 Must be of the same class as the current object.
                 That is, `next_int.__class__ is self.__class__`
         """
-        if next_int.__class__ is self.__class__:
-            self.fol = next_int
-        else:
-            raise Exception(f"Following segment must be an instance of {self.__class__.__name__}")
+        if not self.label == "#":
+            if next_int.__class__ is self.__class__:
+                if not next_int is self:
+                    if not self.fol is next_int:
+                        self.fol = next_int
+                    if not self is next_int.prev:
+                        next_int.set_prev(self)
+                else:
+                    raise Exception(f"A segment can't follow itself.")
+            else:
+                raise Exception(f"Following segment must be an instance of {self.__class__.__name__}")
 
     def set_prev(self, prev_int):
         """_Sets the previous intance_
@@ -357,10 +378,17 @@ class SequenceInterval:
                 Must be of the same class as the current object.
                 That is, `prev_int.__class__ is self.__class__`                
         """
-        if prev_int.__class__ is self.__class__:
-            self.prev = prev_int
-        else:
-            raise Exception(f"Previous segment must be an instance of {self.__class__.__name__}")
+        if not self.label == "#":
+            if prev_int.__class__ is self.__class__:
+                if not prev_int is self:
+                    if not self.prev is prev_int:
+                        self.prev = prev_int
+                    if not self is prev_int.fol:
+                        prev_int.set_fol(self)
+                else:
+                    raise Exception("A segment can't precede itself.")
+            else:
+                raise Exception(f"Previous segment must be an instance of {self.__class__.__name__}")
     
     def set_final(self):
         """_Sets the current object as having no `fol` interval_
@@ -379,7 +407,10 @@ class SequenceInterval:
         self.set_prev(self.__class__(Interval(None, None, "#")))
 
     ## Extensions and Saving
-    def set_feature(self, feature, value):
+    def set_feature(
+            self, 
+            feature: str, 
+            value: Any):
         """_Sets arbitrary object attribute_
 
         This will be most useful for creating custom subclasses.
@@ -422,5 +453,7 @@ class Bottom(SequenceInterval):
 
 # This is how the default behavior of `SequenceInterval` 
 # with respect to subset and superset classes is controlled
+Top.set_superset_class()
+Bottom.set_subset_class()
 SequenceInterval.set_superset_class(Top)
 SequenceInterval.set_subset_class(Bottom)

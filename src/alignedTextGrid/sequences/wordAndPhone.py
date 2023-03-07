@@ -7,7 +7,9 @@ from praatio.data_classes.interval_tier import IntervalTier
 from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
 import numpy as np
 
+
 class Phone(SequenceInterval):
+    
     """_A Phone subclass of SequenceInterval_
 
     Has all the same methods and attributes as SequenceInterval in addition
@@ -69,11 +71,11 @@ class Word(SequenceInterval):
     @property
     def phone_list(self):
         return self.subset_list
-    
+
     @property
     def phones(self):
         return self.sub_labels
-    
+
 Word.set_superset_class(Top)
 Word.set_subset_class(Phone)
 Phone.set_subset_class(Bottom)
