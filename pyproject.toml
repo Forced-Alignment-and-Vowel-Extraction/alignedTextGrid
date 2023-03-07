@@ -24,6 +24,7 @@ jupyter = "^1.0.0"
 pytest = "^7.2.1"
 importlib = "^1.0.4"
 pytest-cov = "^4.0.0"
+pytest-html = "^3.2.0"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.4.2"
@@ -38,7 +39,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 addopts = [
-    "--import-mode=importlib"
+    "--import-mode=importlib",
+    "--cov-config=.coveragerc",
+    "--cov"
 ]
 filterwarnings =[
     "ignore::UserWarning"
