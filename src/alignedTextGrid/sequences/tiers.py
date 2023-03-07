@@ -40,7 +40,7 @@ class SequenceTier:
     """
     def __init__(
         self,
-        tier: list[Interval] | IntervalTier = [Interval(None, None, None)],
+        tier: list[Interval] | IntervalTier = [],
         entry_class: Type[SequenceInterval] = SequenceInterval
     ):
         if isinstance(tier, IntervalTier):
@@ -93,7 +93,7 @@ class SequenceTier:
 
     def __repr__(self):
         return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
-
+                
     @property
     def starts(self):
         return np.array([x.start for x in self.entry_list])
@@ -108,11 +108,17 @@ class SequenceTier:
 
     @property
     def xmin(self):
-        return self.sequence_list[0].start
+        if len(self.sequence_list) > 0:
+            return self.sequence_list[0].start
+        else:
+            return None
     
     @property
     def xmax(self):
-        return self.sequence_list[-1].end
+        if len(self.sequence_list) > 0:
+            return self.sequence_list[-1].end
+        else:
+            return None
 
     def get_interval_at_time(
             self, 
@@ -183,7 +189,7 @@ class RelatedTiers:
     """
     def __init__(
         self,
-        tiers: list[SequenceTier] = [SequenceTier(), SequenceTier()]
+        tiers: list[SequenceTier] = [SequenceTier()]
     ):
         self.tier_list = self._arrange_tiers(tiers)
         for idx, tier in enumerate(self.tier_list):
@@ -250,6 +256,8 @@ class RelatedTiers:
         to_arrange += -1
         while to_arrange > 0:
             curr = top_to_bottom[-1]
+            if curr.subset_class is Bottom:
+                break
             next_idx = [x.entry_class for x in tiers].index(curr.subset_class)
             top_to_bottom.append(tiers[next_idx])
             to_arrange += -1
