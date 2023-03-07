@@ -189,7 +189,7 @@ class RelatedTiers:
     """
     def __init__(
         self,
-        tiers: list[SequenceTier] = [SequenceTier(), SequenceTier()]
+        tiers: list[SequenceTier] = [SequenceTier()]
     ):
         self.tier_list = self._arrange_tiers(tiers)
         for idx, tier in enumerate(self.tier_list):
@@ -256,6 +256,8 @@ class RelatedTiers:
         to_arrange += -1
         while to_arrange > 0:
             curr = top_to_bottom[-1]
+            if curr.subset_class is Bottom:
+                break
             next_idx = [x.entry_class for x in tiers].index(curr.subset_class)
             top_to_bottom.append(tiers[next_idx])
             to_arrange += -1

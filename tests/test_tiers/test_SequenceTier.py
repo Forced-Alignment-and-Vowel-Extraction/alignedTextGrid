@@ -172,14 +172,70 @@ class TestReadTier:
         out_tier = word_tier.return_tier()
         assert type(out_tier) is IntervalTier
         assert len(out_tier.entries) == len(word_tier)
-                             
 
+class TestRelatedTiersDefault:
+    rt = RelatedTiers()
+    
+    def test_ranges(self):
+        assert self.rt.xmin is None
+        assert self.rt.xmax is None
 
+    def test_tier_properties(self):
+        assert len(self.rt.tier_list) == 1
+        assert self.rt.tier_names[0] == "SequenceInterval"
 
-        
+class TestReadTiers:
+    read_tg = openTextgrid(
+        fnFullPath="tests/test_data/josef-fruehwald_speaker.TextGrid",
+        includeEmptyIntervals=True
+    )
 
+    class MyWord(SequenceInterval):
+        def __init__(self, Interval = Interval(None, None, None)):
+            super().__init__(Interval)
 
+    class MyPhone(SequenceInterval):
+        def __init__(self, Interval = Interval(None, None, None)):
+            super().__init__(Interval)
 
+    MyWord.set_subset_class(MyPhone)
+    tg_word = SequenceTier(read_tg.tiers[0], entry_class=MyWord)
+    tg_phone = SequenceTier(read_tg.tiers[1], entry_class=MyPhone)
+
+    def test_relation(self):
+        rt = RelatedTiers([self.tg_word, self.tg_phone])
+        rt2 = RelatedTiers([self.tg_phone, self.tg_word])
+
+        assert rt.entry_classes == rt2.entry_classes
+        assert all([type(x) is self.MyWord for x in rt.tier_list[0]])
+        assert all([type(x) is self.MyPhone for x in rt.tier_list[1]])
+
+        assert type(rt.tier_list[0][10][-1]) is self.MyPhone
+        assert rt.tier_list[0][10][-1].fol.label == "#"
+
+        assert all([len(x)>0 for x in rt[0]])
+        assert all([not x.super_instance is None for x in rt[1]])
+    
+    def test_in_get_len(self):
+        rt = RelatedTiers([self.tg_word, self.tg_phone])
+
+        assert self.tg_phone in rt
+        assert rt[0] is self.tg_word
+        assert len(rt) == 2
+
+    def test_iter(self):
+        rt = RelatedTiers([self.tg_word, self.tg_phone])
+
+        assert [x.name for x in rt] == [self.tg_word.name, self.tg_phone.name]
+    
+    def test_get_intervals_at_time(self):
+        rt = RelatedTiers([self.tg_word, self.tg_phone])
+
+        target_time = 5
+        idx1 = rt[0].get_interval_at_time(5)
+        idx2 = rt[1].get_interval_at_time(5)
+
+        assert rt.get_intervals_at_time(5) == [idx1, idx2]
 
 
 
