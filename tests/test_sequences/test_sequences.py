@@ -4,6 +4,8 @@ import numpy as np
 from praatio.utilities.constants import Interval
 
 class TestSequenceIntervalDefault:
+    """_Test default behavior of SequenceInterval_
+    """
     seq_int = SequenceInterval()
     class SampleClassI(SequenceInterval):
         def __init__(
@@ -284,3 +286,126 @@ class TestIteration:
         
         labels = [x.label for x in upper1]
         assert len(labels) == 10
+
+class TestGetLenIn:
+    class UpperClass(SequenceInterval):
+        def __init__(
+                self, 
+                Interval: Interval = Interval(None, None, None)
+            ):
+            super().__init__(Interval)
+    
+    class LowerClass(SequenceInterval):
+        def __init__(
+                self, 
+                Interval: Interval = Interval(None, None, None)
+            ):
+            super().__init__(Interval)
+
+    UpperClass.set_subset_class(LowerClass)
+    upper1 = UpperClass(Interval(0, 10, "upper"))
+
+    lower1 = LowerClass(Interval=Interval(0,3,"lower1"))
+    lower2 = LowerClass(Interval=Interval(3,8,"lower2"))        
+    lower3 = LowerClass(Interval=Interval(8,10,"lower3"))
+    lower4 = LowerClass(Interval=Interval(10,11,"lower4"))
+    upper1.set_subset_list([lower1, lower2, lower3])
+
+    def test_in(self):
+        assert self.lower1 in self.upper1
+        assert not self.lower4 in self.upper1
+
+    def test_get(self):
+        assert self.lower1 is self.upper1[0]
+        for a,b in zip([self.lower2, self.lower3], self.upper1[1:3]):
+            assert a is b
+        with pytest.raises(IndexError):
+            _ = self.upper1[4]
+    
+    def test_len(self):
+        assert len(self.upper1) == 3
+
+class TestSetFeature:
+    class SampleClass(SequenceInterval):
+        def __init__(
+                self, 
+                Interval: Interval = Interval(None, None, None)
+            ):
+            super().__init__(Interval)
+    
+    sample_obj = SampleClass(Interval=Interval(0, 10, "sample"))
+
+    def test_set_feature(self):
+        self.sample_obj.set_feature("new_feat", 5)
+        assert self.sample_obj.new_feat == 5
+
+        self.sample_obj.new_feat = "A"
+        assert self.sample_obj.new_feat == "A"
+
+class TestReturnInterval:
+    class SampleClass(SequenceInterval):
+        def __init__(
+                self, 
+                Interval: Interval = Interval(None, None, None)
+            ):
+            super().__init__(Interval)
+
+    sample_obj = SampleClass(Interval=Interval(0, 10, "sample"))
+
+    def test_return_interval_class(self):
+        out_interval = self.sample_obj.return_interval()
+        assert out_interval.__class__ is Interval
+    def test_return_interval_values(self):
+        out_interval = self.sample_obj.return_interval()
+        assert out_interval.start == 0
+        assert out_interval.end == 10
+        assert out_interval.label == "sample"
+
+class TestTop:
+    class SampleClass(SequenceInterval):
+        def __init__(
+                self, 
+                Interval: Interval = Interval(None, None, None)
+            ):
+            super().__init__(Interval)
+
+    sample_obj = SampleClass(Interval=Interval(1,2, "sample"))
+
+    def test_top_default(self):
+        assert Top.superset_class is None
+
+    def test_top_insensitivity(self):
+        Top.set_superset_class(self.SampleClass)
+        assert Top.superset_class is None
+
+    def test_no_top_superinstance(self):
+        with pytest.raises(Exception):
+            t = Top()
+            t.set_super_instance(self.sample_obj)
+
+class TextBottom:
+    class SampleClass(SequenceInterval):
+        def __init__(
+                self, 
+                Interval: Interval = Interval(None, None, None)
+            ):
+            super().__init__(Interval)
+
+    sample_obj = SampleClass(Interval=Interval(1,2, "sample"))
+
+    def test_bottom_default(self):
+        assert Bottom.subset_class is None
+    
+    def test_bottom_insensitivity(self):
+        Bottom.set_subset_class(self.SampleClass)
+        assert Bottom.subset_class is None
+
+    def test_bottom_no_append_subset(self):
+        b = Bottom()
+        with pytest.raises(Exception):
+            b.append_subset_list(self.sample_obj)
+
+    def test_bottom_no_set_subset(self):
+        b = Bottom()
+        with pytest.raises(Exception):
+            b.set_subset_list([self.sample_obj])
