@@ -243,6 +243,21 @@ class SequenceInterval:
             else:
                 raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {subset_instance.__class__.__name__}")
             
+    def index(
+            self,
+            subset_instance
+    ) -> int:
+        """_Returns subset instance index_
+
+        Args:
+            subset_instance (SequenceInterval): 
+                A subset instance to get the index of.
+
+        Returns:
+            int: The index of `subset_instance`
+        """
+        return self.subset_list.index(subset_instance)
+            
     def _set_subset_precedence(self):
         """_summary_
             Private method. Sorts subset list and re-sets precedence 
@@ -297,7 +312,7 @@ class SequenceInterval:
             return lab_list
         else:
             return []
-    
+
     ## Subset Validation
     def validate(self) -> bool:
         """_Validate the subset list_

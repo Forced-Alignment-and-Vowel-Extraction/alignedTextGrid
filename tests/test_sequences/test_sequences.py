@@ -234,6 +234,21 @@ class TestHierarchy:
         assert lower1.fol is lower2
         assert lower2.prev is lower1
 
+    def test_subset_index(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+        lower3 = self.LowerClass(Interval(5,10,"lower2"))
+
+        upper1.set_subset_list([lower1, lower2])
+
+        assert upper1.index(lower1) == 0
+        assert upper1.index(lower2) == 1
+
+        with pytest.raises(ValueError):
+            _ = upper1.index(lower3)
+
+
     def test_hierarchy_strictness(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
         lower1 = self.LowerClass(Interval(0,5,"lower1"))
