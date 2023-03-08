@@ -16,8 +16,6 @@ class SequenceTier:
     Given a `praatio` `IntervalTier` or list of `Interval`s, creates
     `entry_class` instances for every interval.
 
-    Every `SequenceInterval` in the tier gets enriched with its `tier_index`.
-
     Args:
         tier (list[Interval] | IntervalTier, optional): 
             A list of interval entries. Defaults to [Interval(None, None, None)].
