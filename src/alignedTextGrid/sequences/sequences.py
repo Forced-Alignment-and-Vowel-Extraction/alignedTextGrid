@@ -522,7 +522,7 @@ class SequenceInterval:
             self, 
             label_fun = lambda x, y: " ".join([x, y])
         ):
-        """_Fuse the current segment with the following segment_
+        """_Fuse the current segment with the previous segment_
 
         Args:
             label_fun (function): Function for joining interval labels.
