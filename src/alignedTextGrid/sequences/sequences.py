@@ -483,6 +483,43 @@ class SequenceInterval:
             return self.intier[self.tier_index + idx]
         else:
             return None
+        
+    ## Fusion
+    def fuse_rightwards(
+            self, 
+            label_fun = lambda x, y: " ".join([x, y])
+        ):
+        """_Fuse the current segment with the following segment_
+
+        Args:
+            label_fun (function): Function for joining interval labels.
+        """
+        fuser = self
+        fusee = self.fol
+
+        if not fusee.label == "#":
+
+            fuser.end = fusee.end
+            fuser.fol = fusee.fol
+            fuser.label = label_fun(fuser.label, fusee.label)
+
+            if fuser.subset_list and fusee.subset_list:
+                new_list = fuser.subset_list + fusee.subset_list
+                fuser.set_subset_list(new_list)
+            
+            if not fuser.superset_class is Top:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+                if not fuser.super_instance is None:
+                    fuser.super_instance.pop(fusee)
+            else:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+        else:
+            raise Exception("Cannot fuse rightwards at right edge")
+    
+    def fuse_rightward(self):
+        self.fuse_rightwards()
 
     ## Extensions and Saving
     def set_feature(
