@@ -66,6 +66,14 @@ class TestSequenceIntervalDefault:
     def test_default_intier(self):
         local_sample = self.SampleClassI()
         assert local_sample.intier is None
+    
+    def test_default_tieridx(self):
+        local_sample = self.SampleClassI()
+        assert local_sample.tier_index is None
+
+    def test_defaul_getby(self):
+        local_sample = self.SampleClassI()
+        assert local_sample.get_seq_by_relative_tieridx(1) is None
 
 class TestSuperSubClassSetting:
     class LocalClassA(SequenceInterval):

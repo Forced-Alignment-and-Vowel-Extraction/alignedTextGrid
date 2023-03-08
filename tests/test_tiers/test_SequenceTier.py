@@ -149,6 +149,15 @@ class TestReadTier:
         )
 
         assert all([type(x) is self.MyWord for x in word_tier])
+
+    def test_index(self):
+        word_tier = SequenceTier(
+            self.read_tg.tiers[0], 
+            entry_class=self.MyWord
+        )
+        target_idx = 10
+        entry = word_tier[target_idx]
+        assert word_tier.index(entry) == target_idx
     
     def test_get_interval_at_time(self):
         word_tier = SequenceTier(
@@ -191,6 +200,35 @@ class TestIntierSetting:
             assert False
 
         assert tier[0].intier is tier
+
+    def test_sequence_index(self):
+        tier = SequenceTier(
+            tier = [
+                self.interval1,
+                self.interval2,
+                self.interval3
+                ]
+            )
+        for idx, entry in enumerate(tier):
+            assert entry.tier_index == idx
+    
+    def test_get_tieridx(self):
+        tier = SequenceTier(
+            tier = [
+                self.interval1,
+                self.interval2,
+                self.interval3
+                ]
+            )
+
+        entry = tier[0]
+        assert entry.get_seq_by_relative_tieridx(0) is entry
+        assert entry.get_seq_by_relative_tieridx(1) is entry.fol
+        
+        entry2 = tier[2]
+        assert entry2.get_seq_by_relative_tieridx(-1) is entry2.prev
+        with pytest.raises(IndexError):
+            _ =  entry2.get_seq_by_relative_tieridx(1)
 
 class TestRelatedTiersDefault:
     rt = RelatedTiers()
