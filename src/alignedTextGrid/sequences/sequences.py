@@ -98,6 +98,37 @@ class SequenceInterval:
             return this_seg
         else:
             raise StopIteration
+        
+    def index(
+            self,
+            subset_instance
+    ) -> int:
+        """_Returns subset instance index_
+
+        Args:
+            subset_instance (SequenceInterval): 
+                A subset instance to get the index of.
+
+        Returns:
+            int: The index of `subset_instance`
+        """
+        return self.subset_list.index(subset_instance)
+
+    def pop(
+            self,
+            subset_instance
+    ):
+        """_Pop a sequence interval from the subset list_
+
+        Args:
+            subset_instance (SequenceInterval): A sequence interval to pop
+        """
+        if subset_instance in self.subset_list:
+            pop_idx = self.index(subset_instance)
+            self.subset_list.pop(pop_idx)
+            self._set_subset_precedence()
+        else:
+            raise Exception("Subset instance not in subset list")
     
     def __repr__(self) -> str:
         out_string = f"Class {self.__class__.__name__}, label: {self.label}"
@@ -297,7 +328,7 @@ class SequenceInterval:
             return lab_list
         else:
             return []
-    
+
     ## Subset Validation
     def validate(self) -> bool:
         """_Validate the subset list_
@@ -452,6 +483,80 @@ class SequenceInterval:
             return self.intier[self.tier_index + idx]
         else:
             return None
+        
+    ## Fusion
+    def fuse_rightwards(
+            self, 
+            label_fun = lambda x, y: " ".join([x, y])
+        ):
+        """_Fuse the current segment with the following segment_
+
+        Args:
+            label_fun (function): Function for joining interval labels.
+        """
+        fuser = self
+        fusee = self.fol
+
+        if not fusee.label == "#":
+
+            fuser.end = fusee.end
+            fuser.fol = fusee.fol
+            fuser.label = label_fun(fuser.label, fusee.label)
+
+            if fuser.subset_list and fusee.subset_list:
+                new_list = fuser.subset_list + fusee.subset_list
+                fuser.set_subset_list(new_list)
+            
+            if not fuser.superset_class is Top:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+                if not fuser.super_instance is None:
+                    fuser.super_instance.pop(fusee)
+            else:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+        else:
+            raise Exception("Cannot fuse rightwards at right edge")
+        
+    def fuse_leftwards(
+            self, 
+            label_fun = lambda x, y: " ".join([x, y])
+        ):
+        """_Fuse the current segment with the previous segment_
+
+        Args:
+            label_fun (function): Function for joining interval labels.
+        """
+        fusee = self.prev
+        fuser = self
+
+
+        if not fusee.label == "#":
+
+            fuser.start = fusee.start
+            fuser.prev = fusee.prev
+            fuser.label = label_fun(fusee.label, fuser.label)
+
+            if fuser.subset_list and fusee.subset_list:
+                new_list = fusee.subset_list + fuser.subset_list
+                fuser.set_subset_list(new_list)
+            
+            if not fuser.superset_class is Top:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+                if not fuser.super_instance is None:
+                    fuser.super_instance.pop(fusee)
+            else:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+        else:
+            raise Exception("Cannot fuse leftwards at right edge")
+    
+    def fuse_rightward(self):
+        self.fuse_rightwards()
+
+    def fuse_leftward(self):
+        self.fuse_leftwards()        
 
     ## Extensions and Saving
     def set_feature(

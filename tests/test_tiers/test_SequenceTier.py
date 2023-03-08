@@ -230,6 +230,32 @@ class TestIntierSetting:
         with pytest.raises(IndexError):
             _ =  entry2.get_seq_by_relative_tieridx(1)
 
+class TestTierPop:
+    interval1 = Interval(0,1,"one")
+    interval2 = Interval(1,2, "two")
+    interval3 = Interval(2,3, "three")
+    tier = SequenceTier(
+                tier = [
+                    interval1,
+                    interval2,
+                    interval3
+                    ]
+                )
+    
+    def test_tier_pop(self):
+        a = self.tier[0]
+        b = self.tier[1]
+        c = self.tier[2]
+        try:
+            self.tier.pop(b)
+        except:
+            assert False
+
+        assert not b in self.tier
+
+        assert len(self.tier) == 2
+        assert a.fol is c
+
 class TestRelatedTiersDefault:
     rt = RelatedTiers()
     
