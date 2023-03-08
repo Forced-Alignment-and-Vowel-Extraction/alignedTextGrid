@@ -5,6 +5,7 @@ Module includes the `SequenceInterval` base class as well as
 
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
+from alignedTextGrid.sequences.tiers import SequenceTier
 from typing import Type, Any
 import numpy as np
 import inspect
@@ -23,6 +24,8 @@ class SequenceInterval:
             End time of the interval
         label (Any):
             Label of the interval
+        intier (SequenceTier):
+            The sequence tier the current interval is within.
         fol (SequenceInterval):
             Instance of the following interval. Is the same subclass as the current instance.
         prev (SequenceInterval): 
