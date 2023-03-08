@@ -5,7 +5,6 @@ Module includes the `SequenceInterval` base class as well as
 
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
-from alignedTextGrid.sequences.tiers import SequenceTier
 from typing import Type, Any
 import numpy as np
 import inspect
