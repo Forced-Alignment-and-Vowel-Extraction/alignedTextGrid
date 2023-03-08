@@ -173,6 +173,25 @@ class TestReadTier:
         assert type(out_tier) is IntervalTier
         assert len(out_tier.entries) == len(word_tier)
 
+class TestIntierSetting:
+    interval1 = Interval(0,1,"one")
+    interval2 = Interval(1,2, "two")
+    interval3 = Interval(2,3, "three")
+
+    def test_inteir(self):
+        try:
+            tier = SequenceTier(
+                tier = [
+                    self.interval1,
+                    self.interval2,
+                    self.interval3
+                    ]
+                )
+        except:
+            assert False
+
+        assert tier[0].intier is tier
+
 class TestRelatedTiersDefault:
     rt = RelatedTiers()
     

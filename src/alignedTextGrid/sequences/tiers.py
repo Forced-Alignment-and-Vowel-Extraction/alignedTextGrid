@@ -62,6 +62,7 @@ class SequenceTier:
             self.sequence_list += [this_seq]
         for idx,seq in enumerate(self.sequence_list):
             seq.set_feature("tier_index", idx)
+            self.__set_intier(seq)
             if idx == 0:
                 seq.set_initial()
             else:
@@ -93,6 +94,15 @@ class SequenceTier:
 
     def __repr__(self):
         return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
+    
+    def __set_intier(
+            self,
+            entry: SequenceInterval
+        ):
+        """
+        Sets the intier attribute of the entry
+        """
+        entry.intier = self
                 
     @property
     def starts(self):
@@ -262,7 +272,7 @@ class RelatedTiers:
             top_to_bottom.append(tiers[next_idx])
             to_arrange += -1
         return(top_to_bottom)
-
+    
     @property
     def entry_classes(self):
         return [x.entry_class for x in self.tier_list]
