@@ -517,9 +517,46 @@ class SequenceInterval:
                     fuser.intier.pop(fusee)
         else:
             raise Exception("Cannot fuse rightwards at right edge")
+        
+    def fuse_leftwards(
+            self, 
+            label_fun = lambda x, y: " ".join([x, y])
+        ):
+        """_Fuse the current segment with the following segment_
+
+        Args:
+            label_fun (function): Function for joining interval labels.
+        """
+        fusee = self.prev
+        fuser = self
+
+
+        if not fusee.label == "#":
+
+            fuser.start = fusee.start
+            fuser.prev = fusee.prev
+            fuser.label = label_fun(fusee.label, fuser.label)
+
+            if fuser.subset_list and fusee.subset_list:
+                new_list = fusee.subset_list + fuser.subset_list
+                fuser.set_subset_list(new_list)
+            
+            if not fuser.superset_class is Top:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+                if not fuser.super_instance is None:
+                    fuser.super_instance.pop(fusee)
+            else:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+        else:
+            raise Exception("Cannot fuse leftwards at right edge")
     
     def fuse_rightward(self):
         self.fuse_rightwards()
+
+    def fuse_leftward(self):
+        self.fuse_leftwards()        
 
     ## Extensions and Saving
     def set_feature(

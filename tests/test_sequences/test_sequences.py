@@ -455,6 +455,22 @@ class TestFusion:
         with pytest.raises(Exception):
             fuser.fuse_rightwards()
 
+    def test_leftwards_simple(self):
+        fusee = self.SampleClass(Interval(0,1,"one"))
+        fuser = self.SampleClass(Interval(1, 2, "two"))
+        fuser.set_prev(fusee)
+
+        try:
+            fuser.fuse_leftwards()
+        except:
+            assert False
+        
+        assert fuser.label == "one two"
+        assert fuser.start == 0
+
+        with pytest.raises(Exception):
+            fuser.fuse_leftwards()
+
     def test_rightwards_hierarchy(self):
         upper1 = self.Upper(Interval(0,5, "upper1"))
         upper2 = self.Upper(Interval(5,10, "upper2"))
@@ -486,6 +502,38 @@ class TestFusion:
         assert len(upper1) == 3
         assert lower3 in upper1
         assert lower1.fol is lower3
+
+    def test_leftwards_hierarchy(self):
+        upper1 = self.Upper(Interval(0,5, "upper1"))
+        upper2 = self.Upper(Interval(5,10, "upper2"))
+        lower1 = self.Lower(Interval(0,1, "lower1"))
+        lower2 = self.Lower(Interval(1,5, "lower2"))
+        lower3 = self.Lower(Interval(5,6, "lower3"))
+        lower4 = self.Lower(Interval(6,10, "lower3"))
+
+        upper1.set_subset_list([lower1, lower2])
+        upper2.set_subset_list([lower3, lower4])
+        upper1.set_fol(upper2)
+
+        assert len(upper1) == 2
+        assert lower2 in upper1
+        assert lower1.fol is lower2
+        try:
+            lower2.fuse_leftwards()
+        except:
+            assert False
+
+        assert len(upper1) == 1
+        assert not lower1 in upper1
+        assert lower2.prev.label == "#"
+
+        assert not lower2 in upper2
+
+        upper2.fuse_leftwards()
+
+        assert len(upper2) == 3
+        assert lower2 in upper2
+        assert lower3.prev is lower2
 
     def test_rightward_tier(self):
         tier1 = SequenceTier(tier = [
@@ -536,6 +584,54 @@ class TestFusion:
         except:
             assert False
 
+    def test_leftward_tier(self):
+        tier1 = SequenceTier(tier = [
+            Interval(0, 5, "upper1"),
+            Interval(5, 10, "upper2")
+        ],
+        entry_class=self.Upper)
+        tier2 =  SequenceTier(tier = [
+            Interval(0, 2, "lower1"),
+            Interval(2, 5, "lower2"),
+            Interval(5, 7, "lower3"),
+            Interval(7, 10, "lower4")
+        ],
+        entry_class=self.Lower)
+
+        rt = RelatedTiers(tiers=[tier1, tier2])
+        assert len(rt[0]) == 2
+        assert len(rt[1]) == 4
+
+        assert len(rt[0][0]) == 2
+        assert rt[1][0].prev.label == "#"
+
+        third_lower = rt[1][2]
+
+        assert third_lower.tier_index == 2
+    
+        rt[1][1].fuse_leftwards()
+
+        assert len(rt[0]) == 2
+        assert len(rt[1]) == 3
+
+        assert len(rt[0][0]) == 1
+        assert rt[1][0].prev.label == "#"
+
+        assert third_lower.tier_index == 1
+
+        with pytest.raises(Exception):
+            rt[1][0].fuse_leftwards()
+        
+        rt[0][1].fuse_leftwards()
+        assert len(rt[0]) == 1
+        assert len(rt[1]) == 3
+
+        assert rt[0][0].fol.label == "#"
+
+        try:
+            rt[1][1].fuse_leftwards()
+        except:
+            assert False
 class TestTop:
     class SampleClass(SequenceInterval):
         def __init__(
