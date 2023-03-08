@@ -98,6 +98,21 @@ class SequenceInterval:
             return this_seg
         else:
             raise StopIteration
+        
+    def index(
+            self,
+            subset_instance
+    ) -> int:
+        """_Returns subset instance index_
+
+        Args:
+            subset_instance (SequenceInterval): 
+                A subset instance to get the index of.
+
+        Returns:
+            int: The index of `subset_instance`
+        """
+        return self.subset_list.index(subset_instance)        
     
     def __repr__(self) -> str:
         out_string = f"Class {self.__class__.__name__}, label: {self.label}"
@@ -242,21 +257,6 @@ class SequenceInterval:
                     self._set_subset_precedence()
             else:
                 raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {subset_instance.__class__.__name__}")
-            
-    def index(
-            self,
-            subset_instance
-    ) -> int:
-        """_Returns subset instance index_
-
-        Args:
-            subset_instance (SequenceInterval): 
-                A subset instance to get the index of.
-
-        Returns:
-            int: The index of `subset_instance`
-        """
-        return self.subset_list.index(subset_instance)
             
     def _set_subset_precedence(self):
         """_summary_
