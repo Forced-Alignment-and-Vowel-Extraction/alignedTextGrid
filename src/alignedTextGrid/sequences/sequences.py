@@ -23,6 +23,10 @@ class SequenceInterval:
             End time of the interval
         label (Any):
             Label of the interval
+        intier (SequenceTier):
+            The sequence tier the current interval is within.
+        tier_index (int):
+            The index of sequence within its tier.
         fol (SequenceInterval):
             Instance of the following interval. Is the same subclass as the current instance.
         prev (SequenceInterval): 
@@ -71,6 +75,8 @@ class SequenceInterval:
 
         self.subset_list = []
         self.super_instance= None
+
+        self.intier = None
 
     def __contains__(self, item):
         return item in self.subset_list
@@ -405,6 +411,47 @@ class SequenceInterval:
         instance does not appear in `self.super_instance.subset_list`
         """
         self.set_prev(self.__class__(Interval(None, None, "#")))
+    
+    ## Tier operations
+    @property
+    def tier_index(self):
+        if not self.intier is None:
+            return self.intier.index(self)
+        else:
+            return None
+    
+    def get_seq_by_relative_tieridx(
+            self,
+            idx:int = 0
+        ):
+        """_Get sequence by relative tier index_
+
+        Returns a SequenceInterval from an index position relative to
+        the current sequence.
+
+        - `idx=0` - Returns the current sequence
+        - `idx=1` - Returns the following interval on the tier. If the current interval is 
+            in the final position within its subset list, this will not be the same as
+            `.fol`
+        - `idx=-1` - Returns the previous interval on the tier. If the current interval is 
+            in the initial position within its subset list, this will not be the same as
+            `.prev` 
+
+        This will raise an ordinary IndexError if the relative index exceeds the length
+        of the tier.
+
+        Args:
+            idx (int, optional): 
+                The relative tier index at which to retrieve a sequence.
+                Defaults to 0.
+
+        Returns:
+            (SequenceInterval): The SequenceInterval at the relative index
+        """
+        if not self.intier is None:
+            return self.intier[self.tier_index + idx]
+        else:
+            return None
 
     ## Extensions and Saving
     def set_feature(

@@ -16,8 +16,6 @@ class SequenceTier:
     Given a `praatio` `IntervalTier` or list of `Interval`s, creates
     `entry_class` instances for every interval.
 
-    Every `SequenceInterval` in the tier gets enriched with its `tier_index`.
-
     Args:
         tier (list[Interval] | IntervalTier, optional): 
             A list of interval entries. Defaults to [Interval(None, None, None)].
@@ -61,7 +59,7 @@ class SequenceTier:
             this_seq.set_subset_class(self.subset_class)
             self.sequence_list += [this_seq]
         for idx,seq in enumerate(self.sequence_list):
-            seq.set_feature("tier_index", idx)
+            self.__set_intier(seq)
             if idx == 0:
                 seq.set_initial()
             else:
@@ -93,6 +91,30 @@ class SequenceTier:
 
     def __repr__(self):
         return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
+    
+    def index(
+            self, 
+            entry: SequenceInterval
+        ) -> int:
+        """_Return index of a tier entry_
+
+        Args:
+            entry (SequenceInterval):
+                A SequenceInterval to get the index of.
+
+        Returns:
+            (int): The interval's index
+        """
+        return self.sequence_list.index(entry)
+
+    def __set_intier(
+            self,
+            entry: SequenceInterval
+        ):
+        """
+        Sets the intier attribute of the entry
+        """
+        entry.intier = self
                 
     @property
     def starts(self):
@@ -262,7 +284,7 @@ class RelatedTiers:
             top_to_bottom.append(tiers[next_idx])
             to_arrange += -1
         return(top_to_bottom)
-
+    
     @property
     def entry_classes(self):
         return [x.entry_class for x in self.tier_list]
