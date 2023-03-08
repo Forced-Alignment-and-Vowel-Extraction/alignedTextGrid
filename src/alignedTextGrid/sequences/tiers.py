@@ -59,7 +59,6 @@ class SequenceTier:
             this_seq.set_subset_class(self.subset_class)
             self.sequence_list += [this_seq]
         for idx,seq in enumerate(self.sequence_list):
-            seq.set_feature("tier_index", idx)
             self.__set_intier(seq)
             if idx == 0:
                 seq.set_initial()
@@ -96,7 +95,7 @@ class SequenceTier:
     def index(
             self, 
             entry: SequenceInterval
-        ):
+        ) -> int:
         """_Return index of a tier entry_
 
         Args:
