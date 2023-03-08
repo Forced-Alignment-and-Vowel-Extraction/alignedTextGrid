@@ -112,7 +112,23 @@ class SequenceInterval:
         Returns:
             int: The index of `subset_instance`
         """
-        return self.subset_list.index(subset_instance)        
+        return self.subset_list.index(subset_instance)
+
+    def pop(
+            self,
+            subset_instance
+    ):
+        """_Pop a sequence interval from the subset list_
+
+        Args:
+            subset_instance (SequenceInterval): A sequence interval to pop
+        """
+        if subset_instance in self.subset_list:
+            pop_idx = self.index(subset_instance)
+            self.subset_list.pop(pop_idx)
+            self._set_subset_precedence()
+        else:
+            raise Exception("Subset instance not in subset list")
     
     def __repr__(self) -> str:
         out_string = f"Class {self.__class__.__name__}, label: {self.label}"

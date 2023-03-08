@@ -248,6 +248,32 @@ class TestHierarchy:
         with pytest.raises(ValueError):
             _ = upper1.index(lower3)
 
+    def test_subset_pop(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+        lower3 = self.LowerClass(Interval(5,10,"lower2"))
+
+        upper1.set_subset_list([lower1, lower2, lower3])
+
+        assert len(upper1) == 3
+        assert lower3 in upper1
+        assert lower3.fol.label == "#"
+        assert lower2.fol is lower3
+
+        upper1.pop(lower3)
+        assert len(upper1) == 2
+        assert not lower3 in upper1
+        assert lower2.fol.label == "#"
+        assert not lower2.fol is lower3
+
+        upper1.set_subset_list([lower1, lower2, lower3])
+
+        upper1.pop(lower2)
+        assert lower1.fol is lower3
+        assert lower3.prev is lower1
+
+
 
     def test_hierarchy_strictness(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
