@@ -93,6 +93,21 @@ class SequenceTier:
     def __repr__(self):
         return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
     
+    def index(
+            self, 
+            entry: SequenceInterval
+        ):
+        """_Return index of a tier entry_
+
+        Args:
+            entry (SequenceInterval):
+                A SequenceInterval to get the index of.
+
+        Returns:
+            (int): The interval's index
+        """
+        return self.sequence_list.index(entry)
+
     def __set_intier(
             self,
             entry: SequenceInterval
