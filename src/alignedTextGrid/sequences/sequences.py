@@ -72,6 +72,8 @@ class SequenceInterval:
         self.subset_list = []
         self.super_instance= None
 
+        self.intier = None
+
     def __contains__(self, item):
         return item in self.subset_list
 

@@ -62,6 +62,10 @@ class TestSequenceIntervalDefault:
         local_sample = self.SampleClassI()
         with pytest.raises(Exception):
             self.seq_int.append_subset_list(local_sample)
+    
+    def test_default_intier(self):
+        local_sample = self.SampleClassI()
+        assert local_sample.intier is None
 
 class TestSuperSubClassSetting:
     class LocalClassA(SequenceInterval):
