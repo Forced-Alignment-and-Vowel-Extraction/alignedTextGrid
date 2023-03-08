@@ -50,7 +50,7 @@ class SequenceTier:
         self.entry_class = entry_class
         self.superset_class = self.entry_class.superset_class
         self.subset_class =  self.entry_class.subset_class
-        entry_order = np.argsort(self.starts)
+        entry_order = np.argsort([x.start for x in self.entry_list])
         self.entry_list = [self.entry_list[idx] for idx in entry_order]
         self.sequence_list = []
         for entry in self.entry_list:
@@ -58,16 +58,7 @@ class SequenceTier:
             this_seq.set_superset_class(self.superset_class)
             this_seq.set_subset_class(self.subset_class)
             self.sequence_list += [this_seq]
-        for idx,seq in enumerate(self.sequence_list):
-            self.__set_intier(seq)
-            if idx == 0:
-                seq.set_initial()
-            else:
-                seq.set_prev(self.sequence_list[idx-1])
-            if idx == len(self.sequence_list)-1:
-                seq.set_final()
-            else:
-                seq.set_fol(self.sequence_list[idx+1])
+        self.__set_precedence()
 
     def __contains__(self, item):
         return item in self.sequence_list
@@ -106,6 +97,24 @@ class SequenceTier:
             (int): The interval's index
         """
         return self.sequence_list.index(entry)
+    
+    def pop(
+            self,
+            entry: SequenceInterval
+    ):
+        """_Pop an interval_
+
+        Args:
+            entry (SequenceInterval): _Interval to pop_
+
+        """
+        if entry in self.sequence_list:
+            pop_idx = self.index(entry)
+            self.sequence_list.pop(pop_idx)
+            if self.superset_class is Top:
+                self.__set_precedence()
+        else:
+            raise Exception("Entry not in tier")
 
     def __set_intier(
             self,
@@ -115,18 +124,31 @@ class SequenceTier:
         Sets the intier attribute of the entry
         """
         entry.intier = self
+    
+    def __set_precedence(self):
+        for idx,seq in enumerate(self.sequence_list):
+            self.__set_intier(seq)
+            if idx == 0:
+                seq.set_initial()
+            else:
+                seq.set_prev(self.sequence_list[idx-1])
+            if idx == len(self.sequence_list)-1:
+                seq.set_final()
+            else:
+                seq.set_fol(self.sequence_list[idx+1])        
+
                 
     @property
     def starts(self):
-        return np.array([x.start for x in self.entry_list])
+        return np.array([x.start for x in self.sequence_list])
 
     @property
     def ends(self):
-        return np.array([x.end for x in self.entry_list])
+        return np.array([x.end for x in self.sequence_list])
     
     @property
     def labels(self):
-        return [x.label for x in self.entry_list]
+        return [x.label for x in self.sequence_list]
 
     @property
     def xmin(self):
