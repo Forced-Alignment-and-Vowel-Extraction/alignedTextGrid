@@ -130,7 +130,7 @@ class SequenceInterval:
             raise Exception("Subset instance not in subset list")
     
     def __repr__(self) -> str:
-        out_string = f"Class {self.__class__.__name__}, label: {self.label}"
+        out_string = f"Class {type(self).__name__}, label: {self.label}"
         if self.superset_class:
             out_string += f", .superset_class: {self.superset_class.__name__}"
             if self.super_instance:
@@ -198,7 +198,7 @@ class SequenceInterval:
                     self.super_instance = super_instance
                     self.super_instance.append_subset_list(self)
             else:
-                raise Exception(f"The superset_class was defined as {self.superset_class.__name__}, but provided super_instance was {super_instance.__class__.__name__}")
+                raise Exception(f"The superset_class was defined as {self.superset_class.__name__}, but provided super_instance was {type(super_instance).__name__}")
         else:
             warnings.warn("No superset instance provided")                
 
@@ -244,7 +244,7 @@ class SequenceInterval:
                     self.append_subset_list(element)
                 self._set_subset_precedence()
             else:
-                subset_class_set = set([x.__class__.__name__ for x in subset_list])
+                subset_class_set = set([type(x).__name__ for x in subset_list])
                 raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
         else:
             warnings.warn("No subset list provided")
@@ -271,7 +271,7 @@ class SequenceInterval:
                         subset_instance.set_super_instance(self)
                     self._set_subset_precedence()
             else:
-                raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {subset_instance.__class__.__name__}")
+                raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
             
     def _set_subset_precedence(self):
         """_summary_
@@ -391,10 +391,10 @@ class SequenceInterval:
             next_int (SequenceInterval): 
                 Sets the `next_int` as the `fol` interval.
                 Must be of the same class as the current object.
-                That is, `next_int.__class__ is self.__class__`
+                That is, `type(next_int) is type(self)`
         """
         if not self.label == "#":
-            if next_int.__class__ is self.__class__:
+            if type(next_int) is type(self):
                 if not next_int is self:
                     if not self.fol is next_int:
                         self.fol = next_int
@@ -403,7 +403,7 @@ class SequenceInterval:
                 else:
                     raise Exception(f"A segment can't follow itself.")
             else:
-                raise Exception(f"Following segment must be an instance of {self.__class__.__name__}")
+                raise Exception(f"Following segment must be an instance of {type(self).__name__}")
 
     def set_prev(self, prev_int):
         """_Sets the previous intance_
@@ -412,10 +412,10 @@ class SequenceInterval:
             prev_int (SequenceInterval):
                 Sets the `prev_int` as the `prev` interval
                 Must be of the same class as the current object.
-                That is, `prev_int.__class__ is self.__class__`                
+                That is, `type(prev_int) is type(self)`                
         """
         if not self.label == "#":
-            if prev_int.__class__ is self.__class__:
+            if type(prev_int) is type(self):
                 if not prev_int is self:
                     if not self.prev is prev_int:
                         self.prev = prev_int
@@ -424,7 +424,7 @@ class SequenceInterval:
                 else:
                     raise Exception("A segment can't precede itself.")
             else:
-                raise Exception(f"Previous segment must be an instance of {self.__class__.__name__}")
+                raise Exception(f"Previous segment must be an instance of {type(self).__name__}")
     
     def set_final(self):
         """_Sets the current object as having no `fol` interval_
@@ -432,7 +432,7 @@ class SequenceInterval:
         While `self.fol` is defined for these intervals, the actual
         instance does not appear in `self.super_instance.subset_list`
         """
-        self.set_fol(self.__class__(Interval(None, None, "#")))  
+        self.set_fol(type(self)(Interval(None, None, "#")))  
 
     def set_initial(self):
         """_Sets the current object as having no `prev` interval_
@@ -440,7 +440,7 @@ class SequenceInterval:
         While `self.prev` is defined for these intervals, the actual 
         instance does not appear in `self.super_instance.subset_list`
         """
-        self.set_prev(self.__class__(Interval(None, None, "#")))
+        self.set_prev(type(self)(Interval(None, None, "#")))
     
     ## Tier operations
     @property
