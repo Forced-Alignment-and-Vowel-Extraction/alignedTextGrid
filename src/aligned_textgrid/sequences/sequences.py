@@ -7,7 +7,6 @@ from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from typing import Type, Any
 import numpy as np
-import inspect
 import warnings
 class SequenceInterval:
     """
@@ -23,6 +22,10 @@ class SequenceInterval:
             End time of the interval
         label (Any):
             Label of the interval
+        intier (SequenceTier):
+            The sequence tier the current interval is within.
+        tier_index (int):
+            The index of sequence within its tier.
         fol (SequenceInterval):
             Instance of the following interval. Is the same subclass as the current instance.
         prev (SequenceInterval): 
@@ -72,6 +75,8 @@ class SequenceInterval:
         self.subset_list = []
         self.super_instance= None
 
+        self.intier = None
+
     def __contains__(self, item):
         return item in self.subset_list
 
@@ -92,9 +97,40 @@ class SequenceInterval:
             return this_seg
         else:
             raise StopIteration
+        
+    def index(
+            self,
+            subset_instance
+    ) -> int:
+        """_Returns subset instance index_
+
+        Args:
+            subset_instance (SequenceInterval): 
+                A subset instance to get the index of.
+
+        Returns:
+            int: The index of `subset_instance`
+        """
+        return self.subset_list.index(subset_instance)
+
+    def pop(
+            self,
+            subset_instance
+    ):
+        """_Pop a sequence interval from the subset list_
+
+        Args:
+            subset_instance (SequenceInterval): A sequence interval to pop
+        """
+        if subset_instance in self.subset_list:
+            pop_idx = self.index(subset_instance)
+            self.subset_list.pop(pop_idx)
+            self._set_subset_precedence()
+        else:
+            raise Exception("Subset instance not in subset list")
     
     def __repr__(self) -> str:
-        out_string = f"Class {self.__class__.__name__}, label: {self.label}"
+        out_string = f"Class {type(self).__name__}, label: {self.label}"
         if self.superset_class:
             out_string += f", .superset_class: {self.superset_class.__name__}"
             if self.super_instance:
@@ -162,7 +198,7 @@ class SequenceInterval:
                     self.super_instance = super_instance
                     self.super_instance.append_subset_list(self)
             else:
-                raise Exception(f"The superset_class was defined as {self.superset_class.__name__}, but provided super_instance was {super_instance.__class__.__name__}")
+                raise Exception(f"The superset_class was defined as {self.superset_class.__name__}, but provided super_instance was {type(super_instance).__name__}")
         else:
             warnings.warn("No superset instance provided")                
 
@@ -208,7 +244,7 @@ class SequenceInterval:
                     self.append_subset_list(element)
                 self._set_subset_precedence()
             else:
-                subset_class_set = set([x.__class__.__name__ for x in subset_list])
+                subset_class_set = set([type(x).__name__ for x in subset_list])
                 raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
         else:
             warnings.warn("No subset list provided")
@@ -235,7 +271,7 @@ class SequenceInterval:
                         subset_instance.set_super_instance(self)
                     self._set_subset_precedence()
             else:
-                raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {subset_instance.__class__.__name__}")
+                raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
             
     def _set_subset_precedence(self):
         """_summary_
@@ -291,7 +327,7 @@ class SequenceInterval:
             return lab_list
         else:
             return []
-    
+
     ## Subset Validation
     def validate(self) -> bool:
         """_Validate the subset list_
@@ -355,10 +391,10 @@ class SequenceInterval:
             next_int (SequenceInterval): 
                 Sets the `next_int` as the `fol` interval.
                 Must be of the same class as the current object.
-                That is, `next_int.__class__ is self.__class__`
+                That is, `type(next_int) is type(self)`
         """
         if not self.label == "#":
-            if next_int.__class__ is self.__class__:
+            if type(next_int) is type(self):
                 if not next_int is self:
                     if not self.fol is next_int:
                         self.fol = next_int
@@ -367,7 +403,7 @@ class SequenceInterval:
                 else:
                     raise Exception(f"A segment can't follow itself.")
             else:
-                raise Exception(f"Following segment must be an instance of {self.__class__.__name__}")
+                raise Exception(f"Following segment must be an instance of {type(self).__name__}")
 
     def set_prev(self, prev_int):
         """_Sets the previous intance_
@@ -376,10 +412,10 @@ class SequenceInterval:
             prev_int (SequenceInterval):
                 Sets the `prev_int` as the `prev` interval
                 Must be of the same class as the current object.
-                That is, `prev_int.__class__ is self.__class__`                
+                That is, `type(prev_int) is type(self)`                
         """
         if not self.label == "#":
-            if prev_int.__class__ is self.__class__:
+            if type(prev_int) is type(self):
                 if not prev_int is self:
                     if not self.prev is prev_int:
                         self.prev = prev_int
@@ -388,7 +424,7 @@ class SequenceInterval:
                 else:
                     raise Exception("A segment can't precede itself.")
             else:
-                raise Exception(f"Previous segment must be an instance of {self.__class__.__name__}")
+                raise Exception(f"Previous segment must be an instance of {type(self).__name__}")
     
     def set_final(self):
         """_Sets the current object as having no `fol` interval_
@@ -396,7 +432,7 @@ class SequenceInterval:
         While `self.fol` is defined for these intervals, the actual
         instance does not appear in `self.super_instance.subset_list`
         """
-        self.set_fol(self.__class__(Interval(None, None, "#")))  
+        self.set_fol(type(self)(Interval(None, None, "#")))  
 
     def set_initial(self):
         """_Sets the current object as having no `prev` interval_
@@ -404,7 +440,122 @@ class SequenceInterval:
         While `self.prev` is defined for these intervals, the actual 
         instance does not appear in `self.super_instance.subset_list`
         """
-        self.set_prev(self.__class__(Interval(None, None, "#")))
+        self.set_prev(type(self)(Interval(None, None, "#")))
+    
+    ## Tier operations
+    @property
+    def tier_index(self):
+        if not self.intier is None:
+            return self.intier.index(self)
+        else:
+            return None
+    
+    def get_seq_by_relative_tieridx(
+            self,
+            idx:int = 0
+        ):
+        """_Get sequence by relative tier index_
+
+        Returns a SequenceInterval from an index position relative to
+        the current sequence.
+
+        - `idx=0` - Returns the current sequence
+        - `idx=1` - Returns the following interval on the tier. If the current interval is 
+            in the final position within its subset list, this will not be the same as
+            `.fol`
+        - `idx=-1` - Returns the previous interval on the tier. If the current interval is 
+            in the initial position within its subset list, this will not be the same as
+            `.prev` 
+
+        This will raise an ordinary IndexError if the relative index exceeds the length
+        of the tier.
+
+        Args:
+            idx (int, optional): 
+                The relative tier index at which to retrieve a sequence.
+                Defaults to 0.
+
+        Returns:
+            (SequenceInterval): The SequenceInterval at the relative index
+        """
+        if not self.intier is None:
+            return self.intier[self.tier_index + idx]
+        else:
+            return None
+        
+    ## Fusion
+    def fuse_rightwards(
+            self, 
+            label_fun = lambda x, y: " ".join([x, y])
+        ):
+        """_Fuse the current segment with the following segment_
+
+        Args:
+            label_fun (function): Function for joining interval labels.
+        """
+        fuser = self
+        fusee = self.fol
+
+        if not fusee.label == "#":
+
+            fuser.end = fusee.end
+            fuser.fol = fusee.fol
+            fuser.label = label_fun(fuser.label, fusee.label)
+
+            if fuser.subset_list and fusee.subset_list:
+                new_list = fuser.subset_list + fusee.subset_list
+                fuser.set_subset_list(new_list)
+            
+            if not fuser.superset_class is Top:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+                if not fuser.super_instance is None:
+                    fuser.super_instance.pop(fusee)
+            else:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+        else:
+            raise Exception("Cannot fuse rightwards at right edge")
+        
+    def fuse_leftwards(
+            self, 
+            label_fun = lambda x, y: " ".join([x, y])
+        ):
+        """_Fuse the current segment with the previous segment_
+
+        Args:
+            label_fun (function): Function for joining interval labels.
+        """
+        fusee = self.prev
+        fuser = self
+
+
+        if not fusee.label == "#":
+
+            fuser.start = fusee.start
+            fuser.prev = fusee.prev
+            fuser.label = label_fun(fusee.label, fuser.label)
+
+            if fuser.subset_list and fusee.subset_list:
+                new_list = fusee.subset_list + fuser.subset_list
+                fuser.set_subset_list(new_list)
+            
+            if not fuser.superset_class is Top:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+                if not fuser.super_instance is None:
+                    fuser.super_instance.pop(fusee)
+            else:
+                if not fuser.intier is None:
+                    fuser.intier.pop(fusee)
+        else:
+            raise Exception("Cannot fuse leftwards at right edge")
+    
+    def fuse_rightward(self):
+        self.fuse_rightwards()
+
+    def fuse_leftward(self):
+        self.fuse_leftwards()        
 
     ## Extensions and Saving
     def set_feature(

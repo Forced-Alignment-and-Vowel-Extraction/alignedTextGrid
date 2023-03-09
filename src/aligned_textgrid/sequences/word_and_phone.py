@@ -4,7 +4,7 @@ Convenience classes for `Word` and `Phone` sequence intervals.
 
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
-from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
+from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
 import numpy as np
 
 

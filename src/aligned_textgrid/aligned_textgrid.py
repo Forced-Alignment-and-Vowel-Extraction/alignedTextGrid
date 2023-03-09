@@ -6,8 +6,8 @@ from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
 from praatio.textgrid import openTextgrid
-from alignedTextGrid.sequences.sequences import SequenceInterval, Top, Bottom
-from alignedTextGrid.sequences.tiers import SequenceTier, RelatedTiers
+from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
+from aligned_textgrid.sequences.tiers import SequenceTier, RelatedTiers
 from typing import Type, Sequence, Literal
 import numpy as np
 import warnings
