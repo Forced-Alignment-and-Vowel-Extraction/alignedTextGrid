@@ -1,8 +1,8 @@
 import pytest
-from alignedTextGrid.sequences.sequences import *
-from alignedTextGrid.sequences.tiers import *
-from alignedTextGrid.custom_classes import custom_classes
-from alignedTextGrid.alignedTextGrid import AlignedTextGrid
+from aligned_textgrid.sequences.sequences import *
+from aligned_textgrid.sequences.tiers import *
+from aligned_textgrid.custom_classes import custom_classes
+from aligned_textgrid.aligned_textgrid import AlignedTextGrid
 
 class TestCustomCreation:
 

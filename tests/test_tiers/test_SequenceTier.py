@@ -1,6 +1,6 @@
 import pytest
-from alignedTextGrid.sequences.sequences import *
-from alignedTextGrid.sequences.tiers import *
+from aligned_textgrid.sequences.sequences import *
+from aligned_textgrid.sequences.tiers import *
 import numpy as np
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
