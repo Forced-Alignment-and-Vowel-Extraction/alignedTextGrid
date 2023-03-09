@@ -7,7 +7,7 @@ license = "GPLv3"
 readme = "README.md"
 packages = [{include = "aligned_textgrid", from="src"}]
 exclude = [
-    "notebools/",
+    "notebooks/",
     "examples/",
     "docs/"
 ]
