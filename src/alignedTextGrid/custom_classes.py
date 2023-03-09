@@ -6,6 +6,60 @@ def custom_classes(
         class_list:list[str] = [],
         return_order: list[str] | list[int] | None = None
 ) -> list[Type[SequenceInterval]]:
+    """_Generate custom interval classes_
+
+    Passing `custom_classes()` a list of Sequence names wil return a list of
+    `SequenceInterval` subclasses with those names. The first name passed to `class_list`
+    will be at the top of the hierarchy, the second name will be the subset class of the 
+    first, and so on.
+
+    To change the order in which the custom classes are *returned*, specify `return_order` 
+    with either indices or class names. For example, if you have Words, Syllables, and Phones in
+    a hierarchical relationship in a textgrid, you can run the following:
+
+    ```python
+    custom_classes(["Word", "Syllable", "Phone"])
+    # [alignedTextGrid.custom_classes.Word,
+    #  alignedTextGrid.custom_classes.Syllable,
+    #  alignedTextGrid.custom_classes.Phone]
+    ```
+
+    But if the order of the textgrid tiers has Word as the bottom tier and Phone as the top, you can specify `return_order`
+    like so:
+
+    ```python
+    custom_classes(
+        class_list = ["Word", "Syllable", "Phone"],
+        return_order = [2, 1, 0]
+        # or
+        # return_order = ["Phone", "Syllable", "Word]
+    )
+    # [alignedTextGrid.custom_classes.Phone,
+    #  alignedTextGrid.custom_classes.Syllable,
+    #  alignedTextGrid.custom_classes.Word]
+    ```
+
+    This way, you can use `custom_classes()` directly as the `entry_classes` argument in `AlignedTextGrid`
+
+    ```python
+    AlignedTextGrid(
+        textgrid_path = "syllables.TextGrid",
+        entry_classes = custom_classes(
+            class_list = ["Word", "Syllable", "Phone"],
+            return_order = [2, 1, 0]
+        )
+    )
+    ```
+
+    Args:
+        class_list (list[str], optional): 
+            A list of desired class names, in their hierarchical order. Defaults to [].
+        return_order (list[str] | list[int] | None, optional): 
+            A return order for the custom classes, if not in hierarchical order. Defaults to None.
+
+    Returns:
+        (list[Type[SequenceInterval]]): A list of custom `SequenceInterval` subclasses
+    """
     def _constructor(
             self, 
             Interval = Interval(None, None, None)
