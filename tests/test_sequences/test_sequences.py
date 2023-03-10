@@ -105,6 +105,32 @@ class TestSuperSubClassSetting:
         with pytest.raises(Exception):
             self.pre_instanceA.append_subset_list(self.pre_instanceB)
 
+    def test_bad_super_setting(self):
+        with pytest.raises(Exception):
+            self.LocalClassA.set_superset_class("B")
+        
+        with pytest.raises(Exception):
+            self.LocalClassA.set_superset_class(self.LocalClassA)
+        
+        self.LocalClassA.set_superset_class()
+    
+    def test_bad_sub_setting(self):
+        with pytest.raises(Exception):
+            self.LocalClassA.set_subset_class("B")
+        
+        with pytest.raises(Exception):
+            self.LocalClassA.set_subset_class(self.LocalClassA)
+
+        self.LocalClassA.set_subset_class()
+
+    def test_none_setting(self):
+        new_instanceA = self.LocalClassA()
+
+        try:
+            new_instanceA.set_super_instance()
+        except:
+            assert False 
+
     def test_super_setting(self):
         self.LocalClassA.set_superset_class(self.LocalClassB)
         new_instanceA = self.LocalClassA()
@@ -142,6 +168,12 @@ class TestPrecedence:
         A1 = self.LocalClassA()
         A2 = self.LocalClassA()
 
+        with pytest.raises(Exception):
+            A1.set_fol(A1)
+
+        with pytest.raises(Exception):
+            A1.set_prev(A1)
+
         try:
             A1.set_fol(A2)
         except Exception as exc:
@@ -154,7 +186,7 @@ class TestPrecedence:
             A1.set_prev(A2)
         except Exception as exc:
             assert False, f"{exc}"
-        
+            
         assert A1.prev is A2
         assert A2.fol  is A1
     
