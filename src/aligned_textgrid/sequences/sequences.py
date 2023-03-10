@@ -169,8 +169,9 @@ class SequenceInterval:
             cls.superset_class = None
         elif issubclass(superset_class, SequenceInterval) and not superset_class is cls:
             cls.superset_class = superset_class
-            if not superset_class.subset_class is cls:
-                superset_class.set_subset_class(cls)
+            # avoid recursion here!
+            if not cls.superset_class.subset_class is cls:
+                cls.superset_class.set_subset_class(cls)
         elif superset_class is cls:
             raise Exception(f"Sequence {cls.__name__} can't have {superset_class.__name__} as its superset class.")
         elif not issubclass(superset_class, SequenceInterval):
@@ -213,8 +214,9 @@ class SequenceInterval:
             cls.subset_class = None
         elif issubclass(subset_class, SequenceInterval) and not subset_class is cls:
             cls.subset_class = subset_class
-            if not subset_class.superset_class == cls:
-                subset_class.set_superset_class(cls)
+            # avoid recursion here!
+            if not cls.subset_class.superset_class is cls:
+                cls.subset_class.set_superset_class(cls)
         elif not issubclass(subset_class, SequenceInterval):
             raise Exception(f"Sequence {cls.__name__} subset_class must be subclass of SequenceInterval. {subset_class.__name__} was given.")
         elif subset_class is cls:

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="104.217mm"
+   height="36.266312mm"
+   viewBox="0 0 114.21644 39.746"
+   version="1.1"
+   id="svg38760"
+   inkscape:version="1.2.1 (9c6d41e, 2022-07-14)"
+   sodipodi:docname="sequence_indexing.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview38762"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.78127806"
+     inkscape:cx="79.997127"
+     inkscape:cy="280.94991"
+     inkscape:window-width="1390"
+     inkscape:window-height="1027"
+     inkscape:window-x="196"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs38757" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-41.360047,-74.658179)">
+    <g
+       id="g38755"
+       transform="translate(36.663824,67.100164)">
+      <g
+         id="g38405">
+        <g
+           id="g38124-8"
+           transform="matrix(0.92357689,0,0,0.92357689,-91.081655,-70.362261)">
+          <rect
+             style="fill:#ee99aa;fill-opacity:1;stroke:#000000;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round"
+             id="rect3266-0-2-6"
+             width="28.607197"
+             height="13.870732"
+             x="193.21788"
+             y="87.216331"
+             ry="1.3769232" />
+          <text
+             xml:space="preserve"
+             style="font-size:11.2889px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round"
+             x="208.05064"
+             y="98.255501"
+             id="text5315-7-2-3-9"><tspan
+               sodipodi:role="line"
+               id="tspan5313-9-7-9-4"
+               style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+               x="208.05064"
+               y="98.255501">D</tspan></text>
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.8167px;font-family:Monaco;-inkscape-font-specification:Monaco;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round"
+           x="33.792831"
+           y="21.198969"
+           id="text34831-8-2-0-3"><tspan
+             sodipodi:role="line"
+             id="tspan34829-4-8-3-9"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.8167px;font-family:Monaco;-inkscape-font-specification:Monaco;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;fill:#117733;fill-opacity:1;stroke:none;stroke-width:0.529167"
+             x="33.792831"
+             y="21.198969">[0] →  </tspan></text>
+        <g
+           id="g37969-2-3"
+           transform="matrix(0.92357689,0,0,0.92357689,-168.63354,-27.831303)">
+          <rect
+             style="fill:#eecc66;fill-opacity:1;stroke:#000000;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round"
+             id="rect3266-00-7-5-1"
+             width="28.607197"
+             height="13.870732"
+             x="193.21788"
+             y="41.166069"
+             ry="1.3769232" />
+          <text
+             xml:space="preserve"
+             style="font-size:11.2889px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round"
+             x="207.52147"
+             y="52.205238"
+             id="text5315-5-3-8-1"><tspan
+               sodipodi:role="line"
+               id="tspan5313-6-4-5"
+               style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+               x="207.52147"
+               y="52.205238">dog</tspan></text>
+        </g>
+      </g>
+      <g
+         id="g38124-8-6"
+         transform="matrix(0.92357689,0,0,0.92357689,-91.589635,-48.688374)">
+        <rect
+           style="fill:#ee99aa;fill-opacity:1;stroke:#000000;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round"
+           id="rect3266-0-2-6-8"
+           width="28.607197"
+           height="13.870732"
+           x="193.21788"
+           y="87.216331"
+           ry="1.3769232" />
+        <text
+           xml:space="preserve"
+           style="font-size:11.2889px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round"
+           x="208.05064"
+           y="98.255501"
+           id="text5315-7-2-3-9-1"><tspan
+             sodipodi:role="line"
+             id="tspan5313-9-7-9-4-3"
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+             x="208.05064"
+             y="98.255501">AO1</tspan></text>
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.8167px;font-family:Monaco;-inkscape-font-specification:Monaco;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round"
+         x="33.792831"
+         y="42.872856"
+         id="text34831-8-2-0-3-8"><tspan
+           sodipodi:role="line"
+           id="tspan34829-4-8-3-9-0"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.8167px;font-family:Monaco;-inkscape-font-specification:Monaco;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;fill:#117733;fill-opacity:1;stroke:none;stroke-width:0.529167"
+           x="33.792831"
+           y="42.872856">[1] →  </tspan></text>
+      <g
+         id="g37969-2-3-8"
+         transform="matrix(0.92357689,0,0,0.92357689,-168.63354,-6.1574155)">
+        <rect
+           style="fill:#eecc66;fill-opacity:1;stroke:#000000;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round"
+           id="rect3266-00-7-5-1-1"
+           width="28.607197"
+           height="13.870732"
+           x="193.21788"
+           y="41.166069"
+           ry="1.3769232" />
+        <text
+           xml:space="preserve"
+           style="font-size:11.2889px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round"
+           x="207.52147"
+           y="52.205238"
+           id="text5315-5-3-8-1-1"><tspan
+             sodipodi:role="line"
+             id="tspan5313-6-4-5-8"
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+             x="207.52147"
+             y="52.205238">dog</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
