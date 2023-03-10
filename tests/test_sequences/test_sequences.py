@@ -105,6 +105,10 @@ class TestSuperSubClassSetting:
         with pytest.raises(Exception):
             self.pre_instanceA.append_subset_list(self.pre_instanceB)
 
+    def test_bad_super_setting(self):
+        with pytest.raises(Exception):
+            self.pre_instanceA.set_superset_class("B")
+
     def test_super_setting(self):
         self.LocalClassA.set_superset_class(self.LocalClassB)
         new_instanceA = self.LocalClassA()

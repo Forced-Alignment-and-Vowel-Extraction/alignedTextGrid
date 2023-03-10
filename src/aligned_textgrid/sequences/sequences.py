@@ -163,21 +163,20 @@ class SequenceInterval:
                 current instance. Defaults to None.
 
         """
-        if not superset_class is None:
-            if cls is Top:
-                cls.superset_class = None
-            else:
-                if issubclass(superset_class, SequenceInterval):
-                    if not superset_class is cls:
-                        cls.superset_class = superset_class
-                        if not superset_class.subset_class is cls:
-                            superset_class.set_subset_class(cls)
-                    else:
-                        raise Exception(f"Sequence {cls.__name__} can't have {superset_class.__name__} as its superset class.")
-                else:
-                    raise Exception(f"Sequence {cls.__name__} superset_class must be subclass of SequenceInterval. {superset_class.__name__} was given.")
-        else:
+        if superset_class is None:
             cls.superset_class = None
+        elif cls is Top:
+            cls.superset_class = None
+        elif issubclass(superset_class, SequenceInterval) and not superset_class is cls:
+            cls.superset_class = superset_class
+            if not superset_class.subset_class is cls:
+                superset_class.set_subset_class(cls)
+        elif superset_class is cls:
+            raise Exception(f"Sequence {cls.__name__} can't have {superset_class.__name__} as its superset class.")
+        elif not issubclass(superset_class, SequenceInterval):
+            raise Exception(f"Sequence {cls.__name__} superset_class must be subclass of SequenceInterval. {superset_class.__name__} was given.")
+        else:
+            raise Exception(f"Unknown error setting {superset_class.__name__} as superset class of {cls.__name__}")
 
     def set_super_instance(self, super_instance = None):
         """_Sets the specific superset relationship_
