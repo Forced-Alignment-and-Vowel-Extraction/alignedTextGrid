@@ -268,7 +268,7 @@ class SequenceInterval:
             Private method. Sorts subset list and re-sets precedence 
             relationshops.
         """
-        
+
         self._sort_subsetlist()
         for idx, p in enumerate(self.subset_list):
             if idx == 0:
@@ -277,6 +277,8 @@ class SequenceInterval:
                 p.set_prev(self.subset_list[idx-1])
             if idx == len(self.subset_list)-1:
                 p.set_final()
+            else:
+                p.set_fol(self.subset_list[idx+1])
 
     def _sort_subsetlist(self):
         """_summary_
@@ -381,17 +383,17 @@ class SequenceInterval:
                 Must be of the same class as the current object.
                 That is, `type(next_int) is type(self)`
         """
-        if not self.label == "#":
-            if type(next_int) is type(self):
-                if not next_int is self:
-                    if not self.fol is next_int:
-                        self.fol = next_int
-                    if not self is next_int.prev:
-                        next_int.set_prev(self)
-                else:
-                    raise Exception(f"A segment can't follow itself.")
-            else:
-                raise Exception(f"Following segment must be an instance of {type(self).__name__}")
+        if next_int is self:
+            raise Exception(f"A segment can't follow itself.")
+        if self.label == "#":
+            return
+        if self.fol is next_int:
+            return
+        elif type(next_int) is type(self):
+            self.fol = next_int
+            self.fol.set_prev(self)
+        else:
+            raise Exception(f"Following segment must be an instance of {type(self).__name__}")
 
     def set_prev(self, prev_int):
         """_Sets the previous intance_
@@ -402,17 +404,17 @@ class SequenceInterval:
                 Must be of the same class as the current object.
                 That is, `type(prev_int) is type(self)`                
         """
-        if not self.label == "#":
-            if type(prev_int) is type(self):
-                if not prev_int is self:
-                    if not self.prev is prev_int:
-                        self.prev = prev_int
-                    if not self is prev_int.fol:
-                        prev_int.set_fol(self)
-                else:
-                    raise Exception("A segment can't precede itself.")
-            else:
-                raise Exception(f"Previous segment must be an instance of {type(self).__name__}")
+        if prev_int is self:
+            raise Exception("A segment can't precede itself.")
+        if self.label == "#":
+            return
+        if self.prev is prev_int:
+            return
+        elif type(prev_int) is type(self):
+            self.prev = prev_int
+            self.prev.set_fol(self)
+        else:
+            raise Exception(f"Previous segment must be an instance of {type(self).__name__}")
     
     def set_final(self):
         """_Sets the current object as having no `fol` interval_
