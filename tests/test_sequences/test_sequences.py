@@ -123,6 +123,14 @@ class TestSuperSubClassSetting:
 
         self.LocalClassA.set_subset_class()
 
+    def test_none_setting(self):
+        new_instanceA = self.LocalClassA()
+
+        try:
+            new_instanceA.set_super_instance()
+        except:
+            assert False 
+
     def test_super_setting(self):
         self.LocalClassA.set_superset_class(self.LocalClassB)
         new_instanceA = self.LocalClassA()
