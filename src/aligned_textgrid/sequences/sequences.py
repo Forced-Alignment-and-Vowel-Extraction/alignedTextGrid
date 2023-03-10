@@ -187,19 +187,14 @@ class SequenceInterval:
                 Current object is appended to `super_instance`'s subset list.
         """
 
-        ## I know this isn't best practice
-        ## but for some reason just having 
-        ## `if super_instance` breaks with 
-        ## __len__ defined that uses self.subset_list ...
-        if not super_instance is None:
-            if isinstance(super_instance, self.superset_class):
-                if not super_instance is self.super_instance:
-                    self.super_instance = super_instance
-                    self.super_instance.append_subset_list(self)
-            else:
-                raise Exception(f"The superset_class was defined as {self.superset_class.__name__}, but provided super_instance was {type(super_instance).__name__}")
+        if super_instance is None:
+            warnings.warn("No superset instance provided")   
+        elif isinstance(super_instance, self.superset_class) and not super_instance is self.super_instance:
+            self.super_instance = super_instance
+            self.super_instance.append_subset_list(self)
         else:
-            warnings.warn("No superset instance provided")                
+            raise Exception(f"The superset_class was defined as {self.superset_class.__name__}, but provided super_instance was {type(super_instance).__name__}")
+                        
 
     ## Subset Methods
     @classmethod
@@ -236,17 +231,15 @@ class SequenceInterval:
                 same subclass of the current object. Current object is
                 set as the `super_instance` of all objects in the list.
         """
-        if subset_list:
-            self.subset_list = []
-            if all([isinstance(subint, self.subset_class) for subint in subset_list]):
-                for element in subset_list:
-                    self.append_subset_list(element)
-                self._set_subset_precedence()
-            else:
-                subset_class_set = set([type(x).__name__ for x in subset_list])
-                raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
+
+        self.subset_list = []
+        if all([isinstance(subint, self.subset_class) for subint in subset_list]):
+            for element in subset_list:
+                self.append_subset_list(element)
+            self._set_subset_precedence()
         else:
-            warnings.warn("No subset list provided")
+            subset_class_set = set([type(x).__name__ for x in subset_list])
+            raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
 
     def append_subset_list(self, subset_instance = None):
         """_Append a single item to subset list_
@@ -258,19 +251,17 @@ class SequenceInterval:
                 to `subset_instance`. Precedence relationships within
                 `subset_list` are reset.
         """
-        ## I know this isn't best practice
-        ## but for some reason just having 
-        ## `if super_instance` breaks with 
-        ## __len__ defined... 
-        if not subset_instance is None:
-            if isinstance(subset_instance, self.subset_class):
-                if not subset_instance in self.subset_list:
-                    self.subset_list.append(subset_instance)
-                    if not self is subset_instance.super_instance:
-                        subset_instance.set_super_instance(self)
-                    self._set_subset_precedence()
-            else:
-                raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
+
+        if isinstance(subset_instance, self.subset_class) and not subset_instance in self.subset_list:
+            self.subset_list.append(subset_instance)
+            self._set_subset_precedence()
+            # avoid recursion
+            if not self is subset_instance.super_instance:
+                subset_instance.set_super_instance(self)
+        elif isinstance(subset_instance, self.subset_class):
+            pass
+        else:
+            raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
             
     def _set_subset_precedence(self):
         """_summary_
