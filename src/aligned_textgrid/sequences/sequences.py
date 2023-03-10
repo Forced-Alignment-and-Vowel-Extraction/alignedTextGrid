@@ -211,22 +211,22 @@ class SequenceInterval:
                 Must be a subclass of SequenceInterval, but not the *same* as the current instance.
                 Defaults to None.
         """
-        if subset_class:
-            if cls is Bottom:
-                cls.subset_class = None
-            else:
-                if issubclass(subset_class, SequenceInterval):
-                    if not subset_class is cls:
-                        cls.subset_class = subset_class
-                        if not subset_class.superset_class == cls:
-                            subset_class.set_superset_class(cls)
-                    else:
-                        raise Exception(f"Sequence {cls.__name__} can't have {subset_class.__name__} as its subset class.")
-                else:
-                    raise Exception(f"Sequence {cls.__name__} subset_class must be subclass of SequenceInterval. {subset_class.__name__} was given.")
-        else:
+
+        if subset_class is None:
             cls.subset_class = None
-    
+        elif cls is Bottom:
+            cls.subset_class = None
+        elif issubclass(subset_class, SequenceInterval) and not subset_class is cls:
+            cls.subset_class = subset_class
+            if not subset_class.superset_class == cls:
+                subset_class.set_superset_class(cls)
+        elif not issubclass(subset_class, SequenceInterval):
+            raise Exception(f"Sequence {cls.__name__} subset_class must be subclass of SequenceInterval. {subset_class.__name__} was given.")
+        elif subset_class is cls:
+            raise Exception(f"Sequence {cls.__name__} can't have {subset_class.__name__} as its subset class.")
+        else:
+            raise Exception(f"Unknown error setting {subset_class.__name__} as subset class of {cls.__name__}")    
+        
     def set_subset_list(self, subset_list = None):
         """_Appends all objects to the `subset_list`_
 
