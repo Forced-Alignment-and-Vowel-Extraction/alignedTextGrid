@@ -501,18 +501,16 @@ class SequenceInterval:
             fuser.fol = fusee.fol
             fuser.label = label_fun(fuser.label, fusee.label)
 
-            if fuser.subset_list and fusee.subset_list:
-                new_list = fuser.subset_list + fusee.subset_list
-                fuser.set_subset_list(new_list)
+            new_list = fuser.subset_list + fusee.subset_list
+            fuser.set_subset_list(new_list)
             
-            if not fuser.superset_class is Top:
-                if not fuser.intier is None:
-                    fuser.intier.pop(fusee)
-                if not fuser.super_instance is None:
-                    fuser.super_instance.pop(fusee)
+            if fuser.superset_class is Top and fuser.intier:
+                fuser.intier.pop(fusee)
             else:
-                if not fuser.intier is None:
+                if fuser.intier:
                     fuser.intier.pop(fusee)
+                if fuser.super_instance:
+                    fuser.super_instance.pop(fusee)                    
         else:
             raise Exception("Cannot fuse rightwards at right edge")
         
@@ -535,18 +533,16 @@ class SequenceInterval:
             fuser.prev = fusee.prev
             fuser.label = label_fun(fusee.label, fuser.label)
 
-            if fuser.subset_list and fusee.subset_list:
-                new_list = fusee.subset_list + fuser.subset_list
-                fuser.set_subset_list(new_list)
+            new_list = fusee.subset_list + fuser.subset_list
+            fuser.set_subset_list(new_list)
             
-            if not fuser.superset_class is Top:
-                if not fuser.intier is None:
-                    fuser.intier.pop(fusee)
-                if not fuser.super_instance is None:
-                    fuser.super_instance.pop(fusee)
+            if fuser.superset_class is Top and fuser.intier:
+                fuser.intier.pop(fusee)
             else:
-                if not fuser.intier is None:
+                if fuser.intier:
                     fuser.intier.pop(fusee)
+                if fuser.super_instance:
+                    fuser.super_instance.pop(fusee)                    
         else:
             raise Exception("Cannot fuse leftwards at right edge")
     
