@@ -163,21 +163,20 @@ class SequenceInterval:
                 current instance. Defaults to None.
 
         """
-        if not superset_class is None:
-            if cls is Top:
-                cls.superset_class = None
-            else:
-                if issubclass(superset_class, SequenceInterval):
-                    if not superset_class is cls:
-                        cls.superset_class = superset_class
-                        if not superset_class.subset_class is cls:
-                            superset_class.set_subset_class(cls)
-                    else:
-                        raise Exception(f"Sequence {cls.__name__} can't have {superset_class.__name__} as its superset class.")
-                else:
-                    raise Exception(f"Sequence {cls.__name__} superset_class must be subclass of SequenceInterval. {superset_class.__name__} was given.")
-        else:
+        if superset_class is None:
             cls.superset_class = None
+        elif cls is Top:
+            cls.superset_class = None
+        elif issubclass(superset_class, SequenceInterval) and not superset_class is cls:
+            cls.superset_class = superset_class
+            if not superset_class.subset_class is cls:
+                superset_class.set_subset_class(cls)
+        elif superset_class is cls:
+            raise Exception(f"Sequence {cls.__name__} can't have {superset_class.__name__} as its superset class.")
+        elif not issubclass(superset_class, SequenceInterval):
+            raise Exception(f"Sequence {cls.__name__} superset_class must be subclass of SequenceInterval. {superset_class.__name__} was given.")
+        else:
+            raise Exception(f"Unknown error setting {superset_class.__name__} as superset class of {cls.__name__}")
 
     def set_super_instance(self, super_instance = None):
         """_Sets the specific superset relationship_
@@ -188,19 +187,14 @@ class SequenceInterval:
                 Current object is appended to `super_instance`'s subset list.
         """
 
-        ## I know this isn't best practice
-        ## but for some reason just having 
-        ## `if super_instance` breaks with 
-        ## __len__ defined that uses self.subset_list ...
-        if not super_instance is None:
-            if isinstance(super_instance, self.superset_class):
-                if not super_instance is self.super_instance:
-                    self.super_instance = super_instance
-                    self.super_instance.append_subset_list(self)
-            else:
-                raise Exception(f"The superset_class was defined as {self.superset_class.__name__}, but provided super_instance was {type(super_instance).__name__}")
+        if super_instance is None:
+            warnings.warn("No superset instance provided")   
+        elif isinstance(super_instance, self.superset_class) and not super_instance is self.super_instance:
+            self.super_instance = super_instance
+            self.super_instance.append_subset_list(self)
         else:
-            warnings.warn("No superset instance provided")                
+            raise Exception(f"The superset_class was defined as {self.superset_class.__name__}, but provided super_instance was {type(super_instance).__name__}")
+                        
 
     ## Subset Methods
     @classmethod
@@ -212,22 +206,22 @@ class SequenceInterval:
                 Must be a subclass of SequenceInterval, but not the *same* as the current instance.
                 Defaults to None.
         """
-        if subset_class:
-            if cls is Bottom:
-                cls.subset_class = None
-            else:
-                if issubclass(subset_class, SequenceInterval):
-                    if not subset_class is cls:
-                        cls.subset_class = subset_class
-                        if not subset_class.superset_class == cls:
-                            subset_class.set_superset_class(cls)
-                    else:
-                        raise Exception(f"Sequence {cls.__name__} can't have {subset_class.__name__} as its subset class.")
-                else:
-                    raise Exception(f"Sequence {cls.__name__} subset_class must be subclass of SequenceInterval. {subset_class.__name__} was given.")
-        else:
+
+        if subset_class is None:
             cls.subset_class = None
-    
+        elif cls is Bottom:
+            cls.subset_class = None
+        elif issubclass(subset_class, SequenceInterval) and not subset_class is cls:
+            cls.subset_class = subset_class
+            if not subset_class.superset_class == cls:
+                subset_class.set_superset_class(cls)
+        elif not issubclass(subset_class, SequenceInterval):
+            raise Exception(f"Sequence {cls.__name__} subset_class must be subclass of SequenceInterval. {subset_class.__name__} was given.")
+        elif subset_class is cls:
+            raise Exception(f"Sequence {cls.__name__} can't have {subset_class.__name__} as its subset class.")
+        else:
+            raise Exception(f"Unknown error setting {subset_class.__name__} as subset class of {cls.__name__}")    
+        
     def set_subset_list(self, subset_list = None):
         """_Appends all objects to the `subset_list`_
 
@@ -237,17 +231,15 @@ class SequenceInterval:
                 same subclass of the current object. Current object is
                 set as the `super_instance` of all objects in the list.
         """
-        if subset_list:
-            self.subset_list = []
-            if all([isinstance(subint, self.subset_class) for subint in subset_list]):
-                for element in subset_list:
-                    self.append_subset_list(element)
-                self._set_subset_precedence()
-            else:
-                subset_class_set = set([type(x).__name__ for x in subset_list])
-                raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
+
+        self.subset_list = []
+        if all([isinstance(subint, self.subset_class) for subint in subset_list]):
+            for element in subset_list:
+                self.append_subset_list(element)
+            self._set_subset_precedence()
         else:
-            warnings.warn("No subset list provided")
+            subset_class_set = set([type(x).__name__ for x in subset_list])
+            raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
 
     def append_subset_list(self, subset_instance = None):
         """_Append a single item to subset list_
@@ -259,36 +251,34 @@ class SequenceInterval:
                 to `subset_instance`. Precedence relationships within
                 `subset_list` are reset.
         """
-        ## I know this isn't best practice
-        ## but for some reason just having 
-        ## `if super_instance` breaks with 
-        ## __len__ defined... 
-        if not subset_instance is None:
-            if isinstance(subset_instance, self.subset_class):
-                if not subset_instance in self.subset_list:
-                    self.subset_list.append(subset_instance)
-                    if not self is subset_instance.super_instance:
-                        subset_instance.set_super_instance(self)
-                    self._set_subset_precedence()
-            else:
-                raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
+
+        if isinstance(subset_instance, self.subset_class) and not subset_instance in self.subset_list:
+            self.subset_list.append(subset_instance)
+            self._set_subset_precedence()
+            # avoid recursion
+            if not self is subset_instance.super_instance:
+                subset_instance.set_super_instance(self)
+        elif isinstance(subset_instance, self.subset_class):
+            pass
+        else:
+            raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
             
     def _set_subset_precedence(self):
         """_summary_
             Private method. Sorts subset list and re-sets precedence 
             relationshops.
         """
+
         self._sort_subsetlist()
-        if len(self.subset_list) > 0:
-            for idx, p in enumerate(self.subset_list):
-                if idx == 0:
-                    p.set_initial()
-                else:
-                    p.set_prev(self.subset_list[idx-1])
-                if idx == len(self.subset_list)-1:
-                    p.set_final()
-                else:
-                    p.set_fol(self.subset_list[idx+1])
+        for idx, p in enumerate(self.subset_list):
+            if idx == 0:
+                p.set_initial()
+            else:
+                p.set_prev(self.subset_list[idx-1])
+            if idx == len(self.subset_list)-1:
+                p.set_final()
+            else:
+                p.set_fol(self.subset_list[idx+1])
 
     def _sort_subsetlist(self):
         """_summary_
@@ -393,17 +383,17 @@ class SequenceInterval:
                 Must be of the same class as the current object.
                 That is, `type(next_int) is type(self)`
         """
-        if not self.label == "#":
-            if type(next_int) is type(self):
-                if not next_int is self:
-                    if not self.fol is next_int:
-                        self.fol = next_int
-                    if not self is next_int.prev:
-                        next_int.set_prev(self)
-                else:
-                    raise Exception(f"A segment can't follow itself.")
-            else:
-                raise Exception(f"Following segment must be an instance of {type(self).__name__}")
+        if next_int is self:
+            raise Exception(f"A segment can't follow itself.")
+        if self.label == "#":
+            return
+        if self.fol is next_int:
+            return
+        elif type(next_int) is type(self):
+            self.fol = next_int
+            self.fol.set_prev(self)
+        else:
+            raise Exception(f"Following segment must be an instance of {type(self).__name__}")
 
     def set_prev(self, prev_int):
         """_Sets the previous intance_
@@ -414,17 +404,17 @@ class SequenceInterval:
                 Must be of the same class as the current object.
                 That is, `type(prev_int) is type(self)`                
         """
-        if not self.label == "#":
-            if type(prev_int) is type(self):
-                if not prev_int is self:
-                    if not self.prev is prev_int:
-                        self.prev = prev_int
-                    if not self is prev_int.fol:
-                        prev_int.set_fol(self)
-                else:
-                    raise Exception("A segment can't precede itself.")
-            else:
-                raise Exception(f"Previous segment must be an instance of {type(self).__name__}")
+        if prev_int is self:
+            raise Exception("A segment can't precede itself.")
+        if self.label == "#":
+            return
+        if self.prev is prev_int:
+            return
+        elif type(prev_int) is type(self):
+            self.prev = prev_int
+            self.prev.set_fol(self)
+        else:
+            raise Exception(f"Previous segment must be an instance of {type(self).__name__}")
     
     def set_final(self):
         """_Sets the current object as having no `fol` interval_
@@ -502,18 +492,16 @@ class SequenceInterval:
             fuser.fol = fusee.fol
             fuser.label = label_fun(fuser.label, fusee.label)
 
-            if fuser.subset_list and fusee.subset_list:
-                new_list = fuser.subset_list + fusee.subset_list
-                fuser.set_subset_list(new_list)
+            new_list = fuser.subset_list + fusee.subset_list
+            fuser.set_subset_list(new_list)
             
-            if not fuser.superset_class is Top:
-                if not fuser.intier is None:
-                    fuser.intier.pop(fusee)
-                if not fuser.super_instance is None:
-                    fuser.super_instance.pop(fusee)
+            if fuser.superset_class is Top and fuser.intier:
+                fuser.intier.pop(fusee)
             else:
-                if not fuser.intier is None:
+                if fuser.intier:
                     fuser.intier.pop(fusee)
+                if fuser.super_instance:
+                    fuser.super_instance.pop(fusee)                    
         else:
             raise Exception("Cannot fuse rightwards at right edge")
         
@@ -536,18 +524,16 @@ class SequenceInterval:
             fuser.prev = fusee.prev
             fuser.label = label_fun(fusee.label, fuser.label)
 
-            if fuser.subset_list and fusee.subset_list:
-                new_list = fusee.subset_list + fuser.subset_list
-                fuser.set_subset_list(new_list)
+            new_list = fusee.subset_list + fuser.subset_list
+            fuser.set_subset_list(new_list)
             
-            if not fuser.superset_class is Top:
-                if not fuser.intier is None:
-                    fuser.intier.pop(fusee)
-                if not fuser.super_instance is None:
-                    fuser.super_instance.pop(fusee)
+            if fuser.superset_class is Top and fuser.intier:
+                fuser.intier.pop(fusee)
             else:
-                if not fuser.intier is None:
+                if fuser.intier:
                     fuser.intier.pop(fusee)
+                if fuser.super_instance:
+                    fuser.super_instance.pop(fusee)                    
         else:
             raise Exception("Cannot fuse leftwards at right edge")
     
