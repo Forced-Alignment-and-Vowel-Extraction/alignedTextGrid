@@ -268,17 +268,15 @@ class SequenceInterval:
             Private method. Sorts subset list and re-sets precedence 
             relationshops.
         """
+        
         self._sort_subsetlist()
-        if len(self.subset_list) > 0:
-            for idx, p in enumerate(self.subset_list):
-                if idx == 0:
-                    p.set_initial()
-                else:
-                    p.set_prev(self.subset_list[idx-1])
-                if idx == len(self.subset_list)-1:
-                    p.set_final()
-                else:
-                    p.set_fol(self.subset_list[idx+1])
+        for idx, p in enumerate(self.subset_list):
+            if idx == 0:
+                p.set_initial()
+            else:
+                p.set_prev(self.subset_list[idx-1])
+            if idx == len(self.subset_list)-1:
+                p.set_final()
 
     def _sort_subsetlist(self):
         """_summary_
