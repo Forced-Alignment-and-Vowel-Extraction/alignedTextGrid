@@ -2,6 +2,14 @@
 
 The aligned-textgrid package provides a python interface for representing and operating on TextGrids produced by forced aligners like [FAVE](https://github.com/JoFrhwld/FAVE) or the [Montreal Forced Aligner](https://montreal-forced-aligner.readthedocs.io/en/latest/). Classes provided by aligned-textgrid represent hierarchical and precedence relationships among data stored in TextGrid formats allowing for simplified and more accessible analysis of aligned speech data. 
 
+## Example Use Cases
+
+- You want to quickly loop through the Phone tier of a Textgrid, and *also* access information about the word it is a part of.
+- You want to quickly loop over the Word tier of a Textgrid and quickly count how many phones it has.
+- You want to programmatically merge together adjacent Textgrid intervals.
+
+For examples on how to use the pacakge, see the [Usage](usage/) pages.
+
 ## Not another TextGrid implementation
 The aligned-textgrid package is not another TextGrid implementation. TextGrids are a plain text data format used chiefly by the Praat software suite. Programmers have implemented interfaces for this data format so that scripting and data wrangling can be done in a user's programming language of choice. These intefaces include [praatio](http://timmahrt.github.io/praatIO/praatio.html) and Kyle Gorman's [textgrid.py](https://github.com/kylebgorman/textgrid). 
 
@@ -51,5 +59,3 @@ To install aligned-textgrid using pip, run the following command in your termina
 ```bash
 pip install git+https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/
 ```
-
-For examples on how to use the pacakge, see the [Usage](usage/) pages.
