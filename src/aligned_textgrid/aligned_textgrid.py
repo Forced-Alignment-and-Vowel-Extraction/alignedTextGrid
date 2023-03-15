@@ -64,6 +64,8 @@ class AlignedTextGrid:
             self.tg_tiers = self._nestify_tiers(tg)
 
         self.tier_groups = self._relate_tiers()
+        self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
+
     
     def __contains__(self, item):
         return item in self.tier_groups
