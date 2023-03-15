@@ -581,7 +581,7 @@ class TestFusion:
         ],
         entry_class=self.Lower)
 
-        rt = RelatedTiers(tiers=[tier1, tier2])
+        rt = TierGroup(tiers=[tier1, tier2])
         assert len(rt[0]) == 2
         assert len(rt[1]) == 4
 
@@ -630,7 +630,7 @@ class TestFusion:
         ],
         entry_class=self.Lower)
 
-        rt = RelatedTiers(tiers=[tier1, tier2])
+        rt = TierGroup(tiers=[tier1, tier2])
         assert len(rt[0]) == 2
         assert len(rt[1]) == 4
 

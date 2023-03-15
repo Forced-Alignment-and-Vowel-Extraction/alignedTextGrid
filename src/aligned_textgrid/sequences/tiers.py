@@ -211,7 +211,7 @@ class SequenceTier:
         out_tg.save(save_path, "long_textgrid")
 
 
-class RelatedTiers:
+class TierGroup:
     """_Relates tiers_
 
     Args:
@@ -293,7 +293,7 @@ class RelatedTiers:
     def __repr__(self):
         n_tiers = len(self.tier_list)
         classes = [x.__name__ for x in self.entry_classes]
-        return f"RelatedTiers with {n_tiers} tiers. {repr(classes)}"
+        return f"TierGroup with {n_tiers} tiers. {repr(classes)}"
     
     def _arrange_tiers(
             self, 
