@@ -274,8 +274,7 @@ class RelatedTiers:
             out_list = []
             for x, tier in zip(idx, self.tier_list):
                 out_list.append(tier[x])
-            return(out_list)
-
+            return(out_list)        
         
     def __iter__(self):
         self._idx = 0

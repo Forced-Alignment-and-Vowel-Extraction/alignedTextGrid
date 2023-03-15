@@ -93,11 +93,12 @@ class TestGetInterval:
             for tier_idx,tier in zip(tgidx, tg):
                 test_list_inset.append(tier[tier_idx])
             test_list.append(test_list_inset)
-        
+
         eval_list = self.atg[idxes]
         for test0, eval0 in zip(test_list, eval_list):
             for test1, eval1 in zip(test0, eval0):
                 assert test1 is eval1
+    
     def test_get_interval_fail(self):
         with pytest.raises(Exception):
             self.atg[[0,0,0]]
