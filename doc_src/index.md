@@ -2,6 +2,14 @@
 
 The aligned-textgrid package provides a python interface for representing and operating on TextGrids produced by forced aligners like [FAVE](https://github.com/JoFrhwld/FAVE) or the [Montreal Forced Aligner](https://montreal-forced-aligner.readthedocs.io/en/latest/). Classes provided by aligned-textgrid represent hierarchical and precedence relationships among data stored in TextGrid formats allowing for simplified and more accessible analysis of aligned speech data. 
 
+## Example Use Cases
+
+- You want to quickly loop through the Phone tier of a Textgrid, and *also* access information about the word it is a part of.
+- You want to quickly loop over the Word tier of a Textgrid and quickly count how many phones it has.
+- You want to programmatically merge together adjacent Textgrid intervals.
+
+For examples on how to use the pacakge, see the [Usage](usage/) pages.
+
 ## Not another TextGrid implementation
 The aligned-textgrid package is not another TextGrid implementation. TextGrids are a plain text data format used chiefly by the Praat software suite. Programmers have implemented interfaces for this data format so that scripting and data wrangling can be done in a user's programming language of choice. These intefaces include [praatio](http://timmahrt.github.io/praatIO/praatio.html) and Kyle Gorman's [textgrid.py](https://github.com/kylebgorman/textgrid). 
 
@@ -20,7 +28,7 @@ print(f"First tier is named {tg[0].name}")
 print(f"Second tier is named {tg[1].name}")
 ```
 
-In the case of *aligned* TextGrid data like ours, these names are more than a convenience. Tiers on aligned data are *hierarchical*. Both of our tiers represent the same information but at different levels of granularity: the `words` tier represents the data as a series of words and the `phones` tier represents the data as a series of phones. Put another way, the `phones` tier and the `words` tier are codependent. Praat TextGrids, and by extension its Python implementations, are largely agnostic when it comes to the relationship between tiers. This allows them to handle a wide range of use cases, but for *aligned* data, the dependency relationships between tiers are metadata which should be incorporated into the data representations. Through classes like `RelatedTiers`, aligned-textgrid extends these general TextGrid data structures for use with force-aligned data.
+In the case of *aligned* TextGrid data like ours, these names are more than a convenience. Tiers on aligned data are *hierarchical*. Both of our tiers represent the same information but at different levels of granularity: the `words` tier represents the data as a series of words and the `phones` tier represents the data as a series of phones. Put another way, the `phones` tier and the `words` tier are codependent. Praat TextGrids, and by extension its Python implementations, are largely agnostic when it comes to the relationship between tiers. This allows them to handle a wide range of use cases, but for *aligned* data, the dependency relationships between tiers are metadata which should be incorporated into the data representations. Through classes like `TierGroup`, aligned-textgrid extends these general TextGrid data structures for use with force-aligned data.
 
 ### Relating data within and across tiers
 Praat TextGrids store time-dependent data, and within a tier each data entry has an ordered relationship to others within its tier. While having the specific time-domain data is useful, often what we are interested in is the abstracted relationship between points like which came first or whether two annotations overlap in time. Python implementations of TextGrids store the time-domain data as part of the representation, but these ordered relationships are represented more abstractly.
@@ -51,5 +59,3 @@ To install aligned-textgrid using pip, run the following command in your termina
 ```bash
 pip install git+https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/
 ```
-
-For examples on how to use the pacakge, see the [Usage](usage/) pages.
