@@ -442,7 +442,7 @@ class SequenceInterval:
         else:
             return None
     
-    def get_seq_by_relative_tieridx(
+    def get_tierwise(
             self,
             idx:int = 0
         ):

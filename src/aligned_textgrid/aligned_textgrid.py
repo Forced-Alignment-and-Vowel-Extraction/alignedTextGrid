@@ -7,7 +7,7 @@ from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
 from praatio.textgrid import openTextgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
-from aligned_textgrid.sequences.tiers import SequenceTier, RelatedTiers
+from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from typing import Type, Sequence, Literal
 import numpy as np
 import warnings
@@ -34,8 +34,8 @@ class AlignedTextGrid:
     Attributes:
         entry_classes (list[Sequence[Type[SequenceInterval]]]): 
             The entry classes for each tier within a tier group.
-        tier_groups (list[RelatedTiers]):
-            a list of `RelatedTiers`
+        tier_groups (list[TierGroup]):
+            a list of `TierGroup`
         xmax (float):
             Maximum time
         xmin (float):
@@ -141,14 +141,14 @@ class AlignedTextGrid:
         nested IntervalTier and entry class
 
         Returns:
-            (list[RelatedTiers]): _description_
+            (list[TierGroup]): _description_
         """
         tier_groups = []
         for tier_group, classes in zip(self.tg_tiers, self.entry_classes):
             tier_list = []
             for tier, entry_class in zip(tier_group, classes):
                 tier_list.append(SequenceTier(tier, entry_class))
-            tier_groups.append(RelatedTiers(tier_list))
+            tier_groups.append(TierGroup(tier_list))
         return tier_groups
     
     @property

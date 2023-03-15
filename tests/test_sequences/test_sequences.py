@@ -74,7 +74,7 @@ class TestSequenceIntervalDefault:
 
     def test_defaul_getby(self):
         local_sample = self.SampleClassI()
-        assert local_sample.get_seq_by_relative_tieridx(1) is None
+        assert local_sample.get_tierwise(1) is None
 
 class TestSuperSubClassSetting:
     class LocalClassA(SequenceInterval):
@@ -581,7 +581,7 @@ class TestFusion:
         ],
         entry_class=self.Lower)
 
-        rt = RelatedTiers(tiers=[tier1, tier2])
+        rt = TierGroup(tiers=[tier1, tier2])
         assert len(rt[0]) == 2
         assert len(rt[1]) == 4
 
@@ -630,7 +630,7 @@ class TestFusion:
         ],
         entry_class=self.Lower)
 
-        rt = RelatedTiers(tiers=[tier1, tier2])
+        rt = TierGroup(tiers=[tier1, tier2])
         assert len(rt[0]) == 2
         assert len(rt[1]) == 4
 
