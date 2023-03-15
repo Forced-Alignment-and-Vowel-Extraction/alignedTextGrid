@@ -222,13 +222,13 @@ class TestIntierSetting:
             )
 
         entry = tier[0]
-        assert entry.get_seq_by_relative_tieridx(0) is entry
-        assert entry.get_seq_by_relative_tieridx(1) is entry.fol
+        assert entry.get_tierwise(0) is entry
+        assert entry.get_tierwise(1) is entry.fol
         
         entry2 = tier[2]
-        assert entry2.get_seq_by_relative_tieridx(-1) is entry2.prev
+        assert entry2.get_tierwise(-1) is entry2.prev
         with pytest.raises(IndexError):
-            _ =  entry2.get_seq_by_relative_tieridx(1)
+            _ =  entry2.get_tierwise(1)
 
 class TestTierPop:
     interval1 = Interval(0,1,"one")
