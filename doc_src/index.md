@@ -10,6 +10,15 @@ The aligned-textgrid package provides a python interface for representing and op
 
 For examples on how to use the pacakge, see the [Usage](usage/) pages.
 
+## Installation
+<!-- TODO: documnet other package managers like conda -CB 14 March 2023 -->
+To install aligned-textgrid using pip, run the following command in your terminal:
+
+```bash
+pip install aligned-textgrid
+```
+
+
 ## Not another TextGrid implementation
 The aligned-textgrid package is not another TextGrid implementation. TextGrids are a plain text data format used chiefly by the Praat software suite. Programmers have implemented interfaces for this data format so that scripting and data wrangling can be done in a user's programming language of choice. These intefaces include [praatio](http://timmahrt.github.io/praatIO/praatio.html) and Kyle Gorman's [textgrid.py](https://github.com/kylebgorman/textgrid). 
 
@@ -51,11 +60,3 @@ word = tg[wordTier][randint(0,num_words)]
 ```
 
 The aligned-textgrid package aims to resolve these issues by incorporating these relationships into the representations from the start. The attribute `.fol` of `aligned_textgrid.sequences.sequences.SequenceInterval` provides access to the next interval in the sequence even if you don't know precisely where in the sequence you are. You can also use the `.intier` and `.subset_list` attributes to navigate up and down the tier hierarchy.
-
-## Installation
-<!-- TODO: documnet other package managers like conda -CB 14 March 2023 -->
-To install aligned-textgrid using pip, run the following command in your terminal:
-
-```bash
-pip install git+https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/
-```
