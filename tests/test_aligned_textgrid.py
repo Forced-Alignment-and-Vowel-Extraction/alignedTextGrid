@@ -1,7 +1,7 @@
 import pytest
-from alignedTextGrid.sequences.sequences import *
-from alignedTextGrid.sequences.tiers import *
-from alignedTextGrid.alignedTextGrid import AlignedTextGrid
+from aligned_textgrid.sequences.sequences import *
+from aligned_textgrid.sequences.tiers import *
+from aligned_textgrid.aligned_textgrid import AlignedTextGrid
 import numpy as np
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
@@ -83,6 +83,26 @@ class TestGetInterval:
         target_time = 5
         idxes = [x.get_intervals_at_time(target_time) for x in self.atg]
         assert self.atg.get_intervals_at_time(target_time) == idxes
+
+    def test_get_intervals(self):
+        target_time = 11
+        idxes = self.atg.get_intervals_at_time(target_time)
+        test_list = []
+        for tgidx, tg in zip(idxes, self.atg):
+            test_list_inset = []
+            for tier_idx,tier in zip(tgidx, tg):
+                test_list_inset.append(tier[tier_idx])
+            test_list.append(test_list_inset)
+
+        eval_list = self.atg[idxes]
+        for test0, eval0 in zip(test_list, eval_list):
+            for test1, eval1 in zip(test0, eval0):
+                assert test1 is eval1
+    
+    def test_get_interval_fail(self):
+        with pytest.raises(Exception):
+            self.atg[[0,0,0]]
+
 
 class TestReturn:
     orig_tg = openTextgrid(

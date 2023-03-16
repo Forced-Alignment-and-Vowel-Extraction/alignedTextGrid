@@ -1,6 +1,6 @@
 import pytest
-from alignedTextGrid.sequences.sequences import *
-from alignedTextGrid.sequences.tiers import *
+from aligned_textgrid.sequences.sequences import *
+from aligned_textgrid.sequences.tiers import *
 import numpy as np
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
@@ -149,6 +149,15 @@ class TestReadTier:
         )
 
         assert all([type(x) is self.MyWord for x in word_tier])
+
+    def test_index(self):
+        word_tier = SequenceTier(
+            self.read_tg.tiers[0], 
+            entry_class=self.MyWord
+        )
+        target_idx = 10
+        entry = word_tier[target_idx]
+        assert word_tier.index(entry) == target_idx
     
     def test_get_interval_at_time(self):
         word_tier = SequenceTier(
@@ -173,8 +182,82 @@ class TestReadTier:
         assert type(out_tier) is IntervalTier
         assert len(out_tier.entries) == len(word_tier)
 
-class TestRelatedTiersDefault:
-    rt = RelatedTiers()
+class TestIntierSetting:
+    interval1 = Interval(0,1,"one")
+    interval2 = Interval(1,2, "two")
+    interval3 = Interval(2,3, "three")
+
+    def test_inteir(self):
+        try:
+            tier = SequenceTier(
+                tier = [
+                    self.interval1,
+                    self.interval2,
+                    self.interval3
+                    ]
+                )
+        except:
+            assert False
+
+        assert tier[0].intier is tier
+
+    def test_sequence_index(self):
+        tier = SequenceTier(
+            tier = [
+                self.interval1,
+                self.interval2,
+                self.interval3
+                ]
+            )
+        for idx, entry in enumerate(tier):
+            assert entry.tier_index == idx
+    
+    def test_get_tieridx(self):
+        tier = SequenceTier(
+            tier = [
+                self.interval1,
+                self.interval2,
+                self.interval3
+                ]
+            )
+
+        entry = tier[0]
+        assert entry.get_tierwise(0) is entry
+        assert entry.get_tierwise(1) is entry.fol
+        
+        entry2 = tier[2]
+        assert entry2.get_tierwise(-1) is entry2.prev
+        with pytest.raises(IndexError):
+            _ =  entry2.get_tierwise(1)
+
+class TestTierPop:
+    interval1 = Interval(0,1,"one")
+    interval2 = Interval(1,2, "two")
+    interval3 = Interval(2,3, "three")
+    tier = SequenceTier(
+                tier = [
+                    interval1,
+                    interval2,
+                    interval3
+                    ]
+                )
+    
+    def test_tier_pop(self):
+        a = self.tier[0]
+        b = self.tier[1]
+        c = self.tier[2]
+        try:
+            self.tier.pop(b)
+        except:
+            assert False
+
+        assert not b in self.tier
+
+        assert len(self.tier) == 2
+        assert a.fol is c
+
+class TestTierGroupDefault:
+    rt = TierGroup()
     
     def test_ranges(self):
         assert self.rt.xmin is None
@@ -203,8 +286,8 @@ class TestReadTiers:
     tg_phone = SequenceTier(read_tg.tiers[1], entry_class=MyPhone)
 
     def test_relation(self):
-        rt = RelatedTiers([self.tg_word, self.tg_phone])
-        rt2 = RelatedTiers([self.tg_phone, self.tg_word])
+        rt = TierGroup([self.tg_word, self.tg_phone])
+        rt2 = TierGroup([self.tg_phone, self.tg_word])
 
         assert rt.entry_classes == rt2.entry_classes
         assert all([type(x) is self.MyWord for x in rt.tier_list[0]])
@@ -217,19 +300,19 @@ class TestReadTiers:
         assert all([not x.super_instance is None for x in rt[1]])
     
     def test_in_get_len(self):
-        rt = RelatedTiers([self.tg_word, self.tg_phone])
+        rt = TierGroup([self.tg_word, self.tg_phone])
 
         assert self.tg_phone in rt
         assert rt[0] is self.tg_word
         assert len(rt) == 2
 
     def test_iter(self):
-        rt = RelatedTiers([self.tg_word, self.tg_phone])
+        rt = TierGroup([self.tg_word, self.tg_phone])
 
         assert [x.name for x in rt] == [self.tg_word.name, self.tg_phone.name]
     
     def test_get_intervals_at_time(self):
-        rt = RelatedTiers([self.tg_word, self.tg_phone])
+        rt = TierGroup([self.tg_word, self.tg_phone])
 
         target_time = 5
         idx1 = rt[0].get_interval_at_time(5)

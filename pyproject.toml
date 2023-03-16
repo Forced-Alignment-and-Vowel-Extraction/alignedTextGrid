@@ -1,22 +1,22 @@
 [tool.poetry]
-name = "alignedTextGrid"
-version = "0.1.1a0"
+name = "aligned_textgrid"
+version = "0.2.0"
 description = "Classes for defining sequential information from TextGrids"
 authors = ["JoFrhwld <JoFrhwld@gmail.com>"]
-license = "GPLv3"
+license = "GPL-3.0-or-later"
 readme = "README.md"
-packages = [{include = "alignedTextGrid", from="src"}]
+packages = [{include = "aligned_textgrid", from="src"}]
 exclude = [
-    "notebools/",
+    "notebooks/",
     "examples/",
     "docs/"
 ]
+homepage = "https://alignedtextgrid.readthedocs.io/en/latest/"
+repository = "https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 praatio = "^6.0.0"
-pyyaml = "^6.0"
-syllabify = {git = "https://github.com/Forced-Alignment-and-Vowel-Extraction/syllabify.git"}
 numpy = "^1.24.2"
 
 [tool.poetry.group.dev.dependencies]
