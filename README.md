@@ -3,6 +3,8 @@
 [![codecov](https://codecov.io/gh/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/branch/dev/graph/badge.svg?token=27YSOQ5ZEL)](https://codecov.io/gh/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2387cd247bd8f1211323/maintainability)](https://codeclimate.com/github/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/maintainability)
 [![Documentation Status](https://readthedocs.org/projects/alignedtextgrid/badge/?version=latest)](https://alignedtextgrid.readthedocs.io/en/latest/?badge=latest)
+[![DOI](https://zenodo.org/badge/552633207.svg)](https://zenodo.org/badge/latestdoi/552633207)
+
 
 # aligned_textgrid
 
