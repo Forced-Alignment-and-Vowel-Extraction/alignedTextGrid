@@ -2,6 +2,7 @@ import pytest
 from aligned_textgrid.sequences.sequences import *
 from aligned_textgrid.sequences.word_and_phone import *
 from aligned_textgrid.sequences.tiers import *
+from aligned_textgrid.custom_classes import custom_classes
 from aligned_textgrid.aligned_textgrid import AlignedTextGrid
 import numpy as np
 from praatio.utilities.constants import Interval
@@ -47,7 +48,12 @@ class TestBasicRead:
         atg1 = AlignedTextGrid(
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
             entry_classes=[SequenceInterval]
-            )                
+            )
+    def test_read_single(self):
+        atg1 = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+            entry_classes=[SequenceInterval]
+            )                          
 
 class TestClassSetting:
     atg1 = AlignedTextGrid(

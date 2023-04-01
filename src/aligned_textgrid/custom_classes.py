@@ -80,14 +80,14 @@ def custom_classes(
     this_bottom_name = f"Bottom_{n_bottom}"
 
     this_top = type(
-        this_top_name, (
-        HierarchyPart, ), 
+        this_top_name,
+        (Top, ), 
         {"__init__": _top_constructor}
     )
     
     this_bottom = type(
         this_bottom_name, 
-        (HierarchyPart, ), 
+        (Bottom, ), 
         {"__init__": _bottom_constructor}
     )
 
