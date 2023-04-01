@@ -1,5 +1,6 @@
 import pytest
 from aligned_textgrid.sequences.sequences import *
+from aligned_textgrid.sequences.word_and_phone import *
 from aligned_textgrid.sequences.tiers import *
 from aligned_textgrid.aligned_textgrid import AlignedTextGrid
 import numpy as np
@@ -33,6 +34,14 @@ class TestReadFile:
             includeEmptyIntervals=True
         )
         atg = AlignedTextGrid(textgrid = tg)
+
+class TestBasicRead:
+
+    def test_read(self):
+        atg1 = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+            entry_classes=[Word, Phone]
+            )        
 
 class TestClassSetting:
     atg1 = AlignedTextGrid(
