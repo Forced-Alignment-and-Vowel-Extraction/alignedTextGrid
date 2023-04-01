@@ -41,7 +41,13 @@ class TestBasicRead:
         atg1 = AlignedTextGrid(
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
             entry_classes=[Word, Phone]
-            )        
+            )
+        
+    def test_read_single(self):
+        atg1 = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+            entry_classes=[SequenceInterval]
+            )                
 
 class TestClassSetting:
     atg1 = AlignedTextGrid(
