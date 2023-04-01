@@ -49,12 +49,16 @@ class TestBasicRead:
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
             entry_classes=[SequenceInterval]
             )
-    def test_read_single(self):
+    def test_read_multi(self):
         atg1 = AlignedTextGrid(
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
-            entry_classes=[SequenceInterval]
-            )                          
-
+            entry_classes=custom_classes(["W1", "P1"]) + custom_classes(["W2", "P2"])
+            )
+    def test_read_partial(self):
+        atg1 = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+            entry_classes=[Word]
+            )
 class TestClassSetting:
     atg1 = AlignedTextGrid(
         textgrid_path="tests/test_data/KY25A_1.TextGrid", 
