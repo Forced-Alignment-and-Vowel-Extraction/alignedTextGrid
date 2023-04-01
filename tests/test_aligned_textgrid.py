@@ -59,6 +59,11 @@ class TestBasicRead:
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
             entry_classes=[Word]
             )
+    def test_read_partial2(self):
+        atg1 = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+            entry_classes=[Phone]
+            )        
 class TestClassSetting:
     atg1 = AlignedTextGrid(
         textgrid_path="tests/test_data/KY25A_1.TextGrid", 
