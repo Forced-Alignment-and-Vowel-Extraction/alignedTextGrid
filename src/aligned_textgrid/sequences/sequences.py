@@ -223,6 +223,60 @@ class InstanceMixins(HierarchyMixins):
         """
         self.set_prev(type(self)(Interval(None, None, "#")))
 
+    ## Subset Validation
+    def validate(self) -> bool:
+        """_Validate the subset list_
+        Validation checks to see if
+
+        1. The first item in `subset_list` starts at the same time as `self`.
+        If not, does it start before or after `self.start`
+        2. The last item in `subset_list` ends at the same time as `self`.
+        If not, does it end before or after `self.end`.
+        3. Do all of the subset intervals fit "snugly" inside of the superset,
+        that is, with no gaps or overlaps.
+
+        This doesn't raise any exceptions, but does issue a warning for any
+        checks that don't pass.
+
+        Returns:
+            (bool):
+                - `True` if all checks pass, or if the `subset_list` is empty.
+                - `False` if any checks fail.
+        """
+        validation_concerns = []
+        if len(self.subset_list) == 0:
+            return True
+        else:
+            if not np.allclose(self.start, self.sub_starts[0]):
+                if self.start < self.sub_starts:
+                    validation_concerns.append(
+                        "First subset interval starts after current interval"
+                    )
+                else:
+                    validation_concerns.append(
+                        "First subset interval starts before current interval"
+                    )
+            if not np.allclose(self.end, self.sub_ends[-1]):
+                if self.end > self.sub_ends[-1]:
+                    validation_concerns.append(
+                        "Last subset interval ends before current interval"
+                    )
+                else:
+                    validation_concerns.append(
+                        "Last subset interval ends after current interval"
+                    )
+            if not np.allclose(self.sub_starts[1:], self.sub_ends[:-1]):
+                validation_concerns.append(
+                    "Not all subintervals fit snugly"
+                )
+            ## prepping messages
+            if len(validation_concerns) == 0:
+                return True
+            else:
+                validation_warn = "\n".join(validation_concerns)
+                warnings.warn(validation_warn)
+                return False        
+
 class TierMixins:
 
     ## Tier operations
@@ -412,6 +466,7 @@ class SequenceInterval(InstanceMixins, TierMixins, HierarchyPart):
             out_string += ", .subset_class: None"
         return out_string
     
+    # properties
     @property
     def sub_starts(self):
         if len(self.subset_list) > 0:
@@ -439,61 +494,7 @@ class SequenceInterval(InstanceMixins, TierMixins, HierarchyPart):
             return lab_list
         else:
             return []
-
-    ## Subset Validation
-    def validate(self) -> bool:
-        """_Validate the subset list_
-        Validation checks to see if
-
-        1. The first item in `subset_list` starts at the same time as `self`.
-        If not, does it start before or after `self.start`
-        2. The last item in `subset_list` ends at the same time as `self`.
-        If not, does it end before or after `self.end`.
-        3. Do all of the subset intervals fit "snugly" inside of the superset,
-        that is, with no gaps or overlaps.
-
-        This doesn't raise any exceptions, but does issue a warning for any
-        checks that don't pass.
-
-        Returns:
-            (bool):
-                - `True` if all checks pass, or if the `subset_list` is empty.
-                - `False` if any checks fail.
-        """
-        validation_concerns = []
-        if len(self.subset_list) == 0:
-            return True
-        else:
-            if not np.allclose(self.start, self.sub_starts[0]):
-                if self.start < self.sub_starts:
-                    validation_concerns.append(
-                        "First subset interval starts after current interval"
-                    )
-                else:
-                    validation_concerns.append(
-                        "First subset interval starts before current interval"
-                    )
-            if not np.allclose(self.end, self.sub_ends[-1]):
-                if self.end > self.sub_ends[-1]:
-                    validation_concerns.append(
-                        "Last subset interval ends before current interval"
-                    )
-                else:
-                    validation_concerns.append(
-                        "Last subset interval ends after current interval"
-                    )
-            if not np.allclose(self.sub_starts[1:], self.sub_ends[:-1]):
-                validation_concerns.append(
-                    "Not all subintervals fit snugly"
-                )
-            ## prepping messages
-            if len(validation_concerns) == 0:
-                return True
-            else:
-                validation_warn = "\n".join(validation_concerns)
-                warnings.warn(validation_warn)
-                return False
-        
+      
     ## Fusion
     def fuse_rightwards(
             self, 

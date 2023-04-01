@@ -55,13 +55,13 @@ class AlignedTextGrid:
     ):
         self.entry_classes = entry_classes
         if textgrid:
-            self.tg_tiers = self._nestify_tiers(textgrid)
+            self.tg_tiers, self.entry_classes = self._nestify_tiers(textgrid, entry_classes)
         elif textgrid_path:
             tg = openTextgrid(
                 fnFullPath=textgrid_path, 
                 includeEmptyIntervals=True
             )
-            self.tg_tiers = self._nestify_tiers(tg)
+            self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, entry_classes)
 
         self.tier_groups = self._relate_tiers()
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
@@ -103,10 +103,43 @@ class AlignedTextGrid:
         n_tiers = [len(x) for x in self.tier_groups]
         entry_classes = [[x.__name__ for x in y] for y in self.entry_classes]
         return f"AlignedTextGrid with {n_groups} groups, each with {repr(n_tiers)} tiers. {repr(entry_classes)}"
+    
+    def _extend_classes(
+            self, 
+            tg: Textgrid, 
+            entry_classes
+        ):
+        """_summary_
+
+        Args:
+            tg (_type_): _description_
+            entry_classes (_type_): _description_
+        """
+
+        ntiers = len(tg.tiers)
+        if not type(entry_classes[0]) in [list, tuple]:
+            class_supers = [c.superset_class for c in entry_classes]
+            try:
+                top_idxes = [i for i,c in enumerate(class_supers) if issubclass(c, Top)]
+            except ValueError:
+                top_idxes = []
+
+        if type(entry_classes[0]) in [list, tuple]:
+            return entry_classes
+        if len(entry_classes) == 1:
+            extension = len(tg.tiers) // len(entry_classes)
+            entry_classes = [entry_classes] * extension
+            return entry_classes
+        if len(top_idxes) <= 1:
+            extension = len(tg.tiers) // len(entry_classes)
+            entry_classes = [entry_classes] * extension
+            return entry_classes
+        return entry_classes
 
     def _nestify_tiers(
         self,
-        textgrid: Textgrid
+        textgrid: Textgrid,
+        entry_classes: list[SequenceInterval]
     ):
         """_private method to nestify tiers_
 
@@ -115,26 +148,59 @@ class AlignedTextGrid:
 
         Args:
             textgrid (Textgrid): _description_
+            entry_classes (list[SequenceInterval]): _description_
 
         Returns:
             (list[IntervalTier]): _description_
-        """
-        tier_idx = 0
-        tier_list = []
-       
-        if not type(self.entry_classes[0]) in [tuple, list]:
-            extension = len(textgrid.tiers) // len(self.entry_classes)
-            self.entry_classes = [self.entry_classes] * extension
-        elif len(self.entry_classes) == 1:
-            extension = len(textgrid.tiers) // len(self.entry_classes[0])
-            self.entry_classes = [self.entry_classes[0]] * extension
+        """ 
 
-        for idx, class_tup in enumerate(self.entry_classes):
-            tier_list.append([])
-            for jdx, classes in enumerate(class_tup):
-                tier_list[idx].append(textgrid.tiers[tier_idx])
-                tier_idx += 1
-        return tier_list
+        tier_list = []
+
+        entry_classes = self._extend_classes(textgrid, entry_classes)
+        if type(entry_classes[0]) in [list, tuple]:
+            tier_idx = 0
+            for idx, class_tup in enumerate(entry_classes):
+                tier_list.append([])
+                for jdx, classes in enumerate(class_tup):
+                    tier_list[idx].append(textgrid.tiers[tier_idx])
+                    tier_idx += 1
+            return tier_list, entry_classes
+        
+        super_classes = [c.superset_class for c in entry_classes]
+        top_idxes = [i for i,c in enumerate(super_classes) if issubclass(c, Top)]
+
+        if len(top_idxes) <= 1:
+            return [textgrid.tiers], [entry_classes]
+        
+        ## Nestifying hierarchywise
+        entry_list = []
+        for top_idx in top_idxes:
+            this_tierlist = []
+            this_entrylist = []
+
+            this_tierlist.append(textgrid.tiers[top_idx])
+            this_entrylist.append(entry_classes[top_idx])
+
+            done = False
+            while not done:
+                curr = this_entrylist[-1]
+                if issubclass(curr.subset_class, Bottom):
+                    done = True
+                    break
+
+                try:
+                    next_idx = entry_classes.index(curr.subset_class)
+                except ValueError:
+                    done = True
+                    break
+
+                this_tierlist.append(textgrid.tiers[next_idx])
+                this_entrylist.append(entry_classes[next_idx])
+
+            tier_list.append(this_tierlist)
+            entry_list.append(this_entrylist)
+        
+        return tier_list, entry_list
 
     def _relate_tiers(self):
         """_Private method_
@@ -145,7 +211,9 @@ class AlignedTextGrid:
         Returns:
             (list[TierGroup]): _description_
         """
+
         tier_groups = []
+
         for tier_group, classes in zip(self.tg_tiers, self.entry_classes):
             tier_list = []
             for tier, entry_class in zip(tier_group, classes):
