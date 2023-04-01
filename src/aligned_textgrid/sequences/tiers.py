@@ -316,7 +316,11 @@ class TierGroup:
                     done = True
                     break
                 else:
-                    next_idx = [x.entry_class for x in tiers].index(curr.subset_class)
+                    try:
+                        next_idx = [x.entry_class for x in tiers].index(curr.subset_class)
+                    except ValueError:
+                        return top_to_bottom
+                    
                     top_to_bottom.append(tiers[next_idx])
         return(top_to_bottom)
             
