@@ -76,8 +76,17 @@ class Word(SequenceInterval):
     def phones(self):
         return self.sub_labels
 
-Word.set_superset_class(Top)
+class Top_wp(Top):
+    def __init__(self):
+        super.__init__()
+
+class Bottom_wp(Bottom):
+    def __init__(self):
+        super.__init__()
+
+
+Word.set_superset_class(Top_wp)
 Word.set_subset_class(Phone)
-Phone.set_subset_class(Bottom)
+Phone.set_subset_class(Bottom_wp)
 # not necessary
 # Phone.set_superset_class(Word)
