@@ -63,7 +63,22 @@ class TestBasicRead:
         atg1 = AlignedTextGrid(
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
             entry_classes=[Phone]
-            )        
+            )      
+
+class TestMultiRead:
+
+
+    def test_read(self):
+        atg_multi = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+            entry_classes=custom_classes(["Word1", "Phone1"]) + 
+                custom_classes(["Word2", "Phone2"])
+            )
+
+        assert len(atg_multi) == 2
+        assert all([len(group) == 2 for group in atg_multi])
+        
+
 class TestClassSetting:
     atg1 = AlignedTextGrid(
         textgrid_path="tests/test_data/KY25A_1.TextGrid", 
