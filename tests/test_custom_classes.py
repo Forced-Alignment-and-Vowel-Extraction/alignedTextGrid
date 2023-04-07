@@ -12,10 +12,10 @@ class TestCustomCreation:
         assert issubclass(ClassB, SequenceInterval)
         assert ClassA.__name__ == "ClassA"
         assert ClassB.__name__ == "ClassB"
-        assert ClassA.superset_class is Top
+        assert issubclass(ClassA.superset_class, Top)
         assert ClassA.subset_class is ClassB
         assert ClassB.superset_class is ClassA
-        assert ClassB.subset_class is Bottom
+        assert issubclass(ClassB.subset_class, Bottom)
 
     def test_custom_return_idx(self):
         ClassA, ClassB = custom_classes(
@@ -26,10 +26,10 @@ class TestCustomCreation:
         assert issubclass(ClassB, SequenceInterval)
         assert ClassA.__name__ == "ClassA"
         assert ClassB.__name__ == "ClassB"
-        assert ClassB.superset_class is Top
+        assert issubclass(ClassB.superset_class, Top)
         assert ClassB.subset_class is ClassA
         assert ClassA.superset_class is ClassB
-        assert ClassA.subset_class is Bottom
+        assert issubclass(ClassA.subset_class, Bottom)
 
     def test_custom_return_char(self):
         ClassA, ClassB = custom_classes(
@@ -41,10 +41,10 @@ class TestCustomCreation:
         assert issubclass(ClassB, SequenceInterval)
         assert ClassA.__name__ == "ClassA"
         assert ClassB.__name__ == "ClassB"
-        assert ClassB.superset_class is Top
+        assert issubclass(ClassB.superset_class, Top)
         assert ClassB.subset_class is ClassA
         assert ClassA.superset_class is ClassB
-        assert ClassA.subset_class is Bottom
+        assert issubclass(ClassA.subset_class, Bottom)
         
 class TestCustomUse:
 

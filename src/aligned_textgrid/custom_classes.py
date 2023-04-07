@@ -66,12 +66,43 @@ def custom_classes(
         ):
         SequenceInterval.__init__(self, Interval=Interval)
 
+    def _top_constructor(self):
+        Top.__init__(self)
+
+    def _bottom_constructor(self):
+        Bottom.__init__(self)
+
+
+    n_top = len(Top.__subclasses__())
+    n_bottom = len(Bottom.__subclasses__())
+
+    this_top_name = f"Top_{n_top}"
+    this_bottom_name = f"Bottom_{n_bottom}"
+
+    this_top = type(
+        this_top_name,
+        (Top, ), 
+        {"__init__": _top_constructor}
+    )
+    
+    this_bottom = type(
+        this_bottom_name, 
+        (Bottom, ), 
+        {"__init__": _bottom_constructor}
+    )
+
     if return_order is None:
         return_order = class_list
 
     class_out_list = []
     if type(class_list) is str:
-        newclass = type(class_list, (SequenceInterval, ), {"__init__": _constructor})
+        newclass = type(
+            class_list, 
+            (SequenceInterval, ), 
+            {"__init__": _constructor}
+        )
+        newclass.set_superset_class(this_top)
+        newclass.set_subset_class(this_bottom)
         return newclass
     elif type(class_list) is list:
         for name in class_list:
@@ -79,10 +110,12 @@ def custom_classes(
                 type(name, (SequenceInterval,), {"__init__": _constructor})
             )
         for idx, entry in enumerate(class_out_list):
+            if idx == 0:
+                entry.set_superset_class(this_top)
             if idx == len(class_out_list)-1:
-                pass
+                entry.set_subset_class(this_bottom)
             else:
-                class_out_list[idx].set_subset_class(class_out_list[idx+1])
+                entry.set_subset_class(class_out_list[idx+1])
         if type(return_order[0]) is int:
             return_list = [class_out_list[idx] for idx in return_order]
         elif type(return_order[0]) is str:

@@ -305,19 +305,39 @@ class TierGroup:
             tiers (list[SequenceTier]): _description_
         """
         top_to_bottom = []
-        to_arrange = len(tiers)
-        top_idx = [x.superset_class for x in tiers].index(Top)
-        top_to_bottom.append(tiers[top_idx])
-        to_arrange += -1
-        while to_arrange > 0:
-            curr = top_to_bottom[-1]
-            if curr.subset_class is Bottom:
+        tier_classes = [x.entry_class for x in tiers]
+        seed_tier = tiers[0]
+        done = False
+        while not done:
+            if issubclass(seed_tier.superset_class, Top):
+                top_idx = tiers.index(seed_tier)
+                done = True
                 break
-            next_idx = [x.entry_class for x in tiers].index(curr.subset_class)
-            top_to_bottom.append(tiers[next_idx])
-            to_arrange += -1
+            elif seed_tier.superset_class not in tier_classes:
+                top_idx = tiers.index(seed_tier)
+                done = True
+                break
+            else:
+                next_tier_idx = tier_classes.index(seed_tier.superset_class)
+                seed_tier = tiers[next_tier_idx]
+
+
+        top_to_bottom.append(tiers[top_idx])
+        done = False
+        while not done:
+            curr = top_to_bottom[-1]
+            if issubclass(curr.subset_class, Bottom):
+                done = True
+                break
+            else:
+                try:
+                    next_idx = [x.entry_class for x in tiers].index(curr.subset_class)
+                except ValueError:
+                    return top_to_bottom
+                
+                top_to_bottom.append(tiers[next_idx])
         return(top_to_bottom)
-    
+            
     @property
     def entry_classes(self):
         return [x.entry_class for x in self.tier_list]
