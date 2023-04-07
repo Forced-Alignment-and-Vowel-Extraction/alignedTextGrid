@@ -43,27 +43,62 @@ class TestBasicRead:
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
             entry_classes=[Word, Phone]
             )
+        assert len(atg1) == 2
+        assert [len(tg) == 2 for tg in atg1]
         
     def test_read_single(self):
         atg1 = AlignedTextGrid(
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
             entry_classes=[SequenceInterval]
             )
+        assert len(atg1) == 4
+        assert [len(tg) == 1 for tg in atg1]
+        
     def test_read_multi(self):
         atg1 = AlignedTextGrid(
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
             entry_classes=custom_classes(["W1", "P1"]) + custom_classes(["W2", "P2"])
             )
+        assert len(atg1) == 2
+        assert [len(tg) == 2 for tg in atg1]
+        
     def test_read_partial(self):
         atg1 = AlignedTextGrid(
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
             entry_classes=[Word]
             )
+        assert len(atg1) == 4
+        assert [len(tg) == 1 for tg in atg1]
+
     def test_read_partial2(self):
         atg1 = AlignedTextGrid(
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
             entry_classes=[Phone]
-            )        
+            )      
+        assert len(atg1) == 4
+        assert [len(tg) == 1 for tg in atg1]
+
+class TestMultiRead:
+    def test_read(self):
+        atg_multi = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+            entry_classes=custom_classes(["Word1", "Phone1"]) + 
+                custom_classes(["Word2", "Phone2"])
+            )
+
+        assert len(atg_multi) == 2
+        assert all([len(group) == 2 for group in atg_multi])
+        
+    def test_read_multi(self):
+        Turn = custom_classes(class_list= "Turn")
+        atg_multi = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1_multi.TextGrid", 
+            entry_classes=[[Word, Phone], [Turn], [Word, Phone], [Turn]]
+            )
+        assert len(atg_multi) == 4
+        assert len(atg_multi[0]) == 2 and len(atg_multi[2]) == 2
+        assert len(atg_multi[1]) == 1 and len(atg_multi[3]) == 1
+
 class TestClassSetting:
     atg1 = AlignedTextGrid(
         textgrid_path="tests/test_data/KY25A_1.TextGrid", 
