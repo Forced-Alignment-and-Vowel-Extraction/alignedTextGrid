@@ -131,3 +131,5 @@ dmypy.json
 venv/
 notebooks/
 .DS_Store
+.vscode
+docs
