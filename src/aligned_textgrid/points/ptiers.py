@@ -3,6 +3,7 @@ from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.point_tier import PointTier
 from praatio.data_classes.textgrid import Textgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
+from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.points.points import SequencePoint
 import numpy as np
 from typing import Type
@@ -50,6 +51,7 @@ class SequencePointTier:
         Sets the intier attribute of the entry
         """
         entry.intier = self
+        entry.tiername = self.name
 
     ## magic methods
     def __contains__(self,item):
@@ -74,6 +76,14 @@ class SequencePointTier:
 
     def __repr__(self):
         return f"Sequence Point tier of {self.entry_class.__name__};"
+    
+    ## setting
+    def set_reference_tier(self, tier):
+        if issubclass(tier, SequenceTier):
+            for entry in self.sequence_list:
+                entry.reference_tier = tier
+        else:
+            warnings.warn("Reference tier must be an interval tier")
     
     ## properties
 
@@ -114,4 +124,25 @@ class SequencePointTier:
         point_tier = self.return_tier()
         out_tg = Textgrid()
         out_tg.addTier(tier = point_tier)
-        out_tg.save(save_path, "long_textgrid")        
+        out_tg.save(save_path, "long_textgrid")
+
+class PointsPool:
+    def __init__(self, tiers):
+        self.entry_list = []
+        if type(tiers) is list:
+           self.entry_list = [entry for tier in tiers 
+                         for entry in tier.sequence_list]
+        if type(tiers) is SequencePointTier:
+            self.entry_list = tiers.sequence_list
+        
+        self.__sort_pointspool()
+        self.__set_pointspool()
+
+    def __sort_pointspool(self):
+        entry_order = np.argsort([x.time for x in self.entry_list])
+        self.entry_list = [self.entry_list[idx] for idx in entry_order]
+    
+    def __set_pointspool(self):
+        for entry in self.entry_list:
+            entry.pointspool = self
+    
