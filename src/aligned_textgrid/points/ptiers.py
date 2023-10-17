@@ -50,3 +50,28 @@ class SequencePointTier:
         Sets the intier attribute of the entry
         """
         entry.intier = self
+
+    ## magic methods
+    def __contains__(self,item):
+        return item in self.sequence_list
+    
+    def __getitem__(self, idx):
+        return self.sequence_list[idx]
+    
+    def __len__(self):
+        return len(self.sequence_list)
+    
+    def __iter__(self):
+        self._idx = 0
+        return self
+    
+    def __next__(self):
+        if self._idx < len(self.sequence_list):
+            out = self.sequence_list[self._idx]
+            self._idx += 1
+            return(out)
+        raise StopIteration
+
+    def __repr__(self):
+        return f"Sequence Point tier of {self.entry_class.__name__};"
+    
