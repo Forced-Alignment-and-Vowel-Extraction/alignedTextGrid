@@ -75,3 +75,39 @@ class SequencePointTier:
     def __repr__(self):
         return f"Sequence Point tier of {self.entry_class.__name__};"
     
+    ## properties
+
+    @property
+    def times(self):
+        return np.array(
+            [x.time for x in self.sequence_list]
+        )
+    
+    @property
+    def labels(self):
+        return [x.label for x in self.sequence_list]
+    
+    @property
+    def xmin(self):
+        if len(self.sequence_list) > 0:
+            return self.sequence_list[0].time
+        else:
+            return None
+    
+    @property
+    def xmax(self):
+        if len(self.sequence_list) > 0:
+            return self.sequence_list[-1].time
+        else:
+            return None
+    
+    def return_tier(self):
+        all_points = [entry.return_point() for entry in self.sequence_list]
+        point_tier = PointTier(name = self.name, entries=all_points)
+        return(point_tier)
+    
+    def save_as_tg(self, save_path):
+        point_tier = self.return_tier()
+        out_tg = Textgrid()
+        out_tg.addTier(tier = point_tier)
+        out_tg.save(save_path, "long_textgrid")        
