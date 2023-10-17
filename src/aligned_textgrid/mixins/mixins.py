@@ -57,7 +57,11 @@ class PrecedenceMixins:
         While `self.fol` is defined for these intervals, the actual
         instance does not appear in `self.super_instance.subset_list`
         """
-        self.set_fol(type(self)(Interval(None, None, "#")))  
+        
+        if hasattr(self, "start"):
+            self.set_fol(type(self)(Interval(None, None, "#")))
+        elif hasattr(self, "time"):
+            self.set_fol(type(self)(Point(None, "#")))
 
     def set_initial(self):
         """_Sets the current object as having no `prev` interval_
@@ -65,7 +69,10 @@ class PrecedenceMixins:
         While `self.prev` is defined for these intervals, the actual 
         instance does not appear in `self.super_instance.subset_list`
         """
-        self.set_prev(type(self)(Interval(None, None, "#")))
+        if hasattr(self, "start"):
+            self.set_fol(type(self)(Interval(None, None, "#")))
+        elif hasattr(self, "time"):
+            self.set_fol(type(self)(Point(None, "#")))
 
 class TierMixins:
 
