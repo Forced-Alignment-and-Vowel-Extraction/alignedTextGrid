@@ -101,6 +101,10 @@ class SequencePointTier:
         else:
             return None
     
+    def get_nearest_point(self, time):
+        out_idx = np.searchsorted(self.times, time, side = "left")
+        return out_idx
+
     def return_tier(self):
         all_points = [entry.return_point() for entry in self.sequence_list]
         point_tier = PointTier(name = self.name, entries=all_points)
