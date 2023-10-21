@@ -8,21 +8,28 @@ import numpy as np
 class  SequencePoint(PrecedenceMixins, TierMixins):
     def __init__(
             self,
-            Point
+            point = None
         ):
         super().__init__()
-        if not Point:
-            Point = Point(0, 0)
+        if not point:
+            point = Point(None, None)
         
-        self.time = Point.time
-        self.label = Point.label
+        self.time = point.time
+        self.label = point.label
 
         self.intier = None
         self.tiername = None
         self.pointspool = None
+        self.reference_tier = None
+
         self.fol = None
         self.prev = None
-        self.reference_tier = None
+
+        if self.label != "#":
+            self.set_final()
+        if self.label != "#":
+            self.set_initial()
+
 
     def __repr__(self) -> str:
         out_string = f"Class {type(self).__name__}, label: {self.label}"
@@ -78,4 +85,5 @@ class  SequencePoint(PrecedenceMixins, TierMixins):
     #         return int_idx
     #
     # def get_interval_at_point(self, tier=None):
+    
     
