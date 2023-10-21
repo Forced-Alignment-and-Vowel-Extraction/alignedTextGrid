@@ -70,9 +70,9 @@ class PrecedenceMixins:
         instance does not appear in `self.super_instance.subset_list`
         """
         if hasattr(self, "start"):
-            self.set_fol(type(self)(Interval(None, None, "#")))
+            self.set_prev(type(self)(Interval(None, None, "#")))
         elif hasattr(self, "time"):
-            self.set_fol(type(self)(Point(None, "#")))
+            self.set_prev(type(self)(Point(None, "#")))
 
 class TierMixins:
 
