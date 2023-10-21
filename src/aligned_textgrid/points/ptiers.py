@@ -112,7 +112,7 @@ class SequencePointTier:
             return None
     
     def get_nearest_point(self, time):
-        out_idx = np.searchsorted(self.times, time, side = "left")
+        out_idx = np.abs(self.times-time).argmin()
         return out_idx
 
     def return_tier(self):
