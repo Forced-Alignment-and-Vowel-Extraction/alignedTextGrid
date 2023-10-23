@@ -11,7 +11,9 @@ from typing import Type
 import warnings
 
 class SequencePointTier:
-    def __init__(self, tier, entry_class = SequencePoint):
+    def __init__(self, 
+                 tier = PointTier("", [Point(0,"")]), 
+                 entry_class = SequencePoint):
         if isinstance(tier, PointTier):
             self.entry_list = tier.entries
             self.name = tier.name
