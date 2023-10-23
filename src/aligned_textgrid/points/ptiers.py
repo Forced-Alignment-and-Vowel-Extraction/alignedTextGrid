@@ -105,6 +105,12 @@ class PointsGroup(TierGroupMixins):
         super().__init__()
         self.tier_list = tiers
     
+    def get_nearest_points(self, time):
+        return [tier.get_nearest_point(time) for tier in self.tier_list]
+
+    def get_intervals_at_time(self, time):
+        return self.get_nearest_points(time)
+    
     def __repr__(self):
         n_tiers = len(self.tier_list)
         classes = [x.__name__ for x in self.entry_classes]
