@@ -93,3 +93,11 @@ class TestPointGroup:
         points = point_group[[0][0]]
         assert len(points) == 2
         assert isinstance(points[0], SequencePoint)
+    
+    def test_nearest(self):
+        point_group = PointsGroup(
+            [self.seq_point_tier1, self.seq_point_tier2]
+        )
+
+        nearest = point_group.get_nearest_points(1.25)
+        assert len(nearest) == 2
