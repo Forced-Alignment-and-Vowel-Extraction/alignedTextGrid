@@ -6,6 +6,7 @@ from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
+from aligned_textgrid.mixins.tiermixins import TierGroupMixins
 import numpy as np
 from typing import Type
 import warnings
@@ -211,7 +212,7 @@ class SequenceTier:
         out_tg.save(save_path, "long_textgrid")
 
 
-class TierGroup:
+class TierGroup(TierGroupMixins):
     """_Relates tiers_
 
     Args:
@@ -235,6 +236,7 @@ class TierGroup:
         self,
         tiers: list[SequenceTier] = [SequenceTier()]
     ):
+        super().__init__()
         self.tier_list = self._arrange_tiers(tiers)
         for idx, tier in enumerate(self.tier_list):
             if idx == len(self.tier_list)-1:
@@ -258,37 +260,6 @@ class TierGroup:
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
                     u.validate()
-
-    def __contains__(self, item):
-        return item in self.tier_list
-    
-    def __getitem__(
-            self, 
-            idx: int | list
-            ):
-        if type(idx) is int:
-            return self.tier_list[idx]
-        if len(idx) != len(self):
-            raise Exception("Attempt to index with incompatible list")
-        if type(idx) is list:
-            out_list = []
-            for x, tier in zip(idx, self.tier_list):
-                out_list.append(tier[x])
-            return(out_list)        
-        
-    def __iter__(self):
-        self._idx = 0
-        return self
-
-    def __len__(self):
-        return len(self.tier_list)
-
-    def __next__(self):
-        if self._idx < len(self.tier_list):
-            out = self.tier_list[self._idx]
-            self._idx += 1
-            return(out)
-        raise StopIteration
     
     def __repr__(self):
         n_tiers = len(self.tier_list)
