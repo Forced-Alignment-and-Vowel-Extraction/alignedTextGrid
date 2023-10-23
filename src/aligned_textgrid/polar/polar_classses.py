@@ -30,6 +30,19 @@ class ToBI(SequencePoint):
 class TurningPoints(SequencePoint):
     def __init__(self, Point):
         super().__init__(Point)
+        self.level = None
+
+    def set_level(self, tier):
+        idx = tier.get_nearest_point(self.time)
+        instance = tier[idx]
+        
+        if self.level is instance:
+            return
+        
+        if np.allclose(self.time, instance.time):
+            self.level = instance
+
+            instance.set_turning_point(self.intier)
 
     @property
     def certainty(self):
@@ -70,9 +83,42 @@ class Levels(SequencePoint):
     def __init__(self, Point):
         super().__init__(Point)
         self.ranges_tier = None
-    
+        self.range_interval = None
+        self.turning_point = None
+
     def set_ranges_tier(self, tier: Ranges):
-        self.reference_tier = tier
+        self.ranges_tier = tier
+    
+    def set_range_interval(self):
+        if self.ranges_tier:
+            self.range_interval = self.get_interval_at_point(self.ranges_tier)
+    
+    def set_turning_point(self, tier):
+        idx = tier.get_nearest_point(self.time)
+        instance = tier[idx]
+
+        if self.turning_point is instance:
+            return
+
+        if np.allclose(self.time, instance.time):
+            self.turning_point = instance
+
+            instance.set_level(self.intier)
+
+    @property
+    def certainty(self):
+        if "?" in self.label:
+            return "uncertain"
+        return "certain"
+
+    @property
+    def level(self):
+        return int(self.label.replace("?", ""))
+    
+    @property
+    def band(self):
+        return self.range_interval.bands[self.level-1:self.level+1]
+
 
 class Misc(SequencePoint):
     def __init(self, Point):

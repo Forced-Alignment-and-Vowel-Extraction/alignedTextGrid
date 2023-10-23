@@ -78,11 +78,14 @@ class  SequencePoint(PrecedenceMixins, TierMixins):
             entry_times = np.array([entry.start, entry.end])
             return self.time - entry_times
 
-    # def get_interval_index_at_time(self, tier = None):
-    #     if tier and isinstance(tier, SequenceTier)
-    #         int_idx = tier.get_interal_at_time(self.time)
-    #         return int_idx
-    #
-    # def get_interval_at_point(self, tier=None):
+    def get_interval_index_at_time(self, tier = None):
+        if tier and isinstance(tier, SequenceTier):
+            int_idx = tier.get_interval_at_time(self.time)
+            return int_idx
+    
+    def get_interval_at_point(self, tier=None):
+        if tier and isinstance(tier, SequenceTier):
+            return tier[self.get_interval_index_at_time(tier)]
+
     
     

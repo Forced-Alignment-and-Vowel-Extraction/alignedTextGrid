@@ -21,6 +21,8 @@ class PolarGrid(AlignedTextGrid):
         # self.levels = None
         # self.ranges = None
         self._set_named_accessors()
+        self._relate_levels_and_ranges()
+        self._relate_levels_and_points()
         
     #def _get_tier_by_class(self, entry_class):
 
@@ -29,3 +31,13 @@ class PolarGrid(AlignedTextGrid):
         for tg in self.tier_groups:
             for tier in tg:
                 setattr(self, tier.entry_class.__name__, tier)
+
+    def _relate_levels_and_ranges(self):
+        if self.Levels and self.Ranges:
+            for l in self.Levels:
+                l.set_ranges_tier(self.Ranges)
+                l.set_range_interval()
+
+    def _relate_levels_and_points(self):
+        for l in self.Levels:
+            l.set_turning_point(self.TurningPoints)
