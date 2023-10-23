@@ -48,3 +48,7 @@ class TestPointTierCreation:
 
     def test_nearest(self):
         assert self.seq_point_tier.get_nearest_point(1.1) == 0
+    
+    def test_return(self):
+        out_tier = self.seq_point_tier.return_tier()
+        assert isinstance(out_tier, PointTier)

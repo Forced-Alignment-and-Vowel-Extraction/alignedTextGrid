@@ -51,6 +51,10 @@ class TestPrecedence:
         with pytest.warns(Warning):
             self.seq_point_b.fol_distance
 
+    def test_return(self):
+        out_point = self.seq_point_a.return_point()
+        assert isinstance(out_point, Point)
+
 
 class TestDistances:
     seq_point_a = SequencePoint(Point(1, "a"))
