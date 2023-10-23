@@ -57,16 +57,6 @@ class SequencePointTier(TierMixins):
 
     def __repr__(self):
         return f"Sequence Point tier of {self.entry_class.__name__};"
-    
-    ## setting
-    def set_reference_tier(self, tier):
-        if issubclass(tier, SequenceTier):
-            for entry in self.sequence_list:
-                entry.reference_tier = tier
-        else:
-            warnings.warn("Reference tier must be an interval tier")
-    
-    ## properties
 
     @property
     def times(self):
