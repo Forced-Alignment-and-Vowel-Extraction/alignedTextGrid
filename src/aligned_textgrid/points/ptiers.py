@@ -5,6 +5,7 @@ from praatio.data_classes.textgrid import Textgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
 from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.points.points import SequencePoint
+from aligned_textgrid.mixins.tiermixins import TierGroupMixins
 import numpy as np
 from typing import Type
 import warnings
@@ -123,4 +124,17 @@ class SequencePointTier:
         out_tg = Textgrid()
         out_tg.addTier(tier = point_tier)
         out_tg.save(save_path, "long_textgrid")
+
+class PointsGroup(TierGroupMixins):
+    def __init__(
+            self,
+            tiers: list[SequencePointTier] = [SequencePointTier()]
+    ):
+        super().__init__()
+        self.tier_list = self._arrange_tiers(tiers)
+    
+    def __repr__(self):
+        n_tiers = len(self.tier_list)
+        classes = [x.__name__ for x in self.entry_classes]
+        return f"PointsGroup with {n_tiers} tiers. {repr(classes)}"
     
