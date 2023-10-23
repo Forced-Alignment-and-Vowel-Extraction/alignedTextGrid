@@ -103,7 +103,7 @@ class PointsGroup(TierGroupMixins):
             tiers: list[SequencePointTier] = [SequencePointTier()]
     ):
         super().__init__()
-        self.tier_list = self._arrange_tiers(tiers)
+        self.tier_list = tiers
     
     def __repr__(self):
         n_tiers = len(self.tier_list)
