@@ -5,15 +5,16 @@ from praatio.data_classes.textgrid import Textgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
 from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.points.points import SequencePoint
-from aligned_textgrid.mixins.tiermixins import TierGroupMixins
+from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
 import numpy as np
 from typing import Type
 import warnings
 
-class SequencePointTier:
+class SequencePointTier(TierMixins):
     def __init__(self, 
                  tier = PointTier("", [Point(0,"")]), 
                  entry_class = SequencePoint):
+        super().__init__()
         if isinstance(tier, PointTier):
             self.entry_list = tier.entries
             self.name = tier.name
@@ -42,38 +43,17 @@ class SequencePointTier:
             if idx == len(self.sequence_list)-1:
                 seq.set_final()
             else:
-                seq.set_fol(self.sequence_list[idx+1])            
+                seq.set_fol(self.sequence_list[idx+1])
 
     def __set_intier(
             self,
-            entry: SequencePoint
+            entry
         ):
         """
         Sets the intier attribute of the entry
         """
         entry.intier = self
-        entry.tiername = self.name
-
-    ## magic methods
-    def __contains__(self,item):
-        return item in self.sequence_list
-    
-    def __getitem__(self, idx):
-        return self.sequence_list[idx]
-    
-    def __len__(self):
-        return len(self.sequence_list)
-    
-    def __iter__(self):
-        self._idx = 0
-        return self
-    
-    def __next__(self):
-        if self._idx < len(self.sequence_list):
-            out = self.sequence_list[self._idx]
-            self._idx += 1
-            return(out)
-        raise StopIteration
+        entry.tiername = self.name                 
 
     def __repr__(self):
         return f"Sequence Point tier of {self.entry_class.__name__};"
