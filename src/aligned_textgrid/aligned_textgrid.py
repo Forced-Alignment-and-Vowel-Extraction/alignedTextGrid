@@ -224,10 +224,12 @@ class AlignedTextGrid:
             for tier, entry_class in zip(tier_group, classes):
                 if issubclass(entry_class, SequencePoint):
                     point_tier_list.append(SequencePointTier(tier, entry_class))
-                else:
+                if issubclass(entry_class, SequenceInterval):
                     sequence_tier_list.append(SequenceTier(tier, entry_class))
-            tier_groups.append(TierGroup(sequence_tier_list))
-            tier_groups.append(PointsGroup(point_tier_list))
+            if len(sequence_tier_list) > 0:
+                tier_groups.append(TierGroup(sequence_tier_list))
+            if len(point_tier_list) > 0:
+                tier_groups.append(PointsGroup(point_tier_list))   
         return tier_groups
     
     @property
