@@ -7,7 +7,10 @@ from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
 from praatio.textgrid import openTextgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
+from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
+from aligned_textgrid.points.ptiers import SequencePointTier
+from aligned_textgrid.pointspool import PointsPool
 from typing import Type, Sequence, Literal
 import numpy as np
 import warnings
@@ -291,3 +294,4 @@ class AlignedTextGrid:
             format = format,
             includeBlankSpaces = True
         )
+
