@@ -20,7 +20,6 @@ class  SequencePoint(PrecedenceMixins, TierMixins):
         self.intier = None
         self.tiername = None
         self.pointspool = None
-        self.reference_tier = None
 
         self.fol = None
         self.prev = None

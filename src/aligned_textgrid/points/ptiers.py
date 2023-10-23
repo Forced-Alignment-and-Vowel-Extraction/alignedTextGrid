@@ -19,9 +19,7 @@ class SequencePointTier:
             self.name = entry_class.__name__
 
         self.entry_class = entry_class
-
-        self.reference_tier = None
-
+        
         entry_order = np.argsort([x.time for x in self.entry_list])
         self.entry_list = [self.entry_list[idx] for idx in entry_order]
         self.sequence_list = []
