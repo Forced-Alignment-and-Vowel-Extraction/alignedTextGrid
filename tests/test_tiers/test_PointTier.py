@@ -52,3 +52,44 @@ class TestPointTierCreation:
     def test_return(self):
         out_tier = self.seq_point_tier.return_tier()
         assert isinstance(out_tier, PointTier)
+
+class TestPointGroup:
+    point_a = Point(1, "a")
+    point_b = Point(2, "b")
+    point_c = Point(1.5, "c")
+    point_d = Point(2.5, "d")        
+
+    point_tier1 = PointTier(name = "test1", entries = [point_a, point_b])
+    point_tier2 = PointTier(name = "test2", entries = [point_c, point_d])
+
+    seq_point_tier1 = SequencePointTier(point_tier1)
+    seq_point_tier2 = SequencePointTier(point_tier2)
+
+    def test_creation(self):
+        assert PointsGroup(
+            [self.seq_point_tier1, self.seq_point_tier2]
+        )
+    
+    def test_indexing(self):
+        point_group = PointsGroup(
+            [self.seq_point_tier1, self.seq_point_tier2]
+        )
+
+        assert point_group[0]
+    
+    def test_single_indexing(self):
+        point_group = PointsGroup(
+            [self.seq_point_tier1, self.seq_point_tier2]
+        )        
+        
+        tier = point_group[0]
+        assert isinstance(tier, SequencePointTier)
+
+    def test_nested_indexing(self):
+        point_group = PointsGroup(
+            [self.seq_point_tier1, self.seq_point_tier2]
+        )
+
+        points = point_group[[0][0]]
+        assert len(points) == 2
+        assert isinstance(points[0], SequencePoint)
