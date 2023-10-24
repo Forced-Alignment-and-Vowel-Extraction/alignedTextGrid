@@ -13,10 +13,10 @@ class TestSequencePointDefault:
         assert self.seq_point.__class__ is SequencePoint
     
     def test_default_time(self):
-        assert self.seq_point.time is None
+        assert self.seq_point.time == 0
 
     def test_default_label(self):
-        assert self.seq_point.label is None
+        assert self.seq_point.label == ""
     
     def test_default_fol(self):
         assert self.seq_point.fol.label == "#"
