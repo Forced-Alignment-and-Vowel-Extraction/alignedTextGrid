@@ -104,5 +104,5 @@ class TestPointGroup:
             [self.seq_point_tier1, self.seq_point_tier2]
         )
 
-        nearest = point_group.get_nearest_points(1.25)
+        nearest = point_group.get_nearest_points_index(1.25)
         assert len(nearest) == 2

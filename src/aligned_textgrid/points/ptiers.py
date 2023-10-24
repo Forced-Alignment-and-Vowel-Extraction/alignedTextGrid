@@ -169,11 +169,24 @@ class PointsGroup(TierGroupMixins):
         super().__init__()
         self.tier_list = tiers
     
-    def get_nearest_points(self, time):
-        return [tier.get_nearest_point(time) for tier in self.tier_list]
+    def get_nearest_points_index(
+            self, 
+            time: float
+        ) -> list:
+        """Get indicies of nearest point
+
+        Args:
+            time (float): time from which the nearest index should be returned.
+
+        Returns:
+            list: A list of indices
+        """
+        return [tier.get_nearest_point_index(time) for tier in self.tier_list]
 
     def get_intervals_at_time(self, time):
-        return self.get_nearest_points(time)
+        # convenience function to play nice with 
+        # AlignedTextGrid.get_intervals_at_time
+        return self.get_nearest_points_index(time)
     
     @property
     def entry_classes(self):

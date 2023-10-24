@@ -33,8 +33,8 @@ class TurningPoints(SequencePoint):
         self.level = None
 
     def set_level(self, tier):
-        idx = tier.get_nearest_point(self.time)
-        instance = tier[idx]
+        instance = tier.get_nearest_point(self.time)
+        #instance = tier[idx]
         
         if self.level is instance:
             return
@@ -94,8 +94,8 @@ class Levels(SequencePoint):
             self.range_interval = self.get_interval_at_point(self.ranges_tier)
     
     def set_turning_point(self, tier):
-        idx = tier.get_nearest_point(self.time)
-        instance = tier[idx]
+        instance = tier.get_nearest_point(self.time)
+        #instance = tier[idx]
 
         if self.turning_point is instance:
             return
