@@ -11,9 +11,38 @@ from typing import Type
 import warnings
 
 class SequencePointTier(TierMixins):
+    """A SequencePointTier class
+
+    Args:
+        tier (PointTier | list[Point]): 
+            Either a `praatio` PointTier or a list of `praatio` Points
+        entry_class (Type[SequencePoint]):
+            A SequencePoint subclass
+    
+    Attributes:
+        ...: 
+            All attributes and methods included in TierMixins
+        entry_class (Type[SequencePoint]):
+            The class of entries within the tier
+        name (str):
+            The name of the tier
+        times (np.array):
+            The times of points in the tier
+        labels (list[str,...]):
+            The labels of points in the tier
+        xmin (float):
+            The time of the first point in the tier
+        xmax (float):
+            The time of the last point in the tier
+        []:
+            Indexable and iterable
+        
+    """
     def __init__(self, 
-                 tier = PointTier("", [Point(0,"")]), 
-                 entry_class = SequencePoint):
+                 tier:PointTier|list[Point] = PointTier("", [Point(0,"")]), 
+                 entry_class:Type[SequencePoint] = SequencePoint):
+
+
         super().__init__()
         if isinstance(tier, PointTier):
             self.entry_list = tier.entries
@@ -49,9 +78,6 @@ class SequencePointTier(TierMixins):
             self,
             entry
         ):
-        """
-        Sets the intier attribute of the entry
-        """
         entry.intier = self
         entry.tiername = self.name                 
 
@@ -112,12 +138,24 @@ class SequencePointTier(TierMixins):
         out_idx = self.get_nearest_point_index(time)
         return self.sequence_list[out_idx]
 
-    def return_tier(self):
+    def return_tier(self) -> PointTier:
+        """Returns SequencePointTier as a `praatio` PointTier
+
+        Returns:
+            (PointTier): A `praatio` point tier
+        """
         all_points = [entry.return_point() for entry in self.sequence_list]
         point_tier = PointTier(name = self.name, entries=all_points)
         return(point_tier)
     
-    def save_as_tg(self, save_path):
+    def save_as_tg(
+            self, 
+            save_path: str):
+        """Saves the current point tier as a textgrid
+
+        Args:
+            save_path (str): path to where you want to save the textgrid.
+        """
         point_tier = self.return_tier()
         out_tg = Textgrid()
         out_tg.addTier(tier = point_tier)
