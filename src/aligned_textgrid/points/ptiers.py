@@ -162,6 +162,18 @@ class SequencePointTier(TierMixins):
         out_tg.save(save_path, "long_textgrid")
 
 class PointsGroup(TierGroupMixins):
+    """A collection of point tiers
+
+    Args:
+        tiers (list[SequencePointTier]: 
+            A list of SequencePointTiers
+    
+    Attributes:
+        ...:
+            All attributes and methods availale from TierGroupMixins
+        entry_classes (list[Type[SequencePointTier],...]):
+            A list of the entry classes
+    """    
     def __init__(
             self,
             tiers: list[SequencePointTier] = [SequencePointTier()]
