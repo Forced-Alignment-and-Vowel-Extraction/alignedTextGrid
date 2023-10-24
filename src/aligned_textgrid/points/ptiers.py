@@ -82,9 +82,35 @@ class SequencePointTier(TierMixins):
         else:
             return None
     
-    def get_nearest_point(self, time):
+    def get_nearest_point_index(
+            self, 
+            time: float
+        ) -> int:
+        """Returns the index of the closest point to `time`
+
+        Args:
+            time (float): The time at which to get the nearest point
+
+        Returns:
+            (int): The index of the nearest point within the tier
+        """
         out_idx = np.abs(self.times-time).argmin()
         return out_idx
+    
+    def get_nearest_point(
+            self,
+            time:float
+        )->SequencePoint:
+        """_Returns nearest point_
+
+        Args:
+            time (float): time at which to get the nearest point
+
+        Returns:
+            (SequencePoint): the nearest point to `time`
+        """
+        out_idx = self.get_nearest_point_index(time)
+        return self.sequence_list[out_idx]
 
     def return_tier(self):
         all_points = [entry.return_point() for entry in self.sequence_list]

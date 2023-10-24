@@ -46,8 +46,13 @@ class TestPointTierCreation:
     def test_labels(self):
         assert self.seq_point_tier.labels == ["a", "b"]
 
+    def test_nearest_index(self):
+        assert self.seq_point_tier.get_nearest_point_index(1.1) == 0
+    
     def test_nearest(self):
-        assert self.seq_point_tier.get_nearest_point(1.1) == 0
+        nearest_idx = self.seq_point_tier.get_nearest_point_index(1.1)
+        nearest_point = self.seq_point_tier[nearest_idx]
+        assert self.seq_point_tier.get_nearest_point(1.1) is nearest_point
     
     def test_return(self):
         out_tier = self.seq_point_tier.return_tier()
