@@ -13,13 +13,6 @@ class PolarGrid(AlignedTextGrid):
             textgrid_path=textgrid_path, 
             entry_classes=entry_classes
             )
-        # self.words = None
-        # self.phones = None
-        # self.tobi = None
-        # self.prstr = None
-        # self.turningpoints = None
-        # self.levels = None
-        # self.ranges = None
         self._set_named_accessors()
         self._relate_levels_and_ranges()
         self._relate_levels_and_points()
