@@ -1,13 +1,29 @@
-from aligned_textgrid.sequences.word_and_phone import *
-from aligned_textgrid.aligned_textgrid import *
-from aligned_textgrid.sequences.tiers import *
-from aligned_textgrid.points.ptiers import *
+from aligned_textgrid.aligned_textgrid import AlignedTextGrid
+from praatio import textgrid
 
 class PolarGrid(AlignedTextGrid):
+    """_Read and structure a PoLaR annotation texgrid_
+
+    Either pass a `praatio.textgrid` object, or a path to a textgrid
+    file
+
+    Each tier will be accessible by its entr class name. For example, the 
+    Levels tier will be accessible with
+
+    ```python
+    ptg.Levels
+    ```
+
+    Args:
+        textgrid (praatio.textgrid): A `praatio.textgrid`
+        textgrid_path (str): Path to textgrid file
+        entry_classes (list): Appropriately nested entry classes
+    """    
     def __init__(self,
-                 textgrid: Textgrid = None,
+                 textgrid: textgrid = None,
                  textgrid_path: str =  None,
-                 entry_classes = None):
+                 entry_classes:list = None):
+
         super().__init__(
             textgrid=textgrid, 
             textgrid_path=textgrid_path, 
@@ -16,10 +32,7 @@ class PolarGrid(AlignedTextGrid):
         self._set_named_accessors()
         self._relate_levels_and_ranges()
         self._relate_levels_and_points()
-        
-    #def _get_tier_by_class(self, entry_class):
-
-        
+                
     def _set_named_accessors(self):
         for tg in self.tier_groups:
             for tier in tg:
