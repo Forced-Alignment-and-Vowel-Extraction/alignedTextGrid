@@ -74,7 +74,7 @@ class PrecedenceMixins:
         elif hasattr(self, "time"):
             self.set_prev(type(self)(Point(None, "#")))
 
-class TierMixins:
+class InTierMixins:
 
     ## Tier operations
     @property
