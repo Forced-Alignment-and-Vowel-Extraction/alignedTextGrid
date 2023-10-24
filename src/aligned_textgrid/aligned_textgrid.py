@@ -10,7 +10,6 @@ from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
 from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from aligned_textgrid.points.ptiers import SequencePointTier, PointsGroup
-from aligned_textgrid.pointspool import PointsPool
 from typing import Type, Sequence, Literal
 import numpy as np
 import warnings
