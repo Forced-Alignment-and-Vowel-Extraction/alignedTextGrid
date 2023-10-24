@@ -7,6 +7,8 @@ import warnings
 
 
 class PrecedenceMixins:
+    """Methods and attributes for SequenceIntervals and SequencePoints
+    """
 
     def set_fol(
             self, next_int):
@@ -75,6 +77,12 @@ class PrecedenceMixins:
             self.set_prev(type(self)(Point(None, "#")))
 
 class InTierMixins:
+    """InTier methods and attributes
+
+    Attributes:
+        tier_index (int):
+          Index of the current entry within its tier
+    """
 
     ## Tier operations
     @property

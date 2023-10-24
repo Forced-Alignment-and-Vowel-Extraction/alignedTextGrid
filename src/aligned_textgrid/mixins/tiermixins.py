@@ -1,4 +1,9 @@
 class TierMixins:
+    """Methods and attributes for Sequence Tiers
+
+    Attributes:
+        []: indexable and iterable
+    """
     def __contains__(self, item):
         return item in self.sequence_list
     
@@ -26,16 +31,21 @@ class TierMixins:
         """_Return index of a tier entry_
 
         Args:
-            entry (SequenceInterval):
-                A SequenceInterval to get the index of.
+            entry (Union[SequencePoint, SequenceInterval]):
+                A SequenceInterval or a PointInterval to get the index of.
 
         Returns:
-            (int): The interval's index
+            (int): The entry's index
         """
         return self.sequence_list.index(entry)
     
 
 class TierGroupMixins:
+    """Methods and attributes for grouped tiers
+
+    Attributes:
+        []: Indexable and iterable
+    """
 
     def __contains__(self, item):
         return item in self.tier_list
