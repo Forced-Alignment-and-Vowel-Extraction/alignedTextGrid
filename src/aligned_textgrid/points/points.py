@@ -31,7 +31,9 @@ class  SequencePoint(PrecedenceMixins, TierMixins):
 
 
     def __repr__(self) -> str:
-        out_string = f"Class {type(self).__name__}, label: {self.label}"
+        out_string = f"Class {type(self).__name__}, label: {self.label};"
+        if self.intier:
+            out_string += f" tier_index: {self.tier_index}"
         return out_string
     
     def __contains__(self, item):
