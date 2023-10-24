@@ -15,8 +15,8 @@ class PrecedenceMixins:
         """_Sets the following instance_
 
         Args:
-            next_int (SequenceInterval): 
-                Sets the `next_int` as the `fol` interval.
+            next_int (SequenceInterval|SequencePoint): 
+                Sets the `next_int` as the `fol` entry.
                 Must be of the same class as the current object.
                 That is, `type(next_int) is type(self)`
         """
@@ -36,8 +36,8 @@ class PrecedenceMixins:
         """_Sets the previous intance_
 
         Args:
-            prev_int (SequenceInterval):
-                Sets the `prev_int` as the `prev` interval
+            prev_int (SequenceInterval|SequencePoint):
+                Sets the `prev_int` as the `prev` entry.
                 Must be of the same class as the current object.
                 That is, `type(prev_int) is type(self)`                
         """
@@ -54,9 +54,9 @@ class PrecedenceMixins:
             raise Exception(f"Previous segment must be an instance of {type(self).__name__}")
     
     def set_final(self):
-        """_Sets the current object as having no `fol` interval_
+        """_Sets the current object as having no `fol` entry_
         
-        While `self.fol` is defined for these intervals, the actual
+        While `self.fol` is defined for these entries, the actual
         instance does not appear in `self.super_instance.subset_list`
         """
         
@@ -66,9 +66,9 @@ class PrecedenceMixins:
             self.set_fol(type(self)(Point(None, "#")))
 
     def set_initial(self):
-        """_Sets the current object as having no `prev` interval_
+        """_Sets the current object as having no `prev` entry_
 
-        While `self.prev` is defined for these intervals, the actual 
+        While `self.prev` is defined for these entries, the actual 
         instance does not appear in `self.super_instance.subset_list`
         """
         if hasattr(self, "start"):
@@ -96,16 +96,16 @@ class InTierMixins:
             self,
             idx:int = 0
         ):
-        """_Get sequence by relative tier index_
+        """_Get entry by relative tier index_
 
-        Returns a SequenceInterval from an index position relative to
+        Returns a SequenceInterval or SequencePoint from an index position relative to
         the current sequence.
 
-        - `idx=0` - Returns the current sequence
-        - `idx=1` - Returns the following interval on the tier. If the current interval is 
+        - `idx=0` - Returns the current entry
+        - `idx=1` - Returns the following entry on the tier. If the current entry is 
             in the final position within its subset list, this will not be the same as
             `.fol`
-        - `idx=-1` - Returns the previous interval on the tier. If the current interval is 
+        - `idx=-1` - Returns the previous entry on the tier. If the current entry is 
             in the initial position within its subset list, this will not be the same as
             `.prev` 
 
@@ -118,7 +118,7 @@ class InTierMixins:
                 Defaults to 0.
 
         Returns:
-            (SequenceInterval): The SequenceInterval at the relative index
+            (SequenceInterval|SequencePoint): The entry at the relative index
         """
         if not self.intier is None:
             return self.intier[self.tier_index + idx]
