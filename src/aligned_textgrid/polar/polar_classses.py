@@ -1,10 +1,25 @@
-from aligned_textgrid.sequences.sequences import *
-from aligned_textgrid.points.points import *
-from aligned_textgrid.sequences.word_and_phone import *
+"""
+Special point and interval classes for PoLaR annotation
+"""
+from aligned_textgrid.sequences.sequences import SequenceInterval
+from aligned_textgrid.sequences.tiers import SequenceTier
+from aligned_textgrid.points.points import SequencePoint
 import warnings
 import numpy as np
 
 class PrStr(SequencePoint):
+    """_PrStr tier points_
+
+    Attributes:
+        ...:
+           All methods and attributes from SequencePoint
+        certainty (str):
+            If a '?' was appended to a point label, `'uncertain'`, otherwise
+            `'certain'`
+        status (str):
+            `'edge'` or `'prominence'`
+    """
+
     def __init__(self, Point):
         super().__init__(Point)
 
@@ -24,10 +39,29 @@ class PrStr(SequencePoint):
         return self.label
     
 class ToBI(SequencePoint):
+    """_A ToBI point class_
+
+    Attributes:
+       ...:
+          All methods and attributes from SequencePoint
+    """
     def __init__(self, Point=None):
         super().__init__(Point)
 
 class TurningPoints(SequencePoint):
+    """_A turning point class_
+
+    Attributes:
+        ...:
+            All methods and attributes from SequencePoint
+        level (Levels):
+            The `Levels` point associated with this turning point
+        certainty (str):
+            If a '?' was appended to a point label, `'uncertain'`, otherwise
+            `'certain'`
+        override (str):
+            An override value, if provided
+    """
     def __init__(self, Point):
         super().__init__(Point)
         self.level = None
@@ -58,6 +92,20 @@ class TurningPoints(SequencePoint):
         return override_value
 
 class Ranges(SequenceInterval):
+    """_A ranges interval_
+
+    Attributes:
+        ...:
+            All methods and attributes from SequenceInterval
+        range (np.array):
+            The f0 range
+        low (float):
+            The low value of the f0 range
+        high (float):
+            The high value of the f0 range
+        bands (np.array):
+            The break points in the f0 range (6 break points defining 5 bands)
+    """
     def __init__(self, Interval):
         super().__init__(Interval)
     
@@ -80,6 +128,26 @@ class Ranges(SequenceInterval):
         return np.linspace(self.low, self.high, num = 6)
 
 class Levels(SequencePoint):
+    """_A levels point class_
+
+    Attributes:
+        ...:
+            All methods and attributes from SequencePoint
+        certainty (str):
+            If a '?' was appended to a point label, `'uncertain'`, otherwise
+            `'certain'`
+        level (int):
+            The level value given to this point
+        band (np.array):
+            The f0 band for this point, given its level
+        ranges_interval (Ranges):
+            The Ranges interval this point falls within
+        ranges_tier (SequenceTier):
+            The Ranges tier associated with these Levels
+        turning_point (TurningPoints):
+            The TurningPoints point associated with this Levels point
+
+    """
     def __init__(self, Point):
         super().__init__(Point)
         self.ranges_tier = None
@@ -121,6 +189,8 @@ class Levels(SequencePoint):
 
 
 class Misc(SequencePoint):
+    """_Misc points__
+    """
     def __init(self, Point):
         super().__init__(Point)
     
