@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from aligned_textgrid.points.points import *
-from aligned_textgrid.points.ptiers import *
+from aligned_textgrid.points.tiers import *
 from aligned_textgrid.sequences.sequences import *
 from aligned_textgrid.sequences.tiers import *
 from praatio.utilities.constants import Point

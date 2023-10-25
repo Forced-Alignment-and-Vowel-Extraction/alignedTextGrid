@@ -1,7 +1,7 @@
 import pytest
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from aligned_textgrid.sequences.sequences import SequenceInterval
-from aligned_textgrid.points.ptiers import SequencePointTier, PointsGroup
+from aligned_textgrid.points.tiers import SequencePointTier, PointsGroup
 from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.polar.polar_classses import PrStr, ToBI, \
     TurningPoints, Ranges, Levels, Misc
