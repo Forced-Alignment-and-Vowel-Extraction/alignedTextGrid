@@ -112,7 +112,10 @@ class Ranges(SequenceInterval):
     @property
     def range(self):
         range_chr = self.label.split("-")
-        range_num = [float(x) for x in range_chr] 
+        try:
+            range_num = [float(x) for x in range_chr] 
+        except ValueError:
+            range_num = [np.nan, np.nan]
         return np.array(range_num)
     
     @property
