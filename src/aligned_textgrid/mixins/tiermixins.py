@@ -50,6 +50,24 @@ class TierGroupMixins:
     def __contains__(self, item):
         return item in self.tier_list
     
+    def __getattr__(
+            self,
+            name: str
+    ):
+        entry_class_names = [x.__name__ for x in self.entry_classes]
+        match_list = [x  for x in entry_class_names if x == name]
+
+        if len(match_list) == 1:
+            match_idx = entry_class_names.index(name)
+            self.__setattr__(name, self.tier_list[match_idx])
+            return self.tier_list[match_idx]
+        
+        if len(match_list) > 1:
+            raise AttributeError(f"{type(self).__name__} has multiple entry classes for {name}")
+        
+        if len(match_list) < 1:
+            raise AttributeError(f"{type(self).__name__} has no attribute {name}")
+    
     def __getitem__(
             self,
             idx: int|list
