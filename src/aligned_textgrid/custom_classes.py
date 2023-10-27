@@ -1,10 +1,12 @@
 from aligned_textgrid.sequences.sequences import *
+from aligned_textgrid.points.points import *
 from praatio.utilities.utils import Interval
 from typing import Type
 
 def custom_classes(
         class_list:list[str] = [],
-        return_order: list[str] | list[int] | None = None
+        return_order: list[str] | list[int] | None = None,
+        points:list[int] = []        
 ) -> list[Type[SequenceInterval]]:
     """_Generate custom interval classes_
 
@@ -56,15 +58,23 @@ def custom_classes(
             A list of desired class names, in their hierarchical order. Defaults to [].
         return_order (list[str] | list[int] | None, optional): 
             A return order for the custom classes, if not in hierarchical order. Defaults to None.
+        points (list[int], optional): 
+            Indices of which classes should be points, rather than intervals
 
     Returns:
         (list[Type[SequenceInterval]]): A list of custom `SequenceInterval` subclasses
     """
-    def _constructor(
+    def _sequence_constructor(
             self, 
             Interval = Interval(None, None, None)
         ):
         SequenceInterval.__init__(self, Interval=Interval)
+    
+    def _point_constructor(
+            self,
+            Point = Point(0, "")
+    ):
+        SequencePoint.__init__(self, Point)
 
     def _top_constructor(self):
         Top.__init__(self)
@@ -95,27 +105,47 @@ def custom_classes(
         return_order = class_list
 
     class_out_list = []
-    if type(class_list) is str:
+    if type(class_list) is str and len(points) == 0:
         newclass = type(
             class_list, 
             (SequenceInterval, ), 
-            {"__init__": _constructor}
+            {"__init__": _sequence_constructor}
         )
         newclass.set_superset_class(this_top)
         newclass.set_subset_class(this_bottom)
         return newclass
-    elif type(class_list) is list:
-        for name in class_list:
-            class_out_list.append(
-                type(name, (SequenceInterval,), {"__init__": _constructor})
-            )
-        for idx, entry in enumerate(class_out_list):
+    
+    if type(class_list) is str and len(points) != 0:
+        newclass = type(
+            class_list, 
+            (SequencePoint, ), 
+            {"__init__": _point_constructor}
+        )
+        return newclass
+
+    if type(class_list) is list:
+        for idx, name in enumerate(class_list):
+            if idx in points:
+                class_out_list.append(
+                    type(name, (SequencePoint,), {"__init__": _point_constructor})
+                )
+            else:
+                class_out_list.append(
+                    type(name, (SequenceInterval,), {"__init__": _sequence_constructor})
+                )
+                
+        interval_classes = [x 
+                            for x in class_out_list 
+                            if issubclass(x, SequenceInterval)
+                            ]
+        for idx, entry in enumerate(interval_classes):
             if idx == 0:
                 entry.set_superset_class(this_top)
-            if idx == len(class_out_list)-1:
+            if idx == len(interval_classes)-1:
                 entry.set_subset_class(this_bottom)
             else:
-                entry.set_subset_class(class_out_list[idx+1])
+                entry.set_subset_class(interval_classes[idx+1])
+
         if type(return_order[0]) is int:
             return_list = [class_out_list[idx] for idx in return_order]
         elif type(return_order[0]) is str:

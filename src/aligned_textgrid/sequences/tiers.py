@@ -6,11 +6,12 @@ from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
+from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
 import numpy as np
 from typing import Type
 import warnings
 
-class SequenceTier:
+class SequenceTier(TierMixins):
     """_A sequence tier_
 
     Given a `praatio` `IntervalTier` or list of `Interval`s, creates
@@ -41,6 +42,7 @@ class SequenceTier:
         tier: list[Interval] | IntervalTier = [],
         entry_class: Type[SequenceInterval] = SequenceInterval
     ):
+        super().__init__()
         if isinstance(tier, IntervalTier):
             self.entry_list = tier.entries
             self.name = tier.name
@@ -60,47 +62,31 @@ class SequenceTier:
             self.sequence_list += [this_seq]
         self.__set_precedence()
 
-    def __contains__(self, item):
-        return item in self.sequence_list
-    
-    def __getitem__(self, idx):
-        return self.sequence_list[idx]
-    
-    def __iter__(self):
-        self._idx = 0
-        return self
+    def __set_precedence(self):
+        for idx,seq in enumerate(self.sequence_list):
+            self.__set_intier(seq)
+            if idx == 0:
+                seq.set_initial()
+            else:
+                seq.set_prev(self.sequence_list[idx-1])
+            if idx == len(self.sequence_list)-1:
+                seq.set_final()
+            else:
+                seq.set_fol(self.sequence_list[idx+1])
 
-    def __len__(self):
-        return len(self.sequence_list)
-
-    def __next__(self):
-        if self._idx < len(self.sequence_list):
-            out = self.sequence_list[self._idx]
-            self._idx += 1
-            return(out)
-        raise StopIteration
-
-    def __repr__(self):
-        return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
-    
-    def index(
-            self, 
-            entry: SequenceInterval
-        ) -> int:
-        """_Return index of a tier entry_
-
-        Args:
-            entry (SequenceInterval):
-                A SequenceInterval to get the index of.
-
-        Returns:
-            (int): The interval's index
+    def __set_intier(
+            self,
+            entry
+        ):
         """
-        return self.sequence_list.index(entry)
+        Sets the intier attribute of the entry
+        """
+        entry.intier = self
+        entry.tiername = self.name
     
     def pop(
             self,
-            entry: SequenceInterval
+            entry
     ):
         """_Pop an interval_
 
@@ -114,29 +100,11 @@ class SequenceTier:
             if self.superset_class is Top:
                 self.__set_precedence()
         else:
-            raise Exception("Entry not in tier")
+            raise Exception("Entry not in tier")                    
 
-    def __set_intier(
-            self,
-            entry: SequenceInterval
-        ):
-        """
-        Sets the intier attribute of the entry
-        """
-        entry.intier = self
+    def __repr__(self):
+        return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
     
-    def __set_precedence(self):
-        for idx,seq in enumerate(self.sequence_list):
-            self.__set_intier(seq)
-            if idx == 0:
-                seq.set_initial()
-            else:
-                seq.set_prev(self.sequence_list[idx-1])
-            if idx == len(self.sequence_list)-1:
-                seq.set_final()
-            else:
-                seq.set_fol(self.sequence_list[idx+1])        
-
                 
     @property
     def starts(self):
@@ -211,7 +179,7 @@ class SequenceTier:
         out_tg.save(save_path, "long_textgrid")
 
 
-class TierGroup:
+class TierGroup(TierGroupMixins):
     """_Relates tiers_
 
     Args:
@@ -235,6 +203,7 @@ class TierGroup:
         self,
         tiers: list[SequenceTier] = [SequenceTier()]
     ):
+        super().__init__()
         self.tier_list = self._arrange_tiers(tiers)
         for idx, tier in enumerate(self.tier_list):
             if idx == len(self.tier_list)-1:
@@ -258,37 +227,6 @@ class TierGroup:
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
                     u.validate()
-
-    def __contains__(self, item):
-        return item in self.tier_list
-    
-    def __getitem__(
-            self, 
-            idx: int | list
-            ):
-        if type(idx) is int:
-            return self.tier_list[idx]
-        if len(idx) != len(self):
-            raise Exception("Attempt to index with incompatible list")
-        if type(idx) is list:
-            out_list = []
-            for x, tier in zip(idx, self.tier_list):
-                out_list.append(tier[x])
-            return(out_list)        
-        
-    def __iter__(self):
-        self._idx = 0
-        return self
-
-    def __len__(self):
-        return len(self.tier_list)
-
-    def __next__(self):
-        if self._idx < len(self.tier_list):
-            out = self.tier_list[self._idx]
-            self._idx += 1
-            return(out)
-        raise StopIteration
     
     def __repr__(self):
         n_tiers = len(self.tier_list)

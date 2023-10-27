@@ -7,7 +7,9 @@ from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
 from praatio.textgrid import openTextgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
+from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
+from aligned_textgrid.points.tiers import SequencePointTier, PointsGroup
 from typing import Type, Sequence, Literal
 import numpy as np
 import warnings
@@ -139,7 +141,7 @@ class AlignedTextGrid:
     def _nestify_tiers(
         self,
         textgrid: Textgrid,
-        entry_classes: list[SequenceInterval]
+        entry_classes: list
     ):
         """_private method to nestify tiers_
 
@@ -168,6 +170,7 @@ class AlignedTextGrid:
         
         super_classes = [c.superset_class for c in entry_classes]
         top_idxes = [i for i,c in enumerate(super_classes) if issubclass(c, Top)]
+        point_idxes = [i for i,c in enumerate(entry_classes) if issubclass(c, SequencePoint)]
 
         if len(top_idxes) <= 1:
             return [textgrid.tiers], [entry_classes]
@@ -215,10 +218,17 @@ class AlignedTextGrid:
         tier_groups = []
 
         for tier_group, classes in zip(self.tg_tiers, self.entry_classes):
-            tier_list = []
+            sequence_tier_list = []
+            point_tier_list = []
             for tier, entry_class in zip(tier_group, classes):
-                tier_list.append(SequenceTier(tier, entry_class))
-            tier_groups.append(TierGroup(tier_list))
+                if issubclass(entry_class, SequencePoint):
+                    point_tier_list.append(SequencePointTier(tier, entry_class))
+                if issubclass(entry_class, SequenceInterval):
+                    sequence_tier_list.append(SequenceTier(tier, entry_class))
+            if len(sequence_tier_list) > 0:
+                tier_groups.append(TierGroup(sequence_tier_list))
+            if len(point_tier_list) > 0:
+                tier_groups.append(PointsGroup(point_tier_list))   
         return tier_groups
     
     @property
@@ -291,3 +301,4 @@ class AlignedTextGrid:
             format = format,
             includeBlankSpaces = True
         )
+
