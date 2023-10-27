@@ -106,3 +106,39 @@ class TestPointGroup:
 
         nearest = point_group.get_nearest_points_index(1.25)
         assert len(nearest) == 2
+
+class TestAccessors:
+    class MyPointClassA(SequencePoint):
+        def __init__(self, point):
+            super().__init__(point)
+    
+    class MyPointClassB(SequencePoint):
+        def __init__(self, point):
+            super().__init__(point)
+    
+    point_a = Point(1, "a")
+    point_b = Point(2, "b")
+    point_c = Point(1.5, "c")
+    point_d = Point(2.5, "d")        
+
+    point_tier1 = PointTier(name = "test1", entries = [point_a, point_b])
+    point_tier2 = PointTier(name = "test2", entries = [point_c, point_d])
+
+    seq_point_tier1 = SequencePointTier(point_tier1, entry_class=MyPointClassA)
+    seq_point_tier2 = SequencePointTier(point_tier2, entry_class=MyPointClassB)
+    seq_point_tier3 = SequencePointTier(point_tier2, entry_class=MyPointClassA)
+
+    seq_point_group1 = PointsGroup(tiers = [seq_point_tier1, seq_point_tier2])
+    seq_point_group2 = PointsGroup(tiers = [seq_point_tier1, seq_point_tier3])
+
+    def test_successful_access(self):
+        assert self.seq_point_group1.MyPointClassA
+        assert isinstance(self.seq_point_group1.MyPointClassA[0], self.MyPointClassA)
+    
+    def test_missing_access(self):
+       with pytest.raises(AttributeError, match="has no attribute"):
+           self.seq_point_group1.SequencePoint
+
+    def test_too_many(self, match = "has multiple entry classes"):
+        with pytest.raises(AttributeError):
+            self.seq_point_group2.MyPointClassA
