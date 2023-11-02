@@ -280,6 +280,20 @@ class TestHierarchy:
 
         with pytest.raises(ValueError):
             _ = upper1.index(lower3)
+        
+    def test_first_last(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+        lower3 = self.LowerClass(Interval(11,15,"lower3"))
+
+        upper1.set_subset_list([lower1, lower2, lower3])
+
+        first_interval = upper1[0]
+        assert upper1.first is first_interval
+
+        last_interval = upper1[-1]
+        assert upper1.last is last_interval
 
     def test_subset_pop(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
