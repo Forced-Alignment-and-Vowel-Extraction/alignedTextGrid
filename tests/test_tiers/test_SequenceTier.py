@@ -212,6 +212,27 @@ class TestIntierSetting:
         for idx, entry in enumerate(tier):
             assert entry.tier_index == idx
     
+    def test_first_last(self):
+        tier = SequenceTier(
+            tier = [
+                self.interval1,
+                self.interval2,
+                self.interval3
+                ]
+            )
+        
+        first_interval = tier[0]
+        assert tier.first is first_interval
+
+        last_interval = tier[-1]
+        assert tier.last is last_interval
+    
+    def test_first_last_errors(self):
+        tier = SequenceTier()
+
+        with pytest.raises(IndexError):
+            tier.first
+    
     def test_get_tieridx(self):
         tier = SequenceTier(
             tier = [

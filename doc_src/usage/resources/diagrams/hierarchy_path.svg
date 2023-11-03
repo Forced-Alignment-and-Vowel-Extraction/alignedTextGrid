@@ -25,12 +25,12 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="2.2097881"
-     inkscape:cx="346.18704"
-     inkscape:cy="178.07137"
-     inkscape:window-width="1724"
+     inkscape:cx="571.54801"
+     inkscape:cy="165.40047"
+     inkscape:window-width="1549"
      inkscape:window-height="1027"
-     inkscape:window-x="196"
-     inkscape:window-y="25"
+     inkscape:window-x="179"
+     inkscape:window-y="38"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
@@ -1020,14 +1020,14 @@
     <text
        xml:space="preserve"
        style="font-size:3.52778px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       x="178.43657"
+       x="177.29066"
        y="60.447338"
        id="text12033-4-4"><tspan
          sodipodi:role="line"
          id="tspan12031-51-9"
          style="font-size:3.52778px;stroke:none;stroke-width:0.529167"
-         x="178.43657"
-         y="60.447338">[0]</tspan></text>
+         x="177.29066"
+         y="60.447338">.first</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.52778px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
