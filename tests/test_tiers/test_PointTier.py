@@ -60,9 +60,9 @@ class TestPointTierCreation:
 
 class TestPointPrecedence:
     def test_first_last(self):
-        point_a = SequencePoint(Point(1, "a"))
-        point_b = SequencePoint(Point(2, "b"))
-        point_c = SequencePoint(Point(3, "c"))
+        point_a = Point(1, "a")
+        point_b = Point(2, "b")
+        point_c = Point(3, "c")
 
         tier = SequencePointTier(tier = [point_a, point_b, point_c])
 
