@@ -77,8 +77,9 @@ class TestPointPrecedence:
 
         with pytest.raises(IndexError):
             tier.first
-
-
+        
+        with pytest.raises(IndexError):
+            tier.last
 
 class TestPointGroup:
     point_a = Point(1, "a")
