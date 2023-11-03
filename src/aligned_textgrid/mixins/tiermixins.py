@@ -3,7 +3,28 @@ class TierMixins:
 
     Attributes:
         []: indexable and iterable
+        first (SequenceInterval): The first entry in the tier.
+        last (SequenceInterval): The last entry in the tier.
     """
+
+    @property
+    def first(self):
+        if hasattr(self, "sequence_list") and len(self.sequence_list) > 0:
+            return self.sequence_list[0]
+        if hasattr(self, "sequence_list"):
+            raise IndexError(f"{type(self).__name__} tier with name"\
+                             f" {self.name} has empty sequence_list")
+        raise AttributeError(f"{type(self).__name__} is not indexable.")
+
+    @property
+    def last(self):
+        if hasattr(self, "sequence_list") and len(self.sequence_list) > 0:
+            return self.sequence_list[-1]
+        if hasattr(self, "sequence_list"):
+            raise IndexError(f"{type(self).__name__} tier with name"\
+                             f" {self.name} has empty sequence_list")
+        raise AttributeError(f"{type(self).__name__} is not indexable.")
+
     def __contains__(self, item):
         return item in self.sequence_list
     

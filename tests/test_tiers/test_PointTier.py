@@ -58,6 +58,29 @@ class TestPointTierCreation:
         out_tier = self.seq_point_tier.return_tier()
         assert isinstance(out_tier, PointTier)
 
+class TestPointPrecedence:
+    def test_first_last(self):
+        point_a = Point(1, "a")
+        point_b = Point(2, "b")
+        point_c = Point(3, "c")
+
+        tier = SequencePointTier(tier = [point_a, point_b, point_c])
+
+        first_point = tier[0]
+        assert tier.first is first_point
+
+        last_point = tier[-1]
+        assert tier.last is last_point
+
+    def test_first_last_error(self):
+        tier = SequencePointTier()
+
+        with pytest.raises(IndexError):
+            tier.first
+        
+        with pytest.raises(IndexError):
+            tier.last
+
 class TestPointGroup:
     point_a = Point(1, "a")
     point_b = Point(2, "b")

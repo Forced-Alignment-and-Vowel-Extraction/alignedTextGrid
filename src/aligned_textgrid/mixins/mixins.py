@@ -8,7 +8,29 @@ import warnings
 
 class PrecedenceMixins:
     """Methods and attributes for SequenceIntervals and SequencePoints
+
+    Attributes:
+        first (SequenceInterval): The first interval in the subset list
+        last (SequenceInterval): The last interval in the subset list
     """
+
+    @property
+    def first(self):
+        if hasattr(self, "subset_list") and len(self.subset_list) > 0:
+            return self.subset_list[0]
+        if hasattr(self, "subset_list"):
+            raise IndexError(f"{type(self).__name__} with label "\
+                             f"'{self.label}' subset list is empty.")
+        raise AttributeError(f"{type(self).__name__} is not indexable.")
+                
+    @property
+    def last(self):
+        if hasattr(self, "subset_list") and len(self.subset_list) > 0:
+            return self.subset_list[-1]
+        if hasattr(self, "subset_list"):
+            raise IndexError(f"{type(self).__name__} with label "\
+                             f"'{self.label}' subset list is empty.")
+        raise AttributeError(f"{type(self).__name__} is not indexable.")        
 
     def set_fol(
             self, next_int):
