@@ -1,0 +1,141 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  page-navigation: true
+  navbar:
+    left:
+      - file: index.qmd
+        text: Get Started
+      - href: reference/
+        text: Reference        
+    right:
+      - icon: github
+        href: https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/      
+  sidebar:
+      - id: get-started
+        title: Get Started
+        style: floating
+        align: left
+        contents:
+          - section: Getting Started
+            contents:
+              - index.qmd
+          - section: Quickstart
+            contents:
+              - usage/index.ipynb
+          - section: TextGrids
+            contents:
+              - usage/01_TextGrids/01_tg-nav.ipynb
+              - usage/01_TextGrids/02_tg-info.ipynb
+          - section: Sequences
+            contents:
+              - usage/02_Sequences/00_sequence_structure.ipynb
+              - usage/02_Sequences/01_sequence-in-tier.ipynb 
+              - usage/02_Sequences/02_sequence_properties.ipynb 
+              - usage/02_Sequences/03_sequence-modification.ipynb
+          - section: Points
+            contents:
+              - usage/04_Points/00_points_and_point_tiers.ipynb
+          - section: Custom Classes
+            contents:
+              - usage/03_Custom_Classes/index.ipynb
+              
+
+  #         - section: Processing patterns
+  #           contents: 
+  #             - getting-started/single-file.qmd
+  #             - getting-started/directory.qmd
+  #         - section: Customizing a recoding scheme
+  #           contents:
+  #             - getting-started/rule-scheme-basics.qmd
+  #             - getting-started/rule-application.qmd
+  #             - section: Details
+  #               contents:
+  #                 - getting-started/condition-attributes.qmd
+  #                 - getting-started/condition-relations.qmd
+
+format:
+  html: 
+    theme:
+      light: flatly
+      dark: darkly
+    toc: true
+
+# tell quarto to read the generated sidebar
+metadata-files:
+  - reference/_sidebar.yml
+
+# filters:
+#   - "interlinks"
+
+interlinks:
+  sources:
+    python:
+      url: https://docs.python.org/3/
+    # griffe:
+    #   url: https://mkdocstrings.github.io/griffe/
+
+
+quartodoc:
+  # the name used to import the package you want to create reference docs for
+  package: aligned_textgrid
+  style: pkgdown
+  dir: reference
+  # write sidebar data to this file
+  sidebar: "reference/_sidebar.yml"
+  parser: google
+  #render_interlinks: true
+  sections:
+    - title: Intervals
+      desc: Intervals
+      contents:
+        - package: aligned_textgrid.sequences.sequences
+          name: SequenceInterval
+        - package: aligned_textgrid.sequences.sequences
+          name: Top
+        - package: aligned_textgrid.sequences.sequences
+          name: Bottom           
+    - title: Points
+      desc: Point
+      contents:
+        - package:  aligned_textgrid.points.points
+          name: SequencePoint                  
+    - title: Tiers
+      desc: Tiers
+      contents:
+        - package: aligned_textgrid.sequences.tiers
+          name: SequenceTier
+        - package: aligned_textgrid.points.tiers
+          name: SequencePointTier
+    - title: TextGrids
+      desc: TextGrids
+      contents: 
+        - package: aligned_textgrid.sequences.tiers
+          name: TierGroup
+        - package: aligned_textgrid.aligned_textgrid
+          name: AlignedTextGrid
+    - title: Custom Classes
+      desc: Custom Classes
+      contents: 
+        - package: aligned_textgrid.custom_classes
+          name: custom_classes
+        - package: aligned_textgrid.sequences.word_and_phone
+          name: Word
+        - package: aligned_textgrid.sequences.word_and_phone
+          name: Phone
+        - package: aligned_textgrid.polar.polar_classes
+          name: PrStr
+        - package: aligned_textgrid.polar.polar_classes
+          name: ToBI
+        - package: aligned_textgrid.polar.polar_classes
+          name: ToBI
+        - package: aligned_textgrid.polar.polar_classes
+          name: TurningPoints
+        - package: aligned_textgrid.polar.polar_classes
+          name: Ranges
+        - package: aligned_textgrid.polar.polar_classes
+          name: Levels
+        - package: aligned_textgrid.polar.polar_classes
+          name: Misc

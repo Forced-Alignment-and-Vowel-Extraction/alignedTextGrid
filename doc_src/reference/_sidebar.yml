@@ -1,0 +1,34 @@
+website:
+  sidebar:
+  - contents:
+    - reference/index.qmd
+    - contents:
+      - reference/SequenceInterval.qmd
+      - reference/Top.qmd
+      - reference/Bottom.qmd
+      section: Intervals
+    - contents:
+      - reference/SequencePoint.qmd
+      section: Points
+    - contents:
+      - reference/SequenceTier.qmd
+      - reference/SequencePointTier.qmd
+      section: Tiers
+    - contents:
+      - reference/TierGroup.qmd
+      - reference/AlignedTextGrid.qmd
+      section: TextGrids
+    - contents:
+      - reference/custom_classes.qmd
+      - reference/Word.qmd
+      - reference/Phone.qmd
+      - reference/PrStr.qmd
+      - reference/ToBI.qmd
+      - reference/ToBI.qmd
+      - reference/TurningPoints.qmd
+      - reference/Ranges.qmd
+      - reference/Levels.qmd
+      - reference/Misc.qmd
+      section: Custom Classes
+    id: reference
+  - id: dummy-sidebar

@@ -1,0 +1,40 @@
+# Word { #aligned_textgrid.sequences.word_and_phone.Word }
+
+`sequences.word_and_phone.Word(self, Interval=Interval(None, None, None))`
+
+_A Word subclass of SequenceInterval_
+
+Has all the same methods and attributes as SequenceInterval in addition
+to attributes described below. `superset_class` set to `Top`, 
+and `subset_class` set to `Phone`
+
+## Parameters
+
+| Name       | Type     | Description          | Default                      |
+|------------|----------|----------------------|------------------------------|
+| `Interval` | Interval | A praatio `Interval` | `Interval(None, None, None)` |
+
+## Attributes
+
+| Name       | Type          | Description             |
+|------------|---------------|-------------------------|
+| phone_list | list\[Phone\] | A list of Phone objects |
+| phones     | list\[str\]   | A list of phone labels  |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [set_phones](#aligned_textgrid.sequences.word_and_phone.Word.set_phones) | _Convenience function to set the phones_ |
+
+### set_phones { #aligned_textgrid.sequences.word_and_phone.Word.set_phones }
+
+`sequences.word_and_phone.Word.set_phones(phone_list)`
+
+_Convenience function to set the phones_
+
+#### Parameters
+
+| Name         | Type          | Description             | Default    |
+|--------------|---------------|-------------------------|------------|
+| `phone_list` | list\[Phone\] | List of Phone instances | _required_ |

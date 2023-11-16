@@ -1,0 +1,54 @@
+# Function reference
+
+## Intervals
+
+Intervals
+
+| | |
+| --- | --- |
+| [SequenceInterval](SequenceInterval.qmd#aligned_textgrid.sequences.sequences.SequenceInterval) | A class to describe an interval with precedence relationships and hierarchical relationships |
+| [Top](Top.qmd#aligned_textgrid.sequences.sequences.Top) | _A top level interval class_ |
+| [Bottom](Bottom.qmd#aligned_textgrid.sequences.sequences.Bottom) | _A bottom level interval class_ |
+
+## Points
+
+Point
+
+| | |
+| --- | --- |
+| [SequencePoint](SequencePoint.qmd#aligned_textgrid.points.points.SequencePoint) | _A point class_ |
+
+## Tiers
+
+Tiers
+
+| | |
+| --- | --- |
+| [SequenceTier](SequenceTier.qmd#aligned_textgrid.sequences.tiers.SequenceTier) | _A sequence tier_ |
+| [SequencePointTier](SequencePointTier.qmd#aligned_textgrid.points.tiers.SequencePointTier) | A SequencePointTier class |
+
+## TextGrids
+
+TextGrids
+
+| | |
+| --- | --- |
+| [TierGroup](TierGroup.qmd#aligned_textgrid.sequences.tiers.TierGroup) | _Relates tiers_ |
+| [AlignedTextGrid](AlignedTextGrid.qmd#aligned_textgrid.aligned_textgrid.AlignedTextGrid) | _An aligned Textgrid_ |
+
+## Custom Classes
+
+Custom Classes
+
+| | |
+| --- | --- |
+| [custom_classes](custom_classes.qmd#aligned_textgrid.custom_classes.custom_classes) | _Generate custom interval classes_ |
+| [Word](Word.qmd#aligned_textgrid.sequences.word_and_phone.Word) | _A Word subclass of SequenceInterval_ |
+| [Phone](Phone.qmd#aligned_textgrid.sequences.word_and_phone.Phone) | _A Phone subclass of SequenceInterval_ |
+| [PrStr](PrStr.qmd#aligned_textgrid.polar.polar_classes.PrStr) | _PrStr tier points_ |
+| [ToBI](ToBI.qmd#aligned_textgrid.polar.polar_classes.ToBI) | _A ToBI point class_ |
+| [ToBI](ToBI.qmd#aligned_textgrid.polar.polar_classes.ToBI) | _A ToBI point class_ |
+| [TurningPoints](TurningPoints.qmd#aligned_textgrid.polar.polar_classes.TurningPoints) | _A turning point class_ |
+| [Ranges](Ranges.qmd#aligned_textgrid.polar.polar_classes.Ranges) | _A ranges interval_ |
+| [Levels](Levels.qmd#aligned_textgrid.polar.polar_classes.Levels) | _A levels point class_ |
+| [Misc](Misc.qmd#aligned_textgrid.polar.polar_classes.Misc) | _Misc points__ |

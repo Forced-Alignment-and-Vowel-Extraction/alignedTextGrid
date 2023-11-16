@@ -1,0 +1,13 @@
+# PrStr { #aligned_textgrid.polar.polar_classes.PrStr }
+
+`polar.polar_classes.PrStr(self, Point)`
+
+_PrStr tier points_
+
+## Attributes
+
+| Name      | Type   | Description                                                                  |
+|-----------|--------|------------------------------------------------------------------------------|
+| ...       |        | All methods and attributes from SequencePoint                                |
+| certainty | str    | If a '?' was appended to a point label, `'uncertain'`, otherwise `'certain'` |
+| status    | str    | `'edge'` or `'prominence'`                                                   |

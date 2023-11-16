@@ -1,0 +1,14 @@
+# TurningPoints { #aligned_textgrid.polar.polar_classes.TurningPoints }
+
+`polar.polar_classes.TurningPoints(self, Point)`
+
+_A turning point class_
+
+## Attributes
+
+| Name      | Type   | Description                                                                  |
+|-----------|--------|------------------------------------------------------------------------------|
+| ...       |        | All methods and attributes from SequencePoint                                |
+| level     | Levels | The `Levels` point associated with this turning point                        |
+| certainty | str    | If a '?' was appended to a point label, `'uncertain'`, otherwise `'certain'` |
+| override  | str    | An override value, if provided                                               |
