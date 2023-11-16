@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "aligned_textgrid"
+version = "0.4.1"
+description = "Classes for defining sequential information from TextGrids"
+authors = ["JoFrhwld <JoFrhwld@gmail.com>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+packages = [{include = "aligned_textgrid", from="src"}]
+exclude = [
+    "notebooks/",
+    "examples/",
+    "docs/"
+]
+homepage = "https://alignedtextgrid.readthedocs.io/en/latest/"
+repository = "https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+praatio = "^6.0.0"
+numpy = "^1.24.2"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.0.0"
+pytest = "^7.2.1"
+importlib = "^1.0.4"
+pytest-cov = "^4.0.0"
+pytest-html = "^3.2.0"
+
+[tool.poetry.group.docs.dependencies]
+textgrid = "^1.5"
+quartodoc = "0.6.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "--cov-config=.coveragerc",
+    "--cov"
+]
+filterwarnings =[
+    "ignore::UserWarning"
+]
+pythonpath = "src"
+testpaths = "tests"
