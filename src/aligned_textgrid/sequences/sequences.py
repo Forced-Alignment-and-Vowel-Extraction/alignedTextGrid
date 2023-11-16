@@ -254,8 +254,6 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             A numpy array of end times for the subset list
         sub_labels (List[Any]):
             A list of labels from the subset list
-        [] :
-            Indexes into the `subset_list`
     """    
 
     # utilities
