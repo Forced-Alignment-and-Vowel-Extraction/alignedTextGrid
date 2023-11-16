@@ -2,4 +2,4 @@
 
 `polar.polar_classes.Misc()`
 
-_Misc points__
+Misc points

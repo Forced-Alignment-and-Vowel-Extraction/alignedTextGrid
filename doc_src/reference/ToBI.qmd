@@ -2,7 +2,7 @@
 
 `polar.polar_classes.ToBI(self, Point=None)`
 
-_A ToBI point class_
+A ToBI point class
 
 ## Attributes
 

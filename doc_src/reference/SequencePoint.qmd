@@ -2,13 +2,13 @@
 
 `points.points.SequencePoint(self, point=Point(0, ''))`
 
-_A point class_
+Sequence Points
 
 ## Parameters
 
-| Name    | Type   | Description                | Default        |
-|---------|--------|----------------------------|----------------|
-| `point` | Point  | _a `praatio` point object_ | `Point(0, '')` |
+| Name    | Type   | Description              | Default        |
+|---------|--------|--------------------------|----------------|
+| `point` | Point  | a `praatio.point` object | `Point(0, '')` |
 
 ## Attributes
 
@@ -27,15 +27,15 @@ _A point class_
 
 | Name | Description |
 | --- | --- |
-| [distance_from](#aligned_textgrid.points.points.SequencePoint.distance_from) | _distance from an entry_ |
-| [get_interval_at_point](#aligned_textgrid.points.points.SequencePoint.get_interval_at_point) | _Get the SequenceInterval the current point falls within_ |
-| [get_interval_index_at_time](#aligned_textgrid.points.points.SequencePoint.get_interval_index_at_time) | _Get the index of an interval at the point's time_ |
+| [distance_from](#aligned_textgrid.points.points.SequencePoint.distance_from) | Distance from an entry |
+| [get_interval_at_point](#aligned_textgrid.points.points.SequencePoint.get_interval_at_point) | Get the `SequenceInterval` the current point falls within |
+| [get_interval_index_at_time](#aligned_textgrid.points.points.SequencePoint.get_interval_index_at_time) | Get the index of an interval at the point's time |
 
 ### distance_from { #aligned_textgrid.points.points.SequencePoint.distance_from }
 
 `points.points.SequencePoint.distance_from(entry)`
 
-_distance from an entry_
+Distance from an entry
 
 #### Parameters
 
@@ -53,7 +53,7 @@ _distance from an entry_
 
 `points.points.SequencePoint.get_interval_at_point(tier=None)`
 
-_Get the SequenceInterval the current point falls within_
+Get the `SequenceInterval` the current point falls within
 
 #### Parameters
 
@@ -71,7 +71,7 @@ _Get the SequenceInterval the current point falls within_
 
 `points.points.SequencePoint.get_interval_index_at_time(tier=None)`
 
-_Get the index of an interval at the point's time_
+Get the index of an interval at the point's time
 
 #### Parameters
 

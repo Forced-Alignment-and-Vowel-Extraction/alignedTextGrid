@@ -2,7 +2,7 @@
 
 `sequences.sequences.Top(self)`
 
-_A top level interval class_
+A top level interval class
 
 This is a special subclass intended to be the `superset_class` 
 for classes at the top of the hierarchy.

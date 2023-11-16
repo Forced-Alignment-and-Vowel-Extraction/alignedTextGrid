@@ -2,7 +2,7 @@
 
 `custom_classes.custom_classes(class_list=[], return_order=None, points=[])`
 
-_Generate custom interval classes_
+Generate custom interval classes
 
 Passing `custom_classes()` a list of Sequence names wil return a list of
 `SequenceInterval` subclasses with those names. The first name passed to `class_list`

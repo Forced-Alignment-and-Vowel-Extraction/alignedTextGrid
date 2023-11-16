@@ -2,7 +2,7 @@
 
 `polar.polar_classes.TurningPoints(self, Point)`
 
-_A turning point class_
+A turning point class
 
 ## Attributes
 

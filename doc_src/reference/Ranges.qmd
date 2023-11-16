@@ -2,7 +2,7 @@
 
 `polar.polar_classes.Ranges(self, Interval)`
 
-_A ranges interval_
+A ranges interval
 
 ## Attributes
 

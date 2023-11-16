@@ -2,7 +2,7 @@
 
 `sequences.sequences.Bottom(self)`
 
-_A bottom level interval class_
+A bottom level interval class
 
 This is a special subclass intended to be the `subset_class` 
 for classes at the bottom of the hierarchy.

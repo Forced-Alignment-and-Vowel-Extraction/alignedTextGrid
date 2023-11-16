@@ -1,0 +1,11 @@
+# TierGroupMixins { #aligned_textgrid.mixins.tiermixins.TierGroupMixins }
+
+`mixins.tiermixins.TierGroupMixins()`
+
+Methods and attributes for grouped tiers
+
+## Attributes
+
+| Name   | Type   | Description            |
+|--------|--------|------------------------|
+| \[\]   |        | Indexable and iterable |

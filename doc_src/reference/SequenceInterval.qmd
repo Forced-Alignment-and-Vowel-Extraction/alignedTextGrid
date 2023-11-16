@@ -31,17 +31,17 @@ A class to describe an interval with precedence relationships and hierarchical r
 
 | Name | Description |
 | --- | --- |
-| [fuse_leftwards](#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards) | _Fuse the current segment with the previous segment_ |
-| [fuse_rightwards](#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_rightwards) | _Fuse the current segment with the following segment_ |
-| [index](#aligned_textgrid.sequences.sequences.SequenceInterval.index) | _Returns subset instance index_ |
-| [pop](#aligned_textgrid.sequences.sequences.SequenceInterval.pop) | _Pop a sequence interval from the subset list_ |
-| [set_feature](#aligned_textgrid.sequences.sequences.SequenceInterval.set_feature) | _Sets arbitrary object attribute_ |
+| [fuse_leftwards](#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards) | Fuse the current segment with the previous segment |
+| [fuse_rightwards](#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_rightwards) | Fuse the current segment with the following segment |
+| [index](#aligned_textgrid.sequences.sequences.SequenceInterval.index) | Returns subset instance index |
+| [pop](#aligned_textgrid.sequences.sequences.SequenceInterval.pop) | Pop a sequence interval from the subset list |
+| [set_feature](#aligned_textgrid.sequences.sequences.SequenceInterval.set_feature) | Sets arbitrary object attribute |
 
 ### fuse_leftwards { #aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards }
 
 `sequences.sequences.SequenceInterval.fuse_leftwards(label_fun=lambda x, y: ' '.join([x, y]))`
 
-_Fuse the current segment with the previous segment_
+Fuse the current segment with the previous segment
 
 #### Parameters
 
@@ -53,7 +53,7 @@ _Fuse the current segment with the previous segment_
 
 `sequences.sequences.SequenceInterval.fuse_rightwards(label_fun=lambda x, y: ' '.join([x, y]))`
 
-_Fuse the current segment with the following segment_
+Fuse the current segment with the following segment
 
 #### Parameters
 
@@ -65,7 +65,7 @@ _Fuse the current segment with the following segment_
 
 `sequences.sequences.SequenceInterval.index(subset_instance)`
 
-_Returns subset instance index_
+Returns subset instance index
 
 #### Parameters
 
@@ -83,7 +83,7 @@ _Returns subset instance index_
 
 `sequences.sequences.SequenceInterval.pop(subset_instance)`
 
-_Pop a sequence interval from the subset list_
+Pop a sequence interval from the subset list
 
 #### Parameters
 
@@ -95,7 +95,7 @@ _Pop a sequence interval from the subset list_
 
 `sequences.sequences.SequenceInterval.set_feature(feature, value)`
 
-_Sets arbitrary object attribute_
+Sets arbitrary object attribute
 
 This will be most useful for creating custom subclasses.
 

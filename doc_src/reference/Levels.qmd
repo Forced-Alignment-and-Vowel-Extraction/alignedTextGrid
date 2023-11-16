@@ -2,7 +2,7 @@
 
 `polar.polar_classes.Levels(self, Point)`
 
-_A levels point class_
+A levels point class
 
 ## Attributes
 

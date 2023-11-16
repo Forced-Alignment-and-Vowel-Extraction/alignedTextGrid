@@ -2,7 +2,7 @@
 
 `sequences.word_and_phone.Phone(self, Interval=Interval(None, None, None))`
 
-_A Phone subclass of SequenceInterval_
+A Phone subclass of SequenceInterval
 
 Has all the same methods and attributes as SequenceInterval in addition
 to attributes described below. `superset_class` set to `Word`, 

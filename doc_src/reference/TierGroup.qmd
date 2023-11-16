@@ -2,7 +2,7 @@
 
 `sequences.tiers.TierGroup(self, tiers=[SequenceTier()])`
 
-_Relates tiers_
+Tier Grouping
 
 ## Parameters
 
@@ -25,14 +25,14 @@ _Relates tiers_
 
 | Name | Description |
 | --- | --- |
-| [get_intervals_at_time](#aligned_textgrid.sequences.tiers.TierGroup.get_intervals_at_time) | _Get intervals at time_ |
-| [show_structure](#aligned_textgrid.sequences.tiers.TierGroup.show_structure) | _Show the hierarchical structure_ |
+| [get_intervals_at_time](#aligned_textgrid.sequences.tiers.TierGroup.get_intervals_at_time) | Get intervals at time |
+| [show_structure](#aligned_textgrid.sequences.tiers.TierGroup.show_structure) | Show the hierarchical structure |
 
 ### get_intervals_at_time { #aligned_textgrid.sequences.tiers.TierGroup.get_intervals_at_time }
 
 `sequences.tiers.TierGroup.get_intervals_at_time(time)`
 
-_Get intervals at time_
+Get intervals at time
 
 Returns a list of intervals at `time` for each tier.
 
@@ -52,4 +52,4 @@ Returns a list of intervals at `time` for each tier.
 
 `sequences.tiers.TierGroup.show_structure()`
 
-_Show the hierarchical structure_
+Show the hierarchical structure

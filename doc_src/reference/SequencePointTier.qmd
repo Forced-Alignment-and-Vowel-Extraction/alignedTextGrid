@@ -28,7 +28,7 @@ A SequencePointTier class
 
 | Name | Description |
 | --- | --- |
-| [get_nearest_point](#aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point) | _Returns nearest point_ |
+| [get_nearest_point](#aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point) | Returns nearest point |
 | [get_nearest_point_index](#aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point_index) | Returns the index of the closest point to `time` |
 | [return_tier](#aligned_textgrid.points.tiers.SequencePointTier.return_tier) | Returns SequencePointTier as a `praatio` PointTier |
 | [save_as_tg](#aligned_textgrid.points.tiers.SequencePointTier.save_as_tg) | Saves the current point tier as a textgrid |
@@ -37,7 +37,7 @@ A SequencePointTier class
 
 `points.tiers.SequencePointTier.get_nearest_point(time)`
 
-_Returns nearest point_
+Returns nearest point
 
 #### Parameters
 

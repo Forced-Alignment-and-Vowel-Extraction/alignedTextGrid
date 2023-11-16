@@ -2,7 +2,7 @@
 
 `aligned_textgrid.AlignedTextGrid(self, textgrid=None, textgrid_path=None, entry_classes=[SequenceInterval])`
 
-_An aligned Textgrid_
+An aligned Textgrid
 
 ## Parameters
 
@@ -26,15 +26,15 @@ _An aligned Textgrid_
 
 | Name | Description |
 | --- | --- |
-| [get_intervals_at_time](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_intervals_at_time) | _Get interval indices at time_ |
-| [return_textgrid](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.return_textgrid) | _Convert this `AlignedTextGrid` to a `praatio` `Textgrid`_ |
-| [save_textgrid](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.save_textgrid) | _Saves the current AlignedTextGrid_ |
+| [get_intervals_at_time](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_intervals_at_time) | Get interval indices at time |
+| [return_textgrid](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.return_textgrid) | Convert this `AlignedTextGrid` to a `praatio` `Textgrid` |
+| [save_textgrid](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.save_textgrid) | Saves the current AlignedTextGrid |
 
 ### get_intervals_at_time { #aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_intervals_at_time }
 
 `aligned_textgrid.AlignedTextGrid.get_intervals_at_time(time)`
 
-_Get interval indices at time_
+Get interval indices at time
 
 Returns a nested list of intervals at `time` for each tier.
 
@@ -54,7 +54,7 @@ Returns a nested list of intervals at `time` for each tier.
 
 `aligned_textgrid.AlignedTextGrid.return_textgrid()`
 
-_Convert this `AlignedTextGrid` to a `praatio` `Textgrid`_
+Convert this `AlignedTextGrid` to a `praatio` `Textgrid`
 
 Returns the current object as a `praatio.data_classes.textgrid.Textgrid`.
 Useful for saving.
@@ -69,7 +69,7 @@ Useful for saving.
 
 `aligned_textgrid.AlignedTextGrid.save_textgrid(save_path, format='long_textgrid')`
 
-_Saves the current AlignedTextGrid_
+Saves the current AlignedTextGrid
 
 Uses the `praatio.data_classes.textgrid.Textgrid.save()` method.
 

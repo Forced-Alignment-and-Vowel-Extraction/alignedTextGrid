@@ -2,7 +2,7 @@
 
 `polar.polar_classes.PrStr(self, Point)`
 
-_PrStr tier points_
+PrStr tier points
 
 ## Attributes
 
