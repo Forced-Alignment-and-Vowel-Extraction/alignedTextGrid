@@ -8,33 +8,30 @@ import warnings
 import numpy as np
 
 class  SequencePoint(PrecedenceMixins, InTierMixins):
-    """_A point class_
+    """Sequence Points
     
     Args:
-        point (Point): _a `praatio` point object_
+        point (Point): a `praatio.point` object
     
     Attributes:
         ...:
             All attributes and methods included in PrecedenceMixins and InTierMixins
         time (float):
-          Time value associated with the point.
+            Time value associated with the point.
         label (str):
-          Label associated with the point
+            Label associated with the point
         intier (SequencePointTier):
-          If the SequencePoint is within a tier, this accesses the tier.
+            If the SequencePoint is within a tier, this accesses the tier.
         fol (SequencePoint):
-          If defined, the following SequencePoint within the same tier
+            If defined, the following SequencePoint within the same tier
         prev (SequencePoint):
-          If defined, the previous SequencePoint within the same tier.
+            If defined, the previous SequencePoint within the same tier.
         fol_distance (float):
-          If `fol` is defined, the difference between the current point and `fol`
-          (should be >= 0)
+            If `fol` is defined, the difference between the current point and `fol`
+            (should be >= 0)
         prev_distance (float):
-          if `prev` is defined, the difference between the current point and `prev`
-          (should be <= 0).
-
-        
-
+            if `prev` is defined, the difference between the current point and `prev`
+            (should be <= 0).
     """
 
     def __init__(
@@ -107,7 +104,7 @@ class  SequencePoint(PrecedenceMixins, InTierMixins):
             self, 
             entry: Self|SequenceInterval
         ) -> Union[float,np.array]:
-        """_distance from an entry_
+        """Distance from an entry
 
         Args:
             entry (Self | SequenceInterval):
@@ -116,8 +113,8 @@ class  SequencePoint(PrecedenceMixins, InTierMixins):
 
         Returns:
             (Union[float,np.array]):
-              a single value in the case of a point, a numpy array in
-              the case of an interval.
+                a single value in the case of a point, a numpy array in
+                the case of an interval.
         """
         if isinstance(entry, SequencePoint):
             return self.time - entry.time
@@ -130,7 +127,7 @@ class  SequencePoint(PrecedenceMixins, InTierMixins):
             self, 
             tier: SequenceTier = None
         ) -> int:
-        """_Get the index of an interval at the point's time_
+        """Get the index of an interval at the point's time
 
         Args:
             tier (SequenceTier): A SequenceTier.
@@ -147,7 +144,7 @@ class  SequencePoint(PrecedenceMixins, InTierMixins):
             self, 
             tier: SequenceTier=None
         ) -> SequenceInterval:
-        """_Get the SequenceInterval the current point falls within_
+        """Get the `SequenceInterval` the current point falls within
 
         Args:
             tier (SequenceTier):
@@ -155,7 +152,7 @@ class  SequencePoint(PrecedenceMixins, InTierMixins):
 
         Returns:
             (SequenceInterval): 
-              The SequenceInterval within which the current point falls
+                The SequenceInterval within which the current point falls
         """
         if tier and isinstance(tier, SequenceTier):
             return tier[self.get_interval_index_at_time(tier)]

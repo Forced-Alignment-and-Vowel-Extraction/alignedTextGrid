@@ -128,7 +128,7 @@ class SequencePointTier(TierMixins):
             self,
             time:float
         )->SequencePoint:
-        """_Returns nearest point_
+        """Returns nearest point
 
         Args:
             time (float): time at which to get the nearest point
