@@ -30,4 +30,24 @@ class WithinMixins:
     def within_index(self):
         if hasattr(self, "_within") and hasattr(self.within, "_contains"):
             return self.within.contains.index(self)
+        return None
+    
+    def _get_within_path(self, obj):
+        path = []
+        if not obj.within_index is None:
+            path += [obj.within_index]
+            path += self._get_within_path(obj.within)
+            return path
         
+        return path
+
+    @property
+    def within_path(self):
+        path =  self._get_within_path(obj = self)
+        path.reverse()
+        return path
+    
+    @property
+    def id(self):
+        path = self.within_path
+        return "-".join([str(x) for x in path])
