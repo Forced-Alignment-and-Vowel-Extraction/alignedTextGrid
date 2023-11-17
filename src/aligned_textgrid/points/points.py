@@ -1,5 +1,6 @@
 from praatio.utilities.constants import Point
 from aligned_textgrid.mixins.mixins import PrecedenceMixins, InTierMixins
+from aligned_textgrid.mixins.within import WithinMixins
 from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.sequences.sequences import SequenceInterval
 from typing import Union
@@ -7,7 +8,7 @@ from typing_extensions import Self
 import warnings
 import numpy as np
 
-class  SequencePoint(PrecedenceMixins, InTierMixins):
+class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     """Sequence Points
     
     Args:
