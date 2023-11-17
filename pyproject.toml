@@ -29,6 +29,7 @@ pytest-html = "^3.2.0"
 [tool.poetry.group.docs.dependencies]
 textgrid = "^1.5"
 quartodoc = "0.6.5"
+jupyter = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core"]
