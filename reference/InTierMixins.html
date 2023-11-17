@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>top</title>
+<title>intiermixins</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../reference/Bottom.html" rel="next">
-<link href="../reference/SequenceInterval.html" rel="prev">
+<link href="../reference/SequenceInterval.html" rel="next">
+<link href="../reference/PrecedenceMixins.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -106,7 +106,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Sequence Classes</li><li class="breadcrumb-item"><a href="../reference/SequenceInterval.html">Intervals</a></li><li class="breadcrumb-item"><a href="../reference/Top.html">Top</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Sequence Classes</li><li class="breadcrumb-item"><a href="../reference/PrecedenceMixins.html">Common Features</a></li><li class="breadcrumb-item"><a href="../reference/InTierMixins.html">InTierMixins</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -135,13 +135,13 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
  <span class="menu-text">Common Features</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/PrecedenceMixins.html" class="sidebar-item-text sidebar-link">
@@ -150,7 +150,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/InTierMixins.html" class="sidebar-item-text sidebar-link">
+  <a href="../reference/InTierMixins.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">InTierMixins</span></a>
   </div>
 </li>
@@ -158,13 +158,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
  <span class="menu-text">Intervals</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/SequenceInterval.html" class="sidebar-item-text sidebar-link">
@@ -173,7 +173,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/Top.html" class="sidebar-item-text sidebar-link active">
+  <a href="../reference/Top.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Top</span></a>
   </div>
 </li>
@@ -385,7 +385,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#aligned_textgrid.sequences.sequences.Top" id="toc-aligned_textgrid.sequences.sequences.Top" class="nav-link active" data-scroll-target="#aligned_textgrid.sequences.sequences.Top">Top</a></li>
+  <li><a href="#aligned_textgrid.mixins.mixins.InTierMixins" id="toc-aligned_textgrid.mixins.mixins.InTierMixins" class="nav-link active" data-scroll-target="#aligned_textgrid.mixins.mixins.InTierMixins">InTierMixins</a>
+  <ul class="collapse">
+  <li><a href="#attributes" id="toc-attributes" class="nav-link" data-scroll-target="#attributes">Attributes</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#aligned_textgrid.mixins.mixins.InTierMixins.get_tierwise" id="toc-aligned_textgrid.mixins.mixins.InTierMixins.get_tierwise" class="nav-link" data-scroll-target="#aligned_textgrid.mixins.mixins.InTierMixins.get_tierwise">get_tierwise</a></li>
+  <li><a href="#aligned_textgrid.mixins.mixins.InTierMixins.return_interval" id="toc-aligned_textgrid.mixins.mixins.InTierMixins.return_interval" class="nav-link" data-scroll-target="#aligned_textgrid.mixins.mixins.InTierMixins.return_interval">return_interval</a></li>
+  <li><a href="#aligned_textgrid.mixins.mixins.InTierMixins.return_point" id="toc-aligned_textgrid.mixins.mixins.InTierMixins.return_point" class="nav-link" data-scroll-target="#aligned_textgrid.mixins.mixins.InTierMixins.return_point">return_point</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -394,13 +403,161 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="aligned_textgrid.sequences.sequences.Top" class="level1">
-<h1>Top</h1>
-<p><code>sequences.sequences.Top(self)</code></p>
-<p>A top level interval class</p>
-<p>This is a special subclass intended to be the <code>superset_class</code> for classes at the top of the hierarchy.</p>
+<section id="aligned_textgrid.mixins.mixins.InTierMixins" class="level1">
+<h1>InTierMixins</h1>
+<p><code>mixins.mixins.InTierMixins()</code></p>
+<p>Methods and attrubites relating <code>Sequence*</code> objects to tiers.</p>
+<section id="attributes" class="level2">
+<h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>tier_index</td>
+<td>int</td>
+<td>Index of the current entry within its tier</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#aligned_textgrid.mixins.mixins.InTierMixins.get_tierwise">get_tierwise</a></td>
+<td>Get entry by relative tier index</td>
+</tr>
+<tr class="even">
+<td><a href="#aligned_textgrid.mixins.mixins.InTierMixins.return_interval">return_interval</a></td>
+<td>Return current object as <code>Interval</code></td>
+</tr>
+<tr class="odd">
+<td><a href="#aligned_textgrid.mixins.mixins.InTierMixins.return_point">return_point</a></td>
+<td>Return current object as <code>Point</code></td>
+</tr>
+</tbody>
+</table>
+<section id="aligned_textgrid.mixins.mixins.InTierMixins.get_tierwise" class="level3">
+<h3 class="anchored" data-anchor-id="aligned_textgrid.mixins.mixins.InTierMixins.get_tierwise">get_tierwise</h3>
+<p><code>mixins.mixins.InTierMixins.get_tierwise(idx=0)</code></p>
+<p>Get entry by relative tier index</p>
+<p>Returns a SequenceInterval or SequencePoint from an index position relative to the current sequence.</p>
+<ul>
+<li><code>idx=0</code> - Returns the current entry</li>
+<li><code>idx=1</code> - Returns the following entry on the tier. If the current entry is in the final position within its subset list, this will not be the same as <code>.fol</code></li>
+<li><code>idx=-1</code> - Returns the previous entry on the tier. If the current entry is in the initial position within its subset list, this will not be the same as <code>.prev</code></li>
+</ul>
+<p>This will raise an ordinary IndexError if the relative index exceeds the length of the tier.</p>
+<section id="parameters" class="level4">
+<h4 class="anchored" data-anchor-id="parameters">Parameters</h4>
+<table class="table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 73%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>idx</code></td>
+<td>int</td>
+<td>The relative tier index at which to retrieve a sequence. Defaults to 0.</td>
+<td><code>0</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="returns" class="level4">
+<h4 class="anchored" data-anchor-id="returns">Returns</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SequenceInterval | SequencePoint</td>
+<td>The entry at the relative index</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aligned_textgrid.mixins.mixins.InTierMixins.return_interval" class="level3">
+<h3 class="anchored" data-anchor-id="aligned_textgrid.mixins.mixins.InTierMixins.return_interval">return_interval</h3>
+<p><code>mixins.mixins.InTierMixins.return_interval()</code></p>
+<p>Return current object as <code>Interval</code></p>
+<p>Will be useful for saving back to textgrid</p>
+<section id="returns-1" class="level4">
+<h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>praatio.utilities.constants.Interval</td>
+<td>A <code>praatio</code> <code>Interval</code> object</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aligned_textgrid.mixins.mixins.InTierMixins.return_point" class="level3">
+<h3 class="anchored" data-anchor-id="aligned_textgrid.mixins.mixins.InTierMixins.return_point">return_point</h3>
+<p><code>mixins.mixins.InTierMixins.return_point()</code></p>
+<p>Return current object as <code>Point</code></p>
+<section id="returns-2" class="level4">
+<h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>praatio.utilities.constants.Point</td>
+<td>A <code>praatio</code> <code>Point</code></td>
+</tr>
+<tr class="even">
+<td>Point</td>
+<td>object</td>
+</tr>
+</tbody>
+</table>
 
 
+</section>
+</section>
+</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div>GPLv3</div></div></section></div></main> <!-- /main -->
@@ -754,13 +911,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../reference/SequenceInterval.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">SequenceInterval</span>
+      <a href="../reference/PrecedenceMixins.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">PrecedenceMixins</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../reference/Bottom.html" class="pagination-link">
-        <span class="nav-page-text">Bottom</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../reference/SequenceInterval.html" class="pagination-link">
+        <span class="nav-page-text">SequenceInterval</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
