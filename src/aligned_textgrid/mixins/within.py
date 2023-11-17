@@ -29,5 +29,5 @@ class WithinMixins:
     @property
     def within_index(self):
         if hasattr(self, "_within") and hasattr(self.within, "_contains"):
-            return self.contains.index(self)
+            return self.within.contains.index(self)
         

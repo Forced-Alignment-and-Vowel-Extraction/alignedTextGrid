@@ -42,3 +42,5 @@ class TestContains:
         assert len(this_b.contains) == 1
         assert this_a.within is this_b
 
+        assert this_a.within_index == 0
+
