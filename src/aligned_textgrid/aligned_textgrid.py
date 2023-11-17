@@ -10,12 +10,13 @@ from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
 from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from aligned_textgrid.points.tiers import SequencePointTier, PointsGroup
+from aligned_textgrid.mixins.within import WithinMixins
 from typing import Type, Sequence, Literal
 import numpy as np
 import warnings
 
 
-class AlignedTextGrid:
+class AlignedTextGrid(WithinMixins):
     """An aligned Textgrid
 
     Args:
@@ -66,6 +67,7 @@ class AlignedTextGrid:
             self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, entry_classes)
 
         self.tier_groups = self._relate_tiers()
+        self.contains = self.tier_groups
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
 
     

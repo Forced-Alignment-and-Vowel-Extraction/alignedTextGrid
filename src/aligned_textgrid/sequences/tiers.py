@@ -7,11 +7,12 @@ from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
 from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
+from aligned_textgrid.mixins.within import WithinMixins
 import numpy as np
 from typing import Type
 import warnings
 
-class SequenceTier(TierMixins):
+class SequenceTier(TierMixins, WithinMixins):
     """A sequence tier
 
     Given a `praatio` `IntervalTier` or list of `Interval`s, creates
@@ -73,6 +74,8 @@ class SequenceTier(TierMixins):
                 seq.set_final()
             else:
                 seq.set_fol(self.sequence_list[idx+1])
+        if issubclass(self.superset_class, Top):
+            self.contains = self.sequence_list
 
     def __set_intier(
             self,
@@ -179,7 +182,7 @@ class SequenceTier(TierMixins):
         out_tg.save(save_path, "long_textgrid")
 
 
-class TierGroup(TierGroupMixins):
+class TierGroup(TierGroupMixins, WithinMixins):
     """Tier Grouping
 
     Args:
@@ -274,6 +277,7 @@ class TierGroup(TierGroupMixins):
                     return top_to_bottom
                 
                 top_to_bottom.append(tiers[next_idx])
+        self.contains = top_to_bottom
         return(top_to_bottom)
             
     @property
