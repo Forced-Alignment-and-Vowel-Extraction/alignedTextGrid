@@ -2,6 +2,7 @@ import polars as pl
 
 def interval_to_df(self):
     attributes_to_get =[
+        "id"
         "tier_index",
         "start",
         "end",
@@ -11,10 +12,11 @@ def interval_to_df(self):
     col_names = [
         f"{class_name}_{att}" for att in attributes_to_get
     ]    
-    
+
     sub_df_rows = None
     if len(self.contains) > 0:
-        sub_df = interval_to_df(self.contains)
+        sub_df_list = [interval_to_df(x) for x in self.contains]
+        sub_df = pl.concat(sub_df_list, how="vertical")
         sub_df_rows = sub_df.shape[0]
 
     out_dict = {
