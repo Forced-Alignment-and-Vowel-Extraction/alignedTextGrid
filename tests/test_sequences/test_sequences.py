@@ -1,8 +1,10 @@
 import pytest
 from aligned_textgrid.sequences.sequences import *
+from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import *
 import numpy as np
 from praatio.utilities.constants import Interval
+from praatio.utilities.constants import Point
 
 class TestSequenceIntervalDefault:
     """_Test default behavior of SequenceInterval_
@@ -280,6 +282,37 @@ class TestHierarchy:
 
         with pytest.raises(ValueError):
             _ = upper1.index(lower3)
+        
+    def test_first_last(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+        lower3 = self.LowerClass(Interval(11,15,"lower3"))
+
+        upper1.set_subset_list([lower1, lower2, lower3])
+
+        first_interval = upper1[0]
+        assert upper1.first is first_interval
+
+        last_interval = upper1[-1]
+        assert upper1.last is last_interval
+
+    def test_first_last_errors(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        point1 = SequencePoint(Point(0, "point"))
+
+        with pytest.raises(IndexError):
+            upper1.first
+
+        with pytest.raises(IndexError):
+            upper1.last
+
+        with pytest.raises(AttributeError):
+            point1.first
+
+        with pytest.raises(AttributeError):
+            point1.last            
+
 
     def test_subset_pop(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))

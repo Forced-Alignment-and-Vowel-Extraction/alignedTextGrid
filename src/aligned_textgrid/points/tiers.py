@@ -38,10 +38,11 @@ class SequencePointTier(TierMixins):
             Indexable and iterable
         
     """
-    def __init__(self, 
-                 tier:PointTier|list[Point] = PointTier("", [Point(0,"")]), 
-                 entry_class:Type[SequencePoint] = SequencePoint):
-
+    def __init__(
+        self, 
+        tier:PointTier|list[Point] = [], 
+        entry_class:Type[SequencePoint] = SequencePoint
+    ):
 
         super().__init__()
         if isinstance(tier, PointTier):
@@ -127,7 +128,7 @@ class SequencePointTier(TierMixins):
             self,
             time:float
         )->SequencePoint:
-        """_Returns nearest point_
+        """Returns nearest point
 
         Args:
             time (float): time at which to get the nearest point

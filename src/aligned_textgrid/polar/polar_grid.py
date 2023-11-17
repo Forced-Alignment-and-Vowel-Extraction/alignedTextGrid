@@ -2,7 +2,7 @@ from aligned_textgrid.aligned_textgrid import AlignedTextGrid
 from praatio import textgrid
 
 class PolarGrid(AlignedTextGrid):
-    """_Read and structure a PoLaR annotation texgrid_
+    """Read and structure a PoLaR annotation texgrid
 
     Either pass a `praatio.textgrid` object, or a path to a textgrid
     file

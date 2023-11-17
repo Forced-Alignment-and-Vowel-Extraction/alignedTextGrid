@@ -1,0 +1,63 @@
+# PrecedenceMixins { #aligned_textgrid.mixins.mixins.PrecedenceMixins }
+
+`mixins.mixins.PrecedenceMixins()`
+
+Methods and attributes for SequenceIntervals and SequencePoints
+
+## Attributes
+
+| Name   | Type             | Description                           |
+|--------|------------------|---------------------------------------|
+| first  | SequenceInterval | The first interval in the subset list |
+| last   | SequenceInterval | The last interval in the subset list  |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [set_final](#aligned_textgrid.mixins.mixins.PrecedenceMixins.set_final) | Sets the current object as having no `fol` entry |
+| [set_fol](#aligned_textgrid.mixins.mixins.PrecedenceMixins.set_fol) | Sets the following instance |
+| [set_initial](#aligned_textgrid.mixins.mixins.PrecedenceMixins.set_initial) | Sets the current object as having no `prev` entry |
+| [set_prev](#aligned_textgrid.mixins.mixins.PrecedenceMixins.set_prev) | Sets the previous intance |
+
+### set_final { #aligned_textgrid.mixins.mixins.PrecedenceMixins.set_final }
+
+`mixins.mixins.PrecedenceMixins.set_final()`
+
+Sets the current object as having no `fol` entry
+
+While `self.fol` is defined for these entries, the actual
+instance does not appear in `self.super_instance.subset_list`
+
+### set_fol { #aligned_textgrid.mixins.mixins.PrecedenceMixins.set_fol }
+
+`mixins.mixins.PrecedenceMixins.set_fol(next_int)`
+
+Sets the following instance
+
+#### Parameters
+
+| Name       | Type                              | Description                                                                                                                      | Default    |
+|------------|-----------------------------------|----------------------------------------------------------------------------------------------------------------------------------|------------|
+| `next_int` | SequenceInterval \| SequencePoint | Sets the `next_int` as the `fol` entry. Must be of the same class as the current object. That is, `type(next_int) is type(self)` | _required_ |
+
+### set_initial { #aligned_textgrid.mixins.mixins.PrecedenceMixins.set_initial }
+
+`mixins.mixins.PrecedenceMixins.set_initial()`
+
+Sets the current object as having no `prev` entry
+
+While `self.prev` is defined for these entries, the actual 
+instance does not appear in `self.super_instance.subset_list`
+
+### set_prev { #aligned_textgrid.mixins.mixins.PrecedenceMixins.set_prev }
+
+`mixins.mixins.PrecedenceMixins.set_prev(prev_int)`
+
+Sets the previous intance
+
+#### Parameters
+
+| Name       | Type                              | Description                                                                                                                       | Default    |
+|------------|-----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|------------|
+| `prev_int` | SequenceInterval \| SequencePoint | Sets the `prev_int` as the `prev` entry. Must be of the same class as the current object. That is, `type(prev_int) is type(self)` | _required_ |

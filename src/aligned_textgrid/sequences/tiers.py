@@ -12,7 +12,7 @@ from typing import Type
 import warnings
 
 class SequenceTier(TierMixins):
-    """_A sequence tier_
+    """A sequence tier
 
     Given a `praatio` `IntervalTier` or list of `Interval`s, creates
     `entry_class` instances for every interval.
@@ -88,10 +88,10 @@ class SequenceTier(TierMixins):
             self,
             entry
     ):
-        """_Pop an interval_
+        """Pop an interval
 
         Args:
-            entry (SequenceInterval): _Interval to pop_
+            entry (SequenceInterval): Interval to pop
 
         """
         if entry in self.sequence_list:
@@ -136,7 +136,7 @@ class SequenceTier(TierMixins):
             self, 
             time: float
         ) -> int:
-        """_Gets interval index at specified time_
+        """Gets interval index at specified time
 
         Args:
             time (float): time at which to get an interval
@@ -150,7 +150,7 @@ class SequenceTier(TierMixins):
         return out_idx
     
     def return_tier(self) -> IntervalTier:
-        """_Returns a `praatio` interval tier_
+        """Returns a `praatio` interval tier
 
         Returns:
             (praatio.data_classes.interval_tier.IntervalTier):
@@ -166,7 +166,7 @@ class SequenceTier(TierMixins):
             self, 
             save_path: str
         ):
-        """_Saves as a textgrid_
+        """Saves as a textgrid
 
         Uses `praatio.data_classes.textgrid.Textgrid.save()` method.
 
@@ -180,7 +180,7 @@ class SequenceTier(TierMixins):
 
 
 class TierGroup(TierGroupMixins):
-    """_Relates tiers_
+    """Tier Grouping
 
     Args:
         tiers (list[SequenceTier]): A list of sequence tiers that are 
@@ -296,7 +296,7 @@ class TierGroup(TierGroupMixins):
             self, 
             time: float
         ) -> list[int]:
-        """_Get intervals at time_
+        """Get intervals at time
 
         Returns a list of intervals at `time` for each tier.
 
@@ -309,7 +309,7 @@ class TierGroup(TierGroupMixins):
         return [tier.get_interval_at_time(time) for tier in self.tier_list]
 
     def show_structure(self):
-        """_Show the hierarchical structure_
+        """Show the hierarchical structure
         """
         tab = "  "
         for idx, tier in enumerate(self.tier_list):

@@ -7,7 +7,7 @@ on:
   push:
     branches: [ $default-branch, "workflows" ]
   pull_request:
-    branches: [ $default-branch, "dev" , "main"]
+    branches: [ $default-branch, "dev" , "main", "feature/**"]
 
 jobs:
   lint-and-test:

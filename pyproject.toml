@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aligned_textgrid"
-version = "0.4.0"
+version = "0.4.1"
 description = "Classes for defining sequential information from TextGrids"
 authors = ["JoFrhwld <JoFrhwld@gmail.com>"]
 license = "GPL-3.0-or-later"
@@ -27,11 +27,9 @@ pytest-cov = "^4.0.0"
 pytest-html = "^3.2.0"
 
 [tool.poetry.group.docs.dependencies]
-mkdocs = "^1.4.2"
-mkdocstrings = {version = ">=0.18", extras = ["python"]}
-mkdocs-gen-files = "^0.4.0"
-mkdocs-literate-nav = "^0.6.0"
-mkdocs-jupyter = "<9.0.0"
+textgrid = "^1.5"
+quartodoc = "0.6.5"
+jupyter = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core"]

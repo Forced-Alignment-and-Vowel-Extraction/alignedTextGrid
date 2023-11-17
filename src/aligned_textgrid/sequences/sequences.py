@@ -51,7 +51,7 @@ class HierarchyMixins:
         
     @classmethod
     def set_subset_class(cls, subset_class = None):
-        """_summary_
+        """summary
 
         Args:
             subset_class (Type[SequenceInterval], optional): 
@@ -78,7 +78,7 @@ class HierarchyMixins:
 class InstanceMixins(HierarchyMixins):
 
     def set_super_instance(self, super_instance = None):
-        """_Sets the specific superset relationship_
+        """Sets the specific superset relationship
 
         Args:
             super_instance (SegmentInterval, optional): 
@@ -98,7 +98,7 @@ class InstanceMixins(HierarchyMixins):
     ## Subset Methods
         
     def set_subset_list(self, subset_list = None):
-        """_Appends all objects to the `subset_list`_
+        """Appends all objects to the `subset_list`
 
         Args:
             subset_list (List[SequenceInterval], optional): 
@@ -117,7 +117,7 @@ class InstanceMixins(HierarchyMixins):
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
 
     def append_subset_list(self, subset_instance = None):
-        """_Append a single item to subset list_
+        """Append a single item to subset list
 
         Args:
             subset_instance (SequenceInterval): 
@@ -139,7 +139,7 @@ class InstanceMixins(HierarchyMixins):
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
             
     def _set_subset_precedence(self):
-        """_summary_
+        """summary
             Private method. Sorts subset list and re-sets precedence 
             relationshops.
         """
@@ -156,7 +156,7 @@ class InstanceMixins(HierarchyMixins):
                 p.set_fol(self.subset_list[idx+1])
 
     def _sort_subsetlist(self):
-        """_summary_
+        """summary
             Private method. Sorts the subset_list
         """
         if len(self.subset_list) > 0:
@@ -166,7 +166,7 @@ class InstanceMixins(HierarchyMixins):
 
     ## Subset Validation
     def validate(self) -> bool:
-        """_Validate the subset list_
+        """Validate the subset list
         Validation checks to see if
 
         1. The first item in `subset_list` starts at the same time as `self`.
@@ -226,7 +226,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     """
     A class to describe an interval with precedence relationships and hierarchical relationships
 
-    Parameters:
+    Args:
         Interval: A Praat textgrid Interval
 
     Attributes:
@@ -254,8 +254,6 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             A numpy array of end times for the subset list
         sub_labels (List[Any]):
             A list of labels from the subset list
-        [] :
-            Indexes into the `subset_list`
     """    
 
     # utilities
@@ -309,7 +307,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             self,
             subset_instance
     ) -> int:
-        """_Returns subset instance index_
+        """Returns subset instance index
 
         Args:
             subset_instance (SequenceInterval): 
@@ -324,7 +322,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             self,
             subset_instance
     ):
-        """_Pop a sequence interval from the subset list_
+        """Pop a sequence interval from the subset list
 
         Args:
             subset_instance (SequenceInterval): A sequence interval to pop
@@ -388,7 +386,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             self, 
             label_fun = lambda x, y: " ".join([x, y])
         ):
-        """_Fuse the current segment with the following segment_
+        """Fuse the current segment with the following segment
 
         Args:
             label_fun (function): Function for joining interval labels.
@@ -419,7 +417,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             self, 
             label_fun = lambda x, y: " ".join([x, y])
         ):
-        """_Fuse the current segment with the previous segment_
+        """Fuse the current segment with the previous segment
 
         Args:
             label_fun (function): Function for joining interval labels.
@@ -458,7 +456,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             self, 
             feature: str, 
             value: Any):
-        """_Sets arbitrary object attribute_
+        """Sets arbitrary object attribute
 
         This will be most useful for creating custom subclasses.
 
@@ -469,7 +467,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
         setattr(self, feature, value)
 
 class Top(HierarchyPart):
-    """_A top level interval class_
+    """A top level interval class
     
     This is a special subclass intended to be the `superset_class` 
     for classes at the top of the hierarchy.
@@ -479,7 +477,7 @@ class Top(HierarchyPart):
         super().__init__()
 
 class Bottom(HierarchyPart):
-    """_A bottom level interval class_
+    """A bottom level interval class
 
     This is a special subclass intended to be the `subset_class` 
     for classes at the bottom of the hierarchy.

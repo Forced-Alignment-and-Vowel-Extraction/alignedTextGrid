@@ -8,7 +8,7 @@ def custom_classes(
         return_order: list[str] | list[int] | None = None,
         points:list[int] = []        
 ) -> list[Type[SequenceInterval]]:
-    """_Generate custom interval classes_
+    """Generate custom interval classes
 
     Passing `custom_classes()` a list of Sequence names wil return a list of
     `SequenceInterval` subclasses with those names. The first name passed to `class_list`

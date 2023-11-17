@@ -1,2 +1,0 @@
-- [Usage](usage/)
-- [Reference](reference/)

@@ -3,7 +3,7 @@ from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from aligned_textgrid.sequences.sequences import SequenceInterval
 from aligned_textgrid.points.tiers import SequencePointTier, PointsGroup
 from aligned_textgrid.points.points import SequencePoint
-from aligned_textgrid.polar.polar_classses import PrStr, ToBI, \
+from aligned_textgrid.polar.polar_classes import PrStr, ToBI, \
     TurningPoints, Ranges, Levels, Misc
 from aligned_textgrid.polar.polar_grid import PolarGrid
 from aligned_textgrid.sequences.word_and_phone import Word, Phone
