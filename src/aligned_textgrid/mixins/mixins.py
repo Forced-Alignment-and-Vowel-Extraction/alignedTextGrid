@@ -34,7 +34,7 @@ class PrecedenceMixins:
 
     def set_fol(
             self, next_int):
-        """_Sets the following instance_
+        """Sets the following instance
 
         Args:
             next_int (SequenceInterval|SequencePoint): 
@@ -55,7 +55,7 @@ class PrecedenceMixins:
             raise Exception(f"Following segment must be an instance of {type(self).__name__}")
 
     def set_prev(self, prev_int):
-        """_Sets the previous intance_
+        """Sets the previous intance
 
         Args:
             prev_int (SequenceInterval|SequencePoint):
@@ -76,7 +76,7 @@ class PrecedenceMixins:
             raise Exception(f"Previous segment must be an instance of {type(self).__name__}")
     
     def set_final(self):
-        """_Sets the current object as having no `fol` entry_
+        """Sets the current object as having no `fol` entry
         
         While `self.fol` is defined for these entries, the actual
         instance does not appear in `self.super_instance.subset_list`
@@ -88,7 +88,7 @@ class PrecedenceMixins:
             self.set_fol(type(self)(Point(None, "#")))
 
     def set_initial(self):
-        """_Sets the current object as having no `prev` entry_
+        """Sets the current object as having no `prev` entry
 
         While `self.prev` is defined for these entries, the actual 
         instance does not appear in `self.super_instance.subset_list`
@@ -99,7 +99,7 @@ class PrecedenceMixins:
             self.set_prev(type(self)(Point(None, "#")))
 
 class InTierMixins:
-    """InTier methods and attributes
+    """Methods and attrubites relating `Sequence*` objects to tiers.
 
     Attributes:
         tier_index (int):
@@ -118,7 +118,7 @@ class InTierMixins:
             self,
             idx:int = 0
         ):
-        """_Get entry by relative tier index_
+        """Get entry by relative tier index
 
         Returns a SequenceInterval or SequencePoint from an index position relative to
         the current sequence.
@@ -148,7 +148,7 @@ class InTierMixins:
             return None
 
     def return_interval(self) -> Interval:
-        """_Return current object as `Interval`_
+        """Return current object as `Interval`
         
         Will be useful for saving back to textgrid
 
@@ -158,7 +158,7 @@ class InTierMixins:
         return Interval(self.start, self.end, self.label)
     
     def return_point(self) -> Point:
-        """_Return current object as `Point`_
+        """Return current object as `Point`
 
         Returns:
            (praatio.utilities.constants.Point): A `praatio` `Point` 

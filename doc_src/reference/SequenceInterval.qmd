@@ -1,0 +1,107 @@
+# SequenceInterval { #aligned_textgrid.sequences.sequences.SequenceInterval }
+
+`sequences.sequences.SequenceInterval(self, Interval=Interval(None, None, None))`
+
+A class to describe an interval with precedence relationships and hierarchical relationships
+
+## Parameters
+
+| Name       | Type     | Description               | Default                      |
+|------------|----------|---------------------------|------------------------------|
+| `Interval` | Interval | A Praat textgrid Interval | `Interval(None, None, None)` |
+
+## Attributes
+
+| Name           | Type                     | Description                                                                        |
+|----------------|--------------------------|------------------------------------------------------------------------------------|
+| start          | float                    | Start time of the interval                                                         |
+| end            | float                    | End time of the interval                                                           |
+| label          | Any                      | Label of the interval                                                              |
+| intier         | SequenceTier             | The sequence tier the current interval is within.                                  |
+| tier_index     | int                      | The index of sequence within its tier.                                             |
+| fol            | SequenceInterval         | Instance of the following interval. Is the same subclass as the current instance.  |
+| prev           | SequenceInterval         | Instance of the previous interval. Is the same subclass as current instance.       |
+| super_instance | SequenceInterval         | The instance of the superset. Cannot be the same subclass as the current instance. |
+| subset_list    | List\[SequenceInterval\] | A list of subset instances. Cannot be the same subclass of the current instance.   |
+| sub_starts     | numpy.ndarray            | A numpy array of start times for the subset list                                   |
+| sub_ends       | numpy.ndarray            | A numpy array of end times for the subset list                                     |
+| sub_labels     | List\[Any\]              | A list of labels from the subset list                                              |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [fuse_leftwards](#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards) | Fuse the current segment with the previous segment |
+| [fuse_rightwards](#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_rightwards) | Fuse the current segment with the following segment |
+| [index](#aligned_textgrid.sequences.sequences.SequenceInterval.index) | Returns subset instance index |
+| [pop](#aligned_textgrid.sequences.sequences.SequenceInterval.pop) | Pop a sequence interval from the subset list |
+| [set_feature](#aligned_textgrid.sequences.sequences.SequenceInterval.set_feature) | Sets arbitrary object attribute |
+
+### fuse_leftwards { #aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards }
+
+`sequences.sequences.SequenceInterval.fuse_leftwards(label_fun=lambda x, y: ' '.join([x, y]))`
+
+Fuse the current segment with the previous segment
+
+#### Parameters
+
+| Name        | Type     | Description                           | Default                         |
+|-------------|----------|---------------------------------------|---------------------------------|
+| `label_fun` | function | Function for joining interval labels. | `lambda x, y: ' '.join([x, y])` |
+
+### fuse_rightwards { #aligned_textgrid.sequences.sequences.SequenceInterval.fuse_rightwards }
+
+`sequences.sequences.SequenceInterval.fuse_rightwards(label_fun=lambda x, y: ' '.join([x, y]))`
+
+Fuse the current segment with the following segment
+
+#### Parameters
+
+| Name        | Type     | Description                           | Default                         |
+|-------------|----------|---------------------------------------|---------------------------------|
+| `label_fun` | function | Function for joining interval labels. | `lambda x, y: ' '.join([x, y])` |
+
+### index { #aligned_textgrid.sequences.sequences.SequenceInterval.index }
+
+`sequences.sequences.SequenceInterval.index(subset_instance)`
+
+Returns subset instance index
+
+#### Parameters
+
+| Name              | Type             | Description                            | Default    |
+|-------------------|------------------|----------------------------------------|------------|
+| `subset_instance` | SequenceInterval | A subset instance to get the index of. | _required_ |
+
+#### Returns
+
+| Type   | Description                    |
+|--------|--------------------------------|
+| int    | The index of `subset_instance` |
+
+### pop { #aligned_textgrid.sequences.sequences.SequenceInterval.pop }
+
+`sequences.sequences.SequenceInterval.pop(subset_instance)`
+
+Pop a sequence interval from the subset list
+
+#### Parameters
+
+| Name              | Type             | Description                | Default    |
+|-------------------|------------------|----------------------------|------------|
+| `subset_instance` | SequenceInterval | A sequence interval to pop | _required_ |
+
+### set_feature { #aligned_textgrid.sequences.sequences.SequenceInterval.set_feature }
+
+`sequences.sequences.SequenceInterval.set_feature(feature, value)`
+
+Sets arbitrary object attribute
+
+This will be most useful for creating custom subclasses.
+
+#### Parameters
+
+| Name      | Type   | Description         | Default    |
+|-----------|--------|---------------------|------------|
+| `feature` | str    | New attribute name  | _required_ |
+| `value`   | Any    | New attribute value | _required_ |

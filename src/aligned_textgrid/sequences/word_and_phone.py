@@ -10,7 +10,7 @@ import numpy as np
 
 class Phone(SequenceInterval):
     
-    """_A Phone subclass of SequenceInterval_
+    """A Phone subclass of SequenceInterval
 
     Has all the same methods and attributes as SequenceInterval in addition
     to attributes described below. `superset_class` set to `Word`, 
@@ -41,7 +41,7 @@ class Phone(SequenceInterval):
         return self.super_instance
 
 class Word(SequenceInterval):
-    """_A Word subclass of SequenceInterval_
+    """A Word subclass of SequenceInterval
 
     Has all the same methods and attributes as SequenceInterval in addition
     to attributes described below. `superset_class` set to `Top`, 

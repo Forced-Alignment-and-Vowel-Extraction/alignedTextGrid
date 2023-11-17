@@ -1,0 +1,97 @@
+# SequenceTier { #aligned_textgrid.sequences.tiers.SequenceTier }
+
+`sequences.tiers.SequenceTier(self, tier=[], entry_class=SequenceInterval)`
+
+A sequence tier
+
+Given a `praatio` `IntervalTier` or list of `Interval`s, creates
+`entry_class` instances for every interval.
+
+## Parameters
+
+| Name          | Type                             | Description                                                           | Default            |
+|---------------|----------------------------------|-----------------------------------------------------------------------|--------------------|
+| `tier`        | list\[Interval\] \| IntervalTier | A list of interval entries. Defaults to [Interval(None, None, None)]. | `[]`               |
+| `entry_class` | Type\[SequenceInterval\]         | The sequence class for this tier. Defaults to SequenceInterval.       | `SequenceInterval` |
+
+## Attributes
+
+| Name           | Type                     | Description                           |
+|----------------|--------------------------|---------------------------------------|
+| sequence_list  | list\[SequenceInterval\] |                                       |
+| entry_class    | Type\[SequenceInterval\] |                                       |
+| superset_class | Type\[SequenceInterval\] |                                       |
+| subset_class   | Type\[SequenceInterval\] |                                       |
+| starts         | np.ndarray\[np.float64\] |                                       |
+| ends           | np.ndarray\[np.float64\] |                                       |
+| labels         | list\[str\]              |                                       |
+| xmin           | float                    |                                       |
+| xmax           | float                    |                                       |
+| name           | str                      |                                       |
+| \[\]           |                          | Indexable. Returns a SequenceInterval |
+|                |                          | Iterable                              |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [get_interval_at_time](#aligned_textgrid.sequences.tiers.SequenceTier.get_interval_at_time) | Gets interval index at specified time |
+| [pop](#aligned_textgrid.sequences.tiers.SequenceTier.pop) | Pop an interval |
+| [return_tier](#aligned_textgrid.sequences.tiers.SequenceTier.return_tier) | Returns a `praatio` interval tier |
+| [save_as_tg](#aligned_textgrid.sequences.tiers.SequenceTier.save_as_tg) | Saves as a textgrid |
+
+### get_interval_at_time { #aligned_textgrid.sequences.tiers.SequenceTier.get_interval_at_time }
+
+`sequences.tiers.SequenceTier.get_interval_at_time(time)`
+
+Gets interval index at specified time
+
+#### Parameters
+
+| Name   | Type   | Description                      | Default    |
+|--------|--------|----------------------------------|------------|
+| `time` | float  | time at which to get an interval | _required_ |
+
+#### Returns
+
+| Type   | Description           |
+|--------|-----------------------|
+| int    | Index of the interval |
+
+### pop { #aligned_textgrid.sequences.tiers.SequenceTier.pop }
+
+`sequences.tiers.SequenceTier.pop(entry)`
+
+Pop an interval
+
+#### Parameters
+
+| Name    | Type             | Description     | Default    |
+|---------|------------------|-----------------|------------|
+| `entry` | SequenceInterval | Interval to pop | _required_ |
+
+### return_tier { #aligned_textgrid.sequences.tiers.SequenceTier.return_tier }
+
+`sequences.tiers.SequenceTier.return_tier()`
+
+Returns a `praatio` interval tier
+
+#### Returns
+
+| Type                                            | Description                                                                    |
+|-------------------------------------------------|--------------------------------------------------------------------------------|
+| praatio.data_classes.interval_tier.IntervalTier | A `praatio` interval tier. Useful for saving results back as a Praat TextGrid. |
+
+### save_as_tg { #aligned_textgrid.sequences.tiers.SequenceTier.save_as_tg }
+
+`sequences.tiers.SequenceTier.save_as_tg(save_path)`
+
+Saves as a textgrid
+
+Uses `praatio.data_classes.textgrid.Textgrid.save()` method.
+
+#### Parameters
+
+| Name        | Type   | Description   | Default    |
+|-------------|--------|---------------|------------|
+| `save_path` | str    | Output path   | _required_ |

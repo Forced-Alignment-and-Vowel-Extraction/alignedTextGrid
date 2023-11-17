@@ -1,0 +1,78 @@
+# InTierMixins { #aligned_textgrid.mixins.mixins.InTierMixins }
+
+`mixins.mixins.InTierMixins()`
+
+Methods and attrubites relating `Sequence*` objects to tiers.
+
+## Attributes
+
+| Name       | Type   | Description                                |
+|------------|--------|--------------------------------------------|
+| tier_index | int    | Index of the current entry within its tier |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [get_tierwise](#aligned_textgrid.mixins.mixins.InTierMixins.get_tierwise) | Get entry by relative tier index |
+| [return_interval](#aligned_textgrid.mixins.mixins.InTierMixins.return_interval) | Return current object as `Interval` |
+| [return_point](#aligned_textgrid.mixins.mixins.InTierMixins.return_point) | Return current object as `Point` |
+
+### get_tierwise { #aligned_textgrid.mixins.mixins.InTierMixins.get_tierwise }
+
+`mixins.mixins.InTierMixins.get_tierwise(idx=0)`
+
+Get entry by relative tier index
+
+Returns a SequenceInterval or SequencePoint from an index position relative to
+the current sequence.
+
+- `idx=0` - Returns the current entry
+- `idx=1` - Returns the following entry on the tier. If the current entry is 
+    in the final position within its subset list, this will not be the same as
+    `.fol`
+- `idx=-1` - Returns the previous entry on the tier. If the current entry is 
+    in the initial position within its subset list, this will not be the same as
+    `.prev` 
+
+This will raise an ordinary IndexError if the relative index exceeds the length
+of the tier.
+
+#### Parameters
+
+| Name   | Type   | Description                                                             | Default   |
+|--------|--------|-------------------------------------------------------------------------|-----------|
+| `idx`  | int    | The relative tier index at which to retrieve a sequence. Defaults to 0. | `0`       |
+
+#### Returns
+
+| Type                              | Description                     |
+|-----------------------------------|---------------------------------|
+| SequenceInterval \| SequencePoint | The entry at the relative index |
+
+### return_interval { #aligned_textgrid.mixins.mixins.InTierMixins.return_interval }
+
+`mixins.mixins.InTierMixins.return_interval()`
+
+Return current object as `Interval`
+
+Will be useful for saving back to textgrid
+
+#### Returns
+
+| Type                                 | Description                   |
+|--------------------------------------|-------------------------------|
+| praatio.utilities.constants.Interval | A `praatio` `Interval` object |
+
+### return_point { #aligned_textgrid.mixins.mixins.InTierMixins.return_point }
+
+`mixins.mixins.InTierMixins.return_point()`
+
+Return current object as `Point`
+
+#### Returns
+
+| Type                              | Description         |
+|-----------------------------------|---------------------|
+| praatio.utilities.constants.Point | A `praatio` `Point` |
+| Point                             | object              |

@@ -16,7 +16,7 @@ import warnings
 
 
 class AlignedTextGrid:
-    """_An aligned Textgrid_
+    """An aligned Textgrid
 
     Args:
         textgrid (Textgrid, optional): A `praatio` TextGrid
@@ -111,7 +111,7 @@ class AlignedTextGrid:
             tg: Textgrid, 
             entry_classes
         ):
-        """_summary_
+        """summary
 
         Args:
             tg (_type_): _description_
@@ -247,7 +247,7 @@ class AlignedTextGrid:
             self, 
             time: float
         ) -> list[list[int]]:
-        """_Get interval indices at time_
+        """Get interval indices at time
         
         Returns a nested list of intervals at `time` for each tier.
         
@@ -260,7 +260,7 @@ class AlignedTextGrid:
         return [tgroup.get_intervals_at_time(time) for tgroup in self.tier_groups]
 
     def return_textgrid(self) -> Textgrid:
-        """_Convert this `AlignedTextGrid` to a `praatio` `Textgrid`_
+        """Convert this `AlignedTextGrid` to a `praatio` `Textgrid`
         
         Returns the current object as a `praatio.data_classes.textgrid.Textgrid`.
         Useful for saving.
@@ -286,7 +286,7 @@ class AlignedTextGrid:
                 ] 
             = "long_textgrid"
         ):
-        """_Saves the current AlignedTextGrid_
+        """Saves the current AlignedTextGrid
 
         Uses the `praatio.data_classes.textgrid.Textgrid.save()` method.
 

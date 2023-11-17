@@ -49,7 +49,7 @@ class TierMixins:
             self, 
             entry
         ) -> int:
-        """_Return index of a tier entry_
+        """Return index of a tier entry
 
         Args:
             entry (Union[SequencePoint, SequenceInterval]):
