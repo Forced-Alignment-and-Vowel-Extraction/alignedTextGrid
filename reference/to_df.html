@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>word</title>
+<title>to_df</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../reference/Phone.html" rel="next">
-<link href="../reference/AlignedTextGrid.html" rel="prev">
+<link href="../reference/Misc.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -106,7 +105,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Custom Classes</li><li class="breadcrumb-item"><a href="../reference/Word.html">Word and Phone Classes</a></li><li class="breadcrumb-item"><a href="../reference/Word.html">Word</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/to_df.html">DataFrame outputs</a></li><li class="breadcrumb-item"><a href="../reference/to_df.html">to_df</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -299,16 +298,16 @@ ul.task-list li input[type="checkbox"] {
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">
  <span class="menu-text">Word and Phone Classes</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/Word.html" class="sidebar-item-text sidebar-link active">
+  <a href="../reference/Word.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Word</span></a>
   </div>
 </li>
@@ -386,7 +385,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/to_df.html" class="sidebar-item-text sidebar-link">
+  <a href="../reference/to_df.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">to_df</span></a>
   </div>
 </li>
@@ -402,14 +401,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#aligned_textgrid.sequences.word_and_phone.Word" id="toc-aligned_textgrid.sequences.word_and_phone.Word" class="nav-link active" data-scroll-target="#aligned_textgrid.sequences.word_and_phone.Word">Word</a>
+  <li><a href="#aligned_textgrid.outputs.to_dataframe.to_df" id="toc-aligned_textgrid.outputs.to_dataframe.to_df" class="nav-link active" data-scroll-target="#aligned_textgrid.outputs.to_dataframe.to_df">to_df</a>
   <ul class="collapse">
   <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
-  <li><a href="#attributes" id="toc-attributes" class="nav-link" data-scroll-target="#attributes">Attributes</a></li>
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
-  <ul class="collapse">
-  <li><a href="#aligned_textgrid.sequences.word_and_phone.Word.set_phones" id="toc-aligned_textgrid.sequences.word_and_phone.Word.set_phones" class="nav-link" data-scroll-target="#aligned_textgrid.sequences.word_and_phone.Word.set_phones">set_phones</a></li>
-  </ul></li>
+  <li><a href="#returns" id="toc-returns" class="nav-link" data-scroll-target="#returns">Returns</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -419,19 +414,18 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="aligned_textgrid.sequences.word_and_phone.Word" class="level1">
-<h1>Word</h1>
-<p><code>sequences.word_and_phone.Word(self, Interval=Interval(None, None, None))</code></p>
-<p>A Word subclass of SequenceInterval</p>
-<p>Has all the same methods and attributes as SequenceInterval in addition to attributes described below. <code>superset_class</code> set to <code>Top</code>, and <code>subset_class</code> set to <code>Phone</code></p>
+<section id="aligned_textgrid.outputs.to_dataframe.to_df" class="level1">
+<h1>to_df</h1>
+<p><code>outputs.to_dataframe.to_df(obj, with_subset=True)</code></p>
+<p>Return an <code>aligned_textgrid</code> object as a dataframe</p>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="table">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 13%">
-<col style="width: 29%">
-<col style="width: 40%">
+<col style="width: 7%">
+<col style="width: 55%">
+<col style="width: 31%">
+<col style="width: 5%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -443,82 +437,38 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>Interval</code></td>
-<td>Interval</td>
-<td>A praatio <code>Interval</code></td>
-<td><code>Interval(None, None, None)</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="attributes" class="level2">
-<h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>phone_list</td>
-<td>list[Phone]</td>
-<td>A list of Phone objects</td>
-</tr>
-<tr class="even">
-<td>phones</td>
-<td>list[str]</td>
-<td>A list of phone labels</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="methods" class="level2">
-<h2 class="anchored" data-anchor-id="methods">Methods</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="#aligned_textgrid.sequences.word_and_phone.Word.set_phones">set_phones</a></td>
-<td><em>Convenience function to set the phones</em></td>
-</tr>
-</tbody>
-</table>
-<section id="aligned_textgrid.sequences.word_and_phone.Word.set_phones" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.sequences.word_and_phone.Word.set_phones">set_phones</h3>
-<p><code>sequences.word_and_phone.Word.set_phones(phone_list)</code></p>
-<p><em>Convenience function to set the phones</em></p>
-<section id="parameters-1" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-1">Parameters</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>phone_list</code></td>
-<td>list[Phone]</td>
-<td>List of Phone instances</td>
+<td><code>obj</code></td>
+<td>SequenceInterval | SequencePoint | SequenceTier | SequencePointTier | TierGroup | PointsGroup | AlignedTextGrid</td>
+<td>An <code>aligned_textgrid</code> object</td>
 <td><em>required</em></td>
 </tr>
+<tr class="even">
+<td><code>with_subset</code></td>
+<td>bool</td>
+<td>Whether or not to include subset relationships. Defaults to True.</td>
+<td><code>True</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="returns" class="level2">
+<h2 class="anchored" data-anchor-id="returns">Returns</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>pl.DataFrame</td>
+<td>A polars dataframe</td>
+</tr>
 </tbody>
 </table>
 
 
-</section>
-</section>
 </section>
 </section>
 
@@ -873,14 +823,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../reference/AlignedTextGrid.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">AlignedTextGrid</span>
+      <a href="../reference/Misc.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Misc</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../reference/Phone.html" class="pagination-link">
-        <span class="nav-page-text">Phone</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

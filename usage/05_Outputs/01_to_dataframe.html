@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Sequence Interval Properties</title>
+<title>Outputting and saving as a DataFrame</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../usage/02_Sequences/03_sequence-modification.html" rel="next">
-<link href="../../usage/02_Sequences/01_sequence-in-tier.html" rel="prev">
+<link href="../../usage/05_Outputs/00_to_textgrid.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -97,6 +96,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 </head>
@@ -140,7 +142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../usage/02_Sequences/00_sequence_structure.html">Sequences</a></li><li class="breadcrumb-item"><a href="../../usage/02_Sequences/02_sequence_properties.html">Sequence Interval Properties</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../usage/05_Outputs/00_to_textgrid.html">Outputs</a></li><li class="breadcrumb-item"><a href="../../usage/05_Outputs/01_to_dataframe.html">Outputting and saving as a DataFrame</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -232,7 +234,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../usage/02_Sequences/02_sequence_properties.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../usage/02_Sequences/02_sequence_properties.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Sequence Interval Properties</span></a>
   </div>
 </li>
@@ -295,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../usage/05_Outputs/01_to_dataframe.html" class="sidebar-item-text sidebar-link">
+  <a href="../../usage/05_Outputs/01_to_dataframe.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Outputting and saving as a DataFrame</span></a>
   </div>
 </li>
@@ -311,15 +313,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-behavior-of-len-in-and-iteration" id="toc-the-behavior-of-len-in-and-iteration" class="nav-link active" data-scroll-target="#the-behavior-of-len-in-and-iteration">The behavior of <code>len()</code>, <code>in</code> and iteration</a>
+  <li><a href="#outputting-as-a-data-frame" id="toc-outputting-as-a-data-frame" class="nav-link active" data-scroll-target="#outputting-as-a-data-frame">Outputting as a data frame</a>
   <ul class="collapse">
-  <li><a href="#len" id="toc-len" class="nav-link" data-scroll-target="#len"><code>len()</code></a></li>
-  <li><a href="#in" id="toc-in" class="nav-link" data-scroll-target="#in"><code>in</code></a></li>
-  <li><a href="#iteration" id="toc-iteration" class="nav-link" data-scroll-target="#iteration">Iteration</a></li>
+  <li><a href="#single-intervals" id="toc-single-intervals" class="nav-link" data-scroll-target="#single-intervals">Single Intervals</a></li>
+  <li><a href="#tiers" id="toc-tiers" class="nav-link" data-scroll-target="#tiers">Tiers</a></li>
+  <li><a href="#tiergroups-and-textgrids" id="toc-tiergroups-and-textgrids" class="nav-link" data-scroll-target="#tiergroups-and-textgrids">TierGroups and TextGrids</a></li>
   </ul></li>
-  <li><a href="#subset-sequence-information" id="toc-subset-sequence-information" class="nav-link" data-scroll-target="#subset-sequence-information">Subset Sequence Information</a></li>
-  <li><a href="#hierarchy-strictness" id="toc-hierarchy-strictness" class="nav-link" data-scroll-target="#hierarchy-strictness">Hierarchy Strictness</a></li>
-  <li><a href="#class-strictness" id="toc-class-strictness" class="nav-link" data-scroll-target="#class-strictness">Class Strictness</a></li>
+  <li><a href="#saving-a-dataframe" id="toc-saving-a-dataframe" class="nav-link" data-scroll-target="#saving-a-dataframe">Saving a DataFrame</a></li>
   </ul>
 </nav>
     </div>
@@ -328,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Sequence Interval Properties</h1>
+<h1 class="title">Outputting and saving as a DataFrame</h1>
 </div>
 
 
@@ -343,209 +343,861 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>Let’s begin with <a href="../../resources/the_dog.TextGrid">this textgrid</a>.</p>
+<p>You can ouput and save any given <code>aligned_textgrid</code> as a <a href="https://www.pola.rs/"><code>polars</code> dataframe</a> with the <code>to_df()</code> function.</p>
+<section id="outputting-as-a-data-frame" class="level2">
+<h2 class="anchored" data-anchor-id="outputting-as-a-data-frame">Outputting as a data frame</h2>
 <div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> Word, Phone</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>the_dog <span class="op">=</span> AlignedTextGrid(</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    textgrid_path<span class="op">=</span><span class="st">"../resources/the_dog.TextGrid"</span>, </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    entry_classes<span class="op">=</span>[Word, Phone]</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>AH0 <span class="op">=</span> the_dog.tier_groups[<span class="dv">0</span>].tier_list[<span class="dv">1</span>].sequence_list[<span class="dv">1</span>]</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>dog <span class="op">=</span> the_dog.tier_groups[<span class="dv">0</span>].tier_list[<span class="dv">0</span>].sequence_list[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid, Word, Phone,<span class="op">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                             to_df</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>tg <span class="op">=</span> AlignedTextGrid(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    textgrid_path<span class="op">=</span><span class="st">"../resources/josef-fruehwald_speaker.TextGrid"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    entry_classes<span class="op">=</span>[Word, Phone]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="the-behavior-of-len-in-and-iteration" class="level2">
-<h2 class="anchored" data-anchor-id="the-behavior-of-len-in-and-iteration">The behavior of <code>len()</code>, <code>in</code> and iteration</h2>
-<section id="len" class="level3">
-<h3 class="anchored" data-anchor-id="len"><code>len()</code></h3>
-<p>If you pass a Sequence Interval to <code>len()</code>, it’ll return the length of its <code>.subset_list</code>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../resources/diagrams/sequence_len.svg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Sequence in</figcaption>
-</figure>
-</div>
+<section id="single-intervals" class="level3">
+<h3 class="anchored" data-anchor-id="single-intervals">Single Intervals</h3>
+<section id="bottom-of-the-hierarchy" class="level4">
+<h4 class="anchored" data-anchor-id="bottom-of-the-hierarchy">Bottom of the hierarchy</h4>
+<p>If you pass a single interval from the bottom of the sequence hierarchy, you’ll get back a fairly minimal dataframe with the start and end times, the label, and an ID for the interval.</p>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(dog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>one_interval <span class="op">=</span> tg[<span class="dv">0</span>].Phone[<span class="dv">1</span>]</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>one_interval_df <span class="op">=</span> to_df(one_interval)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>one_interval_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
-<pre><code>3</code></pre>
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1, 5)</small>
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Phone_id</th>
+<th data-quarto-table-cell-role="th">Phone_tier_index</th>
+<th data-quarto-table-cell-role="th">Phone_label</th>
+<th data-quarto-table-cell-role="th">Phone_start</th>
+<th data-quarto-table-cell-role="th">Phone_end</th>
+</tr>
+<tr class="odd">
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"0-0-1-0"</td>
+<td>1</td>
+<td>"HH"</td>
+<td>0.11</td>
+<td>1.97</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<p>If a Sequence Interval doesn’t have a <code>.subset_list</code>, then <code>len()</code> will return <code>0</code>.</p>
+</div>
+</section>
+<section id="top-of-the-hierarchy" class="level4">
+<h4 class="anchored" data-anchor-id="top-of-the-hierarchy">Top of the hierarchy</h4>
+<p>If you pass <code>to_df()</code> an interval from higher up in the hierarchy, by default it will output its data, as well as the data for every interval below it in the hierarchy, concatenated horizontally.</p>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(AH0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>word_interval <span class="op">=</span> tg[<span class="dv">0</span>].Word[<span class="dv">1</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>word_interval_df <span class="op">=</span> to_df(word_interval)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>word_interval_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
-<pre><code>0</code></pre>
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4, 10)</small>
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Word_id</th>
+<th data-quarto-table-cell-role="th">Word_tier_index</th>
+<th data-quarto-table-cell-role="th">Word_label</th>
+<th data-quarto-table-cell-role="th">Word_start</th>
+<th data-quarto-table-cell-role="th">Word_end</th>
+<th data-quarto-table-cell-role="th">Phone_id</th>
+<th data-quarto-table-cell-role="th">Phone_tier_index</th>
+<th data-quarto-table-cell-role="th">Phone_label</th>
+<th data-quarto-table-cell-role="th">Phone_start</th>
+<th data-quarto-table-cell-role="th">Phone_end</th>
+</tr>
+<tr class="odd">
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-0"</td>
+<td>1</td>
+<td>"HH"</td>
+<td>0.11</td>
+<td>1.97</td>
+</tr>
+<tr class="even">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-1"</td>
+<td>2</td>
+<td>"W"</td>
+<td>1.97</td>
+<td>2.09</td>
+</tr>
+<tr class="odd">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-2"</td>
+<td>3</td>
+<td>"EH1"</td>
+<td>2.09</td>
+<td>2.13</td>
+</tr>
+<tr class="even">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-3"</td>
+<td>4</td>
+<td>"N"</td>
+<td>2.13</td>
+<td>2.2</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-</section>
-<section id="in" class="level3">
-<h3 class="anchored" data-anchor-id="in"><code>in</code></h3>
-<p>If you want to check whether a specific sequence interval (the actual <em>object</em>, not just the label) is in the <code>.subset_list</code> of another, you can use <code>in</code>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../resources/diagrams/sequence_in.svg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Sequence in</figcaption>
-</figure>
 </div>
+<p>However, if you want just a simplified, single row output for an interval, regardless of its location within the hierarchy, pass <code>to_df(..., with_subset = False)</code>.</p>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>AO1 <span class="op">=</span> dog[<span class="dv">1</span>]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>AO1 <span class="kw">in</span> dog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>word_interval_df2 <span class="op">=</span> to_df(word_interval, with_subset<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>word_interval_df2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>True</code></pre>
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1, 6)</small>
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">tier_index</th>
+<th data-quarto-table-cell-role="th">label</th>
+<th data-quarto-table-cell-role="th">start</th>
+<th data-quarto-table-cell-role="th">end</th>
+<th data-quarto-table-cell-role="th">entry_class</th>
+</tr>
+<tr class="odd">
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+<th>str</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"Word"</td>
+</tr>
+</tbody>
+</table>
 </div>
-</div>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>AH0 <span class="kw">in</span> dog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-<pre><code>False</code></pre>
 </div>
 </div>
 </section>
-<section id="iteration" class="level3">
-<h3 class="anchored" data-anchor-id="iteration">Iteration</h3>
-<p>A Sequence Interval is iterable over its <code>.subset_list</code></p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../resources/diagrams/sequence_iteration.svg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">sequence iter</figcaption>
-</figure>
+</section>
+<section id="tiers" class="level3">
+<h3 class="anchored" data-anchor-id="tiers">Tiers</h3>
+<p>If you pass a tier to <code>to_df()</code>, it will output a dataframe for ever interval in the tier concatenated vertically. By default, this means intervals high in the hierarchy will have their rows repeated for every interval they contain, but if you want one row per interval in the output, you can pass <code>to_df(..., with_subset = False)</code>.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tier_df1 <span class="op">=</span> to_df(tg[<span class="dv">0</span>].Word)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>tier_df1.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>(1191, 10)</code></pre>
+</div>
 </div>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> segment <span class="kw">in</span> dog:</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>segment<span class="sc">.</span>label<span class="sc">}</span><span class="ss"> is in </span><span class="sc">{</span>segment<span class="sc">.</span>inword<span class="sc">.</span>label<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>D is in dog
-AO1 is in dog
-G is in dog</code></pre>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tier_df1.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (10, 10)</small>
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Word_id</th>
+<th data-quarto-table-cell-role="th">Word_tier_index</th>
+<th data-quarto-table-cell-role="th">Word_label</th>
+<th data-quarto-table-cell-role="th">Word_start</th>
+<th data-quarto-table-cell-role="th">Word_end</th>
+<th data-quarto-table-cell-role="th">Phone_id</th>
+<th data-quarto-table-cell-role="th">Phone_tier_index</th>
+<th data-quarto-table-cell-role="th">Phone_label</th>
+<th data-quarto-table-cell-role="th">Phone_start</th>
+<th data-quarto-table-cell-role="th">Phone_end</th>
+</tr>
+<tr class="odd">
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"0-0-0"</td>
+<td>0</td>
+<td>""</td>
+<td>0.0</td>
+<td>0.11</td>
+<td>"0-0-0-0"</td>
+<td>0</td>
+<td>""</td>
+<td>0.0</td>
+<td>0.11</td>
+</tr>
+<tr class="even">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-0"</td>
+<td>1</td>
+<td>"HH"</td>
+<td>0.11</td>
+<td>1.97</td>
+</tr>
+<tr class="odd">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-1"</td>
+<td>2</td>
+<td>"W"</td>
+<td>1.97</td>
+<td>2.09</td>
+</tr>
+<tr class="even">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-2"</td>
+<td>3</td>
+<td>"EH1"</td>
+<td>2.09</td>
+<td>2.13</td>
+</tr>
+<tr class="odd">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-3"</td>
+<td>4</td>
+<td>"N"</td>
+<td>2.13</td>
+<td>2.2</td>
+</tr>
+<tr class="even">
+<td>"0-0-2"</td>
+<td>2</td>
+<td>"the"</td>
+<td>2.2</td>
+<td>2.26</td>
+<td>"0-0-2-0"</td>
+<td>5</td>
+<td>"DH"</td>
+<td>2.2</td>
+<td>2.22</td>
+</tr>
+<tr class="odd">
+<td>"0-0-2"</td>
+<td>2</td>
+<td>"the"</td>
+<td>2.2</td>
+<td>2.26</td>
+<td>"0-0-2-1"</td>
+<td>6</td>
+<td>"AH0"</td>
+<td>2.22</td>
+<td>2.26</td>
+</tr>
+<tr class="even">
+<td>"0-0-3"</td>
+<td>3</td>
+<td>"sunlight"</td>
+<td>2.26</td>
+<td>2.72</td>
+<td>"0-0-3-0"</td>
+<td>7</td>
+<td>"S"</td>
+<td>2.26</td>
+<td>2.39</td>
+</tr>
+<tr class="odd">
+<td>"0-0-3"</td>
+<td>3</td>
+<td>"sunlight"</td>
+<td>2.26</td>
+<td>2.72</td>
+<td>"0-0-3-1"</td>
+<td>8</td>
+<td>"AH1"</td>
+<td>2.39</td>
+<td>2.44</td>
+</tr>
+<tr class="even">
+<td>"0-0-3"</td>
+<td>3</td>
+<td>"sunlight"</td>
+<td>2.26</td>
+<td>2.72</td>
+<td>"0-0-3-2"</td>
+<td>9</td>
+<td>"N"</td>
+<td>2.44</td>
+<td>2.52</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-</section>
-</section>
-<section id="subset-sequence-information" class="level2">
-<h2 class="anchored" data-anchor-id="subset-sequence-information">Subset Sequence Information</h2>
-<p>In addition to the <code>.start</code>, <code>.end</code> and <code>.label</code> information about each Sequence Interval, if it also has a <code>.subset_list</code>, that same information is accessible with <code>.sub_starts</code>, <code>.sub_ends</code> and <code>.sub_labels</code>.</p>
+</div>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dog.sub_starts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 row per interval</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>tier_df2 <span class="op">=</span> to_df(tg[<span class="dv">0</span>].Word, with_subset<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>tier_df2.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-<pre><code>array([0.30829161, 0.41950136, 0.83568509])</code></pre>
+<pre><code>(377, 6)</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dog.sub_ends</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tier_df2.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
-<pre><code>array([0.41950136, 0.83568509, 0.96658691])</code></pre>
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (10, 6)</small>
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">tier_index</th>
+<th data-quarto-table-cell-role="th">label</th>
+<th data-quarto-table-cell-role="th">start</th>
+<th data-quarto-table-cell-role="th">end</th>
+<th data-quarto-table-cell-role="th">entry_class</th>
+</tr>
+<tr class="odd">
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+<th>str</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"0-0-0"</td>
+<td>0</td>
+<td>""</td>
+<td>0.0</td>
+<td>0.11</td>
+<td>"Word"</td>
+</tr>
+<tr class="even">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"Word"</td>
+</tr>
+<tr class="odd">
+<td>"0-0-2"</td>
+<td>2</td>
+<td>"the"</td>
+<td>2.2</td>
+<td>2.26</td>
+<td>"Word"</td>
+</tr>
+<tr class="even">
+<td>"0-0-3"</td>
+<td>3</td>
+<td>"sunlight"</td>
+<td>2.26</td>
+<td>2.72</td>
+<td>"Word"</td>
+</tr>
+<tr class="odd">
+<td>"0-0-4"</td>
+<td>4</td>
+<td>"strikes"</td>
+<td>2.72</td>
+<td>3.22</td>
+<td>"Word"</td>
+</tr>
+<tr class="even">
+<td>"0-0-5"</td>
+<td>5</td>
+<td>"raindrops"</td>
+<td>3.22</td>
+<td>3.79</td>
+<td>"Word"</td>
+</tr>
+<tr class="odd">
+<td>"0-0-6"</td>
+<td>6</td>
+<td>"in"</td>
+<td>3.79</td>
+<td>3.89</td>
+<td>"Word"</td>
+</tr>
+<tr class="even">
+<td>"0-0-7"</td>
+<td>7</td>
+<td>"the"</td>
+<td>3.89</td>
+<td>4.02</td>
+<td>"Word"</td>
+</tr>
+<tr class="odd">
+<td>"0-0-8"</td>
+<td>8</td>
+<td>"air"</td>
+<td>4.02</td>
+<td>4.45</td>
+<td>"Word"</td>
+</tr>
+<tr class="even">
+<td>"0-0-9"</td>
+<td>9</td>
+<td>""</td>
+<td>4.45</td>
+<td>4.61</td>
+<td>"Word"</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
+</div>
+</section>
+<section id="tiergroups-and-textgrids" class="level3">
+<h3 class="anchored" data-anchor-id="tiergroups-and-textgrids">TierGroups and TextGrids</h3>
+<p>The behavior for TierGroups and TextGrids are similar. By default, the <code>to_df()</code> function will either return a dataframe representing the entire hierarchy structure, or will return one row for each interval in the TextGrid.</p>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>dog.sub_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>full_df1 <span class="op">=</span> to_df(tg)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>full_df1.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
-<pre><code>['D', 'AO1', 'G']</code></pre>
+<pre><code>(1191, 10)</code></pre>
 </div>
 </div>
-<p>This is a safe way to check if a general phone label is within a word, since just using <code>in</code> on the sequence interval itself checks against specific <em>Sequence Interval</em> objects.</p>
 <div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the label "G" is not a Sequence Interval</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">"G"</span> <span class="kw">in</span> dog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>full_df1.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
-<pre><code>False</code></pre>
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (10, 10)</small>
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Word_id</th>
+<th data-quarto-table-cell-role="th">Word_tier_index</th>
+<th data-quarto-table-cell-role="th">Word_label</th>
+<th data-quarto-table-cell-role="th">Word_start</th>
+<th data-quarto-table-cell-role="th">Word_end</th>
+<th data-quarto-table-cell-role="th">Phone_id</th>
+<th data-quarto-table-cell-role="th">Phone_tier_index</th>
+<th data-quarto-table-cell-role="th">Phone_label</th>
+<th data-quarto-table-cell-role="th">Phone_start</th>
+<th data-quarto-table-cell-role="th">Phone_end</th>
+</tr>
+<tr class="odd">
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"0-0-0"</td>
+<td>0</td>
+<td>""</td>
+<td>0.0</td>
+<td>0.11</td>
+<td>"0-0-0-0"</td>
+<td>0</td>
+<td>""</td>
+<td>0.0</td>
+<td>0.11</td>
+</tr>
+<tr class="even">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-0"</td>
+<td>1</td>
+<td>"HH"</td>
+<td>0.11</td>
+<td>1.97</td>
+</tr>
+<tr class="odd">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-1"</td>
+<td>2</td>
+<td>"W"</td>
+<td>1.97</td>
+<td>2.09</td>
+</tr>
+<tr class="even">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-2"</td>
+<td>3</td>
+<td>"EH1"</td>
+<td>2.09</td>
+<td>2.13</td>
+</tr>
+<tr class="odd">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"0-0-1-3"</td>
+<td>4</td>
+<td>"N"</td>
+<td>2.13</td>
+<td>2.2</td>
+</tr>
+<tr class="even">
+<td>"0-0-2"</td>
+<td>2</td>
+<td>"the"</td>
+<td>2.2</td>
+<td>2.26</td>
+<td>"0-0-2-0"</td>
+<td>5</td>
+<td>"DH"</td>
+<td>2.2</td>
+<td>2.22</td>
+</tr>
+<tr class="odd">
+<td>"0-0-2"</td>
+<td>2</td>
+<td>"the"</td>
+<td>2.2</td>
+<td>2.26</td>
+<td>"0-0-2-1"</td>
+<td>6</td>
+<td>"AH0"</td>
+<td>2.22</td>
+<td>2.26</td>
+</tr>
+<tr class="even">
+<td>"0-0-3"</td>
+<td>3</td>
+<td>"sunlight"</td>
+<td>2.26</td>
+<td>2.72</td>
+<td>"0-0-3-0"</td>
+<td>7</td>
+<td>"S"</td>
+<td>2.26</td>
+<td>2.39</td>
+</tr>
+<tr class="odd">
+<td>"0-0-3"</td>
+<td>3</td>
+<td>"sunlight"</td>
+<td>2.26</td>
+<td>2.72</td>
+<td>"0-0-3-1"</td>
+<td>8</td>
+<td>"AH1"</td>
+<td>2.39</td>
+<td>2.44</td>
+</tr>
+<tr class="even">
+<td>"0-0-3"</td>
+<td>3</td>
+<td>"sunlight"</td>
+<td>2.26</td>
+<td>2.72</td>
+<td>"0-0-3-2"</td>
+<td>9</td>
+<td>"N"</td>
+<td>2.44</td>
+<td>2.52</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">"G"</span> <span class="kw">in</span> dog.sub_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 row per interval</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>full_df2 <span class="op">=</span> to_df(tg, with_subset<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>full_df2.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
-<pre><code>True</code></pre>
+<pre><code>(1568, 6)</code></pre>
 </div>
 </div>
-</section>
-<section id="hierarchy-strictness" class="level2">
-<h2 class="anchored" data-anchor-id="hierarchy-strictness">Hierarchy Strictness</h2>
-<p>The hierarchy and precedence structure is very “strict”.</p>
-<ul>
-<li>A Sequence Interval <code>a</code> can have no more than one <code>.super_instance</code></li>
-<li>If <code>a.super_instance</code> is <code>B</code>, then <code>a</code> is in <code>B.subset_list</code>.</li>
-<li>If <code>a</code> is in <code>B.subset_list</code>, then it is in <em>no other</em> <code>.subset_list</code>.</li>
-<li>If <code>a</code> is in <code>B.subset_list</code>, then <code>a.super_instance</code> is <code>B</code></li>
-<li>If <code>a</code> is <em>not</em> in <code>B.subset_list</code>, then <code>a.super_instance</code> is <em>not</em> <code>B</code></li>
-<li>If <code>a.super_instance</code> is <em>not</em> <code>B</code>, then it is <em>not</em> in <code>B.subset_list</code></li>
-</ul>
-<p>Some examples of relationships that cannot be represented are:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../resources/diagrams/illicit_1.svg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">illicit_1</figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../resources/diagrams/illicit_2.svg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">illicit_2</figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../resources/diagrams/illicit_3.svg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">illicit_3</figcaption>
-</figure>
-</div>
-</section>
-<section id="class-strictness" class="level2">
-<h2 class="anchored" data-anchor-id="class-strictness">Class Strictness</h2>
-<p>Another source of strictness is the Sequence Interval class. You can get the class of a specific interval with <code>type()</code></p>
 <div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(AH0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>full_df2.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
-<pre><code>aligned_textgrid.sequences.word_and_phone.Phone</code></pre>
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 6)</small>
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">tier_index</th>
+<th data-quarto-table-cell-role="th">label</th>
+<th data-quarto-table-cell-role="th">start</th>
+<th data-quarto-table-cell-role="th">end</th>
+<th data-quarto-table-cell-role="th">entry_class</th>
+</tr>
+<tr class="odd">
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+<th>str</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"0-0-0"</td>
+<td>0</td>
+<td>""</td>
+<td>0.0</td>
+<td>0.11</td>
+<td>"Word"</td>
+</tr>
+<tr class="even">
+<td>"0-0-1"</td>
+<td>1</td>
+<td>"when"</td>
+<td>0.11</td>
+<td>2.2</td>
+<td>"Word"</td>
+</tr>
+<tr class="odd">
+<td>"0-0-2"</td>
+<td>2</td>
+<td>"the"</td>
+<td>2.2</td>
+<td>2.26</td>
+<td>"Word"</td>
+</tr>
+<tr class="even">
+<td>"0-0-3"</td>
+<td>3</td>
+<td>"sunlight"</td>
+<td>2.26</td>
+<td>2.72</td>
+<td>"Word"</td>
+</tr>
+<tr class="odd">
+<td>"0-0-4"</td>
+<td>4</td>
+<td>"strikes"</td>
+<td>2.72</td>
+<td>3.22</td>
+<td>"Word"</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(dog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>full_df2.tail(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
-<pre><code>aligned_textgrid.sequences.word_and_phone.Word</code></pre>
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 6)</small>
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">tier_index</th>
+<th data-quarto-table-cell-role="th">label</th>
+<th data-quarto-table-cell-role="th">start</th>
+<th data-quarto-table-cell-role="th">end</th>
+<th data-quarto-table-cell-role="th">entry_class</th>
+</tr>
+<tr class="odd">
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+<th>str</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"0-0-374-1"</td>
+<td>1186</td>
+<td>"R"</td>
+<td>111.83</td>
+<td>111.92</td>
+<td>"Phone"</td>
+</tr>
+<tr class="even">
+<td>"0-0-375-0"</td>
+<td>1187</td>
+<td>"B"</td>
+<td>111.92</td>
+<td>112.02</td>
+<td>"Phone"</td>
+</tr>
+<tr class="odd">
+<td>"0-0-375-1"</td>
+<td>1188</td>
+<td>"L"</td>
+<td>112.02</td>
+<td>112.08</td>
+<td>"Phone"</td>
+</tr>
+<tr class="even">
+<td>"0-0-375-2"</td>
+<td>1189</td>
+<td>"UW1"</td>
+<td>112.08</td>
+<td>112.31</td>
+<td>"Phone"</td>
+</tr>
+<tr class="odd">
+<td>"0-0-376-0"</td>
+<td>1190</td>
+<td>""</td>
+<td>112.31</td>
+<td>115.065034</td>
+<td>"Phone"</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<p>A horizontal strictness of classes is that the <code>.fol</code> and <code>.prev</code> Segment Intervals must be of the same class.</p>
+</div>
+</section>
+</section>
+<section id="saving-a-dataframe" class="level2">
+<h2 class="anchored" data-anchor-id="saving-a-dataframe">Saving a DataFrame</h2>
+<p>To save one of these dataframes, use one of the methods from <code>polars</code>, like <a href="https://pola-rs.github.io/polars/user-guide/io/csv/"><code>DataFrame.write_csv()</code></a></p>
 <div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    dog.set_fol(AH0)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> exc:</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(exc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Following segment must be an instance of Word</code></pre>
-</div>
-</div>
-<p>Each class also defines what its (one and only) <code>.superset_class</code> and <code>.subset_class</code> is. For classes at the top of the hierarchy, there is a reserved <code>Top</code> class, and for classes at the bottom of the hierarchy, there is a reserved <code>Bottom</code> class.</p>
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>Word.subset_class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
-<pre><code>aligned_textgrid.sequences.word_and_phone.Phone</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Word.superset_class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
-<pre><code>aligned_textgrid.sequences.word_and_phone.Top_wp</code></pre>
-</div>
-</div>
-<p>If a Sequence Interval isn’t the right class, it can’t be added to another’s <code>.subset_class</code> or set as its <code>.super_instance</code>.</p>
-<div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    AH0.append_subset_list(AO1)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> exc:</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(exc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>The subset_class was defined as Bottom_wp, but provided subset_instance was Phone</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    AH0.set_super_instance(AO1)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> exc:</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(exc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>The superset_class was defined as Word, but provided super_instance was Phone</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>full_df1.write_csv(<span class="st">"test.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -902,14 +1554,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../usage/02_Sequences/01_sequence-in-tier.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Navigating Sequences in a Tier</span>
+      <a href="../../usage/05_Outputs/00_to_textgrid.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Saving Outputting and Saving as a TextGrid</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../usage/02_Sequences/03_sequence-modification.html" class="pagination-link">
-        <span class="nav-page-text">Sequence Modification</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
