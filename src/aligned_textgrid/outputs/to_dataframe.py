@@ -130,7 +130,15 @@ def to_df(
         AlignedTextGrid,
         with_subset: bool = True        
         ) -> pl.DataFrame:
-    
+    """Return an `aligned_textgrid` object as a dataframe
+
+    Args:
+        obj (SequenceInterval | SequencePoint | SequenceTier | SequencePointTier | TierGroup | PointsGroup | AlignedTextGrid): An `aligned_textgrid` object
+        with_subset (bool, optional): Whether or not to include subset relationships. Defaults to True.
+
+    Returns:
+        (pl.DataFrame): A polars dataframe
+    """
     if isinstance(obj, SequenceInterval) or isinstance(obj, SequencePoint):
        return sequence_to_df(obj, with_subset)
     
