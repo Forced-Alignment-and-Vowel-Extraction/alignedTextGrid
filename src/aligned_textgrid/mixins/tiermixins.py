@@ -1,3 +1,7 @@
+from difflib import SequenceMatcher
+from functools import reduce
+import re
+
 class TierMixins:
     """Methods and attributes for Sequence Tiers
 
@@ -116,3 +120,27 @@ class TierGroupMixins:
             self._idx += 1
             return(out)
         raise StopIteration
+    
+    def get_longest_name_string(
+            self,
+            a: str,
+            b: str
+        ):
+        matches = SequenceMatcher(a=a, b=b).get_matching_blocks()
+        longest_match = matches[0]
+        if longest_match.size < 1:
+            return ''
+        
+        out_str = a[longest_match.a:(longest_match.a + longest_match.size)]
+        return out_str
+    
+    def make_name(self):
+        tier_names = [x.name for x in self.tier_list]
+        name_candidate = reduce(self.get_longest_name_string, tier_names)
+        name_candidate = re.sub(r"^[\s_-]+|[\s_-]+$", '', name_candidate)
+        name_candidate = re.sub(r"\W", "_", name_candidate)
+
+        if len(name_candidate) > 1:
+            return name_candidate
+        
+        return None
