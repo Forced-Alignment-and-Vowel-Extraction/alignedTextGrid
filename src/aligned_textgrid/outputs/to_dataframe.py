@@ -60,7 +60,7 @@ def sequence_to_df(
 
     if isinstance(obj, SequencePoint) or not with_subset:
         df = df.with_columns(
-            type = pl.lit(class_name)
+            entry_class = pl.lit(class_name)
         )
 
     return df
