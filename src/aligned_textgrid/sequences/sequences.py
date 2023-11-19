@@ -6,6 +6,7 @@ Module includes the `SequenceInterval` base class as well as
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from aligned_textgrid.mixins.mixins import InTierMixins, PrecedenceMixins
+from aligned_textgrid.mixins.within import WithinMixins
 from typing import Type, Any
 import numpy as np
 import warnings
@@ -75,7 +76,7 @@ class HierarchyMixins:
         else:
             raise Exception(f"Unknown error setting {subset_class.__name__} as subset class of {cls.__name__}")            
 
-class InstanceMixins(HierarchyMixins):
+class InstanceMixins(HierarchyMixins, WithinMixins):
 
     def set_super_instance(self, super_instance = None):
         """Sets the specific superset relationship
@@ -163,6 +164,8 @@ class InstanceMixins(HierarchyMixins):
             item_starts = self.sub_starts
             item_order = np.argsort(item_starts)
             self.subset_list = [self.subset_list[idx] for idx in item_order]
+        
+        self.contains = self.subset_list
 
     ## Subset Validation
     def validate(self) -> bool:
