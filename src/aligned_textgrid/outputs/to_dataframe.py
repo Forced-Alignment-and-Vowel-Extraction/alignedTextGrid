@@ -99,16 +99,6 @@ def tiergroup_to_df(
 
     return out_df
 
-def pointsgroup_to_df(
-        obj: PointsGroup,
-        with_subset: bool = True
-        )->pl.DataFrame:
-    all_df = [
-        tier_to_df(x, with_subset) for x in obj
-    ]
-
-    out_df = pl.concat(all_df, how="diagonal")
-    return out_df
 
 def textgrid_to_df(
         obj: AlignedTextGrid,
@@ -147,9 +137,6 @@ def to_df(
     
     if isinstance(obj, TierGroup) or isinstance(obj, PointsGroup):
         return tiergroup_to_df(obj, with_subset)
-    
-    # if isinstance(obj, PointsGroup):
-    #     return pointsgroup_to_df(obj, with_subset)
 
     if isinstance(obj, AlignedTextGrid):
         return textgrid_to_df(obj, with_subset)
