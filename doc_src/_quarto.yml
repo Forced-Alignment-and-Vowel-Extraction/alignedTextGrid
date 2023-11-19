@@ -43,8 +43,10 @@ website:
           - section: Custom Classes
             contents:
               - usage/03_Custom_Classes/index.ipynb
-              
-
+          - section: Outputs
+            contents:
+              - usage/05_Outputs/00_to_textgrid.ipynb
+              - usage/05_Outputs/01_to_dataframe.ipynb              
   #         - section: Processing patterns
   #           contents: 
   #             - getting-started/single-file.qmd
@@ -184,3 +186,11 @@ quartodoc:
           name: Levels
         - package: aligned_textgrid.polar.polar_classes
           name: Misc
+    - title: DataFrame outputs
+      desc: |
+        This will return a polars dataframe given an `aligned_textgrid`
+        object
+      contents:
+        - package: aligned_textgrid.outputs.to_dataframe
+          name: to_df
+        

@@ -1,0 +1,18 @@
+# to_df { #aligned_textgrid.outputs.to_dataframe.to_df }
+
+`outputs.to_dataframe.to_df(obj, with_subset=True)`
+
+Return an `aligned_textgrid` object as a dataframe
+
+## Parameters
+
+| Name          | Type                                                                                                                  | Description                                                       | Default    |
+|---------------|-----------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|------------|
+| `obj`         | SequenceInterval \| SequencePoint \| SequenceTier \| SequencePointTier \| TierGroup \| PointsGroup \| AlignedTextGrid | An `aligned_textgrid` object                                      | _required_ |
+| `with_subset` | bool                                                                                                                  | Whether or not to include subset relationships. Defaults to True. | `True`     |
+
+## Returns
+
+| Type         | Description        |
+|--------------|--------------------|
+| pl.DataFrame | A polars dataframe |

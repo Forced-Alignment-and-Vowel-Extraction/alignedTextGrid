@@ -47,5 +47,8 @@ website:
         - reference/Misc.qmd
         section: PoLaR Classes
       section: Custom Classes
+    - contents:
+      - reference/to_df.qmd
+      section: DataFrame outputs
     id: reference
   - id: dummy-sidebar

@@ -18,6 +18,7 @@ repository = "https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTe
 python = "^3.10"
 praatio = "^6.0.0"
 numpy = "^1.24.2"
+polars = "^0.19.14"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0.0"
@@ -25,6 +26,8 @@ pytest = "^7.2.1"
 importlib = "^1.0.4"
 pytest-cov = "^4.0.0"
 pytest-html = "^3.2.0"
+flake8 = "^6.1.0"
+codecov = "^2.1.13"
 
 [tool.poetry.group.docs.dependencies]
 textgrid = "^1.5"
