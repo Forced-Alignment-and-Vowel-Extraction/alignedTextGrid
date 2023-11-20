@@ -111,15 +111,18 @@ print(arbitrary_interval.inword.fol.label)
 
 ## For more
 
-- To start jumping in, check out [the quickstart](usage/index.ipynb)
+- To start jumping in, check out [the
+  quickstart](https://forced-alignment-and-vowel-extraction.github.io/alignedTextGrid/usage/)
 - To learn more about navigating TextGrids and intervals, check out the
   usage pages on [navigating
-  TextGrids](usage/01_TextGrids/01_tg-nav.ipynb) and [navgiating
-  sequences](usage/02_Sequences/00_sequence_structure.ipynb)
+  TextGrids](https://forced-alignment-and-vowel-extraction.github.io/alignedTextGrid/usage/01_TextGrids/01_tg-nav.html)
+  and [navgiating
+  sequences](https://forced-alignment-and-vowel-extraction.github.io/alignedTextGrid/usage/02_Sequences/00_sequence_structure.html)
 - To learn more about the attributes you can access from textgrids and
   sequences, see the usage pages on [TextGrid
-  attributes](usage/01_TextGrids/02_tg-info.ipynb) and [interval
-  attributes](usage/02_Sequences/02_sequence_properties.ipynb)
+  attributes](https://forced-alignment-and-vowel-extraction.github.io/alignedTextGrid/usage/01_TextGrids/02_tg-info.html)
+  and [interval
+  attributes](https://forced-alignment-and-vowel-extraction.github.io/alignedTextGrid/usage/02_Sequences/02_sequence_properties.html)
 
 You can also directly read up on [the function and class
-references](reference/index.qmd).
+references](https://forced-alignment-and-vowel-extraction.github.io/alignedTextGrid/reference/).
