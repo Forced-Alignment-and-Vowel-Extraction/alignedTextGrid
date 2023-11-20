@@ -93,7 +93,7 @@ def tiergroup_to_df(
         out_df = pl.concat(all_df, how = "diagonal")
 
     if hasattr(obj, "name"):
-        out_df.with_columns(
+       out_df = out_df.with_columns(
             name=pl.lit(obj.name)
         )
 

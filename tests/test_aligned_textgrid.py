@@ -1,9 +1,8 @@
 import pytest
 from aligned_textgrid.sequences.sequences import *
-from aligned_textgrid.sequences.word_and_phone import *
 from aligned_textgrid.sequences.tiers import *
 from aligned_textgrid.custom_classes import custom_classes
-from aligned_textgrid.aligned_textgrid import AlignedTextGrid
+from aligned_textgrid import AlignedTextGrid, Word, Phone
 import numpy as np
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
@@ -186,3 +185,15 @@ class TestReturn:
         assert len(out_tg.tiers) == len(self.orig_tg.tiers)
         assert all([x in self.orig_tg.tierNames for x in out_tg.tierNames])
 
+class TestTierGroupNames:
+
+    def test_tiergroup_name(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        assert tg[0].name
+        assert tg[1].name
+
+        assert isinstance(tg.IVR, TierGroup)

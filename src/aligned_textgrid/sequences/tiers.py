@@ -208,6 +208,8 @@ class TierGroup(TierGroupMixins, WithinMixins):
     ):
         super().__init__()
         self.tier_list = self._arrange_tiers(tiers)
+        self._name = self.make_name()
+
         for idx, tier in enumerate(self.tier_list):
             if idx == len(self.tier_list)-1:
                 break
@@ -230,7 +232,7 @@ class TierGroup(TierGroupMixins, WithinMixins):
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
                     u.validate()
-    
+        
     def __repr__(self):
         n_tiers = len(self.tier_list)
         classes = [x.__name__ for x in self.entry_classes]
