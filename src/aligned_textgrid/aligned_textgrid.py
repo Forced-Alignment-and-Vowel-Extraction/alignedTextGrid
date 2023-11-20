@@ -104,10 +104,29 @@ class AlignedTextGrid(WithinMixins):
     
     def __repr__(self):
         n_groups = len(self.tier_groups)
+        group_names = [x.name for x in self.tier_groups]
         n_tiers = [len(x) for x in self.tier_groups]
         entry_classes = [[x.__name__ for x in y] for y in self.entry_classes]
-        return f"AlignedTextGrid with {n_groups} groups, each with {repr(n_tiers)} tiers. {repr(entry_classes)}"
+        return f"AlignedTextGrid with {n_groups} groups named {repr(group_names)} "\
+               f"each with {repr(n_tiers)} tiers. {repr(entry_classes)}"
     
+    def __getattr__(
+            self, 
+            name: str
+        ):
+        tier_group_names = [x.name for x in self.tier_groups]
+        match_list = [x  for x in tier_group_names if x == name]
+
+        if len(match_list) == 1:
+            match_idx = tier_group_names.index(name)
+            self.__setattr__(name, self.tier_groups[match_idx])
+            return self.tier_groups[match_idx]
+        
+        if len(match_list) > 1:
+            raise AttributeError(f"This AlignedTextGrid has multiple TierGroups called {name}")
+        
+        if len(match_list) < 1:
+            raise AttributeError(f"This AlignedTextGrid has no attribute {name}")    
     def index(
             self,
             group: TierGroup|PointsGroup
