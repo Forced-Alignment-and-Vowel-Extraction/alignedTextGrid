@@ -7,6 +7,8 @@ from typing_extensions import Self
 import warnings
 import numpy as np
 
+from typing import Union
+
 class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     """Sequence Points
     
@@ -103,7 +105,7 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     def distance_from(
             self, 
             entry: Self|SequenceInterval
-        ) -> float | np.array:
+        ) -> Union[float, np.array]:
         """Distance from an entry
 
         Args:
