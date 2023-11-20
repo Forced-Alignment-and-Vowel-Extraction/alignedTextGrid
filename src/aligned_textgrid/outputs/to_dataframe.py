@@ -8,7 +8,6 @@ from aligned_textgrid import SequenceInterval, \
 from aligned_textgrid.sequences.tiers import TierGroup
 from aligned_textgrid.points.tiers import PointsGroup
 
-from typing import Union
 
 def sequence_to_df(
         obj: SequenceInterval | SequencePoint,
