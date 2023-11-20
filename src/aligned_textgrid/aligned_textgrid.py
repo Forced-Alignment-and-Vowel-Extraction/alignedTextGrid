@@ -108,6 +108,12 @@ class AlignedTextGrid(WithinMixins):
         entry_classes = [[x.__name__ for x in y] for y in self.entry_classes]
         return f"AlignedTextGrid with {n_groups} groups, each with {repr(n_tiers)} tiers. {repr(entry_classes)}"
     
+    def index(
+            self,
+            group: TierGroup|PointsGroup
+        )->int:
+        return self.tier_groups.index(group)
+    
     def _extend_classes(
             self, 
             tg: Textgrid, 

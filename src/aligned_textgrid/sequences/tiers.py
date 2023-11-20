@@ -208,7 +208,7 @@ class TierGroup(TierGroupMixins, WithinMixins):
     ):
         super().__init__()
         self.tier_list = self._arrange_tiers(tiers)
-        self.name = self.make_name()
+        self._name = self.make_name()
 
         for idx, tier in enumerate(self.tier_list):
             if idx == len(self.tier_list)-1:

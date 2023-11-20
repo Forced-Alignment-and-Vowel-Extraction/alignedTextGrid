@@ -121,6 +121,16 @@ class TierGroupMixins:
             return(out)
         raise StopIteration
     
+    @property
+    def name(self):
+        if self._name:
+            return self._name
+        
+        self._name = self.make_name()
+        return self._name
+        
+        
+    
     def get_longest_name_string(
             self,
             a: str,
@@ -143,4 +153,7 @@ class TierGroupMixins:
         if len(name_candidate) > 1:
             return name_candidate
         
-        return None
+        try: 
+            return f"group_{self.within.index(self)}"
+        except:
+            return None
