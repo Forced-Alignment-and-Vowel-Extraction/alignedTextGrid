@@ -11,7 +11,7 @@ exclude = [
     "examples/",
     "docs/"
 ]
-homepage = "https://alignedtextgrid.readthedocs.io/en/latest/"
+homepage = "https://forced-alignment-and-vowel-extraction.github.io/alignedTextGrid/"
 repository = "https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid"
 
 [tool.poetry.dependencies]
