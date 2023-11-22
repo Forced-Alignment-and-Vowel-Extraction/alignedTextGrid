@@ -25,7 +25,7 @@ for simplified and more accessible analysis of aligned speech data.
 - You want to programmatically merge together adjacent Textgrid
   intervals.
 
-For examples on how to use the pacakge, see the [Usage](usage/) pages.
+For examples on how to use the pacakge, see the [Usage](https://forced-alignment-and-vowel-extraction.github.io/alignedTextGrid/usage) pages.
 
 ## Installation
 
