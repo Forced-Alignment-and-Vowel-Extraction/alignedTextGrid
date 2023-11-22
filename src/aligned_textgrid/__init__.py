@@ -5,7 +5,7 @@ from aligned_textgrid.points.tiers import SequencePointTier
 from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.aligned_textgrid import AlignedTextGrid
 from aligned_textgrid.custom_classes import custom_classes
-
+from aligned_textgrid.outputs.to_dataframe import to_df
 __all__ = [
     "SequenceInterval",
     "SequencePoint",
@@ -16,5 +16,6 @@ __all__ = [
     "SequenceTier",
     "SequencePointTier",
     "AlignedTextGrid",
-    "custom_classes"
+    "custom_classes",
+    "to_df"
 ]

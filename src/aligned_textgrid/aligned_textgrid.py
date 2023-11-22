@@ -10,13 +10,14 @@ from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
 from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from aligned_textgrid.points.tiers import SequencePointTier, PointsGroup
+from aligned_textgrid.mixins.within import WithinMixins
 from typing import Type, Sequence, Literal
 import numpy as np
 import warnings
 
 
-class AlignedTextGrid:
-    """_An aligned Textgrid_
+class AlignedTextGrid(WithinMixins):
+    """An aligned Textgrid
 
     Args:
         textgrid (Textgrid, optional): A `praatio` TextGrid
@@ -66,6 +67,7 @@ class AlignedTextGrid:
             self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, entry_classes)
 
         self.tier_groups = self._relate_tiers()
+        self.contains = self.tier_groups
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
 
     
@@ -102,16 +104,41 @@ class AlignedTextGrid:
     
     def __repr__(self):
         n_groups = len(self.tier_groups)
+        group_names = [x.name for x in self.tier_groups]
         n_tiers = [len(x) for x in self.tier_groups]
         entry_classes = [[x.__name__ for x in y] for y in self.entry_classes]
-        return f"AlignedTextGrid with {n_groups} groups, each with {repr(n_tiers)} tiers. {repr(entry_classes)}"
+        return f"AlignedTextGrid with {n_groups} groups named {repr(group_names)} "\
+               f"each with {repr(n_tiers)} tiers. {repr(entry_classes)}"
+    
+    def __getattr__(
+            self, 
+            name: str
+        ):
+        tier_group_names = [x.name for x in self.tier_groups]
+        match_list = [x  for x in tier_group_names if x == name]
+
+        if len(match_list) == 1:
+            match_idx = tier_group_names.index(name)
+            self.__setattr__(name, self.tier_groups[match_idx])
+            return self.tier_groups[match_idx]
+        
+        if len(match_list) > 1:
+            raise AttributeError(f"This AlignedTextGrid has multiple TierGroups called {name}")
+        
+        if len(match_list) < 1:
+            raise AttributeError(f"This AlignedTextGrid has no attribute {name}")    
+    def index(
+            self,
+            group: TierGroup|PointsGroup
+        )->int:
+        return self.tier_groups.index(group)
     
     def _extend_classes(
             self, 
             tg: Textgrid, 
             entry_classes
         ):
-        """_summary_
+        """summary
 
         Args:
             tg (_type_): _description_
@@ -247,7 +274,7 @@ class AlignedTextGrid:
             self, 
             time: float
         ) -> list[list[int]]:
-        """_Get interval indices at time_
+        """Get interval indices at time
         
         Returns a nested list of intervals at `time` for each tier.
         
@@ -260,7 +287,7 @@ class AlignedTextGrid:
         return [tgroup.get_intervals_at_time(time) for tgroup in self.tier_groups]
 
     def return_textgrid(self) -> Textgrid:
-        """_Convert this `AlignedTextGrid` to a `praatio` `Textgrid`_
+        """Convert this `AlignedTextGrid` to a `praatio` `Textgrid`
         
         Returns the current object as a `praatio.data_classes.textgrid.Textgrid`.
         Useful for saving.
@@ -286,7 +313,7 @@ class AlignedTextGrid:
                 ] 
             = "long_textgrid"
         ):
-        """_Saves the current AlignedTextGrid_
+        """Saves the current AlignedTextGrid
 
         Uses the `praatio.data_classes.textgrid.Textgrid.save()` method.
 

@@ -6,11 +6,12 @@ from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
 from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
+from aligned_textgrid.mixins.within import WithinMixins
 import numpy as np
 from typing import Type
 import warnings
 
-class SequencePointTier(TierMixins):
+class SequencePointTier(TierMixins, WithinMixins):
     """A SequencePointTier class
 
     Args:
@@ -74,6 +75,7 @@ class SequencePointTier(TierMixins):
                 seq.set_final()
             else:
                 seq.set_fol(self.sequence_list[idx+1])
+        self.contains = self.sequence_list
 
     def __set_intier(
             self,
@@ -128,7 +130,7 @@ class SequencePointTier(TierMixins):
             self,
             time:float
         )->SequencePoint:
-        """_Returns nearest point_
+        """Returns nearest point
 
         Args:
             time (float): time at which to get the nearest point
@@ -162,7 +164,7 @@ class SequencePointTier(TierMixins):
         out_tg.addTier(tier = point_tier)
         out_tg.save(save_path, "long_textgrid")
 
-class PointsGroup(TierGroupMixins):
+class PointsGroup(TierGroupMixins, WithinMixins):
     """A collection of point tiers
 
     Args:
@@ -181,6 +183,7 @@ class PointsGroup(TierGroupMixins):
     ):
         super().__init__()
         self.tier_list = tiers
+        self.contains = self.tier_list
     
     def get_nearest_points_index(
             self, 

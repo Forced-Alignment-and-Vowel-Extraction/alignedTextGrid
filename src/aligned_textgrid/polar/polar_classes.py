@@ -8,7 +8,7 @@ import warnings
 import numpy as np
 
 class PrStr(SequencePoint):
-    """_PrStr tier points_
+    """PrStr tier points
 
     Attributes:
         ...:
@@ -39,7 +39,7 @@ class PrStr(SequencePoint):
         return self.label
     
 class ToBI(SequencePoint):
-    """_A ToBI point class_
+    """A ToBI point class
 
     Attributes:
        ...:
@@ -49,7 +49,7 @@ class ToBI(SequencePoint):
         super().__init__(Point)
 
 class TurningPoints(SequencePoint):
-    """_A turning point class_
+    """A turning point class
 
     Attributes:
         ...:
@@ -92,7 +92,7 @@ class TurningPoints(SequencePoint):
         return override_value
 
 class Ranges(SequenceInterval):
-    """_A ranges interval_
+    """A ranges interval
 
     Attributes:
         ...:
@@ -131,7 +131,7 @@ class Ranges(SequenceInterval):
         return np.linspace(self.low, self.high, num = 6)
 
 class Levels(SequencePoint):
-    """_A levels point class_
+    """A levels point class
 
     Attributes:
         ...:
@@ -192,7 +192,7 @@ class Levels(SequencePoint):
 
 
 class Misc(SequencePoint):
-    """_Misc points__
+    """Misc points
     """
     def __init(self, Point):
         super().__init__(Point)

@@ -1,0 +1,11 @@
+# ToBI { #aligned_textgrid.polar.polar_classes.ToBI }
+
+`polar.polar_classes.ToBI(self, Point=None)`
+
+A ToBI point class
+
+## Attributes
+
+| Name   | Type   | Description                                   |
+|--------|--------|-----------------------------------------------|
+| ...    |        | All methods and attributes from SequencePoint |
