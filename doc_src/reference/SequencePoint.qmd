@@ -45,9 +45,9 @@ Distance from an entry
 
 #### Returns
 
-| Type                     | Description                                                                      |
-|--------------------------|----------------------------------------------------------------------------------|
-| Union\[float, np.array\] | a single value in the case of a point, a numpy array in the case of an interval. |
+| Type              | Description                                                                      |
+|-------------------|----------------------------------------------------------------------------------|
+| float \| np.array | a single value in the case of a point, a numpy array in the case of an interval. |
 
 ### get_interval_at_point { #aligned_textgrid.points.points.SequencePoint.get_interval_at_point }
 

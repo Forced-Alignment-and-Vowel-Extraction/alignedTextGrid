@@ -26,9 +26,9 @@ Return index of a tier entry
 
 #### Parameters
 
-| Name    | Type                                     | Description                                                | Default    |
-|---------|------------------------------------------|------------------------------------------------------------|------------|
-| `entry` | Union\[SequencePoint, SequenceInterval\] | A SequenceInterval or a PointInterval to get the index of. | _required_ |
+| Name    | Type                              | Description                                                | Default    |
+|---------|-----------------------------------|------------------------------------------------------------|------------|
+| `entry` | SequencePoint \| SequenceInterval | A SequenceInterval or a PointInterval to get the index of. | _required_ |
 
 #### Returns
 

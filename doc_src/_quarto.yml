@@ -5,8 +5,11 @@ project:
 license: GPLv3
 
 website:
+  favicon: assets/logo.png
+  image: assets/logo.png
   page-navigation: true
   navbar:
+    logo: assets/logo.png
     left:
       - file: index.qmd
         text: Get Started

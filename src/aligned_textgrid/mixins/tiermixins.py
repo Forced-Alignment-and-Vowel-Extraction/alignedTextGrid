@@ -56,7 +56,7 @@ class TierMixins:
         """Return index of a tier entry
 
         Args:
-            entry (Union[SequencePoint, SequenceInterval]):
+            entry (SequencePoint |SequenceInterval):
                 A SequenceInterval or a PointInterval to get the index of.
 
         Returns:
