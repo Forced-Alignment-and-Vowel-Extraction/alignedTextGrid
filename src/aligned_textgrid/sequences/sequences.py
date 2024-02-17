@@ -138,6 +138,19 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             pass
         else:
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
+        
+    def remove_from_subset_list(self, subset_instance = None):
+        """Remove a sequence interval from the subset list
+
+        Args:
+            subset_instance (SequenceInterval): The sequence interval to remove.
+        """
+        if subset_instance not in self.subset_list:
+            warnings.warn("Provided subset_instance was not in the subset list")
+            return
+        
+        self.subset_list.remove(subset_instance)
+        self._set_subset_precedence()
             
     def _set_subset_precedence(self):
         """summary
