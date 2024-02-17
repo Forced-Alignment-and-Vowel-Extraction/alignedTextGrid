@@ -277,15 +277,23 @@ class AlignedTextGrid(WithinMixins):
             name:str,
             above:SequenceInterval = None,
             below:SequenceInterval = None,
-            intervals_from: Literal["above", "below"] = "below"
+            timing_from: Literal["above", "below"] = "below",
+            copy_labels: bool = True
         ):
         """Interleave a new entry class.
 
         Args:
-            name (str): Name of the new class
-            above (SequenceInterval, optional): Which entry class to interleave above.
-            below (SequenceInterval, optional): Which entry class to interleave below.
-            intervals_from (Literal['above', 'below'], optional): Which tier to draw timing from. Defaults to "below".
+            name (str): 
+                Name of the new class
+            above (SequenceInterval, optional): 
+                Which entry class to interleave above.
+            below (SequenceInterval, optional): 
+                Which entry class to interleave below.
+            timing_from (Literal['above', 'below'], optional): 
+                Which tier to draw timing from. Defaults to "below".
+            copy_labels (bool):
+                Whether or not to copy labels from the tier providing
+                timing information. Defaults to True.
 
         
         You can set either `above` or `below`, but not both.
@@ -314,10 +322,15 @@ class AlignedTextGrid(WithinMixins):
         new_class.set_superset_class(up_class)
         new_class.set_subset_class(down_class)
         
-        if intervals_from == "below":
+        if timing_from == "below":
             copy_class = down_class
-        if intervals_from == "above":
+        elif timing_from == "above":
             copy_class = up_class
+        else:
+            raise ValueError(
+                f"{timing_from} is not a valid entry for timing_from. "\
+                "Must be either 'above' or 'below'."
+            )
         
         new_tiergoups = []
         new_entry_classes = []
@@ -332,6 +345,10 @@ class AlignedTextGrid(WithinMixins):
                     [seq.return_interval() for seq in copy_tier],
                     entry_class = new_class
                 )
+                if not copy_labels:
+                    for seq in new_tier:
+                        seq.label = ""
+                
                 orig_entry_classes = tg.entry_classes
                 tier_list = tg.tier_list
                 if not down_class in orig_entry_classes:
