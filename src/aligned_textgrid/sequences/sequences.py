@@ -192,7 +192,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             return True
         else:
             if not np.allclose(self.start, self.sub_starts[0]):
-                if self.start < self.sub_starts:
+                if self.start < self.sub_starts[0]:
                     validation_concerns.append(
                         "First subset interval starts after current interval"
                     )
