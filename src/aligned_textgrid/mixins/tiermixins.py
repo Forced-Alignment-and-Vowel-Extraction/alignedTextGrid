@@ -129,6 +129,9 @@ class TierGroupMixins:
         self._name = self.make_name()
         return self._name
         
+    @name.setter
+    def name(self, name):
+        self._name = name
         
     
     def get_longest_name_string(

@@ -11,7 +11,9 @@ from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from aligned_textgrid.points.tiers import SequencePointTier, PointsGroup
 from aligned_textgrid.mixins.within import WithinMixins
+from aligned_textgrid.custom_classes import custom_classes
 from typing import Type, Sequence, Literal
+from copy import copy
 import numpy as np
 import warnings
 
@@ -270,6 +272,86 @@ class AlignedTextGrid(WithinMixins):
     def xmax(self):
         return np.array([tgroup.xmax for tgroup in self.tier_groups]).max()
     
+    def interleave_class(
+            self, 
+            name:str,
+            above:SequenceInterval = None,
+            below:SequenceInterval = None,
+            intervals_from: Literal["above", "below"] = "below"
+        ):
+        """Interleave a new entry class.
+
+        Args:
+            name (str): Name of the new class
+            above (SequenceInterval, optional): Which entry class to interleave above.
+            below (SequenceInterval, optional): Which entry class to interleave below.
+            intervals_from (Literal['above', 'below'], optional): Which tier to draw timing from. Defaults to "below".
+
+        
+        You can set either `above` or `below`, but not both.
+        """
+
+        if above and below:
+            raise ValueError("Only one of above or below may be specified")
+        if not (above or below):
+            raise ValueError("Either above or below must be specified")
+        if not name:
+            raise ValueError("name must be specified")
+        
+        new_class = custom_classes([name])[0]
+
+        if above:
+            up_class = copy(above.superset_class)
+            down_class = above
+            specified_class = above
+
+        if below:
+            up_class = below
+            down_class = copy(below.subset_class)
+            specified_class = below
+
+        
+        new_class.set_superset_class(up_class)
+        new_class.set_subset_class(down_class)
+        
+        if intervals_from == "below":
+            copy_class = down_class
+        if intervals_from == "above":
+            copy_class = up_class
+        
+        new_tiergoups = []
+        new_entry_classes = []
+
+        for tg in self.tier_groups:
+            if not specified_class in tg.entry_classes:
+                new_tiergoups.append(tg)
+                new_entry_classes.append(tg.entry_classes)
+            else:
+                copy_tier = [tier for tier in tg if tier.entry_class is copy_class][0]
+                new_tier = SequenceTier(
+                    [seq.return_interval() for seq in copy_tier],
+                    entry_class = new_class
+                )
+                orig_entry_classes = tg.entry_classes
+                tier_list = tg.tier_list
+                if not down_class in orig_entry_classes:
+                    orig_entry_classes.append(down_class)
+                
+                insert_index = orig_entry_classes.index(down_class)
+                tier_list.insert(insert_index, new_tier)
+                
+                for tier in tier_list:
+                    tier.superset_class = tier.entry_class.superset_class
+                    tier.subset_class = tier.entry_class.subset_class
+
+                new_tg = TierGroup(tier_list)
+                new_tg.name = tg.name
+                new_tiergoups.append(new_tg)
+                new_entry_classes.append(new_tg.entry_classes)
+
+        self.tier_groups = new_tiergoups
+        self.entry_classes = new_entry_classes
+
     def get_intervals_at_time(
             self, 
             time: float

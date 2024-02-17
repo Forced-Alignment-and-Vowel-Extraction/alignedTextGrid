@@ -148,7 +148,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             subset_instance (SequenceInterval): The sequence interval to remove.
         """
         if subset_instance not in self.subset_list:
-            warnings.warn("Provided subset_instance was not in the subset list")
+            #warnings.warn("Provided subset_instance was not in the subset list")
             return
         
         self.subset_list.remove(subset_instance)
