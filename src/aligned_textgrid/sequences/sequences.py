@@ -129,6 +129,8 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         """
 
         if isinstance(subset_instance, self.subset_class) and not subset_instance in self.subset_list:
+            if subset_instance.super_instance:
+                subset_instance.remove_superset()
             self.subset_list.append(subset_instance)
             self._set_subset_precedence()
             # avoid recursion

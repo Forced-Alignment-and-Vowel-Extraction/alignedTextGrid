@@ -222,6 +222,7 @@ class TestHierarchy:
 
     def test_super_instance(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
+        upper2 = self.UpperClass(Interval(0,10,"upper2"))
         lower1 = self.LowerClass(Interval(0,5,"lower1"))
         lower2 = self.LowerClass(Interval(5,10,"lower2"))
 
@@ -243,6 +244,12 @@ class TestHierarchy:
 
         assert lower1.fol is lower2
         assert lower2.prev is lower1
+
+
+        upper2.append_subset_list(lower1)
+
+        assert not lower1 in upper1
+        assert lower1.super_instance is upper2
 
     def test_subset_instance(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
