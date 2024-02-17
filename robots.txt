@@ -1,1 +1,1 @@
-Sitemap: https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/sitemap.xml
+Sitemap: https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/sitemap.xml
