@@ -150,6 +150,8 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             return
         
         self.subset_list.remove(subset_instance)
+        subset_instance.super_instance = None
+        subset_instance.within = None
         self._set_subset_precedence()
             
     def _set_subset_precedence(self):

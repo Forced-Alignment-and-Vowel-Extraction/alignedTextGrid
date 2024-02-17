@@ -284,6 +284,9 @@ class TestHierarchy:
         assert not lower1 in upper1
         assert upper1.first is lower2
 
+        assert lower1.within is None
+        assert not lower1 in upper1.contains
+
     def test_subset_index(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
         lower1 = self.LowerClass(Interval(0,5,"lower1"))
