@@ -153,7 +153,18 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         subset_instance.super_instance = None
         subset_instance.within = None
         self._set_subset_precedence()
-            
+    
+    def remove_superset(self):
+        """Remove the superset instance from the current subset class
+        """
+        
+        if self.super_instance is None:
+            warnings.warn("Provided SequenceInterval has no superset instance")
+            return
+        
+        self.super_instance.remove_from_subset_list(self)
+
+
     def _set_subset_precedence(self):
         """summary
             Private method. Sorts subset list and re-sets precedence 

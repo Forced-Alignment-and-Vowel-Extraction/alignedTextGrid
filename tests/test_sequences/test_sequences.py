@@ -287,6 +287,24 @@ class TestHierarchy:
         assert lower1.within is None
         assert not lower1 in upper1.contains
 
+    def test_remove_superset(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+
+        upper1.set_subset_list([lower1, lower2])
+
+        assert lower2 in upper1
+        assert lower2.within is upper1
+
+        lower2.remove_superset()
+
+        assert lower2.within is None
+        assert not lower2 in upper1.contains
+
+        assert len(upper1) == 1
+
+
     def test_subset_index(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
         lower1 = self.LowerClass(Interval(0,5,"lower1"))
