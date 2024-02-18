@@ -309,7 +309,22 @@ class TestInterleave:
         no_copy_labs = [len(x.label) for x in tg[0].SylPart]
         assert all([x==0 for x in no_copy_labs])
 
+    def test_tiergroup_specificity(self):
+        Word1, Phone1 = custom_classes(["Word1", "Phone1"])
+        Word2, Phone2 = custom_classes(["Word2", "Phone2"])
 
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[[Word1, Phone1],[Word2, Phone2]]
+        )
+
+        tg.interleave_class(
+            name = "Syllable",
+            above = Phone1
+        )
+
+        assert len(tg[0]) == 3
+        assert len(tg[1]) == 2
 
     def test_exceptions(self):
         Word,Phone = custom_classes(["Word", "Phone"])        
