@@ -108,6 +108,14 @@ class TestClassSetting:
         entry_classes=[[MyWord, MyPhone], [MyWord, MyPhone]]
         )
     
+    atg3 = AlignedTextGrid(
+        textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+        entry_classes = [
+            custom_classes("MyWord", "MyPhone"),
+            custom_classes("MyWord", "MyPhone")
+        ]
+    )
+    
     def test_equiv(self):
         assert len(self.atg1.tier_groups) == len(self.atg2.tier_groups)
         
@@ -118,6 +126,20 @@ class TestClassSetting:
 
         assert np.isclose(self.atg1.xmin, self.atg2.xmin)
         assert np.isclose(self.atg1.xmax, self.atg2.xmax)
+
+    def test_get_class_by_name(self):
+
+        target_class1 = self.atg1.get_class_by_name("MyWord")
+        target_class2 = self.atg2.get_class_by_name("MyWord")
+
+        assert target_class1 is MyWord
+        assert target_class2 is MyWord
+
+        missing_class = self.atg1.get_class_by_name("Foo")
+        assert missing_class is None
+
+        target_classes = self.atg3.get_class_by_name("MyWord")
+        assert len(target_classes) > 1
     
 class TestInGetLen:
     atg = AlignedTextGrid(
@@ -325,6 +347,20 @@ class TestInterleave:
 
         assert len(tg[0]) == 3
         assert len(tg[1]) == 2
+
+    def test_interleave_with_string(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=custom_classes(["Word", "Phone"])
+        )
+
+        tg.interleave_class(
+            name = "Syllable", 
+            below = "Word"
+        )
+
+        assert len(tg[0]) == 3
+        assert isinstance(tg[0].Syllable, SequenceTier)
 
     def test_exceptions(self):
         Word,Phone = custom_classes(["Word", "Phone"])        

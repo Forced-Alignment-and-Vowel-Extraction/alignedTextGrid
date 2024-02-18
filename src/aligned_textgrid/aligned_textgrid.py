@@ -275,8 +275,8 @@ class AlignedTextGrid(WithinMixins):
     def interleave_class(
             self, 
             name:str,
-            above:SequenceInterval = None,
-            below:SequenceInterval = None,
+            above:SequenceInterval|str = None,
+            below:SequenceInterval|str = None,
             timing_from: Literal["above", "below"] = "below",
             copy_labels: bool = True
         ):
@@ -308,6 +308,12 @@ class AlignedTextGrid(WithinMixins):
         
         new_class = custom_classes([name])[0]
 
+        if type(above) is str:
+            above = self.get_class_by_name(above)
+
+        if type(below) is str:
+            below = self.get_class_by_name(below)
+
         if above:
             up_class = copy(above.superset_class)
             down_class = above
@@ -330,7 +336,6 @@ class AlignedTextGrid(WithinMixins):
 
         new_class.set_superset_class(up_class)
         new_class.set_subset_class(down_class)
-        
         
         new_tiergoups = []
         new_entry_classes = []
@@ -368,6 +373,32 @@ class AlignedTextGrid(WithinMixins):
 
         self.tier_groups = new_tiergoups
         self.entry_classes = new_entry_classes
+
+    def get_class_by_name(
+            self, 
+            class_name: str
+    )->SequenceInterval:
+        
+        flat_class = [
+            c for tg in self.entry_classes for c in tg
+        ]
+        unique_classes = set(flat_class)
+        target_classes = [
+            x 
+            for x in unique_classes 
+            if x.__name__ == class_name
+        ]
+
+        if len(target_classes) == 1:
+            return target_classes[0]
+        
+        if len(target_classes) > 1:
+            warnings.warn(f"Multiple entry classes matched {class_name}.")
+            return target_classes
+
+        if len(target_classes) < 1:
+            warnings.warn(f"No entry classes named {class_name}.")
+            return
 
     def get_intervals_at_time(
             self, 
