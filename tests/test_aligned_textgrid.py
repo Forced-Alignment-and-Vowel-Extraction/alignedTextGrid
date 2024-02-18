@@ -197,3 +197,72 @@ class TestTierGroupNames:
         assert tg[1].name
 
         assert isinstance(tg.IVR, TierGroup)
+
+class TestInterleave:
+    
+   
+    def test_top_interleave(self):
+        Word,Phone = custom_classes(["Word", "Phone"])
+
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes= [Word, Phone]
+        )
+
+        tg.interleave_class(
+            name = "Testing",
+            above = Word
+        )
+
+        all_len = [len(tgr) for tgr in tg]
+        assert len(all_len) > 0
+        assert all([l == 3 for l in all_len])
+
+        assert tg[0][0].subset_class is Word
+        assert not issubclass(tg[0].Word.superset_class, Top)
+
+    def test_mid_interleave(self):
+        Word,Phone = custom_classes(["Word", "Phone"])        
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        tg.interleave_class(
+            name = "Testing",
+            below = Word
+        )
+
+        all_len = [len(tgr) for tgr in tg]
+        assert len(all_len) > 0
+        assert all([l == 3 for l in all_len])
+
+        assert tg[0][0].entry_class is Word
+        assert not issubclass(tg[0].Word.subset_class, Phone)
+
+    def test_multi_interleave(self):
+        Word,Phone = custom_classes(["Word", "Phone"])        
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        tg.interleave_class(
+            name = "Syllable",
+            below = Word
+        )
+
+        tg.interleave_class(
+            name = "SylPart",
+            above = Phone
+        )
+
+
+        tg_lens = [len(tgr) for tgr in tg]
+        assert all([l == 4 for l in tg_lens])
+
+        assert tg[0]\
+            .Phone\
+            .superset_class\
+            .superset_class\
+            .superset_class == Word
