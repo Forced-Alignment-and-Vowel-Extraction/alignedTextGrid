@@ -34,6 +34,7 @@ website:
             contents:
               - usage/01_TextGrids/01_tg-nav.ipynb
               - usage/01_TextGrids/02_tg-info.ipynb
+              - usage/01_TextGrids/03_tg-mod.ipynb
           - section: Sequences
             contents:
               - usage/02_Sequences/00_sequence_structure.ipynb
