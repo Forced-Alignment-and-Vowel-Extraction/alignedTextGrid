@@ -285,9 +285,9 @@ class AlignedTextGrid(WithinMixins):
         Args:
             name (str): 
                 Name of the new class
-            above (SequenceInterval, optional): 
+            above (SequenceInterval|str, optional): 
                 Which entry class to interleave above.
-            below (SequenceInterval, optional): 
+            below (SequenceInterval|str, optional): 
                 Which entry class to interleave below.
             timing_from (Literal['above', 'below'], optional): 
                 Which tier to draw timing from. Defaults to "below".
@@ -377,8 +377,17 @@ class AlignedTextGrid(WithinMixins):
     def get_class_by_name(
             self, 
             class_name: str
-    )->SequenceInterval:
-        
+    )->SequenceInterval|list[SequenceInterval]|None:
+        """Get an entry class by name
+
+        Args:
+            class_name (str): The requested entry class
+
+        Returns:
+            (SequenceInterval|list[SequenceInterval]|None): 
+                The requested entry class(es), if any
+        """
+
         flat_class = [
             c for tg in self.entry_classes for c in tg
         ]

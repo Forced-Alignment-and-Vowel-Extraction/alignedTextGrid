@@ -26,10 +26,29 @@ An aligned Textgrid
 
 | Name | Description |
 | --- | --- |
+| [get_class_by_name](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_class_by_name) | Get an entry class by name |
 | [get_intervals_at_time](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_intervals_at_time) | Get interval indices at time |
 | [interleave_class](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.interleave_class) | Interleave a new entry class. |
 | [return_textgrid](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.return_textgrid) | Convert this `AlignedTextGrid` to a `praatio` `Textgrid` |
 | [save_textgrid](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.save_textgrid) | Saves the current AlignedTextGrid |
+
+### get_class_by_name { #aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_class_by_name }
+
+`aligned_textgrid.AlignedTextGrid.get_class_by_name(class_name)`
+
+Get an entry class by name
+
+#### Parameters
+
+| Name         | Type   | Description               | Default    |
+|--------------|--------|---------------------------|------------|
+| `class_name` | str    | The requested entry class | _required_ |
+
+#### Returns
+
+| Type                                                 | Description                           |
+|------------------------------------------------------|---------------------------------------|
+| SequenceInterval \| list\[SequenceInterval\] \| None | The requested entry class(es), if any |
 
 ### get_intervals_at_time { #aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_intervals_at_time }
 
@@ -62,8 +81,8 @@ Interleave a new entry class.
 | Name          | Type                        | Description                                                                                 | Default    |
 |---------------|-----------------------------|---------------------------------------------------------------------------------------------|------------|
 | `name`        | str                         | Name of the new class                                                                       | _required_ |
-| `above`       | SequenceInterval            | Which entry class to interleave above.                                                      | `None`     |
-| `below`       | SequenceInterval            | Which entry class to interleave below.                                                      | `None`     |
+| `above`       | SequenceInterval \| str     | Which entry class to interleave above.                                                      | `None`     |
+| `below`       | SequenceInterval \| str     | Which entry class to interleave below.                                                      | `None`     |
 | `timing_from` | Literal\['above', 'below'\] | Which tier to draw timing from. Defaults to "below".                                        | `'below'`  |
 | `copy_labels` | bool                        | Whether or not to copy labels from the tier providing timing information. Defaults to True. | `True`     |
 
