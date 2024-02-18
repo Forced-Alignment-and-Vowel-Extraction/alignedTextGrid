@@ -108,6 +108,14 @@ class TestClassSetting:
         entry_classes=[[MyWord, MyPhone], [MyWord, MyPhone]]
         )
     
+    atg3 = AlignedTextGrid(
+        textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+        entry_classes = [
+            custom_classes("MyWord", "MyPhone"),
+            custom_classes("MyWord", "MyPhone")
+        ]
+    )
+    
     def test_equiv(self):
         assert len(self.atg1.tier_groups) == len(self.atg2.tier_groups)
         
@@ -118,6 +126,20 @@ class TestClassSetting:
 
         assert np.isclose(self.atg1.xmin, self.atg2.xmin)
         assert np.isclose(self.atg1.xmax, self.atg2.xmax)
+
+    def test_get_class_by_name(self):
+
+        target_class1 = self.atg1.get_class_by_name("MyWord")
+        target_class2 = self.atg2.get_class_by_name("MyWord")
+
+        assert target_class1 is MyWord
+        assert target_class2 is MyWord
+
+        missing_class = self.atg1.get_class_by_name("Foo")
+        assert missing_class is None
+
+        target_classes = self.atg3.get_class_by_name("MyWord")
+        assert len(target_classes) > 1
     
 class TestInGetLen:
     atg = AlignedTextGrid(
@@ -197,3 +219,174 @@ class TestTierGroupNames:
         assert tg[1].name
 
         assert isinstance(tg.IVR, TierGroup)
+
+class TestInterleave:
+    
+   
+    def test_top_interleave(self):
+        Word,Phone = custom_classes(["Word", "Phone"])
+
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes= [Word, Phone]
+        )
+
+        tg.interleave_class(
+            name = "Testing",
+            above = Word
+        )
+
+        all_len = [len(tgr) for tgr in tg]
+        assert len(all_len) > 0
+        assert all([l == 3 for l in all_len])
+
+        assert tg[0][0].subset_class is Word
+        assert not issubclass(tg[0].Word.superset_class, Top)
+
+    def test_mid_interleave(self):
+        Word,Phone = custom_classes(["Word", "Phone"])        
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        tg.interleave_class(
+            name = "Testing",
+            below = Word
+        )
+
+        all_len = [len(tgr) for tgr in tg]
+        assert len(all_len) > 0
+        assert all([l == 3 for l in all_len])
+
+        assert tg[0][0].entry_class is Word
+        assert not issubclass(tg[0].Word.subset_class, Phone)
+
+    def test_multi_interleave(self):
+        Word,Phone = custom_classes(["Word", "Phone"])        
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        tg.interleave_class(
+            name = "Syllable",
+            below = Word
+        )
+
+        tg.interleave_class(
+            name = "SylPart",
+            above = Phone
+        )
+
+
+        tg_lens = [len(tgr) for tgr in tg]
+        assert all([l == 4 for l in tg_lens])
+
+        assert tg[0]\
+            .Phone\
+            .superset_class\
+            .superset_class\
+            .superset_class == Word
+    
+    def test_bottom_class(self):
+        Word,Phone = custom_classes(["Word", "Phone"])        
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        tg.interleave_class(
+            name = "SubPhone",
+            below = Phone,
+            timing_from="above"
+        )
+
+        assert tg[0][-1].superset_class is Phone
+        assert issubclass(tg[0][-1].subset_class, Bottom)
+
+    def test_label_copy(self):
+        Word,Phone = custom_classes(["Word", "Phone"])        
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        tg.interleave_class(
+            name = "Syllable",
+            below = Word,
+            timing_from="above"
+        )
+
+        tg.interleave_class(
+            name = "SylPart",
+            above = Phone,
+            timing_from = "below",
+            copy_labels = False
+        )
+
+        copy_labs = [len(x.label) for x in tg[0].Syllable]
+        assert any([x>0 for x in copy_labs])
+
+        no_copy_labs = [len(x.label) for x in tg[0].SylPart]
+        assert all([x==0 for x in no_copy_labs])
+
+    def test_tiergroup_specificity(self):
+        Word1, Phone1 = custom_classes(["Word1", "Phone1"])
+        Word2, Phone2 = custom_classes(["Word2", "Phone2"])
+
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[[Word1, Phone1],[Word2, Phone2]]
+        )
+
+        tg.interleave_class(
+            name = "Syllable",
+            above = Phone1
+        )
+
+        assert len(tg[0]) == 3
+        assert len(tg[1]) == 2
+
+    def test_interleave_with_string(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=custom_classes(["Word", "Phone"])
+        )
+
+        tg.interleave_class(
+            name = "Syllable", 
+            below = "Word"
+        )
+
+        assert len(tg[0]) == 3
+        assert isinstance(tg[0].Syllable, SequenceTier)
+
+    def test_exceptions(self):
+        Word,Phone = custom_classes(["Word", "Phone"])        
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        with pytest.raises(ValueError):
+            tg.interleave_class("Syllable")
+        
+        with pytest.raises(ValueError):
+            tg.interleave_class(
+                "Syllable",
+                below = Word,
+                above = Phone
+            )
+        
+        with pytest.raises(Exception):
+            tg.interleave_class(
+                below = "Word"
+            )
+
+        with pytest.raises(ValueError):
+            tg.interleave_class(
+                name = "Syllable",
+                below = Word,
+                timing_from="Word"
+            )

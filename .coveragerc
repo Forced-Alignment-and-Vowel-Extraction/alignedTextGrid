@@ -1,3 +1,6 @@
 [run]
 include = */src/*
 omit = tests/*
+
+exclude_also =
+    def __repr__

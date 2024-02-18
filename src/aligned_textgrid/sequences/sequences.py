@@ -129,6 +129,8 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         """
 
         if isinstance(subset_instance, self.subset_class) and not subset_instance in self.subset_list:
+            if subset_instance.super_instance:
+                subset_instance.remove_superset()
             self.subset_list.append(subset_instance)
             self._set_subset_precedence()
             # avoid recursion
@@ -138,7 +140,33 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             pass
         else:
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
-            
+        
+    def remove_from_subset_list(self, subset_instance = None):
+        """Remove a sequence interval from the subset list
+
+        Args:
+            subset_instance (SequenceInterval): The sequence interval to remove.
+        """
+        if subset_instance not in self.subset_list:
+            #warnings.warn("Provided subset_instance was not in the subset list")
+            return
+        
+        self.subset_list.remove(subset_instance)
+        subset_instance.super_instance = None
+        subset_instance.within = None
+        self._set_subset_precedence()
+    
+    def remove_superset(self):
+        """Remove the superset instance from the current subset class
+        """
+        
+        if self.super_instance is None:
+            warnings.warn("Provided SequenceInterval has no superset instance")
+            return
+        
+        self.super_instance.remove_from_subset_list(self)
+
+
     def _set_subset_precedence(self):
         """summary
             Private method. Sorts subset list and re-sets precedence 
@@ -192,7 +220,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             return True
         else:
             if not np.allclose(self.start, self.sub_starts[0]):
-                if self.start < self.sub_starts:
+                if self.start < self.sub_starts[0]:
                     validation_concerns.append(
                         "First subset interval starts after current interval"
                     )
