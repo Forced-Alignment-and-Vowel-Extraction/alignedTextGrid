@@ -222,6 +222,7 @@ class TestHierarchy:
 
     def test_super_instance(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
+        upper2 = self.UpperClass(Interval(0,10,"upper2"))
         lower1 = self.LowerClass(Interval(0,5,"lower1"))
         lower2 = self.LowerClass(Interval(5,10,"lower2"))
 
@@ -243,6 +244,12 @@ class TestHierarchy:
 
         assert lower1.fol is lower2
         assert lower2.prev is lower1
+
+
+        upper2.append_subset_list(lower1)
+
+        assert not lower1 in upper1
+        assert lower1.super_instance is upper2
 
     def test_subset_instance(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
@@ -268,6 +275,48 @@ class TestHierarchy:
         assert lower2 in upper1
         assert lower1.fol is lower2
         assert lower2.prev is lower1
+    
+    def test_remove_from_subset(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+
+        upper1.set_subset_list([lower1, lower2])
+
+        assert lower1 in upper1
+        assert upper1.first is lower1
+
+        upper1.remove_from_subset_list(lower1)
+
+        assert not lower1 in upper1
+        assert upper1.first is lower2
+
+        assert lower1.within is None
+        assert not lower1 in upper1.contains
+
+    def test_remove_superset(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+
+        upper1.set_subset_list([lower1, lower2])
+
+        assert lower2 in upper1
+        assert lower2.within is upper1
+
+        lower2.remove_superset()
+
+        assert lower2.within is None
+        assert not lower2 in upper1.contains
+
+        assert len(upper1) == 1
+
+        try:
+            upper1.remove_superset()
+            assert True
+        except:
+            assert False
+
 
     def test_subset_index(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
