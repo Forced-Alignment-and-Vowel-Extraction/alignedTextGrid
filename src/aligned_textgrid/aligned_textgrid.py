@@ -318,10 +318,6 @@ class AlignedTextGrid(WithinMixins):
             down_class = copy(below.subset_class)
             specified_class = below
 
-        
-        new_class.set_superset_class(up_class)
-        new_class.set_subset_class(down_class)
-        
         if timing_from == "below":
             copy_class = down_class
         elif timing_from == "above":
@@ -331,6 +327,10 @@ class AlignedTextGrid(WithinMixins):
                 f"{timing_from} is not a valid entry for timing_from. "\
                 "Must be either 'above' or 'below'."
             )
+
+        new_class.set_superset_class(up_class)
+        new_class.set_subset_class(down_class)
+        
         
         new_tiergoups = []
         new_entry_classes = []
