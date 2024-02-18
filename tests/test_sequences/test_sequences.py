@@ -311,6 +311,12 @@ class TestHierarchy:
 
         assert len(upper1) == 1
 
+        try:
+            upper1.remove_superset()
+            assert True
+        except:
+            assert False
+
 
     def test_subset_index(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))

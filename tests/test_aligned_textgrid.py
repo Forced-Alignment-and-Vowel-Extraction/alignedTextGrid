@@ -266,3 +266,76 @@ class TestInterleave:
             .superset_class\
             .superset_class\
             .superset_class == Word
+    
+    def test_bottom_class(self):
+        Word,Phone = custom_classes(["Word", "Phone"])        
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        tg.interleave_class(
+            name = "SubPhone",
+            below = Phone,
+            timing_from="above"
+        )
+
+        assert tg[0][-1].superset_class is Phone
+        assert issubclass(tg[0][-1].subset_class, Bottom)
+
+    def test_label_copy(self):
+        Word,Phone = custom_classes(["Word", "Phone"])        
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        tg.interleave_class(
+            name = "Syllable",
+            below = Word,
+            timing_from="above"
+        )
+
+        tg.interleave_class(
+            name = "SylPart",
+            above = Phone,
+            timing_from = "below",
+            copy_labels = False
+        )
+
+        copy_labs = [len(x.label) for x in tg[0].Syllable]
+        assert any([x>0 for x in copy_labs])
+
+        no_copy_labs = [len(x.label) for x in tg[0].SylPart]
+        assert all([x==0 for x in no_copy_labs])
+
+
+
+    def test_exceptions(self):
+        Word,Phone = custom_classes(["Word", "Phone"])        
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        with pytest.raises(ValueError):
+            tg.interleave_class("Syllable")
+        
+        with pytest.raises(ValueError):
+            tg.interleave_class(
+                "Syllable",
+                below = Word,
+                above = Phone
+            )
+        
+        with pytest.raises(Exception):
+            tg.interleave_class(
+                below = "Word"
+            )
+
+        with pytest.raises(ValueError):
+            tg.interleave_class(
+                name = "Syllable",
+                below = Word,
+                timing_from="Word"
+            )
