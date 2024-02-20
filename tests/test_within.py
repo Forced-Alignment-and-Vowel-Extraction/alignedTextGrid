@@ -114,6 +114,15 @@ class TestWithinTG:
         entry_classes=entry_classes
     )
 
+    def test_within_setting(self): 
+        tgr0 = self.one_tg[0]
+        tier0 = self.one_tg[0][0]
+        interval0 = self.one_tg[0][0][0]
+
+        assert interval0.within is tier0
+        assert tier0.within is tgr0
+        assert tgr0.within is self.one_tg
+
 
     def test_classes_correct(self):
         phone_interval = self.one_tg[0].Phone[0]

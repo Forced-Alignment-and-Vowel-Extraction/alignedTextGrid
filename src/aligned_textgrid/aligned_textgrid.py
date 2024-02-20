@@ -70,6 +70,8 @@ class AlignedTextGrid(WithinMixins):
 
         self.tier_groups = self._relate_tiers()
         self.contains = self.tier_groups
+        for tgr in self.tier_groups:
+            tgr.within = self
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
 
     
