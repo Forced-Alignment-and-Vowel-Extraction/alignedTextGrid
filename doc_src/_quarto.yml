@@ -1,0 +1,200 @@
+project:
+  type: website
+  output-dir: _site
+
+license: GPLv3
+
+website:
+  favicon: assets/logo.png
+  image: assets/logo.png
+  page-navigation: true
+  navbar:
+    logo: assets/logo.png
+    left:
+      - file: index.qmd
+        text: Get Started
+      - href: reference/
+        text: Reference        
+    right:
+      - icon: github
+        href: https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/      
+  sidebar:
+      - id: get-started
+        title: Get Started
+        style: floating
+        align: left
+        contents:
+          - section: Getting Started
+            contents:
+              - index.qmd
+          - section: Quickstart
+            contents:
+              - usage/index.ipynb
+          - section: TextGrids
+            contents:
+              - usage/01_TextGrids/01_tg-nav.ipynb
+              - usage/01_TextGrids/02_tg-info.ipynb
+              - usage/01_TextGrids/03_tg-mod.ipynb
+          - section: Sequences
+            contents:
+              - usage/02_Sequences/00_sequence_structure.ipynb
+              - usage/02_Sequences/01_sequence-in-tier.ipynb 
+              - usage/02_Sequences/02_sequence_properties.ipynb 
+              - usage/02_Sequences/03_sequence-modification.ipynb
+          - section: Points
+            contents:
+              - usage/04_Points/00_points_and_point_tiers.ipynb
+          - section: Custom Classes
+            contents:
+              - usage/03_Custom_Classes/index.ipynb
+          - section: Outputs
+            contents:
+              - usage/05_Outputs/00_to_textgrid.ipynb
+              - usage/05_Outputs/01_to_dataframe.ipynb              
+  #         - section: Processing patterns
+  #           contents: 
+  #             - getting-started/single-file.qmd
+  #             - getting-started/directory.qmd
+  #         - section: Customizing a recoding scheme
+  #           contents:
+  #             - getting-started/rule-scheme-basics.qmd
+  #             - getting-started/rule-application.qmd
+  #             - section: Details
+  #               contents:
+  #                 - getting-started/condition-attributes.qmd
+  #                 - getting-started/condition-relations.qmd
+
+format:
+  html: 
+    theme:
+      light: flatly
+      dark: darkly
+    toc: true
+
+# tell quarto to read the generated sidebar
+metadata-files:
+  - reference/_sidebar.yml
+
+# filters:
+#   - "interlinks"
+
+interlinks:
+  sources:
+    python:
+      url: https://docs.python.org/3/
+    # griffe:
+    #   url: https://mkdocstrings.github.io/griffe/
+
+
+quartodoc:
+  # the name used to import the package you want to create reference docs for
+  package: aligned_textgrid
+  style: pkgdown
+  dir: reference
+  # write sidebar data to this file
+  sidebar: "reference/_sidebar.yml"
+  parser: google
+  #render_interlinks: true
+  sections:
+    - title: Sequence Classes
+      desc: |
+        These classes define attributes and methods for Intervals 
+        and Points.
+
+    - subtitle: Common Features
+      desc: |
+        These classes define common attributes and methods available
+        to intervals and points.
+      contents:
+        - package: aligned_textgrid.mixins.mixins
+          name: PrecedenceMixins
+        - package: aligned_textgrid.mixins.mixins
+          name: InTierMixins
+    - subtitle: Intervals
+      desc: |
+        The basic `SequenceInterval` class and special `Top` and `Bottom` classes.
+        For customized `SequenceIntervals`, see [Word](Word.qmd) and [Phone](Phone.qmd),
+        or [`custom_classes()`](custom_classes.qmd).
+      contents:
+        - package: aligned_textgrid.sequences.sequences
+          name: SequenceInterval
+        - package: aligned_textgrid.sequences.sequences
+          name: Top
+        - package: aligned_textgrid.sequences.sequences
+          name: Bottom
+    - subtitle: Points
+      desc: |
+        There is just a single SequencePoint class, since points
+        don't have hierarchical relationships defined.
+      contents:
+        - package:  aligned_textgrid.points.points
+          name: SequencePoint                  
+    - title: Tiers
+      desc: Tiers Classes
+    - subtitle: Common Features
+      desc: |
+        These classes define common attributes and methods shared accross
+        all tier and tiergroups.
+      contents:
+        - package: aligned_textgrid.mixins.tiermixins
+          name: TierMixins
+        - package: aligned_textgrid.mixins.tiermixins
+          name: TierGroupMixins
+    - subtitle: Tiers and Tier Groups
+      desc: | 
+        These classes define tiers and tier groups.
+      contents:
+        - package: aligned_textgrid.sequences.tiers
+          name: SequenceTier
+        - package: aligned_textgrid.points.tiers
+          name: SequencePointTier
+        - package: aligned_textgrid.sequences.tiers
+          name: TierGroup
+    - title: TextGrids
+      desc: TextGrid Classes
+      contents: 
+        - package: aligned_textgrid.aligned_textgrid
+          name: AlignedTextGrid
+    - title: Custom Classes
+      desc: Custom Classes
+    - subtitle: Custom Class Creation
+      desc: |
+        This is a function that will quickly create custom classes
+        - package: aligned_textgrid.custom_classes
+          name: custom_classes
+    - subtitle: Word and Phone Classes
+      desc: |
+        These are mostly intended to be used with textgrids that are the 
+        product of forced alignment.
+      contents: 
+        - package: aligned_textgrid.sequences.word_and_phone
+          name: Word
+        - package: aligned_textgrid.sequences.word_and_phone
+          name: Phone
+    - subtitle: PoLaR Classes
+      desc: |
+        These are classes intended to make it easier to work with
+        PoLaR annotation.
+      contents:
+        - package: aligned_textgrid.polar.polar_classes
+          name: PrStr
+        - package: aligned_textgrid.polar.polar_classes
+          name: ToBI
+        - package: aligned_textgrid.polar.polar_classes
+          name: ToBI
+        - package: aligned_textgrid.polar.polar_classes
+          name: TurningPoints
+        - package: aligned_textgrid.polar.polar_classes
+          name: Ranges
+        - package: aligned_textgrid.polar.polar_classes
+          name: Levels
+        - package: aligned_textgrid.polar.polar_classes
+          name: Misc
+    - title: DataFrame outputs
+      desc: |
+        This will return a polars dataframe given an `aligned_textgrid`
+        object
+      contents:
+        - package: aligned_textgrid.outputs.to_dataframe
+          name: to_df
+        

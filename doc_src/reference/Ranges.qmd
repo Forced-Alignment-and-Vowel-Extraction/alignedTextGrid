@@ -1,0 +1,15 @@
+# Ranges { #aligned_textgrid.polar.polar_classes.Ranges }
+
+`polar.polar_classes.Ranges(self, Interval)`
+
+A ranges interval
+
+## Attributes
+
+| Name   | Type     | Description                                                        |
+|--------|----------|--------------------------------------------------------------------|
+| ...    |          | All methods and attributes from SequenceInterval                   |
+| range  | np.array | The f0 range                                                       |
+| low    | float    | The low value of the f0 range                                      |
+| high   | float    | The high value of the f0 range                                     |
+| bands  | np.array | The break points in the f0 range (6 break points defining 5 bands) |

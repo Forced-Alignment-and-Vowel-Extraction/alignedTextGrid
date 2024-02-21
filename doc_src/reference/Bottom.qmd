@@ -1,0 +1,8 @@
+# Bottom { #aligned_textgrid.sequences.sequences.Bottom }
+
+`sequences.sequences.Bottom(self)`
+
+A bottom level interval class
+
+This is a special subclass intended to be the `subset_class` 
+for classes at the bottom of the hierarchy.

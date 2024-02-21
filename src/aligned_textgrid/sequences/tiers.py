@@ -6,12 +6,14 @@ from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
+from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
+from aligned_textgrid.mixins.within import WithinMixins
 import numpy as np
 from typing import Type
 import warnings
 
-class SequenceTier:
-    """_A sequence tier_
+class SequenceTier(TierMixins, WithinMixins):
+    """A sequence tier
 
     Given a `praatio` `IntervalTier` or list of `Interval`s, creates
     `entry_class` instances for every interval.
@@ -41,6 +43,7 @@ class SequenceTier:
         tier: list[Interval] | IntervalTier = [],
         entry_class: Type[SequenceInterval] = SequenceInterval
     ):
+        super().__init__()
         if isinstance(tier, IntervalTier):
             self.entry_list = tier.entries
             self.name = tier.name
@@ -60,71 +63,6 @@ class SequenceTier:
             self.sequence_list += [this_seq]
         self.__set_precedence()
 
-    def __contains__(self, item):
-        return item in self.sequence_list
-    
-    def __getitem__(self, idx):
-        return self.sequence_list[idx]
-    
-    def __iter__(self):
-        self._idx = 0
-        return self
-
-    def __len__(self):
-        return len(self.sequence_list)
-
-    def __next__(self):
-        if self._idx < len(self.sequence_list):
-            out = self.sequence_list[self._idx]
-            self._idx += 1
-            return(out)
-        raise StopIteration
-
-    def __repr__(self):
-        return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
-    
-    def index(
-            self, 
-            entry: SequenceInterval
-        ) -> int:
-        """_Return index of a tier entry_
-
-        Args:
-            entry (SequenceInterval):
-                A SequenceInterval to get the index of.
-
-        Returns:
-            (int): The interval's index
-        """
-        return self.sequence_list.index(entry)
-    
-    def pop(
-            self,
-            entry: SequenceInterval
-    ):
-        """_Pop an interval_
-
-        Args:
-            entry (SequenceInterval): _Interval to pop_
-
-        """
-        if entry in self.sequence_list:
-            pop_idx = self.index(entry)
-            self.sequence_list.pop(pop_idx)
-            if self.superset_class is Top:
-                self.__set_precedence()
-        else:
-            raise Exception("Entry not in tier")
-
-    def __set_intier(
-            self,
-            entry: SequenceInterval
-        ):
-        """
-        Sets the intier attribute of the entry
-        """
-        entry.intier = self
-    
     def __set_precedence(self):
         for idx,seq in enumerate(self.sequence_list):
             self.__set_intier(seq)
@@ -135,8 +73,41 @@ class SequenceTier:
             if idx == len(self.sequence_list)-1:
                 seq.set_final()
             else:
-                seq.set_fol(self.sequence_list[idx+1])        
+                seq.set_fol(self.sequence_list[idx+1])
+        if issubclass(self.superset_class, Top):
+            self.contains = self.sequence_list
 
+    def __set_intier(
+            self,
+            entry
+        ):
+        """
+        Sets the intier attribute of the entry
+        """
+        entry.intier = self
+        entry.tiername = self.name
+    
+    def pop(
+            self,
+            entry
+    ):
+        """Pop an interval
+
+        Args:
+            entry (SequenceInterval): Interval to pop
+
+        """
+        if entry in self.sequence_list:
+            pop_idx = self.index(entry)
+            self.sequence_list.pop(pop_idx)
+            if self.superset_class is Top:
+                self.__set_precedence()
+        else:
+            raise Exception("Entry not in tier")                    
+
+    def __repr__(self):
+        return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
+    
                 
     @property
     def starts(self):
@@ -168,7 +139,7 @@ class SequenceTier:
             self, 
             time: float
         ) -> int:
-        """_Gets interval index at specified time_
+        """Gets interval index at specified time
 
         Args:
             time (float): time at which to get an interval
@@ -182,7 +153,7 @@ class SequenceTier:
         return out_idx
     
     def return_tier(self) -> IntervalTier:
-        """_Returns a `praatio` interval tier_
+        """Returns a `praatio` interval tier
 
         Returns:
             (praatio.data_classes.interval_tier.IntervalTier):
@@ -198,7 +169,7 @@ class SequenceTier:
             self, 
             save_path: str
         ):
-        """_Saves as a textgrid_
+        """Saves as a textgrid
 
         Uses `praatio.data_classes.textgrid.Textgrid.save()` method.
 
@@ -211,8 +182,8 @@ class SequenceTier:
         out_tg.save(save_path, "long_textgrid")
 
 
-class TierGroup:
-    """_Relates tiers_
+class TierGroup(TierGroupMixins, WithinMixins):
+    """Tier Grouping
 
     Args:
         tiers (list[SequenceTier]): A list of sequence tiers that are 
@@ -235,7 +206,10 @@ class TierGroup:
         self,
         tiers: list[SequenceTier] = [SequenceTier()]
     ):
+        super().__init__()
         self.tier_list = self._arrange_tiers(tiers)
+        self._name = self.make_name()
+
         for idx, tier in enumerate(self.tier_list):
             if idx == len(self.tier_list)-1:
                 break
@@ -258,38 +232,7 @@ class TierGroup:
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
                     u.validate()
-
-    def __contains__(self, item):
-        return item in self.tier_list
-    
-    def __getitem__(
-            self, 
-            idx: int | list
-            ):
-        if type(idx) is int:
-            return self.tier_list[idx]
-        if len(idx) != len(self):
-            raise Exception("Attempt to index with incompatible list")
-        if type(idx) is list:
-            out_list = []
-            for x, tier in zip(idx, self.tier_list):
-                out_list.append(tier[x])
-            return(out_list)        
         
-    def __iter__(self):
-        self._idx = 0
-        return self
-
-    def __len__(self):
-        return len(self.tier_list)
-
-    def __next__(self):
-        if self._idx < len(self.tier_list):
-            out = self.tier_list[self._idx]
-            self._idx += 1
-            return(out)
-        raise StopIteration
-    
     def __repr__(self):
         n_tiers = len(self.tier_list)
         classes = [x.__name__ for x in self.entry_classes]
@@ -336,6 +279,7 @@ class TierGroup:
                     return top_to_bottom
                 
                 top_to_bottom.append(tiers[next_idx])
+        self.contains = top_to_bottom
         return(top_to_bottom)
             
     @property
@@ -358,7 +302,7 @@ class TierGroup:
             self, 
             time: float
         ) -> list[int]:
-        """_Get intervals at time_
+        """Get intervals at time
 
         Returns a list of intervals at `time` for each tier.
 
@@ -371,7 +315,7 @@ class TierGroup:
         return [tier.get_interval_at_time(time) for tier in self.tier_list]
 
     def show_structure(self):
-        """_Show the hierarchical structure_
+        """Show the hierarchical structure
         """
         tab = "  "
         for idx, tier in enumerate(self.tier_list):

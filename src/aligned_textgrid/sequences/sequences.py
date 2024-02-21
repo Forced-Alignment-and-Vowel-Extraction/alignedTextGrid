@@ -5,6 +5,8 @@ Module includes the `SequenceInterval` base class as well as
 
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
+from aligned_textgrid.mixins.mixins import InTierMixins, PrecedenceMixins
+from aligned_textgrid.mixins.within import WithinMixins
 from typing import Type, Any
 import numpy as np
 import warnings
@@ -50,7 +52,7 @@ class HierarchyMixins:
         
     @classmethod
     def set_subset_class(cls, subset_class = None):
-        """_summary_
+        """summary
 
         Args:
             subset_class (Type[SequenceInterval], optional): 
@@ -74,10 +76,10 @@ class HierarchyMixins:
         else:
             raise Exception(f"Unknown error setting {subset_class.__name__} as subset class of {cls.__name__}")            
 
-class InstanceMixins(HierarchyMixins):
+class InstanceMixins(HierarchyMixins, WithinMixins):
 
     def set_super_instance(self, super_instance = None):
-        """_Sets the specific superset relationship_
+        """Sets the specific superset relationship
 
         Args:
             super_instance (SegmentInterval, optional): 
@@ -97,7 +99,7 @@ class InstanceMixins(HierarchyMixins):
     ## Subset Methods
         
     def set_subset_list(self, subset_list = None):
-        """_Appends all objects to the `subset_list`_
+        """Appends all objects to the `subset_list`
 
         Args:
             subset_list (List[SequenceInterval], optional): 
@@ -116,7 +118,7 @@ class InstanceMixins(HierarchyMixins):
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
 
     def append_subset_list(self, subset_instance = None):
-        """_Append a single item to subset list_
+        """Append a single item to subset list
 
         Args:
             subset_instance (SequenceInterval): 
@@ -127,6 +129,8 @@ class InstanceMixins(HierarchyMixins):
         """
 
         if isinstance(subset_instance, self.subset_class) and not subset_instance in self.subset_list:
+            if subset_instance.super_instance:
+                subset_instance.remove_superset()
             self.subset_list.append(subset_instance)
             self._set_subset_precedence()
             # avoid recursion
@@ -136,9 +140,35 @@ class InstanceMixins(HierarchyMixins):
             pass
         else:
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
-            
+        
+    def remove_from_subset_list(self, subset_instance = None):
+        """Remove a sequence interval from the subset list
+
+        Args:
+            subset_instance (SequenceInterval): The sequence interval to remove.
+        """
+        if subset_instance not in self.subset_list:
+            #warnings.warn("Provided subset_instance was not in the subset list")
+            return
+        
+        self.subset_list.remove(subset_instance)
+        subset_instance.super_instance = None
+        subset_instance.within = None
+        self._set_subset_precedence()
+    
+    def remove_superset(self):
+        """Remove the superset instance from the current subset class
+        """
+        
+        if self.super_instance is None:
+            warnings.warn("Provided SequenceInterval has no superset instance")
+            return
+        
+        self.super_instance.remove_from_subset_list(self)
+
+
     def _set_subset_precedence(self):
-        """_summary_
+        """summary
             Private method. Sorts subset list and re-sets precedence 
             relationshops.
         """
@@ -155,77 +185,19 @@ class InstanceMixins(HierarchyMixins):
                 p.set_fol(self.subset_list[idx+1])
 
     def _sort_subsetlist(self):
-        """_summary_
+        """summary
             Private method. Sorts the subset_list
         """
         if len(self.subset_list) > 0:
             item_starts = self.sub_starts
             item_order = np.argsort(item_starts)
             self.subset_list = [self.subset_list[idx] for idx in item_order]
-
-    # Precedence Methods
-    def set_fol(
-            self, next_int):
-        """_Sets the following instance_
-
-        Args:
-            next_int (SequenceInterval): 
-                Sets the `next_int` as the `fol` interval.
-                Must be of the same class as the current object.
-                That is, `type(next_int) is type(self)`
-        """
-        if next_int is self:
-            raise Exception(f"A segment can't follow itself.")
-        if self.label == "#":
-            return
-        if self.fol is next_int:
-            return
-        elif type(next_int) is type(self):
-            self.fol = next_int
-            self.fol.set_prev(self)
-        else:
-            raise Exception(f"Following segment must be an instance of {type(self).__name__}")
-
-    def set_prev(self, prev_int):
-        """_Sets the previous intance_
-
-        Args:
-            prev_int (SequenceInterval):
-                Sets the `prev_int` as the `prev` interval
-                Must be of the same class as the current object.
-                That is, `type(prev_int) is type(self)`                
-        """
-        if prev_int is self:
-            raise Exception("A segment can't precede itself.")
-        if self.label == "#":
-            return
-        if self.prev is prev_int:
-            return
-        elif type(prev_int) is type(self):
-            self.prev = prev_int
-            self.prev.set_fol(self)
-        else:
-            raise Exception(f"Previous segment must be an instance of {type(self).__name__}")
-    
-    def set_final(self):
-        """_Sets the current object as having no `fol` interval_
         
-        While `self.fol` is defined for these intervals, the actual
-        instance does not appear in `self.super_instance.subset_list`
-        """
-        self.set_fol(type(self)(Interval(None, None, "#")))  
-
-    def set_initial(self):
-        """_Sets the current object as having no `prev` interval_
-
-        While `self.prev` is defined for these intervals, the actual 
-        instance does not appear in `self.super_instance.subset_list`
-        """
-        self.set_prev(type(self)(Interval(None, None, "#")))
+        self.contains = self.subset_list
 
     ## Subset Validation
     def validate(self) -> bool:
-        """_Validate the subset list_
+        """Validate the subset list
         Validation checks to see if
 
         1. The first item in `subset_list` starts at the same time as `self`.
@@ -248,7 +220,7 @@ class InstanceMixins(HierarchyMixins):
             return True
         else:
             if not np.allclose(self.start, self.sub_starts[0]):
-                if self.start < self.sub_starts:
+                if self.start < self.sub_starts[0]:
                     validation_concerns.append(
                         "First subset interval starts after current interval"
                     )
@@ -275,70 +247,17 @@ class InstanceMixins(HierarchyMixins):
             else:
                 validation_warn = "\n".join(validation_concerns)
                 warnings.warn(validation_warn)
-                return False        
-
-class TierMixins:
-
-    ## Tier operations
-    @property
-    def tier_index(self):
-        if not self.intier is None:
-            return self.intier.index(self)
-        else:
-            return None
-    
-    def get_tierwise(
-            self,
-            idx:int = 0
-        ):
-        """_Get sequence by relative tier index_
-
-        Returns a SequenceInterval from an index position relative to
-        the current sequence.
-
-        - `idx=0` - Returns the current sequence
-        - `idx=1` - Returns the following interval on the tier. If the current interval is 
-            in the final position within its subset list, this will not be the same as
-            `.fol`
-        - `idx=-1` - Returns the previous interval on the tier. If the current interval is 
-            in the initial position within its subset list, this will not be the same as
-            `.prev` 
-
-        This will raise an ordinary IndexError if the relative index exceeds the length
-        of the tier.
-
-        Args:
-            idx (int, optional): 
-                The relative tier index at which to retrieve a sequence.
-                Defaults to 0.
-
-        Returns:
-            (SequenceInterval): The SequenceInterval at the relative index
-        """
-        if not self.intier is None:
-            return self.intier[self.tier_index + idx]
-        else:
-            return None
-
-    def return_interval(self) -> Interval:
-        """_Return current object as `Interval`_
-        
-        Will be useful for saving back to textgrid
-
-        Returns:
-            (praatio.utilities.constants.Interval): A `praatio` `Interval` object
-        """
-        return Interval(self.start, self.end, self.label)        
+                return False         
                 
 class HierarchyPart(HierarchyMixins):
     def __init__(self):
         pass
 
-class SequenceInterval(InstanceMixins, TierMixins, HierarchyPart):
+class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, HierarchyPart):
     """
     A class to describe an interval with precedence relationships and hierarchical relationships
 
-    Parameters:
+    Args:
         Interval: A Praat textgrid Interval
 
     Attributes:
@@ -366,8 +285,6 @@ class SequenceInterval(InstanceMixins, TierMixins, HierarchyPart):
             A numpy array of end times for the subset list
         sub_labels (List[Any]):
             A list of labels from the subset list
-        [] :
-            Indexes into the `subset_list`
     """    
 
     # utilities
@@ -421,7 +338,7 @@ class SequenceInterval(InstanceMixins, TierMixins, HierarchyPart):
             self,
             subset_instance
     ) -> int:
-        """_Returns subset instance index_
+        """Returns subset instance index
 
         Args:
             subset_instance (SequenceInterval): 
@@ -436,7 +353,7 @@ class SequenceInterval(InstanceMixins, TierMixins, HierarchyPart):
             self,
             subset_instance
     ):
-        """_Pop a sequence interval from the subset list_
+        """Pop a sequence interval from the subset list
 
         Args:
             subset_instance (SequenceInterval): A sequence interval to pop
@@ -500,7 +417,7 @@ class SequenceInterval(InstanceMixins, TierMixins, HierarchyPart):
             self, 
             label_fun = lambda x, y: " ".join([x, y])
         ):
-        """_Fuse the current segment with the following segment_
+        """Fuse the current segment with the following segment
 
         Args:
             label_fun (function): Function for joining interval labels.
@@ -531,7 +448,7 @@ class SequenceInterval(InstanceMixins, TierMixins, HierarchyPart):
             self, 
             label_fun = lambda x, y: " ".join([x, y])
         ):
-        """_Fuse the current segment with the previous segment_
+        """Fuse the current segment with the previous segment
 
         Args:
             label_fun (function): Function for joining interval labels.
@@ -570,7 +487,7 @@ class SequenceInterval(InstanceMixins, TierMixins, HierarchyPart):
             self, 
             feature: str, 
             value: Any):
-        """_Sets arbitrary object attribute_
+        """Sets arbitrary object attribute
 
         This will be most useful for creating custom subclasses.
 
@@ -581,7 +498,7 @@ class SequenceInterval(InstanceMixins, TierMixins, HierarchyPart):
         setattr(self, feature, value)
 
 class Top(HierarchyPart):
-    """_A top level interval class_
+    """A top level interval class
     
     This is a special subclass intended to be the `superset_class` 
     for classes at the top of the hierarchy.
@@ -591,7 +508,7 @@ class Top(HierarchyPart):
         super().__init__()
 
 class Bottom(HierarchyPart):
-    """_A bottom level interval class_
+    """A bottom level interval class
 
     This is a special subclass intended to be the `subset_class` 
     for classes at the bottom of the hierarchy.

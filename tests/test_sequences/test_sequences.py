@@ -1,8 +1,10 @@
 import pytest
 from aligned_textgrid.sequences.sequences import *
+from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import *
 import numpy as np
 from praatio.utilities.constants import Interval
+from praatio.utilities.constants import Point
 
 class TestSequenceIntervalDefault:
     """_Test default behavior of SequenceInterval_
@@ -220,6 +222,7 @@ class TestHierarchy:
 
     def test_super_instance(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
+        upper2 = self.UpperClass(Interval(0,10,"upper2"))
         lower1 = self.LowerClass(Interval(0,5,"lower1"))
         lower2 = self.LowerClass(Interval(5,10,"lower2"))
 
@@ -241,6 +244,12 @@ class TestHierarchy:
 
         assert lower1.fol is lower2
         assert lower2.prev is lower1
+
+
+        upper2.append_subset_list(lower1)
+
+        assert not lower1 in upper1
+        assert lower1.super_instance is upper2
 
     def test_subset_instance(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
@@ -266,6 +275,48 @@ class TestHierarchy:
         assert lower2 in upper1
         assert lower1.fol is lower2
         assert lower2.prev is lower1
+    
+    def test_remove_from_subset(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+
+        upper1.set_subset_list([lower1, lower2])
+
+        assert lower1 in upper1
+        assert upper1.first is lower1
+
+        upper1.remove_from_subset_list(lower1)
+
+        assert not lower1 in upper1
+        assert upper1.first is lower2
+
+        assert lower1.within is None
+        assert not lower1 in upper1.contains
+
+    def test_remove_superset(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+
+        upper1.set_subset_list([lower1, lower2])
+
+        assert lower2 in upper1
+        assert lower2.within is upper1
+
+        lower2.remove_superset()
+
+        assert lower2.within is None
+        assert not lower2 in upper1.contains
+
+        assert len(upper1) == 1
+
+        try:
+            upper1.remove_superset()
+            assert True
+        except:
+            assert False
+
 
     def test_subset_index(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
@@ -280,6 +331,37 @@ class TestHierarchy:
 
         with pytest.raises(ValueError):
             _ = upper1.index(lower3)
+        
+    def test_first_last(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        lower1 = self.LowerClass(Interval(0,5,"lower1"))
+        lower2 = self.LowerClass(Interval(5,10,"lower2"))
+        lower3 = self.LowerClass(Interval(11,15,"lower3"))
+
+        upper1.set_subset_list([lower1, lower2, lower3])
+
+        first_interval = upper1[0]
+        assert upper1.first is first_interval
+
+        last_interval = upper1[-1]
+        assert upper1.last is last_interval
+
+    def test_first_last_errors(self):
+        upper1 = self.UpperClass(Interval(0,10,"upper"))
+        point1 = SequencePoint(Point(0, "point"))
+
+        with pytest.raises(IndexError):
+            upper1.first
+
+        with pytest.raises(IndexError):
+            upper1.last
+
+        with pytest.raises(AttributeError):
+            point1.first
+
+        with pytest.raises(AttributeError):
+            point1.last            
+
 
     def test_subset_pop(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
