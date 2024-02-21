@@ -375,6 +375,9 @@ class AlignedTextGrid(WithinMixins):
 
         self.tier_groups = new_tiergoups
         self.entry_classes = new_entry_classes
+        for tgr in self.tier_groups:
+            tgr.within = self
+        self.contains = self.tier_groups
 
     def get_class_by_name(
             self, 
