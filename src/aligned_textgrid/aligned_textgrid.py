@@ -37,13 +37,13 @@ class AlignedTextGrid(WithinMixins):
             `[[Word, Phone], [Word], [Word]]`
     
     Attributes:
-        entry_classes (list[Sequence[Type[SequenceInterval]]]): 
+        entry_classes (list[Sequence[Type[SequenceInterval]]] | list[]): 
             The entry classes for each tier within a tier group.
-        tier_groups (list[TierGroup]|None):
-            a list of `TierGroup`
-        xmax (float|None):
+        tier_groups (list[TierGroup] | list[]):
+            A list of `TierGroup` or an empty list.
+        xmax (float):
             Maximum time
-        xmin (float|None):
+        xmin (float):
             Minimum time
         [] :
             indexable            
@@ -178,6 +178,8 @@ class AlignedTextGrid(WithinMixins):
         self.contains = self.tier_groups
         self.entry_classes = []
         self.tg_tiers = None
+        self.xmax = 0.0
+        self.xmin = 0.0
     
     def _nestify_tiers(
         self,
