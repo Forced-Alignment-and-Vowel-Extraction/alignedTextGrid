@@ -41,6 +41,8 @@ class AlignedTextGrid(WithinMixins):
             The entry classes for each tier within a tier group.
         tier_groups (list[TierGroup] | list[]):
             A list of `TierGroup` or an empty list.
+        tier_names (list[str]):
+            A list of names for tiers in tier_groups.
         xmax (float):
             Maximum time
         xmin (float):
@@ -178,8 +180,6 @@ class AlignedTextGrid(WithinMixins):
         self.contains = self.tier_groups
         self.entry_classes = []
         self.tg_tiers = None
-        self.xmax = 0.0
-        self.xmin = 0.0
     
     def _nestify_tiers(
         self,
@@ -276,14 +276,20 @@ class AlignedTextGrid(WithinMixins):
     
     @property
     def tier_names(self):
+        if len(self) == 0:
+            raise ValueError('No tier names in an empty TextGrid.')
         return [x.tier_names for x in self.tier_groups]
 
     @property
     def xmin(self):
+        if len(self) == 0:
+            raise ValueError('No minimum time for empty TextGrid.')
         return np.array([tgroup.xmin for tgroup in self.tier_groups]).min()
 
     @property
     def xmax(self):
+        if len(self) == 0:
+            raise ValueError('No maximum time for empty TextGrid.')
         return np.array([tgroup.xmax for tgroup in self.tier_groups]).max()
     
     def interleave_class(

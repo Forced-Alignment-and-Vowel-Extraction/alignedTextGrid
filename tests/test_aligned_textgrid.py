@@ -138,8 +138,10 @@ class TestClassSetting:
 
         missing_class1 = self.atg1.get_class_by_name("Foo")
         missing_class2 = self.atg2.get_class_by_name("Foo")
+        missing_class4 = self.atg4.get_class_by_name("Foo")
         assert missing_class1 is None
         assert missing_class2 is None
+        assert missing_class4 is None
 
         target_classes = self.atg3.get_class_by_name("MyWord")
         assert len(target_classes) > 1
@@ -158,6 +160,15 @@ class TestClassSetting:
             empty_idx_list = []
             self.atg4[empty_idx_list]
 
+    def test_empty_class_attributes(self):
+        with pytest.raises(ValueError):
+            self.atg4.xmin
+
+        with pytest.raises(ValueError):
+            self.atg4.xmax
+
+        with pytest.raises(ValueError):
+            self.atg4.tier_names
     
 class TestInGetLen:
     atg = AlignedTextGrid(
