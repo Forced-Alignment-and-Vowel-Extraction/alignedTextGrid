@@ -115,6 +115,7 @@ class TestClassSetting:
             custom_classes("MyWord", "MyPhone")
         ]
     )
+    atg4 = AlignedTextGrid()
     
     def test_equiv(self):
         assert len(self.atg1.tier_groups) == len(self.atg2.tier_groups)
@@ -135,11 +136,28 @@ class TestClassSetting:
         assert target_class1 is MyWord
         assert target_class2 is MyWord
 
-        missing_class = self.atg1.get_class_by_name("Foo")
-        assert missing_class is None
+        missing_class1 = self.atg1.get_class_by_name("Foo")
+        missing_class2 = self.atg2.get_class_by_name("Foo")
+        assert missing_class1 is None
+        assert missing_class2 is None
 
         target_classes = self.atg3.get_class_by_name("MyWord")
         assert len(target_classes) > 1
+
+    def test_empty_class_indexing(self):
+        assert len(self.atg4) == 0
+
+        with pytest.raises(IndexError):
+            self.atg4[0]
+
+        with pytest.raises(IndexError):
+            idx_list = [0,1,2]
+            self.atg4[idx_list]
+
+        with pytest.raises(IndexError):
+            empty_idx_list = []
+            self.atg4[empty_idx_list]
+
     
 class TestInGetLen:
     atg = AlignedTextGrid(
