@@ -91,8 +91,10 @@ class AlignedTextGrid(WithinMixins):
         if type(idx) is int:
             return self.tier_groups[idx]
         if len(idx) != len(self):
-            raise IndexError("Attempt to index with incompatible list")
+            raise IndexError("Index list and list of tier groups are of different sizes.")
         if type(idx) is list:
+            if len(idx) == 0:
+                raise IndexError("List of indexes is empty.")
             out_list = []
             for x, tier in zip(idx, self.tier_groups):
                 out_list.append(tier[x])
