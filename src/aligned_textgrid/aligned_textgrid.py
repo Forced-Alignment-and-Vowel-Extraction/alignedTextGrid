@@ -91,7 +91,7 @@ class AlignedTextGrid(WithinMixins):
         if type(idx) is int:
             return self.tier_groups[idx]
         if len(idx) != len(self):
-            raise Exception("Attempt to index with incompatible list")
+            raise IndexError("Attempt to index with incompatible list")
         if type(idx) is list:
             out_list = []
             for x, tier in zip(idx, self.tier_groups):
