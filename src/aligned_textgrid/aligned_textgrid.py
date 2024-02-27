@@ -39,11 +39,11 @@ class AlignedTextGrid(WithinMixins):
     Attributes:
         entry_classes (list[Sequence[Type[SequenceInterval]]]): 
             The entry classes for each tier within a tier group.
-        tier_groups (list[TierGroup]):
+        tier_groups (list[TierGroup]|None):
             a list of `TierGroup`
-        xmax (float):
+        xmax (float|None):
             Maximum time
-        xmin (float):
+        xmin (float|None):
             Minimum time
         [] :
             indexable            
@@ -67,6 +67,10 @@ class AlignedTextGrid(WithinMixins):
                 includeEmptyIntervals=True
             )
             self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, entry_classes)
+        else:
+            warnings.warn('Initializing an empty AlignedTextGrid')
+            self._init_empty()
+            return
 
         self.tier_groups = self._relate_tiers()
         self.contains = self.tier_groups
@@ -136,7 +140,7 @@ class AlignedTextGrid(WithinMixins):
             group: TierGroup|PointsGroup
         )->int:
         return self.tier_groups.index(group)
-    
+
     def _extend_classes(
             self, 
             tg: Textgrid, 
@@ -169,6 +173,12 @@ class AlignedTextGrid(WithinMixins):
             return entry_classes
         return entry_classes
 
+    def _init_empty(self):
+        self.tier_groups = []
+        self.contains = self.tier_groups
+        self.entry_classes = []
+        self.tg_tiers = None
+    
     def _nestify_tiers(
         self,
         textgrid: Textgrid,
