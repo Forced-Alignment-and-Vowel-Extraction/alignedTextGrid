@@ -484,9 +484,9 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
 <table class="table">
 <colgroup>
-<col style="width: 13%">
-<col style="width: 40%">
-<col style="width: 46%">
+<col style="width: 11%">
+<col style="width: 45%">
+<col style="width: 42%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -498,25 +498,30 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>entry_classes</td>
-<td>list[Sequence[Type[SequenceInterval]]]</td>
+<td>list[Sequence[Type[SequenceInterval]]] | list[]</td>
 <td>The entry classes for each tier within a tier group.</td>
 </tr>
 <tr class="even">
 <td>tier_groups</td>
-<td>list[TierGroup]</td>
-<td>a list of <code>TierGroup</code></td>
+<td>list[TierGroup] | list[]</td>
+<td>A list of <code>TierGroup</code> or an empty list.</td>
 </tr>
 <tr class="odd">
+<td>tier_names</td>
+<td>list[str]</td>
+<td>A list of names for tiers in tier_groups.</td>
+</tr>
+<tr class="even">
 <td>xmax</td>
 <td>float</td>
 <td>Maximum time</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>xmin</td>
 <td>float</td>
 <td>Minimum time</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>[]</td>
 <td></td>
 <td>indexable</td>
