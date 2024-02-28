@@ -37,10 +37,12 @@ class AlignedTextGrid(WithinMixins):
             `[[Word, Phone], [Word], [Word]]`
     
     Attributes:
-        entry_classes (list[Sequence[Type[SequenceInterval]]]): 
+        entry_classes (list[Sequence[Type[SequenceInterval]]] | list[]): 
             The entry classes for each tier within a tier group.
-        tier_groups (list[TierGroup]):
-            a list of `TierGroup`
+        tier_groups (list[TierGroup] | list[]):
+            A list of `TierGroup` or an empty list.
+        tier_names (list[str]):
+            A list of names for tiers in tier_groups.
         xmax (float):
             Maximum time
         xmin (float):
@@ -67,6 +69,10 @@ class AlignedTextGrid(WithinMixins):
                 includeEmptyIntervals=True
             )
             self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, entry_classes)
+        else:
+            warnings.warn('Initializing an empty AlignedTextGrid')
+            self._init_empty()
+            return
 
         self.tier_groups = self._relate_tiers()
         self.contains = self.tier_groups
@@ -85,8 +91,10 @@ class AlignedTextGrid(WithinMixins):
         if type(idx) is int:
             return self.tier_groups[idx]
         if len(idx) != len(self):
-            raise Exception("Attempt to index with incompatible list")
+            raise IndexError("Index list and list of tier groups are of different sizes.")
         if type(idx) is list:
+            if len(idx) == 0:
+                raise IndexError("List of indexes is empty.")
             out_list = []
             for x, tier in zip(idx, self.tier_groups):
                 out_list.append(tier[x])
@@ -136,7 +144,7 @@ class AlignedTextGrid(WithinMixins):
             group: TierGroup|PointsGroup
         )->int:
         return self.tier_groups.index(group)
-    
+
     def _extend_classes(
             self, 
             tg: Textgrid, 
@@ -169,6 +177,12 @@ class AlignedTextGrid(WithinMixins):
             return entry_classes
         return entry_classes
 
+    def _init_empty(self):
+        self.tier_groups = []
+        self.contains = self.tier_groups
+        self.entry_classes = []
+        self.tg_tiers = None
+    
     def _nestify_tiers(
         self,
         textgrid: Textgrid,
@@ -264,14 +278,20 @@ class AlignedTextGrid(WithinMixins):
     
     @property
     def tier_names(self):
+        if len(self) == 0:
+            raise ValueError('No tier names in an empty TextGrid.')
         return [x.tier_names for x in self.tier_groups]
 
     @property
     def xmin(self):
+        if len(self) == 0:
+            raise ValueError('No minimum time for empty TextGrid.')
         return np.array([tgroup.xmin for tgroup in self.tier_groups]).min()
 
     @property
     def xmax(self):
+        if len(self) == 0:
+            raise ValueError('No maximum time for empty TextGrid.')
         return np.array([tgroup.xmax for tgroup in self.tier_groups]).max()
     
     def interleave_class(
