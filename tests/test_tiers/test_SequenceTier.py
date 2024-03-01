@@ -155,6 +155,24 @@ class TestReadTier:
             word_tier1.ends = too_short
 
 
+    def test_shift(self):
+        word_tier1 = SequenceTier(
+            self.read_tg.tiers[0], 
+            entry_class=self.MyWord
+        )
+
+        word_tier2 = SequenceTier(
+            self.read_tg.tiers[0], 
+            entry_class=self.MyWord
+        )        
+
+        word_tier1._shift(5)
+
+        s_shifts = word_tier1.starts - word_tier2.starts
+        e_shifts = word_tier1.ends - word_tier2.ends
+
+        assert np.all(np.isclose(s_shifts, 5))
+        assert np.all(np.isclose(e_shifts, 5))
 
     def test_in_get_len(self):
         word_tier = SequenceTier(

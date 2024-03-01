@@ -132,8 +132,11 @@ class SequenceTier(TierMixins, WithinMixins):
         
         for t, i in zip(times, self.sequence_list):
             i.end = t
-    
-    
+
+    def _shift(self, increment):
+        self.starts += increment
+        self.ends   += increment
+
     @property
     def labels(self):
         return [x.label for x in self.sequence_list]
