@@ -385,6 +385,22 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     
     # properties
     @property
+    def start(self):
+        return self._start
+    
+    @start.setter
+    def start(self, time):
+        self._start = time
+
+    @property
+    def end(self):
+        return self._end
+    
+    @end.setter
+    def end(self, time):
+        self._end = time
+
+    @property
     def sub_starts(self):
         if len(self.subset_list) > 0:
             start_arr = np.array([
@@ -411,6 +427,10 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             return lab_list
         else:
             return []
+        
+    def _shift(self, increment):
+        self.start += increment
+        self.end += increment
       
     ## Fusion
     def fuse_rightwards(
