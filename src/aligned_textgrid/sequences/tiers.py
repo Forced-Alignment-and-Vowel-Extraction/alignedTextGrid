@@ -125,8 +125,8 @@ class SequenceTier(TierMixins, WithinMixins):
     def ends(self):
         return np.array([x.end for x in self.sequence_list])
 
-    @starts.setter
-    def starts(self, times):
+    @ends.setter
+    def ends(self, times):
         if not len(self.sequence_list) == len(times):
             raise Exception("There aren't the same number of new start times as intervals")
         
