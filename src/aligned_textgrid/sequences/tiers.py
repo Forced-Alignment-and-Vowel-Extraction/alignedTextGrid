@@ -112,10 +112,27 @@ class SequenceTier(TierMixins, WithinMixins):
     @property
     def starts(self):
         return np.array([x.start for x in self.sequence_list])
+    
+    @starts.setter
+    def starts(self, times):
+        if not len(self.sequence_list) == len(times):
+            raise Exception("There aren't the same number of new start times as intervals")
+        
+        for t, i in zip(times, self.sequence_list):
+            i.start = t
 
     @property
     def ends(self):
         return np.array([x.end for x in self.sequence_list])
+
+    @starts.setter
+    def starts(self, times):
+        if not len(self.sequence_list) == len(times):
+            raise Exception("There aren't the same number of new start times as intervals")
+        
+        for t, i in zip(times, self.sequence_list):
+            i.end = t
+    
     
     @property
     def labels(self):
