@@ -195,6 +195,23 @@ class PointsGroup(TierGroupMixins, WithinMixins):
         super().__init__()
         self.tier_list = tiers
         self.contains = self.tier_list
+
+    def shift(
+        self, 
+        increment: float
+    ):
+        """Shift the times of all points within
+        the PointsGroup by the increment size
+
+        Args:
+            increment (float): 
+                The time increment by which to shift the
+                points within the PointsGroup. Could be
+                positive or negative
+        """
+
+        for tier in self.tier_list:
+            tier._shift(increment)
     
     def get_nearest_points_index(
             self, 

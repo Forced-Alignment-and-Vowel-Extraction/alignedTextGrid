@@ -159,7 +159,39 @@ class TestPointGroup:
 
         nearest = point_group.get_nearest_points_index(1.25)
         assert len(nearest) == 2
+    
+class TestPointGroupShift:
+    point_a = Point(1, "a")
+    point_b = Point(2, "b")
+    point_c = Point(1.5, "c")
+    point_d = Point(2.5, "d")        
 
+    point_tier1 = PointTier(name = "test1", entries = [point_a, point_b])
+    point_tier2 = PointTier(name = "test2", entries = [point_c, point_d])
+
+    seq_point_tier1 = SequencePointTier(point_tier1)
+    seq_point_tier2 = SequencePointTier(point_tier2)
+
+    point_group = PointsGroup(
+        [seq_point_tier1, seq_point_tier2]
+    )        
+
+    def test_shift(self):
+        orig_times = [
+            tier.times 
+            for tier in self.point_group.tier_list
+        ]
+
+        self.point_group.shift(3)
+
+        new_times = [
+            tier.times 
+            for tier in self.point_group.tier_list
+        ]
+
+        for o, n in zip(orig_times, new_times):
+            assert np.all(np.isclose(n-o, 3))
+            
 class TestAccessors:
     class MyPointClassA(SequencePoint):
         def __init__(self, point):
