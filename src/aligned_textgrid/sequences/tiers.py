@@ -50,9 +50,19 @@ class SequenceTier(TierMixins, WithinMixins):
         else:
             self.entry_list = tier
             self.name = entry_class.__name__
+        self.__set_classes(entry_class)
+        self.__build_sequence_list()
+        self.__set_precedence()
+
+    def __set_classes(
+            self,
+            entry_class
+    ):
         self.entry_class = entry_class
         self.superset_class = self.entry_class.superset_class
         self.subset_class =  self.entry_class.subset_class
+        
+    def __build_sequence_list(self):
         entry_order = np.argsort([x.start for x in self.entry_list])
         self.entry_list = [self.entry_list[idx] for idx in entry_order]
         self.sequence_list = []
@@ -61,7 +71,6 @@ class SequenceTier(TierMixins, WithinMixins):
             this_seq.set_superset_class(self.superset_class)
             this_seq.set_subset_class(self.subset_class)
             self.sequence_list += [this_seq]
-        self.__set_precedence()
 
     def __set_precedence(self):
         for idx,seq in enumerate(self.sequence_list):
