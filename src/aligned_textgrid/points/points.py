@@ -14,7 +14,13 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     """Sequence Points
     
     Args:
-        point (Point): a `praatio.point` object
+        time (float):
+            The point time
+        label (str):
+            The point label
+        point (Point): 
+            Optionally, either a `praatio.point` object
+            or another SequencePoint
     
     Attributes:
         ...:
@@ -48,10 +54,7 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
             point = time
         elif time or label:
             point = praatio.utilities.constants.Point(time, label)
-        elif point:
-            point = point
-        else:
-            point = Point(None, None)            
+       
         
         self.time = point.time
         self.label = point.label

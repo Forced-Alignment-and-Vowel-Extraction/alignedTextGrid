@@ -258,7 +258,15 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     A class to describe an interval with precedence relationships and hierarchical relationships
 
     Args:
-        Interval: A Praat textgrid Interval
+        start (float):
+            The start time
+        end (float):
+            The end time
+        label (str):
+            The label of the interval
+        Interval (Interval | SequenceInterval): 
+            Optionally, either a praatio Interval object
+            another SequenceInterval object
 
     Attributes:
         start (float):
@@ -300,10 +308,6 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             Interval = start
         elif start or end or label:
             Interval = praatio.utilities.constants.Interval(start, end, label)
-        elif Interval:
-            Interval = Interval
-        else:
-            Interval = praatio.utilities.constants.Interval(None, None, None)
 
         self.start = Interval.start
         self.end = Interval.end
