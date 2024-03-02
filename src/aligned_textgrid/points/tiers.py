@@ -118,6 +118,9 @@ class SequencePointTier(TierMixins, WithinMixins):
             return self.sequence_list[-1].time
         else:
             return None
+        
+    def _shift(self, increment):
+        self.times += increment
     
     def get_nearest_point_index(
             self, 

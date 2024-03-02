@@ -98,6 +98,19 @@ class TestPointTime:
         with pytest.raises(Exception):
             tier.times = np.array([6, 7])
 
+    def test_time_shift(self):
+        point_a = Point(1, "a")
+        point_b = Point(2, "b")
+        point_c = Point(3, "c")
+
+        tier = SequencePointTier(tier = [point_a, point_b, point_c])
+        
+        orig_times = tier.times
+
+        tier._shift(3)
+
+        assert all(np.isclose(tier.times - orig_times, 3))
+
 class TestPointGroup:
     point_a = Point(1, "a")
     point_b = Point(2, "b")
