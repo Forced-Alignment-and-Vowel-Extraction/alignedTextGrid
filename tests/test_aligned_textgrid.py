@@ -448,3 +448,39 @@ class TestInterleave:
                 below = Word,
                 timing_from="Word"
             )
+
+class TestTextGridShift:
+
+    def test_positive_shift(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=custom_classes(["Word", "Phone"])
+        )
+
+        orig_xmin = tg.xmin
+        orig_xmax = tg.xmax
+
+        tg.shift(3)
+
+        new_xmin = tg.xmin
+        new_xmax = tg.xmax
+
+        assert np.isclose(new_xmin - orig_xmin, 3)
+        assert np.isclose(new_xmax - orig_xmax, 3)
+
+    def test_negative_shift(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=custom_classes(["Word", "Phone"])
+        )
+
+        orig_xmin = tg.xmin
+        orig_xmax = tg.xmax
+
+        tg.shift(-3)
+
+        new_xmin = tg.xmin
+        new_xmax = tg.xmax
+
+        assert np.isclose(new_xmin - orig_xmin, -3)
+        assert np.isclose(new_xmax - orig_xmax, -3)
