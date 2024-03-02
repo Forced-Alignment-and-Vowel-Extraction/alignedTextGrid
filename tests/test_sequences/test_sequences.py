@@ -78,6 +78,37 @@ class TestSequenceIntervalDefault:
         local_sample = self.SampleClassI()
         assert local_sample.get_tierwise(1) is None
 
+class TestSequenceCreation:
+    def test_without_interval(self):
+        interval_kwarg = SequenceInterval(
+            start = 0, 
+            end = 5, 
+            label = "kwarg"
+        )
+        interval_arg = SequenceInterval(0, 5, "arg")
+
+        assert interval_kwarg.start == 0
+        assert interval_kwarg.end == 5
+        assert interval_kwarg.label == "kwarg"
+
+    def test_incomplete(self):
+        interval_num = SequenceInterval(3)
+        interval_end = SequenceInterval(end = 5)
+
+        assert interval_num.start == 3
+        assert not interval_num.end
+        assert not interval_num.label
+
+        assert not interval_end.start
+        assert interval_end.end == 5
+        assert not interval_end.label
+
+    def test_with_interval(self):
+        interval = SequenceInterval(Interval(0, 3, 'interval'))
+        assert interval.start == 0
+        assert interval.end == 3
+        assert interval.label == "interval"
+
 class TestSuperSubClassSetting:
     class LocalClassA(SequenceInterval):
         def __init__(

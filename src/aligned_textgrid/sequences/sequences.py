@@ -2,7 +2,7 @@
 Module includes the `SequenceInterval` base class as well as 
 `Top` and `Bottom` classes.
 """
-
+import praatio.utilities.constants
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from aligned_textgrid.mixins.mixins import InTierMixins, PrecedenceMixins
@@ -290,11 +290,21 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     # utilities
     def __init__(
         self, 
+        start: float = None,
+        end: float = None,
+        label: str = None,
         Interval: Interval = Interval(None, None, None)
     ):
         super().__init__()
-        if not Interval:
-            Interval = Interval(None, None, None)
+        if isinstance(start, praatio.utilities.constants.Interval):
+            Interval = start
+        elif start or end or label:
+            Interval = praatio.utilities.constants.Interval(start, end, label)
+        elif Interval:
+            Interval = Interval
+        else:
+            Interval = praatio.utilities.constants.Interval(None, None, None)
+
         self.start = Interval.start
         self.end = Interval.end
         self.label = Interval.label
