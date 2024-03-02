@@ -14,13 +14,14 @@ An aligned Textgrid
 
 ## Attributes
 
-| Name          | Type                                         | Description                                          |
-|---------------|----------------------------------------------|------------------------------------------------------|
-| entry_classes | list\[Sequence\[Type\[SequenceInterval\]\]\] | The entry classes for each tier within a tier group. |
-| tier_groups   | list\[TierGroup\]                            | a list of `TierGroup`                                |
-| xmax          | float                                        | Maximum time                                         |
-| xmin          | float                                        | Minimum time                                         |
-| \[\]          |                                              | indexable                                            |
+| Name          | Type                                                     | Description                                          |
+|---------------|----------------------------------------------------------|------------------------------------------------------|
+| entry_classes | list\[Sequence\[Type\[SequenceInterval\]\]\] \| list\[\] | The entry classes for each tier within a tier group. |
+| tier_groups   | list\[TierGroup\] \| list\[\]                            | A list of `TierGroup` or an empty list.              |
+| tier_names    | list\[str\]                                              | A list of names for tiers in tier_groups.            |
+| xmax          | float                                                    | Maximum time                                         |
+| xmin          | float                                                    | Minimum time                                         |
+| \[\]          |                                                          | indexable                                            |
 
 ## Methods
 
@@ -31,6 +32,7 @@ An aligned Textgrid
 | [interleave_class](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.interleave_class) | Interleave a new entry class. |
 | [return_textgrid](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.return_textgrid) | Convert this `AlignedTextGrid` to a `praatio` `Textgrid` |
 | [save_textgrid](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.save_textgrid) | Saves the current AlignedTextGrid |
+| [shift](#aligned_textgrid.aligned_textgrid.AlignedTextGrid.shift) | Shift all times (interval starts & ends and point times) |
 
 ### get_class_by_name { #aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_class_by_name }
 
@@ -117,3 +119,16 @@ Uses the `praatio.data_classes.textgrid.Textgrid.save()` method.
 |-------------|-----------------------------------------------------------------------|------------------------------|-------------------|
 | `save_path` | str                                                                   | path for saving the textgrid | _required_        |
 | `format`    | Literal\['short_textgrid', 'long_textgrid', 'json', 'textgrid_json'\] | Save format.                 | `'long_textgrid'` |
+
+### shift { #aligned_textgrid.aligned_textgrid.AlignedTextGrid.shift }
+
+`aligned_textgrid.AlignedTextGrid.shift(increment)`
+
+Shift all times (interval starts & ends and point times)
+by the given increment.
+
+#### Parameters
+
+| Name        | Type   | Description                                                               | Default    |
+|-------------|--------|---------------------------------------------------------------------------|------------|
+| `increment` | float  | The increment by which to shift all times. Could be positive or negative. | _required_ |
