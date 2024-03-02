@@ -81,6 +81,23 @@ class TestPointPrecedence:
         with pytest.raises(IndexError):
             tier.last
 
+class TestPointTime:
+    def test_time_set(self):
+        point_a = Point(1, "a")
+        point_b = Point(2, "b")
+        point_c = Point(3, "c")
+
+        tier = SequencePointTier(tier = [point_a, point_b, point_c])
+
+        tier.times += 1
+        assert tier.times[0] == 2
+
+        tier.times = np.array([4, 5, 6])
+        assert tier.times[0] == 4
+
+        with pytest.raises(Exception):
+            tier.times = np.array([6, 7])
+
 class TestPointGroup:
     point_a = Point(1, "a")
     point_b = Point(2, "b")

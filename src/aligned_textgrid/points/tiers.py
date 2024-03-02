@@ -93,6 +93,14 @@ class SequencePointTier(TierMixins, WithinMixins):
             [x.time for x in self.sequence_list]
         )
     
+    @times.setter
+    def times(self, new_times):
+        if not len(self.sequence_list) == len(new_times):
+            raise Exception("There aren't the same number of new start times as intervals")
+        
+        for p, t in zip(self.sequence_list, new_times):
+            p.time = t
+
     @property
     def labels(self):
         return [x.label for x in self.sequence_list]
