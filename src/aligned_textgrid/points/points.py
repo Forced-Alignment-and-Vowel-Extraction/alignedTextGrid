@@ -76,6 +76,14 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     
     ## Properties
     @property
+    def time(self):
+        return self._time
+    
+    @time.setter
+    def time(self, time):
+        self._time = time
+
+    @property
     def fol_distance(self):
         if self.fol and self.fol.time:
             return self.fol.time - self.time
@@ -102,6 +110,9 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
             return None        
 
     ## methods
+    def _shift(self, increment):
+        self.time += increment
+
     def distance_from(
             self, 
             entry: Self|SequenceInterval

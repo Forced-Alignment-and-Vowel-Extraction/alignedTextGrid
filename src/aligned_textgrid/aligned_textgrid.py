@@ -294,6 +294,21 @@ class AlignedTextGrid(WithinMixins):
             raise ValueError('No maximum time for empty TextGrid.')
         return np.array([tgroup.xmax for tgroup in self.tier_groups]).max()
     
+    def shift(
+            self,
+            increment: float
+    ):
+        """Shift all times (interval starts & ends and point times)
+        by the given increment.
+
+        Args:
+            increment (float):
+                The increment by which to shift all times.
+                Could be positive or negative.
+        """
+        for gr in self:
+            gr.shift(increment)
+    
     def interleave_class(
             self, 
             name:str,

@@ -56,6 +56,14 @@ class TestPrecedence:
         assert isinstance(out_point, Point)
 
 
+class TestTiming:
+
+    def test_shift(self):
+        seq_point_a = SequencePoint(Point(1, "a"))
+
+        seq_point_a._shift(2)
+        assert seq_point_a.time == 3
+
 class TestDistances:
     seq_point_a = SequencePoint(Point(1, "a"))
     seq_point_b = SequencePoint(Point(2, "b"))

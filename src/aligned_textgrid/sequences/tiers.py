@@ -112,11 +112,31 @@ class SequenceTier(TierMixins, WithinMixins):
     @property
     def starts(self):
         return np.array([x.start for x in self.sequence_list])
+    
+    @starts.setter
+    def starts(self, times):
+        if not len(self.sequence_list) == len(times):
+            raise Exception("There aren't the same number of new start times as intervals")
+        
+        for t, i in zip(times, self.sequence_list):
+            i.start = t
 
     @property
     def ends(self):
         return np.array([x.end for x in self.sequence_list])
-    
+
+    @ends.setter
+    def ends(self, times):
+        if not len(self.sequence_list) == len(times):
+            raise Exception("There aren't the same number of new start times as intervals")
+        
+        for t, i in zip(times, self.sequence_list):
+            i.end = t
+
+    def _shift(self, increment):
+        self.starts += increment
+        self.ends   += increment
+
     @property
     def labels(self):
         return [x.label for x in self.sequence_list]
@@ -297,6 +317,22 @@ class TierGroup(TierGroupMixins, WithinMixins):
     @property
     def xmax(self):
         return np.array([tier.xmax for tier in self.tier_list]).min()
+    
+    def shift(
+            self,
+            increment: float
+        ):
+        """Shift the start and end times of all intervals within
+        the TierGroup by the increment size
+
+        Args:
+            increment (float): 
+                The time increment by which to shift the
+                intervals within the TierGroup. Could be
+                positive or negative
+        """
+        for tier in self.tier_list:
+            tier._shift(increment)
 
     def get_intervals_at_time(
             self, 

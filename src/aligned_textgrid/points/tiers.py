@@ -93,6 +93,14 @@ class SequencePointTier(TierMixins, WithinMixins):
             [x.time for x in self.sequence_list]
         )
     
+    @times.setter
+    def times(self, new_times):
+        if not len(self.sequence_list) == len(new_times):
+            raise Exception("There aren't the same number of new start times as intervals")
+        
+        for p, t in zip(self.sequence_list, new_times):
+            p.time = t
+
     @property
     def labels(self):
         return [x.label for x in self.sequence_list]
@@ -110,6 +118,9 @@ class SequencePointTier(TierMixins, WithinMixins):
             return self.sequence_list[-1].time
         else:
             return None
+        
+    def _shift(self, increment):
+        self.times += increment
     
     def get_nearest_point_index(
             self, 
@@ -184,6 +195,23 @@ class PointsGroup(TierGroupMixins, WithinMixins):
         super().__init__()
         self.tier_list = tiers
         self.contains = self.tier_list
+
+    def shift(
+        self, 
+        increment: float
+    ):
+        """Shift the times of all points within
+        the PointsGroup by the increment size
+
+        Args:
+            increment (float): 
+                The time increment by which to shift the
+                points within the PointsGroup. Could be
+                positive or negative
+        """
+
+        for tier in self.tier_list:
+            tier._shift(increment)
     
     def get_nearest_points_index(
             self, 
