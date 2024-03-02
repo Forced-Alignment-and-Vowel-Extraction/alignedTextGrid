@@ -249,6 +249,35 @@ class TestTierGroupNames:
 
         assert isinstance(tg.IVR, TierGroup)
 
+class TestTierGroupShift:
+    def test_tiergroup_shift(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        tgr = tg[0]
+        orig_starts = [
+            tier.starts for tier in tgr
+        ]
+        orig_ends = [
+            tier.ends for tier in tgr
+        ]
+
+        tgr.shift(3)
+
+        new_starts = [
+            tier.starts for tier in tgr
+        ]
+        new_ends = [
+            tier.ends for tier in tgr
+        ]
+
+        for o, n in zip(orig_starts, new_starts):
+            assert np.all(np.isclose(n-o, 3))
+        for o, n in zip(orig_ends, new_ends):
+            assert np.all(np.isclose(n-o, 3))
+
 class TestInterleave:
     
    

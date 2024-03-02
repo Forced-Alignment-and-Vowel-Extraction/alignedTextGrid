@@ -317,6 +317,22 @@ class TierGroup(TierGroupMixins, WithinMixins):
     @property
     def xmax(self):
         return np.array([tier.xmax for tier in self.tier_list]).min()
+    
+    def shift(
+            self,
+            increment: float
+        ):
+        """Shift the start and end times of all intervals within
+        the TierGroup by the increment size
+
+        Args:
+            increment (float): 
+                The time increment by which to shift the
+                intervals within the TierGroup. Could be
+                positive or negative
+        """
+        for tier in self.tier_list:
+            tier._shift(increment)
 
     def get_intervals_at_time(
             self, 
