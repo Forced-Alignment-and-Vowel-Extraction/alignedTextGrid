@@ -1,3 +1,4 @@
+import praatio.utilities.constants
 from praatio.utilities.constants import Point
 from aligned_textgrid.mixins.mixins import PrecedenceMixins, InTierMixins
 from aligned_textgrid.mixins.within import WithinMixins
@@ -38,11 +39,19 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
 
     def __init__(
             self,
+            time: float = None,
+            label: str = None,
             point = Point(0, "")
         ):
         super().__init__()
-        if not point:
-            point = Point(None, None)
+        if isinstance(time, praatio.utilities.constants.Point):
+            point = time
+        elif time or label:
+            point = praatio.utilities.constants.Point(time, label)
+        elif point:
+            point = point
+        else:
+            point = Point(None, None)            
         
         self.time = point.time
         self.label = point.label

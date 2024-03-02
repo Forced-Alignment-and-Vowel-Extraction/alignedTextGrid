@@ -24,6 +24,32 @@ class TestSequencePointDefault:
     def test_default_prev(self):
         assert self.seq_point.prev.label == "#"
 
+class TestSequencePointCreation:
+
+    def test_with_args(self):
+        point_kwargs = SequencePoint(time = 1, label = "test")
+        point_args = SequencePoint(1, "test")
+        point_point = SequencePoint(Point(1, "test"))
+
+        assert point_kwargs.time == 1
+        assert point_kwargs.label == "test"
+
+        assert point_args.time == 1
+        assert point_args.label == "test"
+
+        assert point_point.time == 1
+        assert point_point.label == "test"
+
+    def test_incomplete(self):
+        point_nolab = SequencePoint(1)
+        point_notime = SequencePoint(label = "test")
+        
+        assert point_nolab.time == 1
+        assert not point_nolab.label
+
+        assert not point_notime.time
+        assert point_notime.label == "test"
+
 class TestPrecedence:
     seq_point_a = SequencePoint(Point(1, "a"))
     seq_point_b = SequencePoint(Point(2, "b"))
