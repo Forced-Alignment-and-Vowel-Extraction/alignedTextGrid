@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -330,9 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#sequence-interval-properties" id="toc-sequence-interval-properties" class="nav-link active" data-scroll-target="#sequence-interval-properties">Sequence Interval Properties</a>
-  <ul class="collapse">
-  <li><a href="#the-behavior-of-len-in-and-iteration" id="toc-the-behavior-of-len-in-and-iteration" class="nav-link" data-scroll-target="#the-behavior-of-len-in-and-iteration">The behavior of <code>len()</code>, <code>in</code> and iteration</a>
+  <li><a href="#the-behavior-of-len-in-and-iteration" id="toc-the-behavior-of-len-in-and-iteration" class="nav-link active" data-scroll-target="#the-behavior-of-len-in-and-iteration">The behavior of <code>len()</code>, <code>in</code> and iteration</a>
   <ul class="collapse">
   <li><a href="#len" id="toc-len" class="nav-link" data-scroll-target="#len"><code>len()</code></a></li>
   <li><a href="#in" id="toc-in" class="nav-link" data-scroll-target="#in"><code>in</code></a></li>
@@ -341,7 +339,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#subset-sequence-information" id="toc-subset-sequence-information" class="nav-link" data-scroll-target="#subset-sequence-information">Subset Sequence Information</a></li>
   <li><a href="#hierarchy-strictness" id="toc-hierarchy-strictness" class="nav-link" data-scroll-target="#hierarchy-strictness">Hierarchy Strictness</a></li>
   <li><a href="#class-strictness" id="toc-class-strictness" class="nav-link" data-scroll-target="#class-strictness">Class Strictness</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -367,10 +364,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="sequence-interval-properties" class="level1">
-<h1>Sequence Interval Properties</h1>
 <p>Let’s begin with <a href="../../resources/the_dog.TextGrid">this textgrid</a>.</p>
-<div id="cell-2" class="cell" data-execution_count="1">
+<div id="cell-3" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> Word, Phone</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -392,14 +387,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>Sequence in</figcaption>
 </figure>
 </div>
-<div id="cell-4" class="cell" data-execution_count="2">
+<div id="cell-5" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(dog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>3</code></pre>
 </div>
 </div>
 <p>If a Sequence Interval doesn’t have a <code>.subset_list</code>, then <code>len()</code> will return <code>0</code>.</p>
-<div id="cell-6" class="cell" data-execution_count="3">
+<div id="cell-7" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(AH0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>0</code></pre>
@@ -415,14 +410,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>Sequence in</figcaption>
 </figure>
 </div>
-<div id="cell-8" class="cell" data-execution_count="4">
+<div id="cell-9" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>AO1 <span class="op">=</span> dog[<span class="dv">1</span>]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>AO1 <span class="kw">in</span> dog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>True</code></pre>
 </div>
 </div>
-<div id="cell-9" class="cell" data-execution_count="5">
+<div id="cell-10" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>AH0 <span class="kw">in</span> dog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>False</code></pre>
@@ -438,7 +433,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>sequence iter</figcaption>
 </figure>
 </div>
-<div id="cell-11" class="cell" data-execution_count="6">
+<div id="cell-12" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> segment <span class="kw">in</span> dog:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>segment<span class="sc">.</span>label<span class="sc">}</span><span class="ss"> is in </span><span class="sc">{</span>segment<span class="sc">.</span>inword<span class="sc">.</span>label<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -452,33 +447,33 @@ G is in dog</code></pre>
 <section id="subset-sequence-information" class="level2">
 <h2 class="anchored" data-anchor-id="subset-sequence-information">Subset Sequence Information</h2>
 <p>In addition to the <code>.start</code>, <code>.end</code> and <code>.label</code> information about each Sequence Interval, if it also has a <code>.subset_list</code>, that same information is accessible with <code>.sub_starts</code>, <code>.sub_ends</code> and <code>.sub_labels</code>.</p>
-<div id="cell-13" class="cell" data-execution_count="7">
+<div id="cell-14" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dog.sub_starts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>array([0.30829161, 0.41950136, 0.83568509])</code></pre>
 </div>
 </div>
-<div id="cell-14" class="cell" data-execution_count="8">
+<div id="cell-15" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dog.sub_ends</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>array([0.41950136, 0.83568509, 0.96658691])</code></pre>
 </div>
 </div>
-<div id="cell-15" class="cell" data-execution_count="9">
+<div id="cell-16" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>dog.sub_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>['D', 'AO1', 'G']</code></pre>
 </div>
 </div>
 <p>This is a safe way to check if a general phone label is within a word, since just using <code>in</code> on the sequence interval itself checks against specific <em>Sequence Interval</em> objects.</p>
-<div id="cell-17" class="cell" data-execution_count="10">
+<div id="cell-18" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the label "G" is not a Sequence Interval</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">"G"</span> <span class="kw">in</span> dog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>False</code></pre>
 </div>
 </div>
-<div id="cell-18" class="cell" data-execution_count="11">
+<div id="cell-19" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">"G"</span> <span class="kw">in</span> dog.sub_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>True</code></pre>
@@ -519,20 +514,20 @@ G is in dog</code></pre>
 <section id="class-strictness" class="level2">
 <h2 class="anchored" data-anchor-id="class-strictness">Class Strictness</h2>
 <p>Another source of strictness is the Sequence Interval class. You can get the class of a specific interval with <code>type()</code></p>
-<div id="cell-21" class="cell" data-execution_count="12">
+<div id="cell-22" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(AH0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>aligned_textgrid.sequences.word_and_phone.Phone</code></pre>
 </div>
 </div>
-<div id="cell-22" class="cell" data-execution_count="13">
+<div id="cell-23" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(dog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>aligned_textgrid.sequences.word_and_phone.Word</code></pre>
 </div>
 </div>
 <p>A horizontal strictness of classes is that the <code>.fol</code> and <code>.prev</code> Segment Intervals must be of the same class.</p>
-<div id="cell-24" class="cell" data-execution_count="14">
+<div id="cell-25" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    dog.set_fol(AH0)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> exc:</span>
@@ -542,20 +537,20 @@ G is in dog</code></pre>
 </div>
 </div>
 <p>Each class also defines what its (one and only) <code>.superset_class</code> and <code>.subset_class</code> is. For classes at the top of the hierarchy, there is a reserved <code>Top</code> class, and for classes at the bottom of the hierarchy, there is a reserved <code>Bottom</code> class.</p>
-<div id="cell-26" class="cell" data-execution_count="15">
+<div id="cell-27" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>Word.subset_class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>aligned_textgrid.sequences.word_and_phone.Phone</code></pre>
 </div>
 </div>
-<div id="cell-27" class="cell" data-execution_count="16">
+<div id="cell-28" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Word.superset_class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>aligned_textgrid.sequences.word_and_phone.Top_wp</code></pre>
 </div>
 </div>
 <p>If a Sequence Interval isn’t the right class, it can’t be added to another’s <code>.subset_class</code> or set as its <code>.super_instance</code>.</p>
-<div id="cell-29" class="cell" data-execution_count="17">
+<div id="cell-30" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    AH0.append_subset_list(AO1)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> exc:</span>
@@ -564,7 +559,7 @@ G is in dog</code></pre>
 <pre><code>The subset_class was defined as Bottom_wp, but provided subset_instance was Phone</code></pre>
 </div>
 </div>
-<div id="cell-30" class="cell" data-execution_count="18">
+<div id="cell-31" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    AH0.set_super_instance(AO1)</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> exc:</span>
@@ -575,7 +570,6 @@ G is in dog</code></pre>
 </div>
 
 
-</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div>GPLv3</div></div></section></div></main> <!-- /main -->
@@ -802,6 +796,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/Forced-Alignment-and-Vowel-Extraction\.github\.io\/alignedTextGrid\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -836,7 +848,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

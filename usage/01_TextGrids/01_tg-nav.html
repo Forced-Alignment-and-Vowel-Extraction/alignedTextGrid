@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -330,14 +330,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#navigating-an-alignedtextgrid" id="toc-navigating-an-alignedtextgrid" class="nav-link active" data-scroll-target="#navigating-an-alignedtextgrid">Navigating an <code>AlignedTextGrid</code></a>
-  <ul class="collapse">
-  <li><a href="#reading-in-a-textgrid" id="toc-reading-in-a-textgrid" class="nav-link" data-scroll-target="#reading-in-a-textgrid">Reading in a TextGrid</a></li>
+  <li><a href="#reading-in-a-textgrid" id="toc-reading-in-a-textgrid" class="nav-link active" data-scroll-target="#reading-in-a-textgrid">Reading in a TextGrid</a></li>
   <li><a href="#navigating-the-alignedtextgrid-object" id="toc-navigating-the-alignedtextgrid-object" class="nav-link" data-scroll-target="#navigating-the-alignedtextgrid-object">Navigating the <code>AlignedTextGrid</code> object</a></li>
   <li><a href="#get-interval-at-time" id="toc-get-interval-at-time" class="nav-link" data-scroll-target="#get-interval-at-time">Get interval at time</a>
   <ul class="collapse">
   <li><a href="#nested-indexing" id="toc-nested-indexing" class="nav-link" data-scroll-target="#nested-indexing">Nested indexing</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -364,10 +361,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="navigating-an-alignedtextgrid" class="level1">
-<h1>Navigating an <code>AlignedTextGrid</code></h1>
 <p>This documentation covers reading in the output from the Montreal Forced Aligner using the <code>Word</code> and <code>Phone</code> classes from <code>aligned_textgrid</code>, but everything will generalize to custom classes.</p>
-<div id="cell-2" class="cell" data-execution_count="1">
+<div id="cell-3" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> Word, Phone</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -375,21 +370,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="reading-in-a-textgrid">Reading in a TextGrid</h2>
 <p>To read in a <a href="../resources/josef-fruehwald_speaker.TextGrid">one-speaker TextGrid</a>, either give <code>AlignedTextGrid()</code> the path to the file, or a textgrid that has already been read in with <code>praatio.textgrid.openTextgrid()</code>.</p>
 <p>You also need to specify the sequence classes of each tier in the order they appear. For MFA output, the top tier is <code>Word</code> and the bottom tier is <code>Phone</code>, but if these were reversed, you would have to pass <code>[Phone, Word]</code> to <code>entry_classes</code>. The information about which class is the superset and which is the subset is <a href="../../02_Sequences/02_sequence_properties/#class-strictness">encoded in the class information</a>, and is automatically handled.</p>
-<div id="cell-4" class="cell" data-execution_count="2">
+<div id="cell-5" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>one_speaker <span class="op">=</span> AlignedTextGrid(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    textgrid_path <span class="op">=</span> <span class="st">"../resources/josef-fruehwald_speaker.TextGrid"</span>, </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    entry_classes <span class="op">=</span> [Word, Phone]</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With a <a href="../resources/KY25A_1.TextGrid">two or more speaker TextGrid</a>, you can either pass <code>entry_classes</code> a single list of interval classes to re-use with each speaker (for example <code>[Word, Phone]</code>), or an explicit list of nested classes (for example, <code>[[Word, Phone], [Word, Phone]]</code>).</p>
-<div id="cell-6" class="cell" data-execution_count="3">
+<div id="cell-7" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>two_speaker <span class="op">=</span> AlignedTextGrid(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    textgrid_path <span class="op">=</span> <span class="st">"../resources/KY25A_1.TextGrid"</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    entry_classes<span class="op">=</span> [Word, Phone]</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you have a textgrid <a href="../resources/KY25A_1_multi.TextGrid">a mixture of sequence hierarchies</a>, you have to read it in with then fully nested list of classes.</p>
-<div id="cell-8" class="cell" data-execution_count="4">
+<div id="cell-9" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> custom_classes</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Turn <span class="op">=</span> custom_classes(<span class="st">"Turn"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -414,14 +409,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 <p>This information is available if you print the object:</p>
-<div id="cell-10" class="cell" data-execution_count="5">
+<div id="cell-11" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(two_speaker)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>AlignedTextGrid with 2 groups, each with [2, 2] tiers. [['Word', 'Phone'], ['Word', 'Phone']]</code></pre>
 </div>
 </div>
 <p>Or if you compare the <code>len()</code> of the one speaker vs two speaker textgrids.”</p>
-<div id="cell-12" class="cell" data-execution_count="6">
+<div id="cell-13" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(one_speaker))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(two_speaker))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -430,28 +425,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>To get the Word tier of the first speaker in <code>one_speaker</code>, we can index it with <code>[0][0]</code></p>
-<div id="cell-14" class="cell" data-execution_count="7">
+<div id="cell-15" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>one_speaker[<span class="dv">0</span>][<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>Sequence tier of Word; .superset_class: Top_wp; .subset_class: Phone</code></pre>
 </div>
 </div>
 <p>If you’d prefer to wrote more verbose but explicit code, you can also access tiers via the <code>.tier_groups</code> and <code>.tier_list</code> attributes as well.</p>
-<div id="cell-16" class="cell" data-execution_count="8">
+<div id="cell-17" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>one_speaker.tier_groups[<span class="dv">0</span>].tier_list[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>Sequence tier of Word; .superset_class: Top_wp; .subset_class: Phone</code></pre>
 </div>
 </div>
 <p>To access the individual sequence intervals in a tier, you can also use indexing.</p>
-<div id="cell-18" class="cell" data-execution_count="9">
+<div id="cell-19" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>one_speaker[<span class="dv">0</span>][<span class="dv">0</span>][<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>Class Word, label: sunlight, .superset_class: Top_wp, .super_instance, None, .subset_class: Phone, .subset_list: ['S', 'AH1', 'N', 'L', 'AY2', 'T']</code></pre>
 </div>
 </div>
 <p>Tiers are also iterable.</p>
-<div id="cell-20" class="cell" data-execution_count="10">
+<div id="cell-21" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(one_speaker[<span class="dv">0</span>][<span class="dv">0</span>][i].label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -464,7 +459,7 @@ strikes</code></pre>
 </div>
 <p>Once you’ve gotten to a sequence interval, indexing goes into its <a href="../../02_sequences/02_sequence_structure/#moving-downwards"><code>.subset_list</code></a></p>
 <p>The <code>len()</code> of a tier returns how many sequence intervals it constains.</p>
-<div id="cell-22" class="cell" data-execution_count="11">
+<div id="cell-23" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>[<span class="bu">len</span>(one_speaker[<span class="dv">0</span>][<span class="dv">0</span>]), <span class="bu">len</span>(one_speaker[<span class="dv">0</span>][<span class="dv">1</span>])]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>[377, 1191]</code></pre>
@@ -474,31 +469,31 @@ strikes</code></pre>
 <section id="get-interval-at-time" class="level2">
 <h2 class="anchored" data-anchor-id="get-interval-at-time">Get interval at time</h2>
 <p>The “Get interval at time” functionality from Praat has been implemented for each level of TextGrid representation.</p>
-<div id="cell-24" class="cell" data-execution_count="12">
+<div id="cell-25" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>speaker_one <span class="op">=</span> two_speaker[<span class="dv">0</span>]</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>speaker_one_word <span class="op">=</span> speaker_one[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-25" class="cell" data-execution_count="13">
+<div id="cell-26" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>speaker_one_word.get_interval_at_time(<span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>1</code></pre>
 </div>
 </div>
 <p>This is the index for the word that appears at 11 seconds.</p>
-<div id="cell-27" class="cell" data-execution_count="14">
+<div id="cell-28" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>speaker_one.get_intervals_at_time(<span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>[1, 2]</code></pre>
 </div>
 </div>
 <p>These are the indices for the word and phone tiers that are at 11 seconds.</p>
-<div id="cell-29" class="cell" data-execution_count="15">
+<div id="cell-30" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>two_speaker.get_intervals_at_time(<span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>[[1, 2], [39, 96]]</code></pre>
 </div>
 </div>
-<div id="cell-30" class="cell" data-execution_count="16">
+<div id="cell-31" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>two_speaker.get_intervals_at_time(<span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>[[1, 2], [39, 96]]</code></pre>
@@ -508,7 +503,7 @@ strikes</code></pre>
 <section id="nested-indexing" class="level3">
 <h3 class="anchored" data-anchor-id="nested-indexing">Nested indexing</h3>
 <p>You can use the nested indices returned by <code>.get_intervals_at_time()</code> to get the actual sequence intervals as well.</p>
-<div id="cell-33" class="cell" data-execution_count="17">
+<div id="cell-34" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>eleven_seconds <span class="op">=</span> two_speaker.get_intervals_at_time(<span class="dv">11</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>two_speaker[eleven_seconds]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
@@ -520,7 +515,6 @@ strikes</code></pre>
 </div>
 
 
-</section>
 </section>
 </section>
 
@@ -748,6 +742,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/Forced-Alignment-and-Vowel-Extraction\.github\.io\/alignedTextGrid\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -782,7 +794,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -330,9 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#customizing-sequence-interval-classes" id="toc-customizing-sequence-interval-classes" class="nav-link active" data-scroll-target="#customizing-sequence-interval-classes">Customizing Sequence Interval Classes</a>
-  <ul class="collapse">
-  <li><a href="#creating-custom-classes-with-custom_classes" id="toc-creating-custom-classes-with-custom_classes" class="nav-link" data-scroll-target="#creating-custom-classes-with-custom_classes">Creating custom classes with <code>custom_classes</code></a>
+  <li><a href="#creating-custom-classes-with-custom_classes" id="toc-creating-custom-classes-with-custom_classes" class="nav-link active" data-scroll-target="#creating-custom-classes-with-custom_classes">Creating custom classes with <code>custom_classes</code></a>
   <ul class="collapse">
   <li><a href="#using-custom_classes-when-creating-an-alignedtextgrid" id="toc-using-custom_classes-when-creating-an-alignedtextgrid" class="nav-link" data-scroll-target="#using-custom_classes-when-creating-an-alignedtextgrid">Using <code>custom_classes()</code> when creating an <code>AlignedTextGrid</code></a></li>
   <li><a href="#when-the-tier-order-the-hierarchy-order" id="toc-when-the-tier-order-the-hierarchy-order" class="nav-link" data-scroll-target="#when-the-tier-order-the-hierarchy-order">When the tier order != the hierarchy order</a></li>
@@ -340,7 +338,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#customizing-subclasses" id="toc-customizing-subclasses" class="nav-link" data-scroll-target="#customizing-subclasses">Customizing Subclasses</a>
   <ul class="collapse">
   <li><a href="#the-minimal-requirements" id="toc-the-minimal-requirements" class="nav-link" data-scroll-target="#the-minimal-requirements">The minimal requirements</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -367,10 +364,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="customizing-sequence-interval-classes" class="level1">
-<h1>Customizing Sequence Interval Classes</h1>
 <p>The core class in aligned-textgrid is the <code>SequenceInterval</code> from which new sequence interval classes can be subclassed. The <code>Word</code> and <code>Phone</code> classes are, themselves, subclasses of <code>SequenceInterval</code>.</p>
-<div id="cell-1" class="cell" data-execution_count="1">
+<div id="cell-2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> SequenceInterval</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> Word, Phone</span>
@@ -382,19 +377,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The most important information every sequence interval class has is its <code>.superset_class</code> and <code>.subset_class</code>, which needs to be another (but different!) <code>SequenceInterval</code> subclass.</p>
-<div id="cell-3" class="cell" data-execution_count="2">
+<div id="cell-4" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Word.subset_class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>aligned_textgrid.sequences.word_and_phone.Phone</code></pre>
 </div>
 </div>
-<div id="cell-4" class="cell" data-execution_count="3">
+<div id="cell-5" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Phone.superset_class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>aligned_textgrid.sequences.word_and_phone.Word</code></pre>
 </div>
 </div>
-<div id="cell-5" class="cell" data-execution_count="4">
+<div id="cell-6" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Word.subset_class.subset_class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>aligned_textgrid.sequences.word_and_phone.Bottom_wp</code></pre>
@@ -403,12 +398,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="creating-custom-classes-with-custom_classes" class="level2">
 <h2 class="anchored" data-anchor-id="creating-custom-classes-with-custom_classes">Creating custom classes with <code>custom_classes</code></h2>
 <p>If you don’t want or need any additional bells and whistles beyond <a href="../../reference/aligned_textgrid/sequences/sequences/#aligned_textgrid.sequences.sequences.SequenceInterval">what <code>SequenceInterval</code> already provides</a>, you can just use the <code>custom_classes()</code> function. For example, if you wanted your own interval classes for a Word, Syllable, and Phone:</p>
-<div id="cell-7" class="cell" data-execution_count="5">
+<div id="cell-8" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>MyWord, Syllable, MyPhone <span class="op">=</span> custom_classes(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    class_list<span class="op">=</span>[<span class="st">"MyWord"</span>, <span class="st">"Syllable"</span>, <span class="st">"Phone"</span>]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-8" class="cell" data-execution_count="6">
+<div id="cell-9" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>[MyWord.subset_class, Syllable.superset_class]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>[aligned_textgrid.custom_classes.Syllable,
@@ -427,7 +422,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 <p>You could create an <code>AlignedTextGrid</code> object like so:</p>
-<div id="cell-10" class="cell" data-execution_count="7">
+<div id="cell-11" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>spritely <span class="op">=</span> AlignedTextGrid(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    textgrid_path <span class="op">=</span> <span class="st">"../resources/spritely.TextGrid"</span>,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    entry_classes <span class="op">=</span> custom_classes(</span>
@@ -436,28 +431,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can see that the textgrid was successfully parsed by printing <code>spritely</code>.</p>
-<div id="cell-12" class="cell" data-execution_count="8">
+<div id="cell-13" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(spritely)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>AlignedTextGrid with 1 groups, each with [6] tiers. [['PrWord', 'Foot', 'Syl', 'OnsetRime', 'SylPart', 'Phone']]</code></pre>
 </div>
 </div>
 <p>Within the first tier group, the tier with index <code>4</code> is the <code>SylPart</code> tier. Printing it, we can see that its superset class has been set to <code>OnsetRime</code> and its subset class has been set to <code>Phone</code>.</p>
-<div id="cell-14" class="cell" data-execution_count="9">
+<div id="cell-15" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(spritely[<span class="dv">0</span>][<span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sequence tier of SylPart; .superset_class: OnsetRime; .subset_class: Phone</code></pre>
 </div>
 </div>
 <p>We can look at the labels for this tier:</p>
-<div id="cell-16" class="cell" data-execution_count="10">
+<div id="cell-17" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(spritely[<span class="dv">0</span>][<span class="dv">4</span>].labels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>['', 'Onset', 'Nucleus', 'Coda', 'Onset', 'Nucleus', '']</code></pre>
 </div>
 </div>
 <p>And we can print out some information about the index <code>1</code> interval.</p>
-<div id="cell-18" class="cell" data-execution_count="11">
+<div id="cell-19" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(spritely[<span class="dv">0</span>][<span class="dv">4</span>][<span class="dv">1</span>].label)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(spritely[<span class="dv">0</span>][<span class="dv">4</span>][<span class="dv">1</span>].sub_labels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -476,7 +471,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 <p>The <code>custom_classes()</code> function still needs the hierarchy to be arranged from left to right, but you can also specify a <code>return_order</code>, either by numeric index or by name, that the new classes get returned.</p>
-<div id="cell-21" class="cell" data-execution_count="12">
+<div id="cell-22" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>custom_classes(</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    class_list <span class="op">=</span> [<span class="st">"PrWord"</span>, <span class="st">"Foot"</span>, <span class="st">"Syl"</span>, <span class="st">"OnsetRime"</span>, <span class="st">"SylPart"</span>, <span class="st">"Phone"</span>],</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    return_order<span class="op">=</span>[<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>]</span>
@@ -496,7 +491,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The order of these classes in the output list may have <code>Phone</code> first, but the topmost class in the hierarchy is still <code>PrWord</code></p>
-<div id="cell-23" class="cell" data-execution_count="13">
+<div id="cell-24" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>spritely_rev <span class="op">=</span> AlignedTextGrid(</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    textgrid_path<span class="op">=</span> <span class="st">"../resources/spritely_rev.TextGrid"</span>,</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    entry_classes <span class="op">=</span> custom_classes(</span>
@@ -530,13 +525,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="subclassing-sequenceinterval" class="level4">
 <h4 class="anchored" data-anchor-id="subclassing-sequenceinterval">Subclassing <code>SequenceInterval</code></h4>
 <p>Here’s the minimal setup to create a sequence interval subclass.</p>
-<div id="cell-27" class="cell" data-execution_count="14">
+<div id="cell-28" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyWord(SequenceInterval):</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, Interval):</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(Interval)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To test your new subclass, you’ll have to import <code>Interval</code> from <code>praatio</code>.</p>
-<div id="cell-29" class="cell" data-execution_count="15">
+<div id="cell-30" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> praatio.utilities.constants <span class="im">import</span> Interval</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>MyWord(Interval(<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">"test"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -545,7 +540,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>As you can see, <code>MyWord</code> has defaulted to have <code>Top</code> as its superset class and <code>Bottom</code> as its subset class. We’ll reset these after creating the remaining subclasses. Both <code>SyllablePart</code> and <code>MyPhone</code> will be created the exact same way as <code>MyWord</code>, since we’re just using the sequence interval defaults for them.</p>
-<div id="cell-31" class="cell" data-execution_count="16">
+<div id="cell-32" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SyllablePart(SequenceInterval):</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, Interval):</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(Interval)</span>
@@ -555,7 +550,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(Interval)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For the specialized properties of <code>Syllable</code>, we’ll start the subclassing the same, but add some properties that return <code>True</code> or <code>False</code> for whether or not the syllable has an onset or a coda.</p>
-<div id="cell-33" class="cell" data-execution_count="17">
+<div id="cell-34" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Syllable(SequenceInterval):</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, Interval):</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(Interval)</span>
@@ -573,25 +568,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="setting-subset-and-superset-classes." class="level4">
 <h4 class="anchored" data-anchor-id="setting-subset-and-superset-classes.">Setting subset and superset classes.</h4>
 <p>We can now set the <code>superset_class</code> and <code>subset_class</code> relationships. These relationships are symmetrical, so we actually only need to set one or the other.</p>
-<div id="cell-35" class="cell" data-execution_count="18">
+<div id="cell-36" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>MyWord.set_subset_class(Syllable)</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>Syllable.set_subset_class(SyllablePart)</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>SyllablePart.set_subset_class(MyPhone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can double check the superset classes have been correctly set.</p>
-<div id="cell-37" class="cell" data-execution_count="19">
+<div id="cell-38" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>MyPhone.superset_class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>__main__.SyllablePart</code></pre>
 </div>
 </div>
-<div id="cell-38" class="cell" data-execution_count="20">
+<div id="cell-39" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>SyllablePart.superset_class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>__main__.Syllable</code></pre>
 </div>
 </div>
-<div id="cell-39" class="cell" data-execution_count="21">
+<div id="cell-40" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>Syllable.superset_class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>__main__.MyWord</code></pre>
@@ -599,7 +594,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-</section>
 </section>
 </section>
 </section>
@@ -828,6 +822,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/Forced-Alignment-and-Vowel-Extraction\.github\.io\/alignedTextGrid\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -862,7 +874,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

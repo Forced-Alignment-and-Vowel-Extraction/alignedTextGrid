@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -330,12 +330,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#points" id="toc-points" class="nav-link active" data-scroll-target="#points">Points</a>
-  <ul class="collapse">
-  <li><a href="#navigating-a-sequencepointtier" id="toc-navigating-a-sequencepointtier" class="nav-link" data-scroll-target="#navigating-a-sequencepointtier">Navigating a <code>SequencePointTier</code></a></li>
+  <li><a href="#navigating-a-sequencepointtier" id="toc-navigating-a-sequencepointtier" class="nav-link active" data-scroll-target="#navigating-a-sequencepointtier">Navigating a <code>SequencePointTier</code></a></li>
   <li><a href="#useful-sequencepoint-attributes" id="toc-useful-sequencepoint-attributes" class="nav-link" data-scroll-target="#useful-sequencepoint-attributes">Useful <code>SequencePoint</code> attributes</a></li>
   <li><a href="#useful-sequencepointmethods" id="toc-useful-sequencepointmethods" class="nav-link" data-scroll-target="#useful-sequencepointmethods">Useful <code>SequencePointMethods</code></a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -361,17 +358,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="points" class="level1">
-<h1>Points</h1>
 <p>Praat points are represented using the <code>SequencePoint</code> class, which is much less constrained than the <code>SequenceInterval</code> class. They don’t have hierarchical relationships defined, and the same <code>SequencePoint</code> subclass can exist within a single <code>SequencePointTier</code>.</p>
-<div id="cell-1" class="cell" data-execution_count="1">
+<div id="cell-2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> SequencePoint, SequenceInterval, <span class="op">\</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    SequenceTier, SequencePointTier, <span class="op">\</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        AlignedTextGrid</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> custom_classes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To read in a TextGrid with a mixture of intervals and points (<a href="../resources/amelia_knew2-basic.TextGrid">download link</a>), you’ll need to provide both <code>SequenceInterval</code> and <code>SequencePoint</code> entry classes. Both can be created with the <code>custom_classes()</code> function. By default, a list of strings will create <code>SequenceInterval</code> subclasses, but you can add indicies of which classes should be <code>SequencePoint</code> subclasses.</p>
-<div id="cell-3" class="cell" data-execution_count="2">
+<div id="cell-4" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Word, Phone <span class="op">=</span> custom_classes([<span class="st">"Word"</span>, <span class="st">"Phone"</span>])</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Ranges <span class="op">=</span> custom_classes(<span class="st">"Ranges"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -381,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now you can read in the TextGrid using these custom classes. <code>entry_classes</code> should be a list of list indicating how the tiers are nested (or not.)</p>
-<div id="cell-5" class="cell" data-execution_count="3">
+<div id="cell-6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>tg <span class="op">=</span> AlignedTextGrid(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    textgrid_path <span class="op">=</span> <span class="st">"../resources/amelia_knew2-basic.TextGrid"</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    entry_classes <span class="op">=</span> [</span>
@@ -391,7 +386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-6" class="cell" data-execution_count="4">
+<div id="cell-7" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>AlignedTextGrid with 3 groups, each with [2, 4, 1] tiers. [['Word', 'Phone'], ['ToBI', 'PrStr', 'TurningPoints', 'Levels'], ['Ranges']]</code></pre>
@@ -400,17 +395,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="navigating-a-sequencepointtier" class="level2">
 <h2 class="anchored" data-anchor-id="navigating-a-sequencepointtier">Navigating a <code>SequencePointTier</code></h2>
 <p>Most of the same rules apply to navigating a <code>SequencePointTier</code> as a <code>SequenceTier</code>. Let’s grab the Levels tier for example</p>
-<div id="cell-8" class="cell" data-execution_count="5">
+<div id="cell-9" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>levels_tier <span class="op">=</span> tg[<span class="dv">1</span>][<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Each point in the levels tier can be accessed either by iteration or by indexing.</p>
-<div id="cell-10" class="cell" data-execution_count="6">
+<div id="cell-11" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>levels_tier[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>Class Levels, label: 2; tier_index: 0</code></pre>
 </div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="7">
+<div id="cell-12" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> point <span class="kw">in</span> levels_tier:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(point)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -423,19 +418,19 @@ Class Levels, label: 3; tier_index: 5</code></pre>
 </div>
 </div>
 <p>The <code>.fol</code> and <code>.prev</code> relationships are also defined for points.</p>
-<div id="cell-13" class="cell" data-execution_count="8">
+<div id="cell-14" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>levels_tier[<span class="dv">1</span>].fol</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>Class Levels, label: 5; tier_index: 2</code></pre>
 </div>
 </div>
-<div id="cell-14" class="cell" data-execution_count="9">
+<div id="cell-15" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>levels_tier[<span class="dv">1</span>].fol.fol</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>Class Levels, label: 1; tier_index: 3</code></pre>
 </div>
 </div>
-<div id="cell-15" class="cell" data-execution_count="10">
+<div id="cell-16" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>levels_tier[<span class="dv">1</span>].prev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>Class Levels, label: 2; tier_index: 0</code></pre>
@@ -445,7 +440,7 @@ Class Levels, label: 3; tier_index: 5</code></pre>
 <section id="useful-sequencepoint-attributes" class="level2">
 <h2 class="anchored" data-anchor-id="useful-sequencepoint-attributes">Useful <code>SequencePoint</code> attributes</h2>
 <p>The most useful attributes of a <code>SequencePoint</code> will be its <code>.label</code> and its <code>.time</code></p>
-<div id="cell-17" class="cell" data-execution_count="11">
+<div id="cell-18" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>example_point <span class="op">=</span> levels_tier[<span class="dv">1</span>]</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>example_point.label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -453,21 +448,21 @@ Class Levels, label: 3; tier_index: 5</code></pre>
 <pre><code>'1'</code></pre>
 </div>
 </div>
-<div id="cell-18" class="cell" data-execution_count="12">
+<div id="cell-19" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>example_point.time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>0.20235139465888988</code></pre>
 </div>
 </div>
 <p>The labels and times of all points in a <code>SequencePointTier</code> can be accessed with <code>.labels</code> and <code>.times</code>.</p>
-<div id="cell-20" class="cell" data-execution_count="13">
+<div id="cell-21" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># accessing the parent tier</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>example_point.intier.labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>['2', '1', '5', '1', '1', '3']</code></pre>
 </div>
 </div>
-<div id="cell-21" class="cell" data-execution_count="14">
+<div id="cell-22" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>example_point.intier.times</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>array([0.08467382, 0.20235139, 0.36102389, 0.51020478, 0.73123339,
@@ -475,13 +470,13 @@ Class Levels, label: 3; tier_index: 5</code></pre>
 </div>
 </div>
 <p>There are also attributes giving the distance between the current point and its <code>.fol</code> and <code>.prev</code> point.</p>
-<div id="cell-23" class="cell" data-execution_count="15">
+<div id="cell-24" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>example_point.fol_distance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>0.15867249135026215</code></pre>
 </div>
 </div>
-<div id="cell-24" class="cell" data-execution_count="16">
+<div id="cell-25" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>example_point.prev_distance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>-0.11767757671157641</code></pre>
@@ -491,23 +486,23 @@ Class Levels, label: 3; tier_index: 5</code></pre>
 <section id="useful-sequencepointmethods" class="level2">
 <h2 class="anchored" data-anchor-id="useful-sequencepointmethods">Useful <code>SequencePointMethods</code></h2>
 <p>With the <code>.get_interval_at_time()</code> method, you can get the interval a point falls within if passed a <code>SequenceTier</code>.</p>
-<div id="cell-26" class="cell" data-execution_count="17">
+<div id="cell-27" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>phone_tier <span class="op">=</span> tg[<span class="dv">0</span>][<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-27" class="cell" data-execution_count="18">
+<div id="cell-28" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>phone_tier.labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>['', '\\sw', 'm', 'i', 'l', 'j', '\\sw', 'n', 'u', '\\sw', 'm', '']</code></pre>
 </div>
 </div>
-<div id="cell-28" class="cell" data-execution_count="19">
+<div id="cell-29" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>example_point.get_interval_at_point(phone_tier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>Class Phone, label: i, .superset_class: Word, .super_instance: Amelia, .subset_class: Bottom_1</code></pre>
 </div>
 </div>
 <p>If passed any given <code>SequenceInterval</code> or <code>SequencePoint</code>, the <code>.distance_from()</code> method will give the distance from the current point.</p>
-<div id="cell-30" class="cell" data-execution_count="20">
+<div id="cell-31" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>example_interval <span class="op">=</span> example_point.get_interval_at_point(phone_tier)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>example_point.distance_from(example_interval)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -515,7 +510,7 @@ Class Levels, label: 3; tier_index: 5</code></pre>
 <pre><code>array([ 0.01603854, -0.11062785])</code></pre>
 </div>
 </div>
-<div id="cell-31" class="cell" data-execution_count="21">
+<div id="cell-32" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>example_point.distance_from(example_interval.fol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>array([-0.11062785, -0.18968809])</code></pre>
@@ -523,7 +518,6 @@ Class Levels, label: 3; tier_index: 5</code></pre>
 </div>
 
 
-</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div>GPLv3</div></div></section></div></main> <!-- /main -->
@@ -750,6 +744,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/Forced-Alignment-and-Vowel-Extraction\.github\.io\/alignedTextGrid\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -784,7 +796,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

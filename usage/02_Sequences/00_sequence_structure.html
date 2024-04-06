@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -330,14 +330,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#sequence-navigation" id="toc-sequence-navigation" class="nav-link active" data-scroll-target="#sequence-navigation">Sequence Navigation</a>
-  <ul class="collapse">
-  <li><a href="#the-precedence-and-hierarchy-structure" id="toc-the-precedence-and-hierarchy-structure" class="nav-link" data-scroll-target="#the-precedence-and-hierarchy-structure">The Precedence and Hierarchy structure</a>
+  <li><a href="#the-precedence-and-hierarchy-structure" id="toc-the-precedence-and-hierarchy-structure" class="nav-link active" data-scroll-target="#the-precedence-and-hierarchy-structure">The Precedence and Hierarchy structure</a>
   <ul class="collapse">
   <li><a href="#working-with-precedence" id="toc-working-with-precedence" class="nav-link" data-scroll-target="#working-with-precedence">Working with precedence</a></li>
   <li><a href="#using-hierarchy" id="toc-using-hierarchy" class="nav-link" data-scroll-target="#using-hierarchy">Using hierarchy</a></li>
   <li><a href="#moving-all-around" id="toc-moving-all-around" class="nav-link" data-scroll-target="#moving-all-around">Moving all around</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -364,8 +361,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="sequence-navigation" class="level1">
-<h1>Sequence Navigation</h1>
 <p>Let’s say we began with <a href="../../resources/the_dog.TextGrid">this textgrid</a> and read it in with <code>AlignedTextGrid()</code>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -373,7 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>the dog</figcaption>
 </figure>
 </div>
-<div id="cell-1" class="cell" data-execution_count="1">
+<div id="cell-2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> Word, Phone</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -387,18 +382,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Let’s grab the objects representing the schwa in “the” and the the entire word “dog”.</p>
-<div id="cell-3" class="cell" data-execution_count="2">
+<div id="cell-4" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>AH0 <span class="op">=</span> the_dog.tier_groups[<span class="dv">0</span>].tier_list[<span class="dv">1</span>].sequence_list[<span class="dv">1</span>]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dog <span class="op">=</span> the_dog.tier_groups[<span class="dv">0</span>].tier_list[<span class="dv">0</span>].sequence_list[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Both of these objects have got basic interval information available as attributes, specifically <code>.start</code>, <code>.end</code> and <code>.label.</code></p>
-<div id="cell-5" class="cell" data-execution_count="3">
+<div id="cell-6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>[AH0.start, AH0.end, AH0.label]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>[0.1827542202196579, 0.308291607646728, 'AH0']</code></pre>
 </div>
 </div>
-<div id="cell-6" class="cell" data-execution_count="4">
+<div id="cell-7" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>[dog.start, dog.end, dog.label]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>[0.308291607646728, 0.9665869095874072, 'dog']</code></pre>
@@ -417,34 +412,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="working-with-precedence" class="level3">
 <h3 class="anchored" data-anchor-id="working-with-precedence">Working with precedence</h3>
 <p>For our <code>AH0</code> object, we can access its preceding phone with .prev</p>
-<div id="cell-9" class="cell" data-execution_count="5">
+<div id="cell-10" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>AH0.prev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>Class Phone, label: DH, .superset_class: Word, .super_instance: the, .subset_class: Bottom_wp</code></pre>
 </div>
 </div>
 <p>Importantly, this is the <em>actual</em> preceding Sequence Interval object, so we an access all of <em>it’s</em> interval information like we did for <code>AH0</code> itself.</p>
-<div id="cell-11" class="cell" data-execution_count="6">
+<div id="cell-12" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>[AH0.prev.start, AH0.prev.end, AH0.prev.label]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>[0.0, 0.1827542202196579, 'DH']</code></pre>
 </div>
 </div>
 <p>Because <code>AH0</code> is the final Sequence Interval within this word, its <code>.fol</code> attribute is a reference to a dummy boundary interval.</p>
-<div id="cell-13" class="cell" data-execution_count="7">
+<div id="cell-14" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>[AH0.fol.start, AH0.fol.end, AH0.fol.label]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>[None, None, '#']</code></pre>
 </div>
 </div>
 <p>The <code>dog</code> object from the word tier has the same <code>.prev</code> and <code>.fol</code> methods available.</p>
-<div id="cell-15" class="cell" data-execution_count="8">
+<div id="cell-16" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>[dog.prev.start, dog.prev.end, dog.prev.label]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>[0.0, 0.308291607646728, 'the']</code></pre>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="9">
+<div id="cell-17" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>[dog.fol.start, dog.fol.end, dog.fol.label]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>[None, None, '#']</code></pre>
@@ -456,20 +451,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="moving-upwards" class="level4">
 <h4 class="anchored" data-anchor-id="moving-upwards">Moving upwards</h4>
 <p>You can also navigate upwards and downwards with these objects. The most general attribute to get the Sequence Interval above is <code>.super_instance</code></p>
-<div id="cell-18" class="cell" data-execution_count="10">
+<div id="cell-19" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>AH0.super_instance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>Class Word, label: the, .superset_class: Top_wp, .super_instance, None, .subset_class: Phone, .subset_list: ['DH', 'AH0']</code></pre>
 </div>
 </div>
 <p>However, the <code>Phone</code> class from <code>aligned_textgrid.sequences.word_and_phone</code> also has an <code>.inword</code> attribute for convenience.</p>
-<div id="cell-20" class="cell" data-execution_count="11">
+<div id="cell-21" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>AH0.inword</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>Class Word, label: the, .superset_class: Top_wp, .super_instance, None, .subset_class: Phone, .subset_list: ['DH', 'AH0']</code></pre>
 </div>
 </div>
-<div id="cell-21" class="cell" data-execution_count="12">
+<div id="cell-22" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>[AH0.inword.start, AH0.inword.end, AH0.inword.label]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>[0.0, 0.308291607646728, 'the']</code></pre>
@@ -479,7 +474,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="moving-downwards" class="level4">
 <h4 class="anchored" data-anchor-id="moving-downwards">Moving Downwards</h4>
 <p>From the <code>dog</code> object, we can navigate downwards with the <code>.subset_list</code> attribute, which returns a list of each phone Sequence Interval.</p>
-<div id="cell-23" class="cell" data-execution_count="13">
+<div id="cell-24" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dog.subset_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>[Class Phone, label: D, .superset_class: Word, .super_instance: dog, .subset_class: Bottom_wp,
@@ -494,20 +489,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>Sequence indexing</figcaption>
 </figure>
 </div>
-<div id="cell-25" class="cell" data-execution_count="14">
+<div id="cell-26" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>dog[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>Class Phone, label: G, .superset_class: Word, .super_instance: dog, .subset_class: Bottom_wp</code></pre>
 </div>
 </div>
-<div id="cell-26" class="cell" data-execution_count="15">
+<div id="cell-27" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>[dog[<span class="dv">2</span>].start, dog[<span class="dv">2</span>].end, dog[<span class="dv">2</span>].label]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>[0.8356850885224085, 0.9665869095874072, 'G']</code></pre>
 </div>
 </div>
 <p>There are also special attributes <code>.first</code> and <code>.last</code> to access the first and last sequences within the subset list.</p>
-<div id="cell-28" class="cell" data-execution_count="17">
+<div id="cell-29" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>[dog.first.label, dog.last.label]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <pre><code>['D', 'G']</code></pre>
@@ -518,7 +513,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="moving-all-around" class="level3">
 <h3 class="anchored" data-anchor-id="moving-all-around">Moving all around</h3>
 <p>Since each of these attributes (<code>.prev</code>, <code>.fol</code>, <code>.inword</code> and <code>.subset_list</code>) returns the actual Sequence Interval objects, we can chain them together to create a path through the hierarchy. For example, we can see that <code>AH0</code> is the final phone in its word.</p>
-<div id="cell-30" class="cell" data-execution_count="16">
+<div id="cell-31" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>AH0.fol.label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>'#'</code></pre>
@@ -532,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 <p>There is an easier way to do this with <a href="../01_sequence-in-tier/#tier-wise-relationships">tier references</a>. This example is just to illustrate how a path can be constructed</p>
-<div id="cell-32" class="cell" data-execution_count="18">
+<div id="cell-33" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>AH0.inword.fol.first</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>Class Phone, label: D, .superset_class: Word, .super_instance: dog, .subset_class: Bottom_wp</code></pre>
@@ -540,7 +535,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-</section>
 </section>
 </section>
 
@@ -768,6 +762,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/Forced-Alignment-and-Vowel-Extraction\.github\.io\/alignedTextGrid\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -802,7 +814,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
