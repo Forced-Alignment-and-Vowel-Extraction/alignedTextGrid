@@ -3,6 +3,49 @@ from aligned_textgrid.points.points import *
 from praatio.utilities.utils import Interval
 from typing import Type
 
+def _sequence_constructor(
+        self, 
+        Interval = Interval(None, None, None),
+        superclass = SequenceInterval
+    ):
+    superclass.__init__(self, Interval=Interval)
+
+def _point_constructor(
+        self,
+        Point = Point(0, ""),
+        superclass = SequencePoint
+):
+    superclass.__init__(self, Point)
+
+def _top_constructor(self):
+    Top.__init__(self)
+
+def _bottom_constructor(self):
+    Bottom.__init__(self)
+
+def _make_top()->SequenceInterval:
+
+    n_top = len(Top.__subclasses__())
+    this_top_name = f"Top_{n_top}"
+    this_top = type(
+        this_top_name,
+        (Top, ), 
+        {"__init__": _top_constructor}
+    )
+
+    return this_top
+
+def _make_bottom()->SequenceInterval:
+    n_bottom = len(Bottom.__subclasses__())
+    this_bottom_name = f"Bottom_{n_bottom}"
+    this_bottom = type(
+        this_bottom_name, 
+        (Bottom, ), 
+        {"__init__": _bottom_constructor}
+    )
+
+    return this_bottom
+
 def custom_classes(
         class_list:list[str] = [],
         return_order: list[str] | list[int] | None = None,
@@ -64,42 +107,9 @@ def custom_classes(
     Returns:
         (list[Type[SequenceInterval]]): A list of custom `SequenceInterval` subclasses
     """
-    def _sequence_constructor(
-            self, 
-            Interval = Interval(None, None, None)
-        ):
-        SequenceInterval.__init__(self, Interval=Interval)
-    
-    def _point_constructor(
-            self,
-            Point = Point(0, "")
-    ):
-        SequencePoint.__init__(self, Point)
 
-    def _top_constructor(self):
-        Top.__init__(self)
-
-    def _bottom_constructor(self):
-        Bottom.__init__(self)
-
-
-    n_top = len(Top.__subclasses__())
-    n_bottom = len(Bottom.__subclasses__())
-
-    this_top_name = f"Top_{n_top}"
-    this_bottom_name = f"Bottom_{n_bottom}"
-
-    this_top = type(
-        this_top_name,
-        (Top, ), 
-        {"__init__": _top_constructor}
-    )
-    
-    this_bottom = type(
-        this_bottom_name, 
-        (Bottom, ), 
-        {"__init__": _bottom_constructor}
-    )
+    this_top = _make_top()
+    this_bottom = _make_bottom()
 
     if return_order is None:
         return_order = class_list
@@ -152,3 +162,6 @@ def custom_classes(
             return_idx = [return_order.index(x) for x in class_list]
             return_list = [class_out_list[idx] for idx in return_idx] 
         return return_list
+
+def clone_class(enty_class:SequenceInterval) -> SequenceInterval:
+    pass
