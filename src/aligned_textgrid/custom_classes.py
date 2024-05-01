@@ -5,17 +5,15 @@ from typing import Type
 
 def _sequence_constructor(
         self, 
-        Interval = Interval(None, None, None),
-        superclass = SequenceInterval
+        Interval = Interval(None, None, None)
     ):
-    superclass.__init__(self, Interval=Interval)
+    super(self.__class__, self).__init__(Interval)
 
 def _point_constructor(
         self,
-        Point = Point(0, ""),
-        superclass = SequencePoint
+        Point = Point(0, "")
 ):
-    superclass.__init__(self, Point)
+    super(self.__class__, self).__mro__[1].__init__(Point)
 
 def _top_constructor(self):
     Top.__init__(self)
