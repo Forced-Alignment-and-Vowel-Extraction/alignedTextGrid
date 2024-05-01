@@ -162,11 +162,13 @@ def custom_classes(
         return return_list
 
 def clone_class(
-        entry_class:SequenceInterval|SequencePoint
+        entry_class:SequenceInterval|SequencePoint,
+        recurse = False
         ) -> SequenceInterval|SequencePoint:
     
     if issubclass(entry_class, SequenceInterval):
-        if not issubclass(entry_class.superset_class, Top):
+        if not issubclass(entry_class.superset_class, Top) \
+        and not recurse:
             raise Exception("Entry class to clone must be top of hierarchy")
         
         cloned = type(
@@ -180,14 +182,14 @@ def clone_class(
                 _make_top()
             )
 
-        if issubclass(cloned.superset_class, Bottom):
-            cloned.set_superset_class(
+        if issubclass(cloned.subset_class, Bottom):
+            cloned.set_subset_class(
                 _make_bottom()
             )
 
         if (not cloned is cloned.subset_class.superset_class) \
            and issubclass(cloned.subset_class, SequenceInterval):
-            new_subset = clone_class(cloned.subset_class)
+            new_subset = clone_class(cloned.subset_class, recurse=True)
             cloned.set_subset_class(new_subset)
 
            
@@ -200,7 +202,10 @@ def clone_class(
     
     return cloned
 
-def get_class_hierarhcy(entry_class:SequenceInterval, out_list = [])->list[SequenceInterval]:
+def get_class_hierarhcy(
+        entry_class:SequenceInterval, 
+        out_list = []
+    )->list[SequenceInterval]:
     if (not issubclass(entry_class.superset_class, Top)) \
        and entry_class.superset_class not in out_list:
         out_list = get_class_hierarhcy(entry_class.superset_class, out_list)
