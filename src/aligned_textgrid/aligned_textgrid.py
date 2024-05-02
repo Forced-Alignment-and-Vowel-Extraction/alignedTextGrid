@@ -62,13 +62,13 @@ class AlignedTextGrid(WithinMixins):
     ):
         self.entry_classes = self._reclone_classes(entry_classes)
         if textgrid:
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(textgrid, entry_classes)
+            self.tg_tiers, self.entry_classes = self._nestify_tiers(textgrid, self.entry_classes)
         elif textgrid_path:
             tg = openTextgrid(
                 fnFullPath=textgrid_path, 
                 includeEmptyIntervals=True
             )
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, entry_classes)
+            self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
         else:
             warnings.warn('Initializing an empty AlignedTextGrid')
             self._init_empty()
