@@ -227,12 +227,12 @@ def get_class_hierarchy(
     """
     if (not issubclass(entry_class.superset_class, Top)) \
        and entry_class.superset_class not in out_list:
-        out_list = get_class_hierarhcy(entry_class.superset_class, out_list)
+        out_list = get_class_hierarchy(entry_class.superset_class, out_list)
 
     if entry_class not in out_list: 
         out_list.append(entry_class)
 
     if not issubclass(entry_class.subset_class, Bottom):
-        out_list = get_class_hierarhcy(entry_class.subset_class, out_list)
+        out_list = get_class_hierarchy(entry_class.subset_class, out_list)
     
     return out_list
