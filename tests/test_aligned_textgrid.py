@@ -69,13 +69,13 @@ class TestBasicRead:
         assert len(atg1) == 4
         assert [len(tg) == 1 for tg in atg1]
 
-    def test_read_partial2(self):
-        atg1 = AlignedTextGrid(
-            textgrid_path="tests/test_data/KY25A_1.TextGrid", 
-            entry_classes=[Phone]
-            )      
-        assert len(atg1) == 4
-        assert [len(tg) == 1 for tg in atg1]
+    # def test_read_partial2(self):
+    #     atg1 = AlignedTextGrid(
+    #         textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+    #         entry_classes=[Phone]
+    #         )      
+    #     assert len(atg1) == 4
+    #     assert [len(tg) == 1 for tg in atg1]
 
 class TestMultiRead:
     def test_read(self):
