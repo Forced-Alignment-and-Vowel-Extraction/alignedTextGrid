@@ -379,18 +379,20 @@ class AlignedTextGrid(WithinMixins):
         
         new_class = custom_classes([name])[0]
 
-        if type(above) is str:
-            above = self.get_class_by_name(above)
-
-        if type(below) is str:
-            below = self.get_class_by_name(below)
+        if type(above) is type:
+            above = above.__name__
+        
+        if type(below) is type:
+            below = below.__name__
 
         if above:
+            above = self.get_class_by_name(above)
             up_class = copy(above.superset_class)
             down_class = above
             specified_class = above
 
         if below:
+            below = self.get_class_by_name(below)
             up_class = below
             down_class = copy(below.subset_class)
             specified_class = below
