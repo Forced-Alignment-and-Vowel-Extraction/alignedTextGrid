@@ -191,8 +191,12 @@ class AlignedTextGrid(WithinMixins):
         unique_classes = list(set(flat_classes))
 
         points = [c for c in unique_classes if issubclass(c, SequencePoint)]
-        intervals = [c for c in unique_classes if issubclass(c, SequenceInterval)]
-        tops = [c for c in intervals if issubclass(c.superset_class, Top)]
+        tops = [
+            c 
+            for c in unique_classes 
+            if issubclass(c, SequenceInterval)
+            if issubclass(c.superset_class, Top)
+        ]
 
         points_clone = [clone_class(p) for p  in points]
         tops_clone = [clone_class(t) for t in tops]
