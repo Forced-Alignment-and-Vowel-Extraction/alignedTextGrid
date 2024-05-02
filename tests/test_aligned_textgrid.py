@@ -136,8 +136,8 @@ class TestClassSetting:
         target_class1 = self.atg1.get_class_by_name("MyWord")
         target_class2 = self.atg2.get_class_by_name("MyWord")
 
-        assert target_class1.__qualname__ is "MyWord"
-        assert target_class2.__qualname__ is "MyWord"
+        assert target_class1.__qualname__ == "MyWord"
+        assert target_class2.__qualname__ == "MyWord"
 
         missing_class1 = self.atg1.get_class_by_name("Foo")
         missing_class2 = self.atg2.get_class_by_name("Foo")
