@@ -139,15 +139,15 @@ class TestClassSetting:
         assert target_class1.__qualname__ is "MyWord"
         assert target_class2.__qualname__ is "MyWord"
 
-        # missing_class1 = self.atg1.get_class_by_name("Foo")
-        # missing_class2 = self.atg2.get_class_by_name("Foo")
-        # missing_class4 = self.atg4.get_class_by_name("Foo")
-        # assert missing_class1 is None
-        # assert missing_class2 is None
-        # assert missing_class4 is None
+        missing_class1 = self.atg1.get_class_by_name("Foo")
+        missing_class2 = self.atg2.get_class_by_name("Foo")
+        missing_class4 = self.atg4.get_class_by_name("Foo")
+        assert missing_class1 is None
+        assert missing_class2 is None
+        assert missing_class4 is None
 
-        # target_classes = self.atg3.get_class_by_name("MyWord")
-        # assert len(target_classes) > 1
+        target_classes = self.atg3.get_class_by_name("MyWord")
+        assert len(target_classes) > 1
 
     def test_empty_class_indexing(self):
         assert len(self.atg4) == 0
