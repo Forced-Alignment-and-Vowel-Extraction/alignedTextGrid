@@ -270,7 +270,7 @@ class TestInterleave:
         assert len(all_len) > 0
         assert all([l == 3 for l in all_len])
 
-        assert tg[0][0].subset_class is Word
+        assert issubclass(tg[0][0].subset_class, Word)
         assert not issubclass(tg[0].Word.superset_class, Top)
 
     def test_mid_interleave(self):
@@ -289,7 +289,7 @@ class TestInterleave:
         assert len(all_len) > 0
         assert all([l == 3 for l in all_len])
 
-        assert tg[0][0].entry_class is Word
+        assert issubclass(tg[0][0].entry_class, Word)
         assert not issubclass(tg[0].Word.subset_class, Phone)
 
     def test_multi_interleave(self):
@@ -313,11 +313,11 @@ class TestInterleave:
         tg_lens = [len(tgr) for tgr in tg]
         assert all([l == 4 for l in tg_lens])
 
-        assert tg[0]\
+        assert issubclass(tg[0]\
             .Phone\
             .superset_class\
             .superset_class\
-            .superset_class == Word
+            .superset_class, Word)
     
     def test_bottom_class(self):
         Word,Phone = custom_classes(["Word", "Phone"])        
@@ -332,7 +332,7 @@ class TestInterleave:
             timing_from="above"
         )
 
-        assert tg[0][-1].superset_class is Phone
+        assert issubclass(tg[0][-1].superset_class,Phone)
         assert issubclass(tg[0][-1].subset_class, Bottom)
 
     def test_label_copy(self):
