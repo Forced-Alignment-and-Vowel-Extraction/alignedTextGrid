@@ -11,7 +11,7 @@ from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from aligned_textgrid.points.tiers import SequencePointTier, PointsGroup
 from aligned_textgrid.mixins.within import WithinMixins
-from aligned_textgrid.custom_classes import custom_classes
+from aligned_textgrid.custom_classes import custom_classes, clone_class, get_class_hierarchy
 from typing import Type, Sequence, Literal
 from copy import copy
 import numpy as np
@@ -60,15 +60,15 @@ class AlignedTextGrid(WithinMixins):
             Sequence[Type[SequenceInterval]]
               = [SequenceInterval]
     ):
-        self.entry_classes = entry_classes
+        self.entry_classes = self._reclone_classes(entry_classes)
         if textgrid:
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(textgrid, entry_classes)
+            self.tg_tiers, self.entry_classes = self._nestify_tiers(textgrid, self.entry_classes)
         elif textgrid_path:
             tg = openTextgrid(
                 fnFullPath=textgrid_path, 
                 includeEmptyIntervals=True
             )
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, entry_classes)
+            self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
         else:
             warnings.warn('Initializing an empty AlignedTextGrid')
             self._init_empty()
@@ -167,6 +167,7 @@ class AlignedTextGrid(WithinMixins):
 
         if type(entry_classes[0]) in [list, tuple]:
             return entry_classes
+        
         if len(entry_classes) == 1:
             extension = len(tg.tiers) // len(entry_classes)
             entry_classes = [entry_classes] * extension
@@ -175,7 +176,59 @@ class AlignedTextGrid(WithinMixins):
             extension = len(tg.tiers) // len(entry_classes)
             entry_classes = [entry_classes] * extension
             return entry_classes
+        
         return entry_classes
+
+    def _reclone_classes(
+            self, 
+            entry_classes:list[SequenceInterval|SequencePoint]|list[list[SequenceInterval|SequencePoint]]
+            ) -> list[SequenceInterval|SequencePoint]|list[list[SequenceInterval|SequencePoint]]:
+        
+        flat_classes = entry_classes
+        if type(entry_classes[0]) is list:
+            flat_classes = [c for tg in entry_classes for c in tg]
+        
+        unique_classes = list(set(flat_classes))
+
+        points = [c for c in unique_classes if issubclass(c, SequencePoint)]
+        tops = [
+            c 
+            for c in unique_classes 
+            if issubclass(c, SequenceInterval)
+            if issubclass(c.superset_class, Top)
+        ]
+
+        points_clone = [clone_class(p) for p  in points]
+        tops_clone = [clone_class(t) for t in tops]
+        full_seq_clone = []
+        for tclone in tops_clone:
+            full_seq_clone += get_class_hierarchy(tclone, [])
+
+        full_clone = points_clone + full_seq_clone
+
+        if type(entry_classes[0]) is list:
+            new_entry_classes = [
+                self._swap_classes(tg_classes, full_clone)
+                for tg_classes in entry_classes
+            ]
+        else:
+            new_entry_classes = self._swap_classes(entry_classes, full_clone)
+
+        return new_entry_classes
+
+    def _swap_classes(
+            self, 
+            orig_classes: list[SequenceInterval]|list[SequencePoint], 
+            new_classes: list[SequenceInterval,SequencePoint]
+        )->list[SequenceInterval]|list[SequencePoint]:
+        new_classes_names = [c.__name__ for c in new_classes]
+        orig_classes_names = [c.__name__ for c in orig_classes]
+
+        new_idx = [new_classes_names.index(on) for on in orig_classes_names]
+
+        out_classes = [new_classes[i] for i in new_idx]
+        return out_classes
+
 
     def _init_empty(self):
         self.tier_groups = []
@@ -330,18 +383,20 @@ class AlignedTextGrid(WithinMixins):
         
         new_class = custom_classes([name])[0]
 
-        if type(above) is str:
-            above = self.get_class_by_name(above)
-
-        if type(below) is str:
-            below = self.get_class_by_name(below)
+        if type(above) is type:
+            above = above.__name__
+        
+        if type(below) is type:
+            below = below.__name__
 
         if above:
+            above = self.get_class_by_name(above)
             up_class = copy(above.superset_class)
             down_class = above
             specified_class = above
 
         if below:
+            below = self.get_class_by_name(below)
             up_class = below
             down_class = copy(below.subset_class)
             specified_class = below
