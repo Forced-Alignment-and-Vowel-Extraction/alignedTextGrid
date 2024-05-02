@@ -413,3 +413,35 @@ class TestInterleave:
                 below = Word,
                 timing_from="Word"
             )
+
+class TestClassCloning:
+
+    def test_class_clone(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes= [Word, Phone]
+        )
+
+        flat_classes = [c for l in  tg.entry_classes for c in l]
+        
+        assert not Word in flat_classes
+
+        assert any(
+            [issubclass(c, Word) for c in flat_classes]
+        )
+
+    def test_post_interleave(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes= [Word, Phone]
+        )
+
+        tg.interleave_class(name = "Syl", above=Phone)
+
+        p_entry = tg[0].Phone.entry_class
+        assert not p_entry is Phone
+        assert issubclass(p_entry, Phone)
+
+        assert not p_entry.superset_class is Phone.superset_class
+        assert Phone.superset_class is Word
+        assert not p_entry.superset_class is Word
