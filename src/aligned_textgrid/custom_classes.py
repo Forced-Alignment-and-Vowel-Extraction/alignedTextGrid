@@ -155,6 +155,21 @@ def clone_class(
         entry_class:SequenceInterval|SequencePoint,
         recurse = False
         ) -> SequenceInterval|SequencePoint:
+    """Clone an entry class. It will have the same name, but
+    any changes to its class properties will not be reflected
+    in the original class.
+
+    Args:
+        entry_class (SequenceInterval | SequencePoint): 
+            A SequenceInterval or SequencePoint to clone
+        ti
+        recurse (bool, optional): 
+            Used internally to clone the entire hierarchy. 
+            Defaults to False.
+
+    Returns:
+        (SequenceInterval|SequencePoint): A cloned entry class
+    """
     
     if issubclass(entry_class, SequenceInterval):
         if not issubclass(entry_class.superset_class, Top) \
@@ -196,6 +211,20 @@ def get_class_hierarhcy(
         entry_class:SequenceInterval, 
         out_list = []
     )->list[SequenceInterval]:
+    """Given a SequenceInterval, this will return
+    the entire class hierarchy
+
+    Args:
+        entry_class (SequenceInterval): 
+            Entry class to search the hierarchy for
+        out_list (list, optional): 
+            Used internally for recursive search.
+            Defaults to [].
+
+    Returns:
+        (list[SequenceInterval]):
+            The class hierarchy
+    """
     if (not issubclass(entry_class.superset_class, Top)) \
        and entry_class.superset_class not in out_list:
         out_list = get_class_hierarhcy(entry_class.superset_class, out_list)
