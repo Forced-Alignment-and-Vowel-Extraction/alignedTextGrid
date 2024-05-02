@@ -3,17 +3,7 @@ from aligned_textgrid.points.points import *
 from praatio.utilities.utils import Interval
 from typing import Type
 
-def _sequence_constructor(
-        self, 
-        Interval = Interval(None, None, None)
-    ):
-    super(self.__class__, self).__init__(Interval)
 
-def _point_constructor(
-        self,
-        Point = Point(0, "")
-):
-    super(self.__class__, self).__mro__[1].__init__(Point)
 
 def _top_constructor(self):
     Top.__init__(self)
@@ -117,7 +107,7 @@ def custom_classes(
         newclass = type(
             class_list, 
             (SequenceInterval, ), 
-            {"__init__": _sequence_constructor}
+            dict(SequenceInterval.__dict__)
         )
         newclass.set_superset_class(this_top)
         newclass.set_subset_class(this_bottom)
@@ -127,7 +117,7 @@ def custom_classes(
         newclass = type(
             class_list, 
             (SequencePoint, ), 
-            {"__init__": _point_constructor}
+            dict(SequencePoint.__dict__)
         )
         return newclass
 
@@ -135,11 +125,11 @@ def custom_classes(
         for idx, name in enumerate(class_list):
             if idx in points:
                 class_out_list.append(
-                    type(name, (SequencePoint,), {"__init__": _point_constructor})
+                    type(name, (SequencePoint,), dict(SequencePoint.__dict__))
                 )
             else:
                 class_out_list.append(
-                    type(name, (SequenceInterval,), {"__init__": _sequence_constructor})
+                    type(name, (SequenceInterval,), dict(SequenceInterval.__dict__))
                 )
                 
         interval_classes = [x 
@@ -174,7 +164,7 @@ def clone_class(
         cloned = type(
                 entry_class.__name__, 
                 (entry_class, ), 
-                {"__init__": _sequence_constructor}
+                dict(entry_class.__dict__)
             )
         
         if issubclass(cloned.superset_class, Top):
@@ -197,7 +187,7 @@ def clone_class(
         cloned = type(
                 entry_class.__name__, 
                 (entry_class, ), 
-                {"__init__": _point_constructor}
+                dict(entry_class.__dict__)
         )
     
     return cloned
