@@ -91,6 +91,18 @@ class TestCloning:
         assert not isinstance(foo, Foo2)
         assert isinstance(foo2, Foo)
 
+    def test_clone_point(self):
+        [FooPoint] = custom_classes(["FooPoint"], points=[0])
+        FooPoint2 = clone_class(FooPoint)
+
+        foo2_inst = FooPoint2()
+
+        assert not FooPoint is FooPoint2
+        assert issubclass(FooPoint2, FooPoint)
+
+        assert isinstance(foo2_inst, FooPoint)
+
+
 class TestGetHierarchy:
 
     def test_get_hierarchy(self):
