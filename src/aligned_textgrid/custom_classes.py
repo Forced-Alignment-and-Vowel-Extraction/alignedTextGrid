@@ -207,7 +207,7 @@ def clone_class(
     
     return cloned
 
-def get_class_hierarhcy(
+def get_class_hierarchy(
         entry_class:SequenceInterval, 
         out_list = []
     )->list[SequenceInterval]:

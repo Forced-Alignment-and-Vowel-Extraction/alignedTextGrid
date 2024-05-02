@@ -11,7 +11,7 @@ from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from aligned_textgrid.points.tiers import SequencePointTier, PointsGroup
 from aligned_textgrid.mixins.within import WithinMixins
-from aligned_textgrid.custom_classes import custom_classes, clone_class, get_class_hierarhcy
+from aligned_textgrid.custom_classes import custom_classes, clone_class, get_class_hierarchy
 from typing import Type, Sequence, Literal
 from copy import copy
 import numpy as np
@@ -198,7 +198,7 @@ class AlignedTextGrid(WithinMixins):
         tops_clone = [clone_class(t) for t in tops]
         full_seq_clone = []
         for tclone in tops_clone:
-            full_seq_clone += get_class_hierarhcy(tclone, [])
+            full_seq_clone += get_class_hierarchy(tclone, [])
 
         full_clone = points_clone + full_seq_clone
 
