@@ -69,13 +69,6 @@ class TestBasicRead:
         assert len(atg1) == 4
         assert [len(tg) == 1 for tg in atg1]
 
-    # def test_read_partial2(self):
-    #     atg1 = AlignedTextGrid(
-    #         textgrid_path="tests/test_data/KY25A_1.TextGrid", 
-    #         entry_classes=[Phone]
-    #         )      
-    #     assert len(atg1) == 4
-    #     assert [len(tg) == 1 for tg in atg1]
 
 class TestMultiRead:
     def test_read(self):
@@ -125,7 +118,7 @@ class TestClassSetting:
         for g1, g2 in zip(self.atg1.tier_groups, self.atg2.tier_groups):
             assert g1.tier_names == g2.tier_names
         
-        # Intentionally broken
+        # Intentionally broken (issue #180)
         # assert self.atg1.entry_classes == self.atg2.entry_classes
 
         assert np.isclose(self.atg1.xmin, self.atg2.xmin)
