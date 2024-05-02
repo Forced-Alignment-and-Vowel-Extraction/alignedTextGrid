@@ -1,7 +1,7 @@
 import pytest
 from aligned_textgrid.sequences.sequences import *
 from aligned_textgrid.sequences.tiers import *
-from aligned_textgrid.custom_classes import custom_classes
+from aligned_textgrid.custom_classes import custom_classes, clone_class, get_class_hierarchy
 from aligned_textgrid.aligned_textgrid import AlignedTextGrid
 
 class TestCustomCreation:
@@ -71,3 +71,45 @@ class TestCustomUse:
         
         assert tg_two[0][0].entry_class.__name__ == "MyWord2"
         assert tg_two[0][1].entry_class.__name__ == "MyPhone2"
+
+class TestCloning:
+
+    def test_clone_class(self):
+        Foo, Bar = custom_classes(["Foo", "Bar"])
+        Foo2 = clone_class(Foo)
+
+        foo = Foo()
+        foo2 = Foo2()
+
+        assert not Foo is Foo2
+        assert Foo.subset_class is Bar
+        assert not Foo2.subset_class is Bar
+
+        assert issubclass(Foo2, Foo)
+
+        assert isinstance(foo, Foo)
+        assert not isinstance(foo, Foo2)
+        assert isinstance(foo2, Foo)
+
+    def test_clone_point(self):
+        [FooPoint] = custom_classes(["FooPoint"], points=[0])
+        FooPoint2 = clone_class(FooPoint)
+
+        foo2_inst = FooPoint2()
+
+        assert not FooPoint is FooPoint2
+        assert issubclass(FooPoint2, FooPoint)
+
+        assert isinstance(foo2_inst, FooPoint)
+
+
+class TestGetHierarchy:
+
+    def test_get_hierarchy(self):
+        Foo, Bar, Baz = custom_classes(["Foo", "Bar", "Baz"])
+
+        foo_hierarchy = get_class_hierarchy(Foo)
+        baz_hierarchy = get_class_hierarchy(Baz)
+
+        for f,b in zip(foo_hierarchy, baz_hierarchy):
+            assert f is b
