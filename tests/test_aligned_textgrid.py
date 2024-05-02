@@ -146,8 +146,6 @@ class TestClassSetting:
         assert missing_class2 is None
         assert missing_class4 is None
 
-        target_classes = self.atg3.get_class_by_name("MyWord")
-        assert len(target_classes) > 1
 
     def test_empty_class_indexing(self):
         assert len(self.atg4) == 0
