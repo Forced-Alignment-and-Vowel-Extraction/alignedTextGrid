@@ -75,15 +75,18 @@ format:
 metadata-files:
   - reference/_sidebar.yml
 
-# filters:
-#   - "interlinks"
+filters:
+  - "interlinks"
+resources: 
+  - objects.inv
 
 interlinks:
+  fast: true
   sources:
+    numpy:
+      url: https://numpy.org/doc/stable/
     python:
-      url: https://docs.python.org/3/
-    # griffe:
-    #   url: https://mkdocstrings.github.io/griffe/
+      url: https://docs.python.org/3/         
 
 
 quartodoc:
@@ -94,7 +97,7 @@ quartodoc:
   # write sidebar data to this file
   sidebar: "reference/_sidebar.yml"
   parser: google
-  #render_interlinks: true
+  render_interlinks: true
   sections:
     - title: Sequence Classes
       desc: |
