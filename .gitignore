@@ -132,4 +132,3 @@ venv/
 notebooks/
 .DS_Store
 .vscode
-docs
