@@ -442,6 +442,12 @@ ul.task-list li input[type="checkbox"] {
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 47%">
+<col style="width: 26%">
+<col style="width: 16%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -453,7 +459,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>point</code></td>
-<td>Point</td>
+<td><code>Point</code></td>
 <td>a <code>praatio.point</code> object</td>
 <td><code>Point(0, '')</code></td>
 </tr>
@@ -463,11 +469,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="attributes" class="level2">
 <h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
 <table class="table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 14%">
-<col style="width: 73%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -483,37 +484,37 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>time</td>
-<td>float</td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
 <td>Time value associated with the point.</td>
 </tr>
 <tr class="odd">
 <td>label</td>
-<td>str</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td>Label associated with the point</td>
 </tr>
 <tr class="even">
 <td>intier</td>
-<td>SequencePointTier</td>
+<td><a href="../reference/SequencePointTier.html#aligned_textgrid.points.tiers.SequencePointTier">SequencePointTier</a></td>
 <td>If the SequencePoint is within a tier, this accesses the tier.</td>
 </tr>
 <tr class="odd">
 <td>fol</td>
-<td>SequencePoint</td>
+<td><a href="../reference/SequencePoint.html#aligned_textgrid.points.points.SequencePoint">SequencePoint</a></td>
 <td>If defined, the following SequencePoint within the same tier</td>
 </tr>
 <tr class="even">
 <td>prev</td>
-<td>SequencePoint</td>
+<td><a href="../reference/SequencePoint.html#aligned_textgrid.points.points.SequencePoint">SequencePoint</a></td>
 <td>If defined, the previous SequencePoint within the same tier.</td>
 </tr>
 <tr class="odd">
 <td>fol_distance</td>
-<td>float</td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
 <td>If <code>fol</code> is defined, the difference between the current point and <code>fol</code> (should be &gt;= 0)</td>
 </tr>
 <tr class="even">
 <td>prev_distance</td>
-<td>float</td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
 <td>if <code>prev</code> is defined, the difference between the current point and <code>prev</code> (should be &lt;= 0).</td>
 </tr>
 </tbody>
@@ -550,12 +551,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="parameters-1" class="level4">
 <h4 class="anchored" data-anchor-id="parameters-1">Parameters</h4>
 <table class="table">
-<colgroup>
-<col style="width: 7%">
-<col style="width: 22%">
-<col style="width: 60%">
-<col style="width: 10%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -567,7 +562,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>entry</code></td>
-<td>Self | SequenceInterval</td>
+<td><code>Self</code> | <a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a></td>
 <td>A point or an interval to get the distance of the current point from</td>
 <td><em>required</em></td>
 </tr>
@@ -577,10 +572,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
 <table class="table">
-<colgroup>
-<col style="width: 18%">
-<col style="width: 81%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Type</th>
@@ -589,7 +580,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>float | np.array</td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a> | <a href="https://numpy.org/doc/stable/reference/index.html#module-numpy">np</a>.<a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array">array</a></td>
 <td>a single value in the case of a point, a numpy array in the case of an interval.</td>
 </tr>
 </tbody>
@@ -603,12 +594,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="parameters-2" class="level4">
 <h4 class="anchored" data-anchor-id="parameters-2">Parameters</h4>
 <table class="table">
-<colgroup>
-<col style="width: 7%">
-<col style="width: 13%">
-<col style="width: 68%">
-<col style="width: 10%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -620,7 +605,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>tier</code></td>
-<td>SequenceTier</td>
+<td><a href="../reference/SequenceTier.html#aligned_textgrid.sequences.tiers.SequenceTier">SequenceTier</a></td>
 <td>The sequence tier within which to look for a matching SequenceInterval</td>
 <td><code>None</code></td>
 </tr>
@@ -630,10 +615,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="returns-1" class="level4">
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
 <table class="table">
-<colgroup>
-<col style="width: 23%">
-<col style="width: 76%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Type</th>
@@ -642,7 +623,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>SequenceInterval</td>
+<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a></td>
 <td>The SequenceInterval within which the current point falls</td>
 </tr>
 </tbody>
@@ -667,7 +648,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>tier</code></td>
-<td>SequenceTier</td>
+<td><a href="../reference/SequenceTier.html#aligned_textgrid.sequences.tiers.SequenceTier">SequenceTier</a></td>
 <td>A SequenceTier.</td>
 <td><code>None</code></td>
 </tr>
@@ -677,10 +658,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="returns-2" class="level4">
 <h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
 <table class="table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 88%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Type</th>
@@ -689,7 +666,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>int</td>
+<td><a href="https://docs.python.org/3/library/functions.html#int">int</a></td>
 <td>The index of the SequenceInterval within which the point falls</td>
 </tr>
 </tbody>

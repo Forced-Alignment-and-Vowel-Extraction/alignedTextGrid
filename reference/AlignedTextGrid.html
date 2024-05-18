@@ -444,12 +444,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="table">
-<colgroup>
-<col style="width: 2%">
-<col style="width: 13%">
-<col style="width: 80%">
-<col style="width: 3%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -461,19 +455,19 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>textgrid</code></td>
-<td>Textgrid</td>
+<td><code>Textgrid</code></td>
 <td>A <code>praatio</code> TextGrid</td>
 <td><code>None</code></td>
 </tr>
 <tr class="even">
 <td><code>textgrid_path</code></td>
-<td>str</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td>A path to a TextGrid file to be read in with <code>praatio.textgrid.openTextgrid</code></td>
 <td><code>None</code></td>
 </tr>
 <tr class="odd">
 <td><code>entry_classes</code></td>
-<td>Sequence[Sequence[Type[SequenceInterval]]] | Sequence[Type[SequenceInterval]]</td>
+<td><a href="https://docs.python.org/3/library/typing.html#typing.Sequence">Sequence</a>[<a href="https://docs.python.org/3/library/typing.html#typing.Sequence">Sequence</a>[<a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]]] | <a href="https://docs.python.org/3/library/typing.html#typing.Sequence">Sequence</a>[<a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]]</td>
 <td>If a single list of <code>SequenceInterval</code> subclasses is given, they will be repeated as many times as necessary to assign a class to every tier. So if there are three speakers, each with a word and phone tier, <code>[Word, Phone]</code> will process them each into a tier group. If your TextGrids are more complex, provide a nested list with the class for each tier within each tier group. Say, if only the first speaker had both a word and phone tier, and the remaining two had only a word tier, <code>[[Word, Phone], [Word], [Word]]</code></td>
 <td><code>[SequenceInterval]</code></td>
 </tr>
@@ -483,11 +477,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="attributes" class="level2">
 <h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
 <table class="table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 45%">
-<col style="width: 42%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -508,17 +497,17 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td>tier_names</td>
-<td>list[str]</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</td>
 <td>A list of names for tiers in tier_groups.</td>
 </tr>
 <tr class="even">
 <td>xmax</td>
-<td>float</td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
 <td>Maximum time</td>
 </tr>
 <tr class="odd">
 <td>xmin</td>
-<td>float</td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
 <td>Minimum time</td>
 </tr>
 <tr class="even">
@@ -579,7 +568,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>class_name</code></td>
-<td>str</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td>The requested entry class</td>
 <td><em>required</em></td>
 </tr>
@@ -589,10 +578,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
 <table class="table">
-<colgroup>
-<col style="width: 58%">
-<col style="width: 41%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Type</th>
@@ -601,7 +586,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>SequenceInterval | list[SequenceInterval] | None</td>
+<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a> | <a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>] | None</td>
 <td>The requested entry class(es), if any</td>
 </tr>
 </tbody>
@@ -627,7 +612,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>time</code></td>
-<td>float</td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
 <td>time</td>
 <td><em>required</em></td>
 </tr>
@@ -645,7 +630,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>list[list[int]]</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/functions.html#int">int</a>]]</td>
 <td>a nested list of interval indices.</td>
 </tr>
 </tbody>
@@ -659,12 +644,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="parameters-3" class="level4">
 <h4 class="anchored" data-anchor-id="parameters-3">Parameters</h4>
 <table class="table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 19%">
-<col style="width: 62%">
-<col style="width: 8%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -676,31 +655,31 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>name</code></td>
-<td>str</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td>Name of the new class</td>
 <td><em>required</em></td>
 </tr>
 <tr class="even">
 <td><code>above</code></td>
-<td>SequenceInterval | str</td>
+<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a> | <a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td>Which entry class to interleave above.</td>
 <td><code>None</code></td>
 </tr>
 <tr class="odd">
 <td><code>below</code></td>
-<td>SequenceInterval | str</td>
+<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a> | <a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td>Which entry class to interleave below.</td>
 <td><code>None</code></td>
 </tr>
 <tr class="even">
 <td><code>timing_from</code></td>
-<td>Literal[‘above’, ‘below’]</td>
+<td><a href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[‘above’, ‘below’]</td>
 <td>Which tier to draw timing from. Defaults to “below”.</td>
 <td><code>'below'</code></td>
 </tr>
 <tr class="odd">
 <td><code>copy_labels</code></td>
-<td>bool</td>
+<td><a href="https://docs.python.org/3/library/functions.html#bool">bool</a></td>
 <td>Whether or not to copy labels from the tier providing timing information. Defaults to True.</td>
 <td><code>True</code></td>
 </tr>
@@ -717,6 +696,10 @@ ul.task-list li input[type="checkbox"] {
 <section id="returns-2" class="level4">
 <h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
 <table class="table">
+<colgroup>
+<col style="width: 86%">
+<col style="width: 13%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Type</th>
@@ -725,7 +708,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>praatio.data_classes.textgrid.Textgrid</td>
+<td><code>praatio</code>.<code>data_classes</code>.<code>textgrid</code>.<code>Textgrid</code></td>
 <td>A <code>praatio</code> <code>Textgrid</code></td>
 </tr>
 </tbody>
@@ -740,12 +723,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="parameters-4" class="level4">
 <h4 class="anchored" data-anchor-id="parameters-4">Parameters</h4>
 <table class="table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 53%">
-<col style="width: 22%">
-<col style="width: 14%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -757,13 +734,13 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>save_path</code></td>
-<td>str</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td>path for saving the textgrid</td>
 <td><em>required</em></td>
 </tr>
 <tr class="even">
 <td><code>format</code></td>
-<td>Literal[‘short_textgrid’, ‘long_textgrid’, ‘json’, ‘textgrid_json’]</td>
+<td><a href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[‘short_textgrid’, ‘long_textgrid’, ‘json’, ‘textgrid_json’]</td>
 <td>Save format.</td>
 <td><code>'long_textgrid'</code></td>
 </tr>

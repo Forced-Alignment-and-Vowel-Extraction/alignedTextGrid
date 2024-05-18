@@ -444,12 +444,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 24%">
-<col style="width: 50%">
-<col style="width: 14%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -461,13 +455,13 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>tier</code></td>
-<td>list[Interval] | IntervalTier</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<code>Interval</code>] | <code>IntervalTier</code></td>
 <td>A list of interval entries. Defaults to [Interval(None, None, None)].</td>
 <td><code>[]</code></td>
 </tr>
 <tr class="even">
 <td><code>entry_class</code></td>
-<td>Type[SequenceInterval]</td>
+<td><a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]</td>
 <td>The sequence class for this tier. Defaults to SequenceInterval.</td>
 <td><code>SequenceInterval</code></td>
 </tr>
@@ -477,11 +471,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="attributes" class="level2">
 <h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
 <table class="table">
-<colgroup>
-<col style="width: 19%">
-<col style="width: 32%">
-<col style="width: 48%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -492,52 +481,52 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>sequence_list</td>
-<td>list[SequenceInterval]</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]</td>
 <td></td>
 </tr>
 <tr class="even">
 <td>entry_class</td>
-<td>Type[SequenceInterval]</td>
+<td><a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]</td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>superset_class</td>
-<td>Type[SequenceInterval]</td>
+<td><a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]</td>
 <td></td>
 </tr>
 <tr class="even">
 <td>subset_class</td>
-<td>Type[SequenceInterval]</td>
+<td><a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]</td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>starts</td>
-<td>np.ndarray[np.float64]</td>
+<td><a href="https://numpy.org/doc/stable/reference/index.html#module-numpy">np</a>.<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray">ndarray</a>[<a href="https://numpy.org/doc/stable/reference/index.html#module-numpy">np</a>.<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64">float64</a>]</td>
 <td></td>
 </tr>
 <tr class="even">
 <td>ends</td>
-<td>np.ndarray[np.float64]</td>
+<td><a href="https://numpy.org/doc/stable/reference/index.html#module-numpy">np</a>.<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray">ndarray</a>[<a href="https://numpy.org/doc/stable/reference/index.html#module-numpy">np</a>.<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64">float64</a>]</td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>labels</td>
-<td>list[str]</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</td>
 <td></td>
 </tr>
 <tr class="even">
 <td>xmin</td>
-<td>float</td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>xmax</td>
-<td>float</td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
 <td></td>
 </tr>
 <tr class="even">
 <td>name</td>
-<td>str</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td></td>
 </tr>
 <tr class="odd">
@@ -599,7 +588,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>time</code></td>
-<td>float</td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
 <td>time at which to get an interval</td>
 <td><em>required</em></td>
 </tr>
@@ -617,7 +606,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>int</td>
+<td><a href="https://docs.python.org/3/library/functions.html#int">int</a></td>
 <td>Index of the interval</td>
 </tr>
 </tbody>
@@ -642,7 +631,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>entry</code></td>
-<td>SequenceInterval</td>
+<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a></td>
 <td>Interval to pop</td>
 <td><em>required</em></td>
 </tr>
@@ -658,8 +647,8 @@ ul.task-list li input[type="checkbox"] {
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
 <table class="table">
 <colgroup>
-<col style="width: 37%">
-<col style="width: 62%">
+<col style="width: 69%">
+<col style="width: 30%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -669,7 +658,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>praatio.data_classes.interval_tier.IntervalTier</td>
+<td><code>praatio</code>.<code>data_classes</code>.<code>interval_tier</code>.<code>IntervalTier</code></td>
 <td>A <code>praatio</code> interval tier. Useful for saving results back as a Praat TextGrid.</td>
 </tr>
 </tbody>
@@ -695,7 +684,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>save_path</code></td>
-<td>str</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td>Output path</td>
 <td><em>required</em></td>
 </tr>
