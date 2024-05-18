@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>sequencepointtier</title>
+<title>custom_classes.clone_class</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../reference/TierGroup.html" rel="next">
-<link href="../reference/SequenceTier.html" rel="prev">
+<link href="../reference/custom_classes.get_class_hierarchy.html" rel="next">
+<link href="../reference/custom_classes.html" rel="prev">
 <link href="../assets/logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -119,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Tiers</li><li class="breadcrumb-item"><a href="../reference/SequenceTier.html">Tiers and Tier Groups</a></li><li class="breadcrumb-item"><a href="../reference/SequencePointTier.html">SequencePointTier</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Custom Classes</li><li class="breadcrumb-item"><a href="../reference/custom_classes.html">Custom Class Creation</a></li><li class="breadcrumb-item"><a href="../reference/custom_classes.clone_class.html">custom_classes.clone_class</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -251,13 +251,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
  <span class="menu-text">Tiers and Tier Groups</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/SequenceTier.html" class="sidebar-item-text sidebar-link">
@@ -266,7 +266,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/SequencePointTier.html" class="sidebar-item-text sidebar-link active">
+  <a href="../reference/SequencePointTier.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">SequencePointTier</span></a>
   </div>
 </li>
@@ -308,13 +308,13 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">
  <span class="menu-text">Custom Class Creation</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/custom_classes.html" class="sidebar-item-text sidebar-link">
@@ -323,7 +323,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/custom_classes.clone_class.html" class="sidebar-item-text sidebar-link">
+  <a href="../reference/custom_classes.clone_class.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">custom_classes.clone_class</span></a>
   </div>
 </li>
@@ -440,17 +440,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#aligned_textgrid.points.tiers.SequencePointTier" id="toc-aligned_textgrid.points.tiers.SequencePointTier" class="nav-link active" data-scroll-target="#aligned_textgrid.points.tiers.SequencePointTier">SequencePointTier</a>
+  <li><a href="#aligned_textgrid.custom_classes.clone_class" id="toc-aligned_textgrid.custom_classes.clone_class" class="nav-link active" data-scroll-target="#aligned_textgrid.custom_classes.clone_class">custom_classes.clone_class</a>
   <ul class="collapse">
   <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
-  <li><a href="#attributes" id="toc-attributes" class="nav-link" data-scroll-target="#attributes">Attributes</a></li>
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
-  <ul class="collapse">
-  <li><a href="#aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point" id="toc-aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point" class="nav-link" data-scroll-target="#aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point">get_nearest_point</a></li>
-  <li><a href="#aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point_index" id="toc-aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point_index" class="nav-link" data-scroll-target="#aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point_index">get_nearest_point_index</a></li>
-  <li><a href="#aligned_textgrid.points.tiers.SequencePointTier.return_tier" id="toc-aligned_textgrid.points.tiers.SequencePointTier.return_tier" class="nav-link" data-scroll-target="#aligned_textgrid.points.tiers.SequencePointTier.return_tier">return_tier</a></li>
-  <li><a href="#aligned_textgrid.points.tiers.SequencePointTier.save_as_tg" id="toc-aligned_textgrid.points.tiers.SequencePointTier.save_as_tg" class="nav-link" data-scroll-target="#aligned_textgrid.points.tiers.SequencePointTier.save_as_tg">save_as_tg</a></li>
-  </ul></li>
+  <li><a href="#returns" id="toc-returns" class="nav-link" data-scroll-target="#returns">Returns</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -461,10 +454,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="aligned_textgrid.points.tiers.SequencePointTier" class="level1">
-<h1>SequencePointTier</h1>
-<p><code>points.tiers.SequencePointTier(self, tier=[], entry_class=SequencePoint)</code></p>
-<p>A SequencePointTier class</p>
+<section id="aligned_textgrid.custom_classes.clone_class" class="level1">
+<h1>custom_classes.clone_class</h1>
+<p><code>custom_classes.clone_class(entry_class, recurse=False)</code></p>
+<p>Clone an entry class. It will have the same name, but any changes to its class properties will not be reflected in the original class.</p>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="table">
@@ -478,129 +471,22 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>tier</code></td>
-<td><code>PointTier</code> | <a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<code>Point</code>]</td>
-<td>Either a <code>praatio</code> PointTier or a list of <code>praatio</code> Points</td>
-<td><code>[]</code></td>
-</tr>
-<tr class="even">
 <td><code>entry_class</code></td>
-<td><a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequencePoint.html#aligned_textgrid.points.points.SequencePoint">SequencePoint</a>]</td>
-<td>A SequencePoint subclass</td>
-<td><code>SequencePoint</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="attributes" class="level2">
-<h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>…</td>
-<td></td>
-<td>All attributes and methods included in TierMixins</td>
-</tr>
-<tr class="even">
-<td>entry_class</td>
-<td><a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequencePoint.html#aligned_textgrid.points.points.SequencePoint">SequencePoint</a>]</td>
-<td>The class of entries within the tier</td>
-</tr>
-<tr class="odd">
-<td>name</td>
-<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
-<td>The name of the tier</td>
-</tr>
-<tr class="even">
-<td>times</td>
-<td><a href="https://numpy.org/doc/stable/reference/index.html#module-numpy">np</a>.<a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array">array</a></td>
-<td>The times of points in the tier</td>
-</tr>
-<tr class="odd">
-<td>labels</td>
-<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, …]</td>
-<td>The labels of points in the tier</td>
-</tr>
-<tr class="even">
-<td>xmin</td>
-<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
-<td>The time of the first point in the tier</td>
-</tr>
-<tr class="odd">
-<td>xmax</td>
-<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
-<td>The time of the last point in the tier</td>
-</tr>
-<tr class="even">
-<td>[]</td>
-<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
-<td>Indexable and iterable</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="methods" class="level2">
-<h2 class="anchored" data-anchor-id="methods">Methods</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="#aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point">get_nearest_point</a></td>
-<td>Returns nearest point</td>
-</tr>
-<tr class="even">
-<td><a href="#aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point_index">get_nearest_point_index</a></td>
-<td>Returns the index of the closest point to <code>time</code></td>
-</tr>
-<tr class="odd">
-<td><a href="#aligned_textgrid.points.tiers.SequencePointTier.return_tier">return_tier</a></td>
-<td>Returns SequencePointTier as a <code>praatio</code> PointTier</td>
-</tr>
-<tr class="even">
-<td><a href="#aligned_textgrid.points.tiers.SequencePointTier.save_as_tg">save_as_tg</a></td>
-<td>Saves the current point tier as a textgrid</td>
-</tr>
-</tbody>
-</table>
-<section id="aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point">get_nearest_point</h3>
-<p><code>points.tiers.SequencePointTier.get_nearest_point(time)</code></p>
-<p>Returns nearest point</p>
-<section id="parameters-1" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-1">Parameters</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>time</code></td>
-<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
-<td>time at which to get the nearest point</td>
+<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a> | <a href="../reference/SequencePoint.html#aligned_textgrid.points.points.SequencePoint">SequencePoint</a></td>
+<td>A SequenceInterval or SequencePoint to clone</td>
 <td><em>required</em></td>
 </tr>
+<tr class="even">
+<td><code>recurse</code></td>
+<td><a href="https://docs.python.org/3/library/functions.html#bool">bool</a></td>
+<td>Used internally to clone the entire hierarchy. Defaults to False.</td>
+<td><code>False</code></td>
+</tr>
 </tbody>
 </table>
 </section>
-<section id="returns" class="level4">
-<h4 class="anchored" data-anchor-id="returns">Returns</h4>
+<section id="returns" class="level2">
+<h2 class="anchored" data-anchor-id="returns">Returns</h2>
 <table class="table">
 <thead>
 <tr class="header">
@@ -610,110 +496,13 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="../reference/SequencePoint.html#aligned_textgrid.points.points.SequencePoint">SequencePoint</a></td>
-<td>the nearest point to <code>time</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point_index" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.points.tiers.SequencePointTier.get_nearest_point_index">get_nearest_point_index</h3>
-<p><code>points.tiers.SequencePointTier.get_nearest_point_index(time)</code></p>
-<p>Returns the index of the closest point to <code>time</code></p>
-<section id="parameters-2" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-2">Parameters</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>time</code></td>
-<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
-<td>The time at which to get the nearest point</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="returns-1" class="level4">
-<h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://docs.python.org/3/library/functions.html#int">int</a></td>
-<td>The index of the nearest point within the tier</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="aligned_textgrid.points.tiers.SequencePointTier.return_tier" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.points.tiers.SequencePointTier.return_tier">return_tier</h3>
-<p><code>points.tiers.SequencePointTier.return_tier()</code></p>
-<p>Returns SequencePointTier as a <code>praatio</code> PointTier</p>
-<section id="returns-2" class="level4">
-<h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
-<table class="table">
-<colgroup>
-<col style="width: 70%">
-<col style="width: 29%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>PointTier</code></td>
-<td>A <code>praatio</code> point tier</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="aligned_textgrid.points.tiers.SequencePointTier.save_as_tg" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.points.tiers.SequencePointTier.save_as_tg">save_as_tg</h3>
-<p><code>points.tiers.SequencePointTier.save_as_tg(save_path)</code></p>
-<p>Saves the current point tier as a textgrid</p>
-<section id="parameters-3" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-3">Parameters</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>save_path</code></td>
-<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
-<td>path to where you want to save the textgrid.</td>
-<td><em>required</em></td>
+<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a> | <a href="../reference/SequencePoint.html#aligned_textgrid.points.points.SequencePoint">SequencePoint</a></td>
+<td>A cloned entry class</td>
 </tr>
 </tbody>
 </table>
 
 
-</section>
-</section>
 </section>
 </section>
 
@@ -1273,13 +1062,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../reference/SequenceTier.html" class="pagination-link" aria-label="SequenceTier">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">SequenceTier</span>
+      <a href="../reference/custom_classes.html" class="pagination-link" aria-label="custom_classes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">custom_classes</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../reference/TierGroup.html" class="pagination-link" aria-label="TierGroup">
-        <span class="nav-page-text">TierGroup</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../reference/custom_classes.get_class_hierarchy.html" class="pagination-link" aria-label="custom_classes.get_class_hierarchy">
+        <span class="nav-page-text">custom_classes.get_class_hierarchy</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
