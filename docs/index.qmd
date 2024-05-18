@@ -1,5 +1,9 @@
 ---
 title: Aligned TextGrid
+date-modified: last-modified
+date-format: YYYY-MM-DD HH:mm:ssZ
+language:
+    title-block-modified: "Docs Last Built"
 ---
 
 ![PyPI](https://img.shields.io/pypi/v/aligned-textgrid)
