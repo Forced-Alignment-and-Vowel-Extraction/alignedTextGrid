@@ -5,11 +5,11 @@ project:
 license: GPLv3
 
 website:
-  favicon: assets/logo.png
   image: assets/logo.png
+  favicon: assets/logo.png
   page-navigation: true
+  title: aligned-textgrid
   navbar:
-    logo: assets/logo.png
     left:
       - file: index.qmd
         text: Get Started
@@ -20,6 +20,7 @@ website:
         href: https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/      
   sidebar:
       - id: get-started
+        logo: assets/logo.png
         title: Get Started
         style: floating
         align: left
