@@ -163,8 +163,11 @@ quartodoc:
     - subtitle: Custom Class Creation
       desc: |
         This is a function that will quickly create custom classes
+      contents: 
         - package: aligned_textgrid.custom_classes
           name: custom_classes
+        - custom_classes.clone_class
+        - custom_classes.get_class_hierarchy
     - subtitle: Word and Phone Classes
       desc: |
         These are mostly intended to be used with textgrids that are the 

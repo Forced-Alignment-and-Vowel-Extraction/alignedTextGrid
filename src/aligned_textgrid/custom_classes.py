@@ -162,7 +162,6 @@ def clone_class(
     Args:
         entry_class (SequenceInterval | SequencePoint): 
             A SequenceInterval or SequencePoint to clone
-        ti
         recurse (bool, optional): 
             Used internally to clone the entire hierarchy. 
             Defaults to False.
