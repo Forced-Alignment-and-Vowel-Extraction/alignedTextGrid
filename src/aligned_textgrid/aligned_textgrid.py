@@ -142,8 +142,6 @@ class AlignedTextGrid(WithinMixins):
         
     def __setstate__(self, d):
         self.__dict__ = d
-        for x in d["tier_groups"]:
-            self.__setattr__(x.name, x)
 
     def index(
             self,

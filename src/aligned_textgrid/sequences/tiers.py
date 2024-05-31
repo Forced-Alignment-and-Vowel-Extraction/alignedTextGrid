@@ -208,7 +208,7 @@ class TierGroup(TierGroupMixins, WithinMixins):
     ):
         super().__init__()
         self.tier_list = self._arrange_tiers(tiers)
-        self.entry_classes = [x.__class__ for x in self.tier_list]
+        #self.entry_classes = [x.__class__ for x in self.tier_list]
         self._name = self.make_name()
 
         for idx, tier in enumerate(self.tier_list):
@@ -242,8 +242,6 @@ class TierGroup(TierGroupMixins, WithinMixins):
         
     def __setstate__(self, d):
         self.__dict__ = d
-        for x in d["tier_list"]:
-            self.__setattr__(x.entry_class.__name__, x)
     
     def _arrange_tiers(
             self, 
@@ -289,9 +287,9 @@ class TierGroup(TierGroupMixins, WithinMixins):
         self.contains = top_to_bottom
         return(top_to_bottom)
             
-    # @property
-    # def entry_classes(self):
-    #     return [x.entry_class for x in self.tier_list]
+    @property
+    def entry_classes(self):
+        return [x.entry_class for x in self.tier_list]
     
     @property
     def tier_names(self):
