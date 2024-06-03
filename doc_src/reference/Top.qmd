@@ -1,8 +1,0 @@
-# Top { #aligned_textgrid.sequences.sequences.Top }
-
-`sequences.sequences.Top(self)`
-
-A top level interval class
-
-This is a special subclass intended to be the `superset_class` 
-for classes at the top of the hierarchy.
