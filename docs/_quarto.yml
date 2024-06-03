@@ -52,6 +52,7 @@ website:
             contents:
               - usage/05_Outputs/00_to_textgrid.ipynb
               - usage/05_Outputs/01_to_dataframe.ipynb              
+              - usage/05_Outputs/02_pickling.ipynb
   #         - section: Processing patterns
   #           contents: 
   #             - getting-started/single-file.qmd

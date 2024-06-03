@@ -84,7 +84,6 @@ class TierGroupMixins:
 
         if len(match_list) == 1:
             match_idx = entry_class_names.index(name)
-            self.__setattr__(name, self.tier_list[match_idx])
             return self.tier_list[match_idx]
         
         if len(match_list) > 1:
@@ -92,7 +91,7 @@ class TierGroupMixins:
         
         if len(match_list) < 1:
             raise AttributeError(f"{type(self).__name__} has no attribute {name}")
-    
+
     def __getitem__(
             self,
             idx: int|list

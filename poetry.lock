@@ -446,6 +446,18 @@ files = [
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
+name = "cloudpickle"
+version = "3.0.0"
+description = "Pickler class to extend the standard pickle.Pickler functionality"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "cloudpickle-3.0.0-py3-none-any.whl", hash = "sha256:246ee7d0c295602a036e86369c77fecda4ab17b506496730f2f576d9016fd9c7"},
+    {file = "cloudpickle-3.0.0.tar.gz", hash = "sha256:996d9a482c6fb4f33c1a35335cf8afd065d2a56e973270364840712d9131a882"},
+]
+
+[[package]]
 name = "codecov"
 version = "2.1.13"
 description = "Hosted coverage reports for GitHub, Bitbucket and Gitlab"
@@ -2976,4 +2988,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "1f71bda6940ea4b867867c5e1f6e293649a4b380b5f4b6bcae8458a099598b23"
+content-hash = "2a07f4ab2a5dd4ecac56bd36a5ec212ac3becc29e39f07bef1ae9108d762403b"
