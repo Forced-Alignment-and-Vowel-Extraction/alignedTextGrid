@@ -516,7 +516,7 @@
     "href": "reference/TierMixins.html",
     "title": "TierMixins",
     "section": "",
-    "text": "mixins.tiermixins.TierMixins()\nMethods and attributes for Sequence Tiers\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n[]\n\nindexable and iterable\n\n\nfirst\nSequenceInterval\nThe first entry in the tier.\n\n\nlast\nSequenceInterval\nThe last entry in the tier.\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nindex\nReturn index of a tier entry\n\n\n\n\n\nmixins.tiermixins.TierMixins.index(entry)\nReturn index of a tier entry\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nentry\nSequencePoint | SequenceInterval\nA SequenceInterval or a PointInterval to get the index of.\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nint\nThe entry’s index",
+    "text": "mixins.tiermixins.TierMixins()\nMethods and attributes for Sequence Tiers\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n[]\n\nindexable and iterable\n\n\nfirst\nSequenceInterval\nThe first entry in the tier.\n\n\nlast\nSequenceInterval\nThe last entry in the tier.",
     "crumbs": [
       "Tiers",
       "Common Features",
@@ -529,18 +529,6 @@
     "title": "TierMixins",
     "section": "",
     "text": "Name\nType\nDescription\n\n\n\n\n[]\n\nindexable and iterable\n\n\nfirst\nSequenceInterval\nThe first entry in the tier.\n\n\nlast\nSequenceInterval\nThe last entry in the tier.",
-    "crumbs": [
-      "Tiers",
-      "Common Features",
-      "TierMixins"
-    ]
-  },
-  {
-    "objectID": "reference/TierMixins.html#methods",
-    "href": "reference/TierMixins.html#methods",
-    "title": "TierMixins",
-    "section": "",
-    "text": "Name\nDescription\n\n\n\n\nindex\nReturn index of a tier entry\n\n\n\n\n\nmixins.tiermixins.TierMixins.index(entry)\nReturn index of a tier entry\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nentry\nSequencePoint | SequenceInterval\nA SequenceInterval or a PointInterval to get the index of.\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nint\nThe entry’s index",
     "crumbs": [
       "Tiers",
       "Common Features",
