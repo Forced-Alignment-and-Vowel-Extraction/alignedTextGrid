@@ -15,10 +15,11 @@ from aligned_textgrid.custom_classes import custom_classes, clone_class, get_cla
 from typing import Type, Sequence, Literal
 from copy import copy
 import numpy as np
+from collections.abc import Sequence
 import warnings
 
 
-class AlignedTextGrid(WithinMixins):
+class AlignedTextGrid(Sequence, WithinMixins):
     """An aligned Textgrid
 
     Args:
@@ -80,10 +81,7 @@ class AlignedTextGrid(WithinMixins):
             tgr.within = self
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
 
-    
-    def __contains__(self, item):
-        return item in self.tier_groups
-    
+        
     def __getitem__(
             self, 
             idx: int | list
@@ -100,20 +98,9 @@ class AlignedTextGrid(WithinMixins):
                 out_list.append(tier[x])
             return(out_list)
         
-    def __iter__(self):
-        self._idx = 0
-        return self
-
     def __len__(self):
         return len(self.tier_groups)
 
-    def __next__(self):
-        if self._idx < len(self.tier_groups):
-            out = self.tier_groups[self._idx]
-            self._idx += 1
-            return(out)
-        raise StopIteration
-    
     def __repr__(self):
         n_groups = len(self.tier_groups)
         group_names = [x.name for x in self.tier_groups]
@@ -142,12 +129,6 @@ class AlignedTextGrid(WithinMixins):
         
     def __setstate__(self, d):
         self.__dict__ = d
-
-    def index(
-            self,
-            group: TierGroup|PointsGroup
-        )->int:
-        return self.tier_groups.index(group)
 
     def _extend_classes(
             self, 
