@@ -235,14 +235,14 @@ class PointsGroup(Sequence, TierGroupMixins, WithinMixins):
         times = np.array(
             [t.xmin for t in self.tier_list]
         )
-        return times.xmin()
+        return times.min()
 
     @property    
-    def xmin(self):
+    def xmax(self):
         times = np.array(
             [t.xmin for t in self.tier_list]
         )
-        return times.xmax()
+        return times.max()
     
     def __repr__(self):
         n_tiers = len(self.tier_list)
