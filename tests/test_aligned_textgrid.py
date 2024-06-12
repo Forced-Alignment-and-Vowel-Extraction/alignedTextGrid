@@ -434,7 +434,7 @@ class TestPop:
            assert "Word" in entry_class_names
     
     def test_run_pop(self):
-        self.atg.pop_class("Word")
+        self.atg.pop_class(Word)
 
         for tg in self.atg:
            entry_class_names = [x.__name__ for x in tg.entry_classes]
@@ -451,6 +451,15 @@ class TestPop:
         for old, new in zip(self.turn_lens, self.new_turn_lens):
             assert new > old
 
+    def test_no_pop(self):
+        assert len(self.atg[0]) == 2
+        self.atg.pop_class("NotInAtg")
+        assert len(self.atg[0]) == 2
+
+    def test_all_pop(self):
+        self.atg.pop_class("Turns")
+        with pytest.warns():
+            self.atg.pop_class("Phone")
 
 class TestClassCloning:
 
