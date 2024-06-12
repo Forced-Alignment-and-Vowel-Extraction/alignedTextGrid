@@ -132,3 +132,9 @@ class TestPolarClasses:
         level_bands = [x.band for x in all_levels]
         is_array = [isinstance(x, np.ndarray) for x in level_bands]
         assert all(is_array)
+
+    def test_properties(self):
+        xmin = self.ptg.xmin
+        xmax = self.ptg.xmax
+
+        assert xmax > xmin
