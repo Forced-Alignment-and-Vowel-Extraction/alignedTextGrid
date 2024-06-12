@@ -188,6 +188,7 @@ class PointsGroup(Sequence, TierGroupMixins, WithinMixins):
     ):
         self.tier_list = tiers
         self.contains = self.tier_list
+        self._set_tier_names()
         self._name = self.make_name()
 
     def __getitem__(

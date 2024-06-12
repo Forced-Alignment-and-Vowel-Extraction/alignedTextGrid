@@ -216,7 +216,7 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
         self.tier_list = self._arrange_tiers(tiers)
         #self.entry_classes = [x.__class__ for x in self.tier_list]
         self._name = self.make_name()
-
+        self._set_tier_names()
         for idx, tier in enumerate(self.tier_list):
             if idx == len(self.tier_list)-1:
                 break
