@@ -152,7 +152,6 @@ class TestAccessors:
     seq_point_tier3 = SequencePointTier(point_tier2, entry_class=MyPointClassA)
 
     seq_point_group1 = PointsGroup(tiers = [seq_point_tier1, seq_point_tier2])
-    seq_point_group2 = PointsGroup(tiers = [seq_point_tier1, seq_point_tier3])
 
     def test_successful_access(self):
         assert self.seq_point_group1.MyPointClassA
@@ -162,6 +161,7 @@ class TestAccessors:
        with pytest.raises(AttributeError, match="has no attribute"):
            self.seq_point_group1.SequencePoint
 
-    def test_too_many(self, match = "has multiple entry classes"):
-        with pytest.raises(AttributeError):
-            self.seq_point_group2.MyPointClassA
+    def test_too_many(self):
+        with pytest.warns():
+            seq_point_group2 = PointsGroup(tiers = [self.seq_point_tier1, self.seq_point_tier3])
+            

@@ -67,7 +67,8 @@ class AlignedTextGrid(Sequence, WithinMixins):
         elif textgrid_path:
             tg = openTextgrid(
                 fnFullPath=textgrid_path, 
-                includeEmptyIntervals=True
+                includeEmptyIntervals=True,
+                duplicateNamesMode='rename'
             )
             self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
         else:
@@ -80,7 +81,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
         for tgr in self.tier_groups:
             tgr.within = self
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
-
+        self._set_group_names()
         
     def __getitem__(
             self, 
@@ -109,24 +110,6 @@ class AlignedTextGrid(Sequence, WithinMixins):
         return f"AlignedTextGrid with {n_groups} groups named {repr(group_names)} "\
                f"each with {repr(n_tiers)} tiers. {repr(entry_classes)}"
     
-    def __getattr__(
-            self, 
-            name: str
-        ):
-        tier_group_names = [x.name for x in self.tier_groups]
-        match_list = [x  for x in tier_group_names if x == name]
-
-        if len(match_list) == 1:
-            match_idx = tier_group_names.index(name)
-            self.__setattr__(name, self.tier_groups[match_idx])
-            return self.tier_groups[match_idx]
-        
-        if len(match_list) > 1:
-            raise AttributeError(f"This AlignedTextGrid has multiple TierGroups called {name}")
-        
-        if len(match_list) < 1:
-            raise AttributeError(f"This AlignedTextGrid has no attribute {name}")    
-        
     def __setstate__(self, d):
         self.__dict__ = d
 
@@ -314,6 +297,27 @@ class AlignedTextGrid(Sequence, WithinMixins):
                 tier_groups.append(PointsGroup(point_tier_list))   
         return tier_groups
     
+    def _set_group_names(self):
+        tier_group_names = [x.name for x in self.tier_groups]
+        duplicate_names = [
+            name 
+            for name in tier_group_names 
+            if tier_group_names.count(name) > 1
+        ]
+
+        if len(duplicate_names) > 0:
+            unique_dup = set(duplicate_names)
+            warnings.warn(
+                (
+                    f"Some TierGroups had duplicate names, {unique_dup}. "
+                    "Named accessors for TierGroups unavailable."
+                )
+            )
+            return
+        
+        for idx, name in enumerate(tier_group_names):
+            setattr(self, name, self.tier_groups[idx])
+
     @property
     def tier_names(self):
         if len(self) == 0:

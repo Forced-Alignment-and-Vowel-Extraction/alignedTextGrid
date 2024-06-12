@@ -188,6 +188,7 @@ class PointsGroup(Sequence, TierGroupMixins, WithinMixins):
     ):
         self.tier_list = tiers
         self.contains = self.tier_list
+        self._set_tier_names()
         self._name = self.make_name()
 
     def __getitem__(
@@ -229,6 +230,20 @@ class PointsGroup(Sequence, TierGroupMixins, WithinMixins):
     @property
     def entry_classes(self):
         return [x.entry_class for x in self.tier_list]
+    
+    @property
+    def xmin(self):
+        times = np.array(
+            [t.xmin for t in self.tier_list]
+        )
+        return times.min()
+
+    @property    
+    def xmax(self):
+        times = np.array(
+            [t.xmin for t in self.tier_list]
+        )
+        return times.max()
     
     def __repr__(self):
         n_tiers = len(self.tier_list)
