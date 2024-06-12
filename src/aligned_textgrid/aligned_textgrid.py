@@ -335,19 +335,21 @@ class AlignedTextGrid(Sequence, WithinMixins):
     def interleave_class(
             self, 
             name:str,
-            above:SequenceInterval|str = None,
-            below:SequenceInterval|str = None,
+            above:Type[SequenceInterval]|str = None,
+            below:Type[SequenceInterval]|str = None,
             timing_from: Literal["above", "below"] = "below",
             copy_labels: bool = True
         ):
         """Interleave a new entry class.
 
+        You can set either `above` or `below`, but not both.
+
         Args:
             name (str): 
                 Name of the new class
-            above (SequenceInterval|str, optional): 
+            above (Type[SequenceInterval]|str, optional): 
                 Which entry class to interleave above.
-            below (SequenceInterval|str, optional): 
+            below (Type[SequenceInterval]|str, optional): 
                 Which entry class to interleave below.
             timing_from (Literal['above', 'below'], optional): 
                 Which tier to draw timing from. Defaults to "below".
@@ -355,8 +357,28 @@ class AlignedTextGrid(Sequence, WithinMixins):
                 Whether or not to copy labels from the tier providing
                 timing information. Defaults to True.
 
+        Examples:
+            ```{python}
+            from aligned_textgrid import AlignedTextGrid, Word, Phone
+
+            atg = AlignedTextGrid(
+                textgrid_path = "../usage/resources/josef-fruehwald_speaker.TextGrid",
+                entry_classes = [Word, Phone]
+            )
+            print(atg)
+            ```
+
+            ```{python}
+            atg.interleave_class(
+                name = "Syllable",
+                above = "Phone",
+                timing_from = "below",
+                copy_labels = True
+            )
+            print(atg)
+            ```
         
-        You can set either `above` or `below`, but not both.
+
         """
 
         if above and below:
@@ -439,6 +461,91 @@ class AlignedTextGrid(Sequence, WithinMixins):
             tgr.within = self
         self.contains = self.tier_groups
 
+    def pop_class(
+            self, 
+            name: Type[SequenceInterval]|str
+        ):
+        """Pop a class from an AlignedTextGrid
+
+        Remove a class of tiers from an AlignedTextGrid
+
+        Args:
+            name (Type[SequenceInterval] | str):
+                The tier class to remove.
+
+        Examples:
+            ```{python}
+            from aligned_textgrid import AlignedTextGrid, custom_classes
+
+            atg = AlignedTextGrid(
+                textgrid_path = "../usage/resources/spritely.TextGrid",
+                entry_classes = custom_classes([
+                    "PrWord",
+                    "Foot",
+                    "Syl",
+                    "OnsetRime",
+                    "SylPart",
+                    "Phone"
+                ])
+            )
+            print(atg)
+            ```
+
+            ```{python}
+            atg.pop_class("SylPart")
+            print(atg)
+            ```
+        """
+
+        if type(name) is type:
+            name = name.__name__
+
+        new_tier_groups = []
+        for tg in self.tier_groups:
+            entry_classes = [t.entry_class.__name__ for t in tg]
+
+            if not name in entry_classes:
+                new_tier_groups.append(tg)
+                continue
+            
+            if name in entry_classes and len(entry_classes) == 1:
+                warnings.warn(
+                    (
+                        f"TierGroup {tg.name} contained only {name} tier "
+                        "so it was removed."
+                    )
+                )
+                continue
+
+            pop_tier, = [t for t in tg if t.entry_class.__name__ == name]
+            keep_tiers = [t for t in tg if t.entry_class.__name__ != name]
+
+            pop_tier_super = pop_tier.entry_class.superset_class
+            pop_tier_sub = pop_tier.entry_class.subset_class
+            
+            if not isinstance(pop_tier_super, Top):
+                pop_tier_super.set_subset_class(pop_tier_sub)
+
+            if not isinstance(pop_tier_sub, Bottom):
+                pop_tier_sub.set_superset_class(pop_tier_super)
+
+            for tier in keep_tiers:
+                tier.superset_class = tier.entry_class.superset_class
+                tier.subset_class = tier.entry_class.subset_class
+            new_tg = TierGroup(keep_tiers)
+            for seq in new_tg[-1]:
+                seq.subset_list = []
+                seq.contains = []
+            new_tg.name = tg.name
+            new_tier_groups.append(new_tg)
+        
+        self.tier_groups = new_tier_groups
+        new_entry_classes = [tg.entry_classes for tg in self.tier_groups]
+        self.entry_classes = new_entry_classes
+        for tgr in self.tier_groups:
+            tgr.within = self
+        self.contains = self.tier_groups            
+            
     def get_class_by_name(
             self, 
             class_name: str

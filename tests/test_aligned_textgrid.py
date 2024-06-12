@@ -414,6 +414,53 @@ class TestInterleave:
                 timing_from="Word"
             )
 
+class TestPop:
+
+    Turns, Word,Phone = custom_classes(["Turns", "Word", "Phone"])        
+    atg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1_multi.TextGrid",
+            entry_classes=[Word, Phone, Turns]
+        )
+    turn_lens = [
+            len(x.contains) 
+            for tg in atg
+            for x in tg.Turns
+            if len(x.label) > 0
+        ]
+
+    def test_pre_pop(self):
+       for tg in self.atg:
+           entry_class_names = [x.__name__ for x in tg.entry_classes]
+           assert "Word" in entry_class_names
+    
+    def test_run_pop(self):
+        self.atg.pop_class(Word)
+
+        for tg in self.atg:
+           entry_class_names = [x.__name__ for x in tg.entry_classes]
+           assert "Word" not in entry_class_names
+
+    def test_pop_result(self):
+        self.new_turn_lens = [
+            len(x.contains) 
+            for tg in self.atg
+            for x in tg.Turns
+            if len(x.label) > 0
+        ]
+
+        for old, new in zip(self.turn_lens, self.new_turn_lens):
+            assert new > old
+
+    def test_no_pop(self):
+        assert len(self.atg[0]) == 2
+        self.atg.pop_class("NotInAtg")
+        assert len(self.atg[0]) == 2
+
+    def test_all_pop(self):
+        self.atg.pop_class("Turns")
+        with pytest.warns():
+            self.atg.pop_class("Phone")
+
 class TestClassCloning:
 
     def test_class_clone(self):

@@ -1,4 +1,7 @@
 from aligned_textgrid.aligned_textgrid import AlignedTextGrid
+from aligned_textgrid.polar.polar_classes import PrStr, ToBI, \
+    TurningPoints, Ranges, Levels, Misc
+from aligned_textgrid.sequences.word_and_phone import Word, Phone
 from praatio import textgrid
 
 class PolarGrid(AlignedTextGrid):
@@ -32,6 +35,7 @@ class PolarGrid(AlignedTextGrid):
         self._set_named_accessors()
         self._relate_levels_and_ranges()
         self._relate_levels_and_points()
+        self._name_groups()
                 
     def _set_named_accessors(self):
         for tg in self.tier_groups:
@@ -47,3 +51,27 @@ class PolarGrid(AlignedTextGrid):
     def _relate_levels_and_points(self):
         for l in self.Levels:
             l.set_turning_point(self.TurningPoints)
+    
+    def _name_groups(self):
+        wp_classes = [Word, Phone]
+        p_classes = [
+            PrStr, 
+            ToBI, 
+            TurningPoints, 
+            Ranges, 
+            Levels, 
+            Misc
+        ]
+        range_class = [Ranges]
+
+        for group in self:
+            entry_classes = group.entry_classes
+            if any([issubclass(cl, ecl) for cl in entry_classes for ecl in wp_classes]):
+                print("yes")
+                group.name = "Word_Phone"
+            if any([issubclass(cl, ecl) for cl in entry_classes for ecl in p_classes]):
+                group.name = "Points"
+            if any([issubclass(cl, ecl) for cl in entry_classes for ecl in range_class]):
+                group.name = "Ranges"
+
+
