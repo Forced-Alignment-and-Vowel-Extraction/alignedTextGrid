@@ -80,7 +80,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
         for tgr in self.tier_groups:
             tgr.within = self
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
-
+        self._set_group_names()
         
     def __getitem__(
             self, 
@@ -314,6 +314,27 @@ class AlignedTextGrid(Sequence, WithinMixins):
                 tier_groups.append(PointsGroup(point_tier_list))   
         return tier_groups
     
+    def _set_group_names(self):
+        tier_group_names = [x.name for x in self.tier_groups]
+        duplicate_names = [
+            name 
+            for name in tier_group_names 
+            if tier_group_names.count(name) > 1
+        ]
+
+        if len(duplicate_names) > 0:
+            unique_dup = set(duplicate_names)
+            warnings.warn(
+                (
+                    f"Some TierGroups had duplicate names, {unique_dup}. "
+                    "Named accessors for TierGroups unavailable."
+                )
+            )
+            return
+        
+        for idx, name in enumerate(tier_group_names):
+            setattr(self, name, self.tier_groups[idx])
+
     @property
     def tier_names(self):
         if len(self) == 0:
