@@ -261,6 +261,12 @@ class TestTierGroupNames:
 
         assert isinstance(tg.IVR, TierGroup)
 
+    def test_tiergroup_name_duplicates(self):
+        with pytest.warns():
+            tg = AlignedTextGrid(
+                textgrid_path="tests/test_data/josef-fruehwald_speaker_dup.TextGrid",
+                entry_classes=[Word, Phone]
+            )
 class TestInterleave:
     
    
