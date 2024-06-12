@@ -367,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Docs Last Built</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2024-06-12 21:48:03+00:00</p>
+      <p class="date-modified">2024-06-12 21:50:28+00:00</p>
     </div>
   </div>
     
@@ -407,7 +407,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="example" class="level3">
 <h3 class="anchored" data-anchor-id="example">Example</h3>
 <p>As an example, we’ll read in a textgrid produced with forced alignment that contains a single speaker with a word and phone tier.</p>
-<div id="19df1dec" class="cell" data-execution_count="1">
+<div id="f3075e50" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid, Word, Phone</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tg <span class="op">=</span> AlignedTextGrid(</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    textgrid_path<span class="op">=</span><span class="st">'usage/resources/josef-fruehwald_speaker.TextGrid'</span>, </span>
@@ -415,11 +415,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then, we can access an arbitrary phone interval.</p>
-<div id="7b744974" class="cell" data-execution_count="2">
+<div id="8961e831" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>arbitrary_interval <span class="op">=</span> tg[<span class="dv">0</span>].Phone[<span class="dv">20</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>From this aribitrary interval, we can access information about the intervals preceding and following with the <code>.prev</code> and <code>.fol</code> attributes.</p>
-<div id="a822191d" class="cell" data-execution_count="3">
+<div id="9a866a55" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(arbitrary_interval.prev.label)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(arbitrary_interval.label)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(arbitrary_interval.fol.label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -430,14 +430,14 @@ N</code></pre>
 </div>
 </div>
 <p>We can also access information about the word this interval is nested within with the <code>.inword</code> attribute.</p>
-<div id="af7007b8" class="cell" data-execution_count="4">
+<div id="39b8891f" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(arbitrary_interval.inword.label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>raindrops</code></pre>
 </div>
 </div>
 <p>The object returned by <code>.inword</code> is just another interval, meaning we can access informaton about <em>it’s</em> context with the <code>.prev</code> and <code>.fol</code> attributes as well.</p>
-<div id="3b1054cf" class="cell" data-execution_count="5">
+<div id="233fc1d0" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(arbitrary_interval.inword.prev.label)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(arbitrary_interval.inword.label)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(arbitrary_interval.inword.fol.label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
