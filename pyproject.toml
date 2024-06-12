@@ -45,6 +45,7 @@ build-backend = "poetry.core.masonry.api"
 addopts = [
     "--import-mode=importlib",
     "--cov-config=.coveragerc",
+    "--cov-report=xml",
     "--cov"
 ]
 filterwarnings =[
