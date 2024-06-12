@@ -1,6 +1,7 @@
 from difflib import SequenceMatcher
 from functools import reduce
 import re
+import warnings
 
 class TierMixins:
     """Methods and attributes for Sequence Tiers
@@ -36,24 +37,27 @@ class TierGroupMixins:
     Attributes:
         []: Indexable and iterable
     """
-    
-    def __getattr__(
-            self,
-            name: str
-    ):
-        entry_class_names = [x.__name__ for x in self.entry_classes]
-        match_list = [x  for x in entry_class_names if x == name]
 
-        if len(match_list) == 1:
-            match_idx = entry_class_names.index(name)
-            return self.tier_list[match_idx]
-        
-        if len(match_list) > 1:
-            raise AttributeError(f"{type(self).__name__} has multiple entry classes for {name}")
-        
-        if len(match_list) < 1:
-            raise AttributeError(f"{type(self).__name__} has no attribute {name}")
-        
+    def _set_tier_names(self):
+        entry_class_names = [x.__name__ for x in self.entry_classes]
+        duplicate_names = [
+            name 
+            for name in entry_class_names 
+            if entry_class_names.count(name)>1
+        ]
+
+        if len(duplicate_names) > 0:
+            warnings.warn(
+                (
+                    f"Some tiers have the same entry class {set(duplicate_names)}. "
+                    "Named accessors will be unavailable."
+                 )
+            )
+            return
+
+        for idx, name in enumerate(entry_class_names):
+            setattr(self, name, self.tier_list[idx])
+
     @property
     def name(self):
         if self._name:
