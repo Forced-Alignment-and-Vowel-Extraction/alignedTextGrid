@@ -67,7 +67,8 @@ class AlignedTextGrid(Sequence, WithinMixins):
         elif textgrid_path:
             tg = openTextgrid(
                 fnFullPath=textgrid_path, 
-                includeEmptyIntervals=True
+                includeEmptyIntervals=True,
+                duplicateNamesMode='rename'
             )
             self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
         else:
