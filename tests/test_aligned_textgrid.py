@@ -182,6 +182,24 @@ class TestInGetLen:
     def test_iter(self):
         assert len([x.xmin for x in self.atg]) == len(self.atg)
 
+class TestProperties:
+    atg = AlignedTextGrid(
+        textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+        entry_classes=[MyWord, MyPhone]
+        )
+    
+    def test_xmin(self):
+        assert self.atg.xmin is not None
+    
+    def test_xmax(self):
+        assert self.atg.xmax is not None
+
+    def test_tier_names(self):
+        names = self.atg.tier_names
+        assert len(names) == len(self.atg)
+        for name, group in zip(names, self.atg):
+            assert len(name) == len(group)
+
 class TestGetInterval:
     atg = AlignedTextGrid(
         textgrid_path="tests/test_data/KY25A_1.TextGrid", 
