@@ -10,9 +10,11 @@ from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
 from aligned_textgrid.mixins.within import WithinMixins
 import numpy as np
 from typing import Type
+from collections.abc import Sequence
+
 import warnings
 
-class SequenceTier(TierMixins, WithinMixins):
+class SequenceTier(Sequence, TierMixins, WithinMixins):
     """A sequence tier
 
     Given a `praatio` `IntervalTier` or list of `Interval`s, creates
@@ -43,7 +45,6 @@ class SequenceTier(TierMixins, WithinMixins):
         tier: list[Interval] | IntervalTier = [],
         entry_class: Type[SequenceInterval] = SequenceInterval
     ):
-        super().__init__()
         if isinstance(tier, IntervalTier):
             self.entry_list = tier.entries
             self.name = tier.name
@@ -62,6 +63,13 @@ class SequenceTier(TierMixins, WithinMixins):
             this_seq.set_subset_class(self.subset_class)
             self.sequence_list += [this_seq]
         self.__set_precedence()
+
+    def __getitem__(self, idx):
+        return self.sequence_list[idx]
+
+    def __len__(self):
+        return len(self.sequence_list)
+
 
     def __set_precedence(self):
         for idx,seq in enumerate(self.sequence_list):
@@ -107,7 +115,6 @@ class SequenceTier(TierMixins, WithinMixins):
 
     def __repr__(self):
         return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
-    
                 
     @property
     def starts(self):
@@ -182,7 +189,7 @@ class SequenceTier(TierMixins, WithinMixins):
         out_tg.save(save_path, "long_textgrid")
 
 
-class TierGroup(TierGroupMixins, WithinMixins):
+class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     """Tier Grouping
 
     Args:
@@ -206,11 +213,10 @@ class TierGroup(TierGroupMixins, WithinMixins):
         self,
         tiers: list[SequenceTier] = [SequenceTier()]
     ):
-        super().__init__()
         self.tier_list = self._arrange_tiers(tiers)
         #self.entry_classes = [x.__class__ for x in self.tier_list]
         self._name = self.make_name()
-
+        self._set_tier_names()
         for idx, tier in enumerate(self.tier_list):
             if idx == len(self.tier_list)-1:
                 break
@@ -233,6 +239,23 @@ class TierGroup(TierGroupMixins, WithinMixins):
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
                     u.validate()
+    
+    def __getitem__(
+            self,
+            idx: int|list
+    ):
+        if type(idx) is int:
+            return self.tier_list[idx]
+        if len(idx) != len(self):
+            raise Exception("Attempt to index with incompatible list")
+        if type(idx) is list:
+            out_list = []
+            for x, tier in zip(idx, self.tier_list):
+                out_list.append(tier[x])
+            return(out_list)
+
+    def __len__(self):
+        return len(self.tier_list)
         
     def __repr__(self):
         n_tiers = len(self.tier_list)

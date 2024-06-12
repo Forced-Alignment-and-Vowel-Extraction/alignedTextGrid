@@ -9,9 +9,10 @@ from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
 from aligned_textgrid.mixins.within import WithinMixins
 import numpy as np
 from typing import Type
+from collections.abc import Sequence
 import warnings
 
-class SequencePointTier(TierMixins, WithinMixins):
+class SequencePointTier(Sequence, TierMixins, WithinMixins):
     """A SequencePointTier class
 
     Args:
@@ -44,8 +45,6 @@ class SequencePointTier(TierMixins, WithinMixins):
         tier:PointTier|list[Point] = [], 
         entry_class:Type[SequencePoint] = SequencePoint
     ):
-
-        super().__init__()
         if isinstance(tier, PointTier):
             self.entry_list = tier.entries
             self.name = tier.name
@@ -63,6 +62,12 @@ class SequencePointTier(TierMixins, WithinMixins):
             this_point = self.entry_class(entry)
             self.sequence_list += [this_point]
         self.__set_precedence()
+    
+    def __getitem__(self, idx):
+        return self.sequence_list[idx]
+    
+    def __len__(self):
+        return len(self.sequence_list)
 
     def __set_precedence(self):
         for idx,seq in enumerate(self.sequence_list):
@@ -164,7 +169,7 @@ class SequencePointTier(TierMixins, WithinMixins):
         out_tg.addTier(tier = point_tier)
         out_tg.save(save_path, "long_textgrid")
 
-class PointsGroup(TierGroupMixins, WithinMixins):
+class PointsGroup(Sequence, TierGroupMixins, WithinMixins):
     """A collection of point tiers
 
     Args:
@@ -181,10 +186,28 @@ class PointsGroup(TierGroupMixins, WithinMixins):
             self,
             tiers: list[SequencePointTier] = [SequencePointTier()]
     ):
-        super().__init__()
         self.tier_list = tiers
         self.contains = self.tier_list
+        self._set_tier_names()
+        self._name = self.make_name()
+
+    def __getitem__(
+            self,
+            idx: int|list
+    ):
+        if type(idx) is int:
+            return self.tier_list[idx]
+        if len(idx) != len(self):
+            raise Exception("Attempt to index with incompatible list")
+        if type(idx) is list:
+            out_list = []
+            for x, tier in zip(idx, self.tier_list):
+                out_list.append(tier[x])
+            return(out_list)
     
+    def __len__(self):
+        return len(self.tier_list)
+
     def get_nearest_points_index(
             self, 
             time: float
@@ -207,6 +230,20 @@ class PointsGroup(TierGroupMixins, WithinMixins):
     @property
     def entry_classes(self):
         return [x.entry_class for x in self.tier_list]
+    
+    @property
+    def xmin(self):
+        times = np.array(
+            [t.xmin for t in self.tier_list]
+        )
+        return times.min()
+
+    @property    
+    def xmax(self):
+        times = np.array(
+            [t.xmin for t in self.tier_list]
+        )
+        return times.max()
     
     def __repr__(self):
         n_tiers = len(self.tier_list)

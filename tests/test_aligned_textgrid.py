@@ -182,6 +182,24 @@ class TestInGetLen:
     def test_iter(self):
         assert len([x.xmin for x in self.atg]) == len(self.atg)
 
+class TestProperties:
+    atg = AlignedTextGrid(
+        textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+        entry_classes=[MyWord, MyPhone]
+        )
+    
+    def test_xmin(self):
+        assert self.atg.xmin is not None
+    
+    def test_xmax(self):
+        assert self.atg.xmax is not None
+
+    def test_tier_names(self):
+        names = self.atg.tier_names
+        assert len(names) == len(self.atg)
+        for name, group in zip(names, self.atg):
+            assert len(name) == len(group)
+
 class TestGetInterval:
     atg = AlignedTextGrid(
         textgrid_path="tests/test_data/KY25A_1.TextGrid", 
@@ -243,6 +261,12 @@ class TestTierGroupNames:
 
         assert isinstance(tg.IVR, TierGroup)
 
+    def test_tiergroup_name_duplicates(self):
+        with pytest.warns():
+            tg = AlignedTextGrid(
+                textgrid_path="tests/test_data/josef-fruehwald_speaker_dup.TextGrid",
+                entry_classes=[Word, Phone]
+            )
 class TestInterleave:
     
    
@@ -413,6 +437,53 @@ class TestInterleave:
                 below = Word,
                 timing_from="Word"
             )
+
+class TestPop:
+
+    Turns, Word,Phone = custom_classes(["Turns", "Word", "Phone"])        
+    atg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1_multi.TextGrid",
+            entry_classes=[Word, Phone, Turns]
+        )
+    turn_lens = [
+            len(x.contains) 
+            for tg in atg
+            for x in tg.Turns
+            if len(x.label) > 0
+        ]
+
+    def test_pre_pop(self):
+       for tg in self.atg:
+           entry_class_names = [x.__name__ for x in tg.entry_classes]
+           assert "Word" in entry_class_names
+    
+    def test_run_pop(self):
+        self.atg.pop_class(Word)
+
+        for tg in self.atg:
+           entry_class_names = [x.__name__ for x in tg.entry_classes]
+           assert "Word" not in entry_class_names
+
+    def test_pop_result(self):
+        self.new_turn_lens = [
+            len(x.contains) 
+            for tg in self.atg
+            for x in tg.Turns
+            if len(x.label) > 0
+        ]
+
+        for old, new in zip(self.turn_lens, self.new_turn_lens):
+            assert new > old
+
+    def test_no_pop(self):
+        assert len(self.atg[0]) == 2
+        self.atg.pop_class("NotInAtg")
+        assert len(self.atg[0]) == 2
+
+    def test_all_pop(self):
+        self.atg.pop_class("Turns")
+        with pytest.warns():
+            self.atg.pop_class("Phone")
 
 class TestClassCloning:
 

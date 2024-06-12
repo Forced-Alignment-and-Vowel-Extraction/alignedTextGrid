@@ -42,6 +42,20 @@ class TestPolarGrid:
         class_check_3 = [isinstance(x, SequenceTier) for x in self.ptg[2]]
         assert all(class_check_3)
 
+    def test_ptg_indexing(self):
+        start = self.ptg.Word_Phone.xmin
+        end = self.ptg.Word_Phone.xmax
+        mid = ((end-start)/2)+start
+
+        interval_idx = self.ptg.get_intervals_at_time(mid)
+        results = self.ptg[interval_idx]
+
+        assert len(interval_idx) == len(self.ptg)
+        for int_gr, gr, res in zip(interval_idx, self.ptg, results):
+            assert len(int_gr) == len(gr) == len(res)
+
+
+
 class TestPolarClasses:
     entry_classes = [
         [Word, Phone],
@@ -118,3 +132,9 @@ class TestPolarClasses:
         level_bands = [x.band for x in all_levels]
         is_array = [isinstance(x, np.ndarray) for x in level_bands]
         assert all(is_array)
+
+    def test_properties(self):
+        xmin = self.ptg.xmin
+        xmax = self.ptg.xmax
+
+        assert xmax > xmin

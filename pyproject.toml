@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aligned_textgrid"
-version = "0.6.7"
+version = "0.7.0"
 description = "Classes for defining sequential information from TextGrids"
 authors = ["JoFrhwld <JoFrhwld@gmail.com>", "chrisbrickhouse <brickhouse@stanford.edu>"]
 license = "GPL-3.0-or-later"
@@ -45,6 +45,7 @@ build-backend = "poetry.core.masonry.api"
 addopts = [
     "--import-mode=importlib",
     "--cov-config=.coveragerc",
+    "--cov-report=xml",
     "--cov"
 ]
 filterwarnings =[
