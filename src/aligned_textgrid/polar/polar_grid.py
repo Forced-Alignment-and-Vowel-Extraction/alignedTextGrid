@@ -36,6 +36,7 @@ class PolarGrid(AlignedTextGrid):
         self._relate_levels_and_ranges()
         self._relate_levels_and_points()
         self._name_groups()
+        self._set_group_names()
                 
     def _set_named_accessors(self):
         for tg in self.tier_groups:
@@ -72,6 +73,6 @@ class PolarGrid(AlignedTextGrid):
             if any([issubclass(cl, ecl) for cl in entry_classes for ecl in p_classes]):
                 group.name = "Points"
             if any([issubclass(cl, ecl) for cl in entry_classes for ecl in range_class]):
-                group.name = "Ranges"
+                group.name = "RangesTier"
 
 
