@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -445,18 +479,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#aligned_textgrid.aligned_textgrid.AlignedTextGrid" id="toc-aligned_textgrid.aligned_textgrid.AlignedTextGrid" class="nav-link active" data-scroll-target="#aligned_textgrid.aligned_textgrid.AlignedTextGrid">AlignedTextGrid</a>
-  <ul class="collapse">
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link active" data-scroll-target="#parameters">Parameters</a></li>
   <li><a href="#attributes" id="toc-attributes" class="nav-link" data-scroll-target="#attributes">Attributes</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
   <li><a href="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_class_by_name" id="toc-aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_class_by_name" class="nav-link" data-scroll-target="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_class_by_name">get_class_by_name</a></li>
   <li><a href="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_intervals_at_time" id="toc-aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_intervals_at_time" class="nav-link" data-scroll-target="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.get_intervals_at_time">get_intervals_at_time</a></li>
   <li><a href="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.interleave_class" id="toc-aligned_textgrid.aligned_textgrid.AlignedTextGrid.interleave_class" class="nav-link" data-scroll-target="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.interleave_class">interleave_class</a></li>
+  <li><a href="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.pop_class" id="toc-aligned_textgrid.aligned_textgrid.AlignedTextGrid.pop_class" class="nav-link" data-scroll-target="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.pop_class">pop_class</a></li>
   <li><a href="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.return_textgrid" id="toc-aligned_textgrid.aligned_textgrid.AlignedTextGrid.return_textgrid" class="nav-link" data-scroll-target="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.return_textgrid">return_textgrid</a></li>
   <li><a href="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.save_textgrid" id="toc-aligned_textgrid.aligned_textgrid.AlignedTextGrid.save_textgrid" class="nav-link" data-scroll-target="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.save_textgrid">save_textgrid</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -464,11 +496,25 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/AlignedTextGrid.html">TextGrids</a></li><li class="breadcrumb-item"><a href="../reference/AlignedTextGrid.html">AlignedTextGrid</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">AlignedTextGrid</h1>
+</div>
 
 
 
-<section id="aligned_textgrid.aligned_textgrid.AlignedTextGrid" class="level1">
-<h1>AlignedTextGrid</h1>
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
 <p><code>aligned_textgrid.AlignedTextGrid(self, textgrid=None, textgrid_path=None, entry_classes=[SequenceInterval])</code></p>
 <p>An aligned Textgrid</p>
 <section id="parameters" class="level2">
@@ -571,10 +617,14 @@ ul.task-list li input[type="checkbox"] {
 <td>Interleave a new entry class.</td>
 </tr>
 <tr class="even">
+<td><a href="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.pop_class">pop_class</a></td>
+<td>Pop a class from an AlignedTextGrid</td>
+</tr>
+<tr class="odd">
 <td><a href="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.return_textgrid">return_textgrid</a></td>
 <td>Convert this <code>AlignedTextGrid</code> to a <code>praatio</code> <code>Textgrid</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#aligned_textgrid.aligned_textgrid.AlignedTextGrid.save_textgrid">save_textgrid</a></td>
 <td>Saves the current AlignedTextGrid</td>
 </tr>
@@ -671,6 +721,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="aligned_textgrid.aligned_textgrid.AlignedTextGrid.interleave_class">interleave_class</h3>
 <p><code>aligned_textgrid.AlignedTextGrid.interleave_class(name, above=None, below=None, timing_from='below', copy_labels=True)</code></p>
 <p>Interleave a new entry class.</p>
+<p>You can set either <code>above</code> or <code>below</code>, but not both.</p>
 <section id="parameters-3" class="level4">
 <h4 class="anchored" data-anchor-id="parameters-3">Parameters</h4>
 <table class="caption-top table">
@@ -691,13 +742,13 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td><code>above</code></td>
-<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a> | <a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
+<td><a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>] | <a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td>Which entry class to interleave above.</td>
 <td><code>None</code></td>
 </tr>
 <tr class="odd">
 <td><code>below</code></td>
-<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a> | <a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
+<td><a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>] | <a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
 <td>Which entry class to interleave below.</td>
 <td><code>None</code></td>
 </tr>
@@ -715,7 +766,89 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>You can set either <code>above</code> or <code>below</code>, but not both.</p>
+</section>
+<section id="examples" class="level4">
+<h4 class="anchored" data-anchor-id="examples">Examples</h4>
+<div id="e9a47683" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid, Word, Phone</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>atg <span class="op">=</span> AlignedTextGrid(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    textgrid_path <span class="op">=</span> <span class="st">"../usage/resources/josef-fruehwald_speaker.TextGrid"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    entry_classes <span class="op">=</span> [Word, Phone]</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(atg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AlignedTextGrid with 1 groups named ['group_0'] each with [2] tiers. [['Word', 'Phone']]</code></pre>
+</div>
+</div>
+<div id="a17ba609" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>atg.interleave_class(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">"Syllable"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    above <span class="op">=</span> <span class="st">"Phone"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    timing_from <span class="op">=</span> <span class="st">"below"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    copy_labels <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(atg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AlignedTextGrid with 1 groups named ['group_0'] each with [3] tiers. [['Word', 'Syllable', 'Phone']]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="aligned_textgrid.aligned_textgrid.AlignedTextGrid.pop_class" class="level3">
+<h3 class="anchored" data-anchor-id="aligned_textgrid.aligned_textgrid.AlignedTextGrid.pop_class">pop_class</h3>
+<p><code>aligned_textgrid.AlignedTextGrid.pop_class(name)</code></p>
+<p>Pop a class from an AlignedTextGrid</p>
+<p>Remove a class of tiers from an AlignedTextGrid</p>
+<section id="parameters-4" class="level4">
+<h4 class="anchored" data-anchor-id="parameters-4">Parameters</h4>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td><a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>] | <a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
+<td>The tier class to remove.</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="examples-1" class="level4">
+<h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
+<div id="e88a885f" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid, custom_classes</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>atg <span class="op">=</span> AlignedTextGrid(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    textgrid_path <span class="op">=</span> <span class="st">"../usage/resources/spritely.TextGrid"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    entry_classes <span class="op">=</span> custom_classes([</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"PrWord"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Foot"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Syl"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"OnsetRime"</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"SylPart"</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Phone"</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(atg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AlignedTextGrid with 1 groups named ['group_0'] each with [6] tiers. [['PrWord', 'Foot', 'Syl', 'OnsetRime', 'SylPart', 'Phone']]</code></pre>
+</div>
+</div>
+<div id="a6316bff" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>atg.pop_class(<span class="st">"SylPart"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(atg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AlignedTextGrid with 1 groups named ['group_0'] each with [5] tiers. [['PrWord', 'Foot', 'Syl', 'OnsetRime', 'Phone']]</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="aligned_textgrid.aligned_textgrid.AlignedTextGrid.return_textgrid" class="level3">
@@ -750,8 +883,8 @@ ul.task-list li input[type="checkbox"] {
 <p><code>aligned_textgrid.AlignedTextGrid.save_textgrid(save_path, format='long_textgrid')</code></p>
 <p>Saves the current AlignedTextGrid</p>
 <p>Uses the <code>praatio.data_classes.textgrid.Textgrid.save()</code> method.</p>
-<section id="parameters-4" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-4">Parameters</h4>
+<section id="parameters-5" class="level4">
+<h4 class="anchored" data-anchor-id="parameters-5">Parameters</h4>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -778,7 +911,6 @@ ul.task-list li input[type="checkbox"] {
 </table>
 
 
-</section>
 </section>
 </section>
 </section>
