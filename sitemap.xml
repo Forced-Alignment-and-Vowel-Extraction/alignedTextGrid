@@ -2,158 +2,158 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/02_Sequences/01_sequence-in-tier.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/02_Sequences/02_sequence_properties.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/05_Outputs/02_pickling.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/05_Outputs/00_to_textgrid.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/04_Points/00_points_and_point_tiers.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/01_TextGrids/01_tg-nav.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/03_Custom_Classes/index.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/Ranges.html</loc>
-    <lastmod>2024-06-12T20:26:38.828Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.056Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/Levels.html</loc>
-    <lastmod>2024-06-12T20:26:38.832Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.060Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/SequenceTier.html</loc>
-    <lastmod>2024-06-12T20:26:38.724Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.956Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/TierGroupMixins.html</loc>
-    <lastmod>2024-06-12T20:26:38.708Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.940Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/AlignedTextGrid.html</loc>
-    <lastmod>2024-06-12T20:26:38.784Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.016Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/Word.html</loc>
-    <lastmod>2024-06-12T20:26:38.804Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.036Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/ToBI.html</loc>
-    <lastmod>2024-06-12T20:26:38.816Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.048Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/TierMixins.html</loc>
-    <lastmod>2024-06-12T20:26:38.704Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.936Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/TurningPoints.html</loc>
-    <lastmod>2024-06-12T20:26:38.824Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.052Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/custom_classes.get_class_hierarchy.html</loc>
-    <lastmod>2024-06-12T20:26:38.796Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.028Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/TierGroup.html</loc>
-    <lastmod>2024-06-12T20:26:38.756Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.988Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/PrecedenceMixins.html</loc>
-    <lastmod>2024-06-12T20:26:38.648Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.880Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/SequenceInterval.html</loc>
-    <lastmod>2024-06-12T20:26:38.680Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.912Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/Bottom.html</loc>
-    <lastmod>2024-06-12T20:26:38.684Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.916Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/Phone.html</loc>
-    <lastmod>2024-06-12T20:26:38.808Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.040Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/custom_classes.html</loc>
-    <lastmod>2024-06-12T20:26:38.788Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.020Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/to_df.html</loc>
-    <lastmod>2024-06-12T20:26:38.836Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.068Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/index.html</loc>
-    <lastmod>2024-06-12T20:26:38.624Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.860Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/Misc.html</loc>
-    <lastmod>2024-06-12T20:26:38.832Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.064Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/Top.html</loc>
-    <lastmod>2024-06-12T20:26:38.684Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.916Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/SequencePointTier.html</loc>
-    <lastmod>2024-06-12T20:26:38.744Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.976Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/custom_classes.clone_class.html</loc>
-    <lastmod>2024-06-12T20:26:38.792Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.024Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/SequencePoint.html</loc>
-    <lastmod>2024-06-12T20:26:38.700Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.932Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/PrStr.html</loc>
-    <lastmod>2024-06-12T20:26:38.812Z</lastmod>
+    <lastmod>2024-06-12T21:39:10.044Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/reference/InTierMixins.html</loc>
-    <lastmod>2024-06-12T20:26:38.660Z</lastmod>
+    <lastmod>2024-06-12T21:39:09.892Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/index.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.992Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/01_TextGrids/03_tg-mod.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/01_TextGrids/02_tg-info.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/index.html</loc>
-    <lastmod>2024-06-12T20:26:22.884Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/05_Outputs/01_to_dataframe.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/02_Sequences/03_sequence-modification.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
   <url>
     <loc>https://Forced-Alignment-and-Vowel-Extraction.github.io/alignedTextGrid/usage/02_Sequences/00_sequence_structure.html</loc>
-    <lastmod>2024-06-12T20:26:22.880Z</lastmod>
+    <lastmod>2024-06-12T21:38:52.996Z</lastmod>
   </url>
 </urlset>
