@@ -113,6 +113,20 @@ class AlignedTextGrid(Sequence, WithinMixins):
     def __setstate__(self, d):
         self.__dict__ = d
 
+    def _process_textgrid_arg(self, arg):
+        if isinstance(arg, str) or isinstance(arg, Path):
+            arg_str = str(arg)
+            tg = openTextgrid(
+                fnFullPath=arg_str, 
+                includeEmptyIntervals=True,
+                duplicateNamesMode='rename'
+            )
+        
+        if isinstance(arg, Textgrid):
+            tg = arg
+        
+        self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
+
     def _extend_classes(
             self, 
             tg: Textgrid, 
