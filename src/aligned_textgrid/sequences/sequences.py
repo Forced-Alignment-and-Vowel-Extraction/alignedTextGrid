@@ -10,6 +10,13 @@ from aligned_textgrid.mixins.within import WithinMixins
 from typing import Type, Any
 import numpy as np
 import warnings
+import sys
+from collections.abc import Sequence
+
+if sys.version_info >= (3,11):
+    from typing import Self
+else:
+    from typing_extensions import Self
 
 class HierarchyMixins:
 
