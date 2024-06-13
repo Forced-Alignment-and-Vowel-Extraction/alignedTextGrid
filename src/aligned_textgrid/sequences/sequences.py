@@ -303,6 +303,8 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             End time of the interval
         label (Any):
             Label of the interval
+        duration (float):
+            The duration of the interval
         intier (SequenceTier):
             The sequence tier the current interval is within.
         tier_index (int):
