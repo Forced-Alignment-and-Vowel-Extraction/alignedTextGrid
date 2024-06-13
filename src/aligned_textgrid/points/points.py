@@ -40,10 +40,12 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
             self,
             point = Point(0, "")
         ):
-        super().__init__()
-        if not point:
-            point = Point(None, None)
-        
+
+        if isinstance(point, SequencePoint):
+            point = (point.time, point.label)
+
+        point = Point(*point)
+
         self.time = point.time
         self.label = point.label
 
