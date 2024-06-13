@@ -297,6 +297,17 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
         if Interval:
             interval = Interval
 
+        if isinstance(interval, self.__class__):
+            interval = (
+                interval.start,
+                interval.end,
+                interval.label
+            )
+        rep_none = 3 - len(interval)
+        interval += tuple([None]) * rep_none
+
+        interval = praatio.utilities.constants.Interval(*interval)
+
         self.start = interval.start
         self.end = interval.end
         self.label = interval.label
