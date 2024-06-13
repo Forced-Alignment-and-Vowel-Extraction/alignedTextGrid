@@ -38,7 +38,7 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
 
     def __init__(
             self,
-            point = Point(0, "")
+            point: list|tuple|Point|Self = (0, "")
         ):
 
         if isinstance(point, SequencePoint):
