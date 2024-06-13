@@ -3,7 +3,9 @@ Module includes the `SequenceInterval` base class as well as
 `Top` and `Bottom` classes.
 """
 
+import aligned_textgrid
 from praatio.utilities.constants import Interval
+import praatio
 from praatio.data_classes.interval_tier import IntervalTier
 from aligned_textgrid.mixins.mixins import InTierMixins, PrecedenceMixins
 from aligned_textgrid.mixins.within import WithinMixins
