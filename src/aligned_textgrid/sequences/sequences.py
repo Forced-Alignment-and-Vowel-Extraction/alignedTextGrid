@@ -312,7 +312,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
         if Interval:
             interval = Interval
 
-        if isinstance(interval, self.__class__):
+        if isinstance(interval, SequenceInterval):
             interval = (
                 interval.start,
                 interval.end,
