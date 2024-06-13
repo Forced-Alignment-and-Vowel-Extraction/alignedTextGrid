@@ -7,6 +7,7 @@ import numpy as np
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.textgrid import openTextgrid
+from pathlib import Path
 
 class MyWord(SequenceInterval):
     def __init__(self, Interval = Interval(None, None, None)):
@@ -34,6 +35,31 @@ class TestReadFile:
             includeEmptyIntervals=True
         )
         atg = AlignedTextGrid(textgrid = tg)
+
+    def test_read_arg(self):
+        """
+        Test that the first unnamed arg can process
+        str, Path, and praatio.Textgrid classes correctly.
+        """
+        tg = openTextgrid(
+            fnFullPath="tests/test_data/KY25A_1.TextGrid",
+            includeEmptyIntervals=True
+        )        
+
+        atg1 = AlignedTextGrid(
+            "tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+        atg2 = AlignedTextGrid(
+            Path("tests/test_data/KY25A_1.TextGrid"),
+            entry_classes=[Word, Phone]
+        )
+        atg3 = AlignedTextGrid(
+           tg,
+            entry_classes=[Word, Phone]
+        )
+
+        assert len(atg1) == len(atg2) == len(atg3)
 
 class TestBasicRead:
 
