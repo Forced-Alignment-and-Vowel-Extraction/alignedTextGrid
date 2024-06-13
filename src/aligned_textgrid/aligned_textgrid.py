@@ -16,6 +16,7 @@ from typing import Type, Sequence, Literal
 from copy import copy
 import numpy as np
 from collections.abc import Sequence
+from pathlib import Path
 import warnings
 
 
@@ -23,9 +24,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
     """An aligned Textgrid
 
     Args:
-        textgrid (Textgrid, optional): A `praatio` TextGrid
-        textgrid_path (str, optional): A path to a TextGrid file to be 
-            read in with `praatio.textgrid.openTextgrid`
+        textgrid (str|Path|praatio.textgrid.Textgrid, optional): A `praatio` TextGrid
         entry_classes (Sequence[Sequence[Type[SequenceInterval]]] | Sequence[Type[SequenceInterval]], optional): 
             If a single list of `SequenceInterval` subclasses is given, they will be
             repeated as many times as necessary to assign a class to every tier. 
