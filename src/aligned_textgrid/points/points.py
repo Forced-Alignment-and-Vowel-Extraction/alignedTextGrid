@@ -18,8 +18,30 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     """Sequence Points
     
     Args:
-        point (Point): a `praatio.point` object
+        point (list|tuple|Point|Self):
+            A list or tuple of a time and label value.
     
+    Examples:
+        ```{python}
+        from aligned_textgrid import SequencePoint, SequenceInterval
+
+        first_point = SequencePoint((0, "first"))
+        print(first_point)
+        ```
+
+        ```{python}
+        second_point = SequencePoint((1, "second"))
+        interval = SequenceInterval((0.5, 2, "word"))
+
+        print(
+            first_point.distance_from(second_point)
+        )
+
+        print(
+            first_point.distance_from(interval)
+        )
+        ```
+
     Attributes:
         ...:
             All attributes and methods included in PrecedenceMixins and InTierMixins
