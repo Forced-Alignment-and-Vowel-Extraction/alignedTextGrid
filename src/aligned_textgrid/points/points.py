@@ -3,7 +3,6 @@ from aligned_textgrid.mixins.mixins import PrecedenceMixins, InTierMixins
 from aligned_textgrid.mixins.within import WithinMixins
 from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.sequences.sequences import SequenceInterval
-from typing_extensions import Self
 import warnings
 import numpy as np
 
@@ -134,7 +133,7 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     def distance_from(
             self, 
             entry: Self|SequenceInterval
-        ) -> Union[float, np.array]:
+        ) -> np.array:
         """Distance from an entry
 
         Args:
@@ -143,12 +142,12 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
                 point from
 
         Returns:
-            (float | np.array):
+            (np.array):
                 a single value in the case of a point, a numpy array in
                 the case of an interval.
         """
         if isinstance(entry, SequencePoint):
-            return self.time - entry.time
+            return np.array(self.time - entry.time)
         
         if isinstance(entry, SequenceInterval):
             entry_times = np.array([entry.start, entry.end])
