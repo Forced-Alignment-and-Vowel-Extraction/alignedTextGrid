@@ -258,7 +258,13 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     A class to describe an interval with precedence relationships and hierarchical relationships
 
     Args:
-        interval: A Praat textgrid Interval
+        interval (list|tuple|Interval|Self): 
+            A Praat textgrid Interval. This could one of: 
+            i) A list or tuple of start, end and label values (e.g. `[0, 1, "foo"]`); 
+            ii) A `praatio.utilities.constants.Interval`
+            iii) Another `SequenceInterval`. 
+            In this last case, only the `start`, `end` and `label` values from the original
+            `SequenceInterval` are preserved in the new one. 
 
     Attributes:
         start (float):
