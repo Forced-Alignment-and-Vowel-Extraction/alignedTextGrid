@@ -258,7 +258,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     A class to describe an interval with precedence relationships and hierarchical relationships
 
     Args:
-        Interval: A Praat textgrid Interval
+        interval: A Praat textgrid Interval
 
     Attributes:
         start (float):
