@@ -62,15 +62,11 @@ class AlignedTextGrid(Sequence, WithinMixins):
               = [SequenceInterval]
     ):
         self.entry_classes = self._reclone_classes(entry_classes)
+        if textgrid_path:
+            textgrid = textgrid_path
+
         if textgrid:
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(textgrid, self.entry_classes)
-        elif textgrid_path:
-            tg = openTextgrid(
-                fnFullPath=textgrid_path, 
-                includeEmptyIntervals=True,
-                duplicateNamesMode='rename'
-            )
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
+            self._process_textgrid_arg(textgrid)
         else:
             warnings.warn('Initializing an empty AlignedTextGrid')
             self._init_empty()
