@@ -54,12 +54,13 @@ class AlignedTextGrid(Sequence, WithinMixins):
 
     def __init__(
         self,
-        textgrid: Textgrid = None,
-        textgrid_path: str =  None,
+        textgrid: Textgrid|str|Path = None,
         entry_classes: 
             Sequence[Sequence[Type[SequenceInterval]]] |
             Sequence[Type[SequenceInterval]]
-              = [SequenceInterval]
+              = [SequenceInterval],
+        *,
+        textgrid_path: str =  None
     ):
         self.entry_classes = self._reclone_classes(entry_classes)
         if textgrid_path:
