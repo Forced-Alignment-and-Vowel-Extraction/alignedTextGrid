@@ -290,14 +290,16 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     # utilities
     def __init__(
         self, 
-        Interval: Interval = Interval(None, None, None)
+        interval: Interval|tuple= Interval(start=None, end=None, label = None),
+        *,
+        Interval = None
     ):
-        super().__init__()
-        if not Interval:
-            Interval = Interval(None, None, None)
-        self.start = Interval.start
-        self.end = Interval.end
-        self.label = Interval.label
+        if Interval:
+            interval = Interval
+
+        self.start = interval.start
+        self.end = interval.end
+        self.label = interval.label
         
         self.fol = None
         self.prev = None
