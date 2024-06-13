@@ -18,7 +18,7 @@ class TestSequenceIntervalDefault:
             super().__init__(Interval = Interval)
 
     def test_default_class(self):
-        assert self.seq_int.__class__ is SequenceInterval
+        assert isinstance(self.seq_int, SequenceInterval)
     
     def test_default_super_class(self):
         assert self.seq_int.superset_class is Top
@@ -74,9 +74,37 @@ class TestSequenceIntervalDefault:
         local_sample = self.SampleClassI()
         assert local_sample.tier_index is None
 
-    def test_defaul_getby(self):
+    def test_default_getby(self):
         local_sample = self.SampleClassI()
         assert local_sample.get_tierwise(1) is None
+
+class TestSequenceIntervalCreation:
+
+    def test_empty(self):
+        test_int = SequenceInterval()
+
+    def test_list(self):
+        test_int = SequenceInterval([0, 1, "test"])
+        assert isinstance(test_int, SequenceInterval)
+
+    def test_tup(self):
+        test_int = SequenceInterval((0,1,"test"))
+        assert isinstance(test_int, SequenceInterval)
+    
+    def test_self(self):
+        class MyInterval(SequenceInterval):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+        
+        test_int = SequenceInterval((0, 1, "test"))
+        new_int = MyInterval(test_int)
+
+        assert isinstance(new_int, MyInterval)
+        assert new_int.start == test_int.start
+        assert new_int.end == test_int.end
+        assert new_int.label == test_int.label
+    
+
 
 class TestSuperSubClassSetting:
     class LocalClassA(SequenceInterval):
