@@ -275,6 +275,27 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             In this last case, only the `start`, `end` and `label` values from the original
             `SequenceInterval` are preserved in the new one. 
 
+    Examples:
+        A new `SequenceInterval` can be created from scratch by passing it a tuple
+        of a start time, end time, and a label
+        ```{python}
+        from aligned_textgrid import SequenceInterval
+
+        sample_interval = SequenceInterval((0, 1, "sample"))
+        print(sample_interval)
+        ```
+
+        You can pass a `SequenceInterval` to another
+        `SequenceInterval` or subclass (like [](`~aligned_textgrid.sequences.word_and_phone.Word`))
+        as well
+
+        ```{python}
+        from aligned_textgrid import Word
+
+        sample_word = Word(sample_interval)
+        print(sample_word)
+        ```
+
     Attributes:
         start (float):
             Start time of the interval
@@ -292,20 +313,20 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             Instance of the previous interval. Is the same subclass as current instance.
         super_instance (SequenceInterval): 
             The instance of the superset. Cannot be the same subclass as the current instance.
-        subset_list (List[SequenceInterval]): 
+        subset_list (list[SequenceInterval]): 
             A list of subset instances. Cannot be the same subclass of the current instance.
         sub_starts (numpy.ndarray):
             A numpy array of start times for the subset list
         sub_ends (numpy.ndarray):
             A numpy array of end times for the subset list
-        sub_labels (List[Any]):
+        sub_labels (list[Any]):
             A list of labels from the subset list
     """    
 
     # utilities
     def __init__(
         self, 
-        interval: Interval|tuple= Interval(start=None, end=None, label = None),
+        interval: list|tuple|Interval|Self= (None, None, None),
         *,
         Interval = None
     ):
@@ -439,6 +460,10 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             return lab_list
         else:
             return []
+        
+    @property
+    def duration(self) -> float:
+        return self.end - self.start
       
     ## Fusion
     def fuse_rightwards(
