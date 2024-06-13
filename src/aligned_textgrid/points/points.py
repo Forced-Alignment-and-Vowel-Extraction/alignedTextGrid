@@ -7,7 +7,12 @@ from typing_extensions import Self
 import warnings
 import numpy as np
 
-from typing import Union
+import sys
+if sys.version_info >= (3,11):
+    from typing import Self
+else:
+    from typing_extensions import Self
+
 
 class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     """Sequence Points
