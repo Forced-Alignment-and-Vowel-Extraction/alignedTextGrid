@@ -23,10 +23,26 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
     """A SequencePointTier class
 
     Args:
-        tier (PointTier | list[Point]): 
-            Either a `praatio` PointTier or a list of `praatio` Points
+        tier (list[Point]|list[SequencePoint]|PointTier|Self): 
+            A list of SequencePoints, or another SequencePointTier
         entry_class (Type[SequencePoint]):
             A SequencePoint subclass
+
+    Examples:
+        ```{python}
+        from aligned_textgrid import SequencePoint, SequencePointTier
+
+        point_a = SequencePoint((0,"a"))
+        point_b = SequencePoint((1, "b"))
+
+        point_tier = SequencePointTier([point_a, point_b])
+
+        print(point_tier)
+        ```
+
+        ```{python}
+        print(point_tier.sequence_list)
+        ```
     
     Attributes:
         ...: 
