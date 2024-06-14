@@ -87,9 +87,16 @@ class TestSequenceIntervalCreation:
         test_int = SequenceInterval([0, 1, "test"])
         assert isinstance(test_int, SequenceInterval)
 
+        with pytest.raises(ValueError):
+            SequenceInterval([1, 2, 3, 4])
+
+
     def test_tup(self):
         test_int = SequenceInterval((0,1,"test"))
         assert isinstance(test_int, SequenceInterval)
+
+        with pytest.raises(ValueError):
+            SequenceInterval((1, 2, 3, 4))
     
     def test_self(self):
         class MyInterval(SequenceInterval):
