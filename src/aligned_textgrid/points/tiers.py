@@ -10,6 +10,13 @@ from aligned_textgrid.mixins.within import WithinMixins
 import numpy as np
 from typing import Type
 from collections.abc import Sequence
+
+import sys
+if sys.version_info >= (3,11):
+    from typing import Self
+else:
+    from typing_extensions import Self
+
 import warnings
 
 class SequencePointTier(Sequence, TierMixins, WithinMixins):
@@ -42,18 +49,36 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
     """
     def __init__(
         self, 
-        tier:PointTier|list[Point] = [], 
-        entry_class:Type[SequencePoint] = SequencePoint
+        tier:list[Point]|list[SequencePoint]|PointTier|Self = [], 
+        entry_class:Type[SequencePoint] = None
     ):
+        to_check = tier
         if isinstance(tier, PointTier):
-            self.entry_list = tier.entries
-            self.name = tier.name
-        else: 
-            self.entry_list = tier
-            self.name = entry_class.__name__
-
-        self.entry_class = entry_class
+            to_check = tier.entries
         
+        has_class = any([hasattr(x, "entry_class") for x in to_check])
+
+        if not entry_class and has_class:
+            entry_class = tier[0].entry_class
+        
+        if not entry_class and not has_class:
+            entry_class = SequencePoint
+
+        name = entry_class.__name__
+        entries = tier
+
+        if isinstance(tier, PointTier):
+            entries = tier.entries
+            name = tier.name
+
+        if isinstance(tier, SequencePointTier):
+            entries = tier.entry_list
+            if tier.name != tier.entry_class.__name__:
+                name = tier.name
+        
+        self.entry_list = entries
+        self.entry_class = entry_class
+        self.name = name
         entry_order = np.argsort([x.time for x in self.entry_list])
         self.entry_list = [self.entry_list[idx] for idx in entry_order]
         self.sequence_list = []
