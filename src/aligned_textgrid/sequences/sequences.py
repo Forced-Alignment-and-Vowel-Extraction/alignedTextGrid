@@ -466,6 +466,10 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     @property
     def duration(self) -> float:
         return self.end - self.start
+    
+    @property
+    def entry_class(self):
+        return self.__class__
       
     ## Fusion
     def fuse_rightwards(
