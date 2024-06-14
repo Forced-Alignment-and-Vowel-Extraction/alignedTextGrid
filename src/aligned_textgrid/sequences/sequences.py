@@ -347,7 +347,8 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
         if len(interval) > 3:
             raise ValueError((
                 "The tuple or list to create a SequenceInterval should be no "
-                "more than 3 values long."
+                "more than 3 values long. "
+                f"{len(interval)} were provided."
             ))
 
         interval = praatio.utilities.constants.Interval(*interval)

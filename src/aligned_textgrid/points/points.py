@@ -70,6 +70,12 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
         if isinstance(point, SequencePoint):
             point = (point.time, point.label)
 
+        if len(point) > 2:
+            raise ValueError((
+                "The tuple to create a SequencePoint should be "
+                "no more than 2 values long. "
+                f"{len(point)} were provided."
+            ))
         point = Point(*point)
 
         self.time = point.time

@@ -30,9 +30,15 @@ class TestPointCreation:
         seq_point = SequencePoint([0, "test"])
         assert isinstance(seq_point, SequencePoint)
 
+        with pytest.raises(ValueError):
+            SequencePoint([1,2,3])
+
     def test_tuple(self):
         seq_point = SequencePoint((0, "test"))
         assert isinstance(seq_point, SequencePoint)
+
+        with pytest.raises(ValueError):
+            assert SequencePoint((1,2,3))
 
     def test_self(self):
         class MyPoint(SequencePoint):
