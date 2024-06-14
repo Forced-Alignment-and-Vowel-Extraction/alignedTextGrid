@@ -12,6 +12,12 @@ import numpy as np
 from typing import Type
 from collections.abc import Sequence
 
+import sys
+if sys.version_info >= (3,11):
+    from typing import Self
+else:
+    from typing_extensions import Self
+
 import warnings
 
 class SequenceTier(Sequence, TierMixins, WithinMixins):
@@ -21,10 +27,26 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
     `entry_class` instances for every interval.
 
     Args:
-        tier (list[Interval] | IntervalTier, optional): 
-            A list of interval entries. Defaults to [Interval(None, None, None)].
+        tier (list[Interval] | list[SequenceInterval] | IntervalTier | Self, optional): 
+            A list of interval entries. Defaults to `[]`.
         entry_class (Type[SequenceInterval], optional): 
             The sequence class for this tier. Defaults to SequenceInterval.
+
+    Examples:
+        ```{python}
+        from aligned_textgrid import SequenceInterval, Word, SequenceTier
+
+        the = Word((0,1, "the"))
+        dog = Word((0,1,"dog"))
+
+        word_tier = SequenceTier([the, dog])
+
+        print(word_tier)
+        ```
+
+        ```{python}
+        print(word_tier.sequence_list)
+        ```
     
     Attributes:
         sequence_list (list[SequenceInterval]):
@@ -42,15 +64,37 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
     """
     def __init__(
         self,
-        tier: list[Interval] | IntervalTier = [],
-        entry_class: Type[SequenceInterval] = SequenceInterval
+        tier: list[Interval] | list[SequenceInterval] | IntervalTier | Self  = [],
+        entry_class: Type[SequenceInterval] = None
     ):
+        
+        to_check = tier
         if isinstance(tier, IntervalTier):
-            self.entry_list = tier.entries
-            self.name = tier.name
-        else:
-            self.entry_list = tier
-            self.name = entry_class.__name__
+            to_check = tier.entries
+
+        has_class = any([hasattr(x, "entry_class") for x in to_check])
+
+        if not entry_class and has_class:
+            entry_class = tier[0].entry_class
+        
+        if not entry_class and not has_class:
+            entry_class = SequenceInterval
+        
+        name = entry_class.__name__
+        entries = tier
+
+        if isinstance(tier, IntervalTier):
+            entries = tier.entries
+            name = tier.name
+        if isinstance(tier, SequenceTier):
+            entries = tier.entry_list
+            if tier.name != tier.entry_class.__name__:
+                name = tier.name
+        
+
+
+        self.entry_list = entries
+        self.name = name
         self.entry_class = entry_class
         self.superset_class = self.entry_class.superset_class
         self.subset_class =  self.entry_class.subset_class
