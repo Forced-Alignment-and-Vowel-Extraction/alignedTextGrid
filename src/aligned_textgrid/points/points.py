@@ -104,6 +104,10 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     
     ## Properties
     @property
+    def entry_class(self):
+        return self.__class__
+
+    @property
     def fol_distance(self):
         if self.fol and self.fol.time:
             return self.fol.time - self.time
