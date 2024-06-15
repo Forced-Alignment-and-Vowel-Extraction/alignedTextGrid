@@ -4,7 +4,7 @@ from aligned_textgrid.polar.polar_classes import PrStr, ToBI, \
 from aligned_textgrid.polar.polar_grid import PolarGrid
 from aligned_textgrid.outputs.to_dataframe import to_df
 from functools import reduce
-
+import cloudpickle
 class TestDataframes:
 
     atg = AlignedTextGrid(
@@ -75,3 +75,11 @@ class TestDataframes:
 
         assert df1.shape[0] == len(self.atg[0].Phone)+ len(self.atg[1].Phone)
         assert df2.shape[0] == total_len
+
+class TestPickle:
+    atg = AlignedTextGrid(
+        textgrid_path="tests/test_data/KY25A_1.TextGrid",
+        entry_classes=[Word, Phone]
+    )
+    def test_pickling(self):
+        assert cloudpickle.loads(cloudpickle.dumps(self.atg))

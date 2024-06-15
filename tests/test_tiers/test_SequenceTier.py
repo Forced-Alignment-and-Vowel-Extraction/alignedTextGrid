@@ -1,6 +1,7 @@
 import pytest
 from aligned_textgrid.sequences.sequences import *
 from aligned_textgrid.sequences.tiers import *
+from aligned_textgrid import Word, Phone
 import numpy as np
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
@@ -49,6 +50,26 @@ class TestSequenceTierDefault:
     def test_default_getitme(self):
         with pytest.raises(IndexError):
             _ = self.default_tier[0]
+
+class TestTierMaking:
+
+    def test_class_setting(self):
+        the = Word((0,1,"the"))
+        dog = Word((1,2,"dog"))
+        tier = SequenceTier([the, dog])
+        assert issubclass(tier.entry_class, Word)
+        assert all([isinstance(x, Word) for x in tier])
+
+        tier2 = SequenceTier([the, dog], entry_class=Phone)
+        assert issubclass(tier2.entry_class, Phone)
+        assert all([isinstance(x, Phone) for x in tier2])
+
+        tier3 = SequenceTier(tier2, entry_class=Word)
+        assert issubclass(tier3.entry_class, Word)
+        assert all([isinstance(x, Word) for x in tier3])
+
+    
+
 
 class TestReadTier:
     read_tg = openTextgrid(

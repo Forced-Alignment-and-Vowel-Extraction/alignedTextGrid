@@ -24,6 +24,34 @@ class TestSequencePointDefault:
     def test_default_prev(self):
         assert self.seq_point.prev.label == "#"
 
+class TestPointCreation:
+
+    def test_list(self):
+        seq_point = SequencePoint([0, "test"])
+        assert isinstance(seq_point, SequencePoint)
+
+        with pytest.raises(ValueError):
+            SequencePoint([1,2,3])
+
+    def test_tuple(self):
+        seq_point = SequencePoint((0, "test"))
+        assert isinstance(seq_point, SequencePoint)
+
+        with pytest.raises(ValueError):
+            assert SequencePoint((1,2,3))
+
+    def test_self(self):
+        class MyPoint(SequencePoint):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+        
+        seq_point = SequencePoint((0, "test"))
+        new_point = MyPoint(seq_point)
+
+        assert isinstance(new_point, MyPoint)
+        assert new_point.time == seq_point.time
+        assert new_point.label == seq_point.label
+
 class TestPrecedence:
     seq_point_a = SequencePoint(Point(1, "a"))
     seq_point_b = SequencePoint(Point(2, "b"))

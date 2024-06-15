@@ -7,6 +7,7 @@ import numpy as np
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.textgrid import openTextgrid
+from pathlib import Path
 
 class MyWord(SequenceInterval):
     def __init__(self, Interval = Interval(None, None, None)):
@@ -35,6 +36,31 @@ class TestReadFile:
         )
         atg = AlignedTextGrid(textgrid = tg)
 
+    def test_read_arg(self):
+        """
+        Test that the first unnamed arg can process
+        str, Path, and praatio.Textgrid classes correctly.
+        """
+        tg = openTextgrid(
+            fnFullPath="tests/test_data/KY25A_1.TextGrid",
+            includeEmptyIntervals=True
+        )        
+
+        atg1 = AlignedTextGrid(
+            "tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+        atg2 = AlignedTextGrid(
+            Path("tests/test_data/KY25A_1.TextGrid"),
+            entry_classes=[Word, Phone]
+        )
+        atg3 = AlignedTextGrid(
+           tg,
+            entry_classes=[Word, Phone]
+        )
+
+        assert len(atg1) == len(atg2) == len(atg3)
+
 class TestBasicRead:
 
     def test_read(self):
@@ -56,7 +82,7 @@ class TestBasicRead:
     def test_read_multi(self):
         atg1 = AlignedTextGrid(
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
-            entry_classes=custom_classes(["W1", "P1"]) + custom_classes(["W2", "P2"])
+            entry_classes=[custom_classes(["W1", "P1"]), custom_classes(["W2", "P2"])]
             )
         assert len(atg1) == 2
         assert [len(tg) == 2 for tg in atg1]
@@ -69,20 +95,15 @@ class TestBasicRead:
         assert len(atg1) == 4
         assert [len(tg) == 1 for tg in atg1]
 
-    def test_read_partial2(self):
-        atg1 = AlignedTextGrid(
-            textgrid_path="tests/test_data/KY25A_1.TextGrid", 
-            entry_classes=[Phone]
-            )      
-        assert len(atg1) == 4
-        assert [len(tg) == 1 for tg in atg1]
 
 class TestMultiRead:
     def test_read(self):
         atg_multi = AlignedTextGrid(
             textgrid_path="tests/test_data/KY25A_1.TextGrid", 
-            entry_classes=custom_classes(["Word1", "Phone1"]) + 
+            entry_classes=[
+                custom_classes(["Word1", "Phone1"]),
                 custom_classes(["Word2", "Phone2"])
+                ]
             )
 
         assert len(atg_multi) == 2
@@ -111,8 +132,8 @@ class TestClassSetting:
     atg3 = AlignedTextGrid(
         textgrid_path="tests/test_data/KY25A_1.TextGrid", 
         entry_classes = [
-            custom_classes("MyWord", "MyPhone"),
-            custom_classes("MyWord", "MyPhone")
+            custom_classes(["MyWord", "MyPhone"]),
+            custom_classes(["MyWord", "MyPhone"])
         ]
     )
     atg4 = AlignedTextGrid()
@@ -123,7 +144,8 @@ class TestClassSetting:
         for g1, g2 in zip(self.atg1.tier_groups, self.atg2.tier_groups):
             assert g1.tier_names == g2.tier_names
         
-        assert self.atg1.entry_classes == self.atg2.entry_classes
+        # Intentionally broken (issue #180)
+        # assert self.atg1.entry_classes == self.atg2.entry_classes
 
         assert np.isclose(self.atg1.xmin, self.atg2.xmin)
         assert np.isclose(self.atg1.xmax, self.atg2.xmax)
@@ -133,8 +155,8 @@ class TestClassSetting:
         target_class1 = self.atg1.get_class_by_name("MyWord")
         target_class2 = self.atg2.get_class_by_name("MyWord")
 
-        assert target_class1 is MyWord
-        assert target_class2 is MyWord
+        assert target_class1.__qualname__ == "MyWord"
+        assert target_class2.__qualname__ == "MyWord"
 
         missing_class1 = self.atg1.get_class_by_name("Foo")
         missing_class2 = self.atg2.get_class_by_name("Foo")
@@ -143,8 +165,6 @@ class TestClassSetting:
         assert missing_class2 is None
         assert missing_class4 is None
 
-        target_classes = self.atg3.get_class_by_name("MyWord")
-        assert len(target_classes) > 1
 
     def test_empty_class_indexing(self):
         assert len(self.atg4) == 0
@@ -187,6 +207,24 @@ class TestInGetLen:
 
     def test_iter(self):
         assert len([x.xmin for x in self.atg]) == len(self.atg)
+
+class TestProperties:
+    atg = AlignedTextGrid(
+        textgrid_path="tests/test_data/KY25A_1.TextGrid", 
+        entry_classes=[MyWord, MyPhone]
+        )
+    
+    def test_xmin(self):
+        assert self.atg.xmin is not None
+    
+    def test_xmax(self):
+        assert self.atg.xmax is not None
+
+    def test_tier_names(self):
+        names = self.atg.tier_names
+        assert len(names) == len(self.atg)
+        for name, group in zip(names, self.atg):
+            assert len(name) == len(group)
 
 class TestGetInterval:
     atg = AlignedTextGrid(
@@ -249,6 +287,12 @@ class TestTierGroupNames:
 
         assert isinstance(tg.IVR, TierGroup)
 
+    def test_tiergroup_name_duplicates(self):
+        with pytest.warns():
+            tg = AlignedTextGrid(
+                textgrid_path="tests/test_data/josef-fruehwald_speaker_dup.TextGrid",
+                entry_classes=[Word, Phone]
+            )
 class TestTierGroupShift:
     def test_tiergroup_shift(self):
         tg = AlignedTextGrid(
@@ -298,7 +342,7 @@ class TestInterleave:
         assert len(all_len) > 0
         assert all([l == 3 for l in all_len])
 
-        assert tg[0][0].subset_class is Word
+        assert issubclass(tg[0][0].subset_class, Word)
         assert not issubclass(tg[0].Word.superset_class, Top)
 
     def test_mid_interleave(self):
@@ -317,7 +361,7 @@ class TestInterleave:
         assert len(all_len) > 0
         assert all([l == 3 for l in all_len])
 
-        assert tg[0][0].entry_class is Word
+        assert issubclass(tg[0][0].entry_class, Word)
         assert not issubclass(tg[0].Word.subset_class, Phone)
 
     def test_multi_interleave(self):
@@ -341,11 +385,11 @@ class TestInterleave:
         tg_lens = [len(tgr) for tgr in tg]
         assert all([l == 4 for l in tg_lens])
 
-        assert tg[0]\
+        assert issubclass(tg[0]\
             .Phone\
             .superset_class\
             .superset_class\
-            .superset_class == Word
+            .superset_class, Word)
     
     def test_bottom_class(self):
         Word,Phone = custom_classes(["Word", "Phone"])        
@@ -360,7 +404,7 @@ class TestInterleave:
             timing_from="above"
         )
 
-        assert tg[0][-1].superset_class is Phone
+        assert issubclass(tg[0][-1].superset_class,Phone)
         assert issubclass(tg[0][-1].subset_class, Bottom)
 
     def test_label_copy(self):
@@ -484,3 +528,82 @@ class TestTextGridShift:
 
         assert np.isclose(new_xmin - orig_xmin, -3)
         assert np.isclose(new_xmax - orig_xmax, -3)
+
+class TestPop:
+
+    Turns, Word,Phone = custom_classes(["Turns", "Word", "Phone"])        
+    atg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1_multi.TextGrid",
+            entry_classes=[Word, Phone, Turns]
+        )
+    turn_lens = [
+            len(x.contains) 
+            for tg in atg
+            for x in tg.Turns
+            if len(x.label) > 0
+        ]
+
+    def test_pre_pop(self):
+       for tg in self.atg:
+           entry_class_names = [x.__name__ for x in tg.entry_classes]
+           assert "Word" in entry_class_names
+    
+    def test_run_pop(self):
+        self.atg.pop_class(Word)
+
+        for tg in self.atg:
+           entry_class_names = [x.__name__ for x in tg.entry_classes]
+           assert "Word" not in entry_class_names
+
+    def test_pop_result(self):
+        self.new_turn_lens = [
+            len(x.contains) 
+            for tg in self.atg
+            for x in tg.Turns
+            if len(x.label) > 0
+        ]
+
+        for old, new in zip(self.turn_lens, self.new_turn_lens):
+            assert new > old
+
+    def test_no_pop(self):
+        assert len(self.atg[0]) == 2
+        self.atg.pop_class("NotInAtg")
+        assert len(self.atg[0]) == 2
+
+    def test_all_pop(self):
+        self.atg.pop_class("Turns")
+        with pytest.warns():
+            self.atg.pop_class("Phone")
+
+class TestClassCloning:
+
+    def test_class_clone(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes= [Word, Phone]
+        )
+
+        flat_classes = [c for l in  tg.entry_classes for c in l]
+        
+        assert not Word in flat_classes
+
+        assert any(
+            [issubclass(c, Word) for c in flat_classes]
+        )
+
+    def test_post_interleave(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes= [Word, Phone]
+        )
+
+        tg.interleave_class(name = "Syl", above=Phone)
+
+        p_entry = tg[0].Phone.entry_class
+        assert not p_entry is Phone
+        assert issubclass(p_entry, Phone)
+
+        assert not p_entry.superset_class is Phone.superset_class
+        assert Phone.superset_class is Word
+        assert not p_entry.superset_class is Word

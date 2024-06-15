@@ -10,19 +10,43 @@ from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
 from aligned_textgrid.mixins.within import WithinMixins
 import numpy as np
 from typing import Type
+from collections.abc import Sequence
+
+import sys
+if sys.version_info >= (3,11):
+    from typing import Self
+else:
+    from typing_extensions import Self
+
 import warnings
 
-class SequenceTier(TierMixins, WithinMixins):
+class SequenceTier(Sequence, TierMixins, WithinMixins):
     """A sequence tier
 
     Given a `praatio` `IntervalTier` or list of `Interval`s, creates
     `entry_class` instances for every interval.
 
     Args:
-        tier (list[Interval] | IntervalTier, optional): 
-            A list of interval entries. Defaults to [Interval(None, None, None)].
+        tier (list[Interval] | list[SequenceInterval] | IntervalTier | Self, optional): 
+            A list of interval entries. Defaults to `[]`.
         entry_class (Type[SequenceInterval], optional): 
             The sequence class for this tier. Defaults to SequenceInterval.
+
+    Examples:
+        ```{python}
+        from aligned_textgrid import SequenceInterval, Word, SequenceTier
+
+        the = Word((0,1, "the"))
+        dog = Word((0,1,"dog"))
+
+        word_tier = SequenceTier([the, dog])
+
+        print(word_tier)
+        ```
+
+        ```{python}
+        print(word_tier.sequence_list)
+        ```
     
     Attributes:
         sequence_list (list[SequenceInterval]):
@@ -40,16 +64,35 @@ class SequenceTier(TierMixins, WithinMixins):
     """
     def __init__(
         self,
-        tier: list[Interval] | IntervalTier = [],
-        entry_class: Type[SequenceInterval] = SequenceInterval
+        tier: list[Interval] | list[SequenceInterval] | IntervalTier | Self  = [],
+        entry_class: Type[SequenceInterval] = None
     ):
-        super().__init__()
+        
+        to_check = tier
         if isinstance(tier, IntervalTier):
-            self.entry_list = tier.entries
-            self.name = tier.name
-        else:
-            self.entry_list = tier
-            self.name = entry_class.__name__
+            to_check = tier.entries
+
+        has_class = any([hasattr(x, "entry_class") for x in to_check])       
+
+        if not entry_class and has_class:
+            entry_class = tier[0].entry_class
+        
+        if not entry_class and not has_class:
+            entry_class = SequenceInterval
+        
+        name = entry_class.__name__
+        entries = tier
+
+        if isinstance(tier, IntervalTier):
+            entries = tier.entries
+            name = tier.name
+        if isinstance(tier, SequenceTier):
+            entries = tier.entry_list
+            if tier.name != tier.entry_class.__name__:
+                name = tier.name            
+
+        self.entry_list = entries
+        self.name = name
         self.__set_classes(entry_class)
         self.__build_sequence_list()
         self.__set_precedence()
@@ -71,6 +114,13 @@ class SequenceTier(TierMixins, WithinMixins):
             this_seq.set_superset_class(self.superset_class)
             this_seq.set_subset_class(self.subset_class)
             self.sequence_list += [this_seq]
+
+    def __getitem__(self, idx):
+        return self.sequence_list[idx]
+
+    def __len__(self):
+        return len(self.sequence_list)
+
 
     def __set_precedence(self):
         for idx,seq in enumerate(self.sequence_list):
@@ -116,7 +166,6 @@ class SequenceTier(TierMixins, WithinMixins):
 
     def __repr__(self):
         return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
-    
                 
     @property
     def starts(self):
@@ -211,7 +260,7 @@ class SequenceTier(TierMixins, WithinMixins):
         out_tg.save(save_path, "long_textgrid")
 
 
-class TierGroup(TierGroupMixins, WithinMixins):
+class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     """Tier Grouping
 
     Args:
@@ -235,10 +284,10 @@ class TierGroup(TierGroupMixins, WithinMixins):
         self,
         tiers: list[SequenceTier] = [SequenceTier()]
     ):
-        super().__init__()
         self.tier_list = self._arrange_tiers(tiers)
+        #self.entry_classes = [x.__class__ for x in self.tier_list]
         self._name = self.make_name()
-
+        self._set_tier_names()
         for idx, tier in enumerate(self.tier_list):
             if idx == len(self.tier_list)-1:
                 break
@@ -261,11 +310,32 @@ class TierGroup(TierGroupMixins, WithinMixins):
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
                     u.validate()
+    
+    def __getitem__(
+            self,
+            idx: int|list
+    ):
+        if type(idx) is int:
+            return self.tier_list[idx]
+        if len(idx) != len(self):
+            raise Exception("Attempt to index with incompatible list")
+        if type(idx) is list:
+            out_list = []
+            for x, tier in zip(idx, self.tier_list):
+                out_list.append(tier[x])
+            return(out_list)
+
+    def __len__(self):
+        return len(self.tier_list)
         
     def __repr__(self):
         n_tiers = len(self.tier_list)
         classes = [x.__name__ for x in self.entry_classes]
         return f"TierGroup with {n_tiers} tiers. {repr(classes)}"
+    
+        
+    def __setstate__(self, d):
+        self.__dict__ = d
     
     def _arrange_tiers(
             self, 

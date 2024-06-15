@@ -11,20 +11,20 @@ from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from aligned_textgrid.points.tiers import SequencePointTier, PointsGroup
 from aligned_textgrid.mixins.within import WithinMixins
-from aligned_textgrid.custom_classes import custom_classes
+from aligned_textgrid.custom_classes import custom_classes, clone_class, get_class_hierarchy
 from typing import Type, Sequence, Literal
 from copy import copy
 import numpy as np
+from collections.abc import Sequence
+from pathlib import Path
 import warnings
 
 
-class AlignedTextGrid(WithinMixins):
+class AlignedTextGrid(Sequence, WithinMixins):
     """An aligned Textgrid
 
     Args:
-        textgrid (Textgrid, optional): A `praatio` TextGrid
-        textgrid_path (str, optional): A path to a TextGrid file to be 
-            read in with `praatio.textgrid.openTextgrid`
+        textgrid (str|Path|praatio.textgrid.Textgrid, optional): A `praatio` TextGrid
         entry_classes (Sequence[Sequence[Type[SequenceInterval]]] | Sequence[Type[SequenceInterval]], optional): 
             If a single list of `SequenceInterval` subclasses is given, they will be
             repeated as many times as necessary to assign a class to every tier. 
@@ -53,22 +53,20 @@ class AlignedTextGrid(WithinMixins):
 
     def __init__(
         self,
-        textgrid: Textgrid = None,
-        textgrid_path: str =  None,
+        textgrid: Textgrid|str|Path = None,
         entry_classes: 
             Sequence[Sequence[Type[SequenceInterval]]] |
             Sequence[Type[SequenceInterval]]
-              = [SequenceInterval]
+              = [SequenceInterval],
+        *,
+        textgrid_path: str =  None
     ):
-        self.entry_classes = entry_classes
+        self.entry_classes = self._reclone_classes(entry_classes)
+        if textgrid_path:
+            textgrid = textgrid_path
+
         if textgrid:
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(textgrid, entry_classes)
-        elif textgrid_path:
-            tg = openTextgrid(
-                fnFullPath=textgrid_path, 
-                includeEmptyIntervals=True
-            )
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, entry_classes)
+            self._process_textgrid_arg(textgrid)
         else:
             warnings.warn('Initializing an empty AlignedTextGrid')
             self._init_empty()
@@ -79,11 +77,8 @@ class AlignedTextGrid(WithinMixins):
         for tgr in self.tier_groups:
             tgr.within = self
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
-
-    
-    def __contains__(self, item):
-        return item in self.tier_groups
-    
+        self._set_group_names()
+        
     def __getitem__(
             self, 
             idx: int | list
@@ -100,20 +95,9 @@ class AlignedTextGrid(WithinMixins):
                 out_list.append(tier[x])
             return(out_list)
         
-    def __iter__(self):
-        self._idx = 0
-        return self
-
     def __len__(self):
         return len(self.tier_groups)
 
-    def __next__(self):
-        if self._idx < len(self.tier_groups):
-            out = self.tier_groups[self._idx]
-            self._idx += 1
-            return(out)
-        raise StopIteration
-    
     def __repr__(self):
         n_groups = len(self.tier_groups)
         group_names = [x.name for x in self.tier_groups]
@@ -122,28 +106,22 @@ class AlignedTextGrid(WithinMixins):
         return f"AlignedTextGrid with {n_groups} groups named {repr(group_names)} "\
                f"each with {repr(n_tiers)} tiers. {repr(entry_classes)}"
     
-    def __getattr__(
-            self, 
-            name: str
-        ):
-        tier_group_names = [x.name for x in self.tier_groups]
-        match_list = [x  for x in tier_group_names if x == name]
+    def __setstate__(self, d):
+        self.__dict__ = d
 
-        if len(match_list) == 1:
-            match_idx = tier_group_names.index(name)
-            self.__setattr__(name, self.tier_groups[match_idx])
-            return self.tier_groups[match_idx]
+    def _process_textgrid_arg(self, arg):
+        if isinstance(arg, str) or isinstance(arg, Path):
+            arg_str = str(arg)
+            tg = openTextgrid(
+                fnFullPath=arg_str, 
+                includeEmptyIntervals=True,
+                duplicateNamesMode='rename'
+            )
         
-        if len(match_list) > 1:
-            raise AttributeError(f"This AlignedTextGrid has multiple TierGroups called {name}")
+        if isinstance(arg, Textgrid):
+            tg = arg
         
-        if len(match_list) < 1:
-            raise AttributeError(f"This AlignedTextGrid has no attribute {name}")    
-    def index(
-            self,
-            group: TierGroup|PointsGroup
-        )->int:
-        return self.tier_groups.index(group)
+        self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
 
     def _extend_classes(
             self, 
@@ -167,6 +145,7 @@ class AlignedTextGrid(WithinMixins):
 
         if type(entry_classes[0]) in [list, tuple]:
             return entry_classes
+        
         if len(entry_classes) == 1:
             extension = len(tg.tiers) // len(entry_classes)
             entry_classes = [entry_classes] * extension
@@ -175,7 +154,59 @@ class AlignedTextGrid(WithinMixins):
             extension = len(tg.tiers) // len(entry_classes)
             entry_classes = [entry_classes] * extension
             return entry_classes
+        
         return entry_classes
+
+    def _reclone_classes(
+            self, 
+            entry_classes:list[SequenceInterval|SequencePoint]|list[list[SequenceInterval|SequencePoint]]
+            ) -> list[SequenceInterval|SequencePoint]|list[list[SequenceInterval|SequencePoint]]:
+        
+        flat_classes = entry_classes
+        if type(entry_classes[0]) is list:
+            flat_classes = [c for tg in entry_classes for c in tg]
+        
+        unique_classes = list(set(flat_classes))
+
+        points = [c for c in unique_classes if issubclass(c, SequencePoint)]
+        tops = [
+            c 
+            for c in unique_classes 
+            if issubclass(c, SequenceInterval)
+            if issubclass(c.superset_class, Top)
+        ]
+
+        points_clone = [clone_class(p) for p  in points]
+        tops_clone = [clone_class(t) for t in tops]
+        full_seq_clone = []
+        for tclone in tops_clone:
+            full_seq_clone += get_class_hierarchy(tclone, [])
+
+        full_clone = points_clone + full_seq_clone
+
+        if type(entry_classes[0]) is list:
+            new_entry_classes = [
+                self._swap_classes(tg_classes, full_clone)
+                for tg_classes in entry_classes
+            ]
+        else:
+            new_entry_classes = self._swap_classes(entry_classes, full_clone)
+
+        return new_entry_classes
+
+    def _swap_classes(
+            self, 
+            orig_classes: list[SequenceInterval]|list[SequencePoint], 
+            new_classes: list[SequenceInterval,SequencePoint]
+        )->list[SequenceInterval]|list[SequencePoint]:
+        new_classes_names = [c.__name__ for c in new_classes]
+        orig_classes_names = [c.__name__ for c in orig_classes]
+
+        new_idx = [new_classes_names.index(on) for on in orig_classes_names]
+
+        out_classes = [new_classes[i] for i in new_idx]
+        return out_classes
+
 
     def _init_empty(self):
         self.tier_groups = []
@@ -276,6 +307,27 @@ class AlignedTextGrid(WithinMixins):
                 tier_groups.append(PointsGroup(point_tier_list))   
         return tier_groups
     
+    def _set_group_names(self):
+        tier_group_names = [x.name for x in self.tier_groups]
+        duplicate_names = [
+            name 
+            for name in tier_group_names 
+            if tier_group_names.count(name) > 1
+        ]
+
+        if len(duplicate_names) > 0:
+            unique_dup = set(duplicate_names)
+            warnings.warn(
+                (
+                    f"Some TierGroups had duplicate names, {unique_dup}. "
+                    "Named accessors for TierGroups unavailable."
+                )
+            )
+            return
+        
+        for idx, name in enumerate(tier_group_names):
+            setattr(self, name, self.tier_groups[idx])
+
     @property
     def tier_names(self):
         if len(self) == 0:
@@ -312,19 +364,21 @@ class AlignedTextGrid(WithinMixins):
     def interleave_class(
             self, 
             name:str,
-            above:SequenceInterval|str = None,
-            below:SequenceInterval|str = None,
+            above:Type[SequenceInterval]|str = None,
+            below:Type[SequenceInterval]|str = None,
             timing_from: Literal["above", "below"] = "below",
             copy_labels: bool = True
         ):
         """Interleave a new entry class.
 
+        You can set either `above` or `below`, but not both.
+
         Args:
             name (str): 
                 Name of the new class
-            above (SequenceInterval|str, optional): 
+            above (Type[SequenceInterval]|str, optional): 
                 Which entry class to interleave above.
-            below (SequenceInterval|str, optional): 
+            below (Type[SequenceInterval]|str, optional): 
                 Which entry class to interleave below.
             timing_from (Literal['above', 'below'], optional): 
                 Which tier to draw timing from. Defaults to "below".
@@ -332,8 +386,28 @@ class AlignedTextGrid(WithinMixins):
                 Whether or not to copy labels from the tier providing
                 timing information. Defaults to True.
 
+        Examples:
+            ```{python}
+            from aligned_textgrid import AlignedTextGrid, Word, Phone
+
+            atg = AlignedTextGrid(
+                textgrid_path = "../usage/resources/josef-fruehwald_speaker.TextGrid",
+                entry_classes = [Word, Phone]
+            )
+            print(atg)
+            ```
+
+            ```{python}
+            atg.interleave_class(
+                name = "Syllable",
+                above = "Phone",
+                timing_from = "below",
+                copy_labels = True
+            )
+            print(atg)
+            ```
         
-        You can set either `above` or `below`, but not both.
+
         """
 
         if above and below:
@@ -345,18 +419,20 @@ class AlignedTextGrid(WithinMixins):
         
         new_class = custom_classes([name])[0]
 
-        if type(above) is str:
-            above = self.get_class_by_name(above)
-
-        if type(below) is str:
-            below = self.get_class_by_name(below)
+        if type(above) is type:
+            above = above.__name__
+        
+        if type(below) is type:
+            below = below.__name__
 
         if above:
+            above = self.get_class_by_name(above)
             up_class = copy(above.superset_class)
             down_class = above
             specified_class = above
 
         if below:
+            below = self.get_class_by_name(below)
             up_class = below
             down_class = copy(below.subset_class)
             specified_class = below
@@ -414,6 +490,91 @@ class AlignedTextGrid(WithinMixins):
             tgr.within = self
         self.contains = self.tier_groups
 
+    def pop_class(
+            self, 
+            name: Type[SequenceInterval]|str
+        ):
+        """Pop a class from an AlignedTextGrid
+
+        Remove a class of tiers from an AlignedTextGrid
+
+        Args:
+            name (Type[SequenceInterval] | str):
+                The tier class to remove.
+
+        Examples:
+            ```{python}
+            from aligned_textgrid import AlignedTextGrid, custom_classes
+
+            atg = AlignedTextGrid(
+                textgrid_path = "../usage/resources/spritely.TextGrid",
+                entry_classes = custom_classes([
+                    "PrWord",
+                    "Foot",
+                    "Syl",
+                    "OnsetRime",
+                    "SylPart",
+                    "Phone"
+                ])
+            )
+            print(atg)
+            ```
+
+            ```{python}
+            atg.pop_class("SylPart")
+            print(atg)
+            ```
+        """
+
+        if type(name) is type:
+            name = name.__name__
+
+        new_tier_groups = []
+        for tg in self.tier_groups:
+            entry_classes = [t.entry_class.__name__ for t in tg]
+
+            if not name in entry_classes:
+                new_tier_groups.append(tg)
+                continue
+            
+            if name in entry_classes and len(entry_classes) == 1:
+                warnings.warn(
+                    (
+                        f"TierGroup {tg.name} contained only {name} tier "
+                        "so it was removed."
+                    )
+                )
+                continue
+
+            pop_tier, = [t for t in tg if t.entry_class.__name__ == name]
+            keep_tiers = [t for t in tg if t.entry_class.__name__ != name]
+
+            pop_tier_super = pop_tier.entry_class.superset_class
+            pop_tier_sub = pop_tier.entry_class.subset_class
+            
+            if not isinstance(pop_tier_super, Top):
+                pop_tier_super.set_subset_class(pop_tier_sub)
+
+            if not isinstance(pop_tier_sub, Bottom):
+                pop_tier_sub.set_superset_class(pop_tier_super)
+
+            for tier in keep_tiers:
+                tier.superset_class = tier.entry_class.superset_class
+                tier.subset_class = tier.entry_class.subset_class
+            new_tg = TierGroup(keep_tiers)
+            for seq in new_tg[-1]:
+                seq.subset_list = []
+                seq.contains = []
+            new_tg.name = tg.name
+            new_tier_groups.append(new_tg)
+        
+        self.tier_groups = new_tier_groups
+        new_entry_classes = [tg.entry_classes for tg in self.tier_groups]
+        self.entry_classes = new_entry_classes
+        for tgr in self.tier_groups:
+            tgr.within = self
+        self.contains = self.tier_groups            
+            
     def get_class_by_name(
             self, 
             class_name: str

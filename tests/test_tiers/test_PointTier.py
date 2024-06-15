@@ -11,25 +11,36 @@ class TestPointTierCreation:
     point_a = Point(1, "a")
     point_b = Point(2, "b")
 
+    point_a2 = SequencePoint((1, "a"))
+    point_b2 = SequencePoint((2, "b"))
+
     point_tier = PointTier(name = "test", entries = [point_a, point_b])
 
     seq_point_tier = SequencePointTier(point_tier)
+    seq_point_tier2 = SequencePointTier([point_a2, point_b2])
     seq_point_a = seq_point_tier[0]
+    seq_point_a2 = seq_point_tier2[0]
 
     def test_tier_name(self):
         assert self.seq_point_tier.name == "test"
+        assert self.seq_point_tier2.name == "SequencePoint"
 
     def test_tier_class(self):
         assert self.seq_point_tier.entry_class == SequencePoint
+        assert self.seq_point_tier2.entry_class == SequencePoint
     
     def test_tier_length(self):
         assert len(self.seq_point_tier) == 2
+        assert len(self.seq_point_tier2) == 2
     
     def test_indexing(self):
         assert self.seq_point_tier[0]
+        assert self.seq_point_tier2[0]
     
     def test_tier_contains(self):
         assert self.seq_point_a in self.seq_point_tier
+        assert self.seq_point_a2 in self.seq_point_tier2
+        assert not self.point_a2 in self.seq_point_tier2
     
     def test_intier(self):
         assert self.seq_point_a.intier is self.seq_point_tier
@@ -58,7 +69,35 @@ class TestPointTierCreation:
         out_tier = self.seq_point_tier.return_tier()
         assert isinstance(out_tier, PointTier)
 
+class TestClassSetting:
+
+    class MyPointA(SequencePoint):
+        def __init__(self, *args):
+            super().__init__(*args)
+
+    class MyPointB(SequencePoint):
+        def __init__(self, *args):
+            super().__init__(*args)
+
+    def test_class_from_point(self):
+        point_a = self.MyPointA((1, "a"))
+        point_b = self.MyPointA((2, "b"))
+
+        point_tier = SequencePointTier([point_a, point_b])
+        assert issubclass(point_tier.entry_class, self.MyPointA)    
+
+    def test_override_class(self):
+        point_a = self.MyPointA((1, "a"))
+        point_b = self.MyPointA((2, "b"))
+
+        point_tier = SequencePointTier([point_a, point_b], entry_class=self.MyPointB)
+
+        assert issubclass(point_tier.entry_class, self.MyPointB)
+        assert not issubclass(point_tier.entry_class, self.MyPointA)
+
+
 class TestPointPrecedence:
+
     def test_first_last(self):
         point_a = Point(1, "a")
         point_b = Point(2, "b")
@@ -214,7 +253,6 @@ class TestAccessors:
     seq_point_tier3 = SequencePointTier(point_tier2, entry_class=MyPointClassA)
 
     seq_point_group1 = PointsGroup(tiers = [seq_point_tier1, seq_point_tier2])
-    seq_point_group2 = PointsGroup(tiers = [seq_point_tier1, seq_point_tier3])
 
     def test_successful_access(self):
         assert self.seq_point_group1.MyPointClassA
@@ -224,6 +262,7 @@ class TestAccessors:
        with pytest.raises(AttributeError, match="has no attribute"):
            self.seq_point_group1.SequencePoint
 
-    def test_too_many(self, match = "has multiple entry classes"):
-        with pytest.raises(AttributeError):
-            self.seq_point_group2.MyPointClassA
+    def test_too_many(self):
+        with pytest.warns():
+            seq_point_group2 = PointsGroup(tiers = [self.seq_point_tier1, self.seq_point_tier3])
+            

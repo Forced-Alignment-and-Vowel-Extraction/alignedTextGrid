@@ -3,6 +3,37 @@ from aligned_textgrid.points.points import *
 from praatio.utilities.utils import Interval
 from typing import Type
 
+
+
+def _top_constructor(self):
+    Top.__init__(self)
+
+def _bottom_constructor(self):
+    Bottom.__init__(self)
+
+def _make_top()->SequenceInterval:
+
+    n_top = len(Top.__subclasses__())
+    this_top_name = f"Top_{n_top}"
+    this_top = type(
+        this_top_name,
+        (Top, ), 
+        {"__init__": _top_constructor}
+    )
+
+    return this_top
+
+def _make_bottom()->SequenceInterval:
+    n_bottom = len(Bottom.__subclasses__())
+    this_bottom_name = f"Bottom_{n_bottom}"
+    this_bottom = type(
+        this_bottom_name, 
+        (Bottom, ), 
+        {"__init__": _bottom_constructor}
+    )
+
+    return this_bottom
+
 def custom_classes(
         class_list:list[str] = [],
         return_order: list[str] | list[int] | None = None,
@@ -64,42 +95,9 @@ def custom_classes(
     Returns:
         (list[Type[SequenceInterval]]): A list of custom `SequenceInterval` subclasses
     """
-    def _sequence_constructor(
-            self, 
-            Interval = Interval(None, None, None)
-        ):
-        SequenceInterval.__init__(self, Interval=Interval)
-    
-    def _point_constructor(
-            self,
-            Point = Point(0, "")
-    ):
-        SequencePoint.__init__(self, Point)
 
-    def _top_constructor(self):
-        Top.__init__(self)
-
-    def _bottom_constructor(self):
-        Bottom.__init__(self)
-
-
-    n_top = len(Top.__subclasses__())
-    n_bottom = len(Bottom.__subclasses__())
-
-    this_top_name = f"Top_{n_top}"
-    this_bottom_name = f"Bottom_{n_bottom}"
-
-    this_top = type(
-        this_top_name,
-        (Top, ), 
-        {"__init__": _top_constructor}
-    )
-    
-    this_bottom = type(
-        this_bottom_name, 
-        (Bottom, ), 
-        {"__init__": _bottom_constructor}
-    )
+    this_top = _make_top()
+    this_bottom = _make_bottom()
 
     if return_order is None:
         return_order = class_list
@@ -109,7 +107,7 @@ def custom_classes(
         newclass = type(
             class_list, 
             (SequenceInterval, ), 
-            {"__init__": _sequence_constructor}
+            dict(SequenceInterval.__dict__)
         )
         newclass.set_superset_class(this_top)
         newclass.set_subset_class(this_bottom)
@@ -119,7 +117,7 @@ def custom_classes(
         newclass = type(
             class_list, 
             (SequencePoint, ), 
-            {"__init__": _point_constructor}
+            dict(SequencePoint.__dict__)
         )
         return newclass
 
@@ -127,11 +125,11 @@ def custom_classes(
         for idx, name in enumerate(class_list):
             if idx in points:
                 class_out_list.append(
-                    type(name, (SequencePoint,), {"__init__": _point_constructor})
+                    type(name, (SequencePoint,), dict(SequencePoint.__dict__))
                 )
             else:
                 class_out_list.append(
-                    type(name, (SequenceInterval,), {"__init__": _sequence_constructor})
+                    type(name, (SequenceInterval,), dict(SequenceInterval.__dict__))
                 )
                 
         interval_classes = [x 
@@ -152,3 +150,88 @@ def custom_classes(
             return_idx = [return_order.index(x) for x in class_list]
             return_list = [class_out_list[idx] for idx in return_idx] 
         return return_list
+
+def clone_class(
+        entry_class:SequenceInterval|SequencePoint,
+        recurse = False
+        ) -> SequenceInterval|SequencePoint:
+    """Clone an entry class. It will have the same name, but
+    any changes to its class properties will not be reflected
+    in the original class.
+
+    Args:
+        entry_class (SequenceInterval | SequencePoint): 
+            A SequenceInterval or SequencePoint to clone
+        recurse (bool, optional): 
+            Used internally to clone the entire hierarchy. 
+            Defaults to False.
+
+    Returns:
+        (SequenceInterval|SequencePoint): A cloned entry class
+    """
+    
+    if issubclass(entry_class, SequenceInterval):
+        if not issubclass(entry_class.superset_class, Top) \
+        and not recurse:
+            raise Exception("Entry class to clone must be top of hierarchy")
+        
+        cloned = type(
+                entry_class.__name__, 
+                (entry_class, ), 
+                dict(entry_class.__dict__)
+            )
+        
+        if issubclass(cloned.superset_class, Top):
+            cloned.set_superset_class(
+                _make_top()
+            )
+
+        if issubclass(cloned.subset_class, Bottom):
+            cloned.set_subset_class(
+                _make_bottom()
+            )
+
+        if (not cloned is cloned.subset_class.superset_class) \
+           and issubclass(cloned.subset_class, SequenceInterval):
+            new_subset = clone_class(cloned.subset_class, recurse=True)
+            cloned.set_subset_class(new_subset)
+
+           
+    if issubclass(entry_class, SequencePoint):
+        cloned = type(
+                entry_class.__name__, 
+                (entry_class, ), 
+                dict(entry_class.__dict__)
+        )
+    
+    return cloned
+
+def get_class_hierarchy(
+        entry_class:SequenceInterval, 
+        out_list = []
+    )->list[SequenceInterval]:
+    """Given a SequenceInterval, this will return
+    the entire class hierarchy
+
+    Args:
+        entry_class (SequenceInterval): 
+            Entry class to search the hierarchy for
+        out_list (list, optional): 
+            Used internally for recursive search.
+            Defaults to [].
+
+    Returns:
+        (list[SequenceInterval]):
+            The class hierarchy
+    """
+    if (not issubclass(entry_class.superset_class, Top)) \
+       and entry_class.superset_class not in out_list:
+        out_list = get_class_hierarchy(entry_class.superset_class, out_list)
+
+    if entry_class not in out_list: 
+        out_list.append(entry_class)
+
+    if not issubclass(entry_class.subset_class, Bottom):
+        out_list = get_class_hierarchy(entry_class.subset_class, out_list)
+    
+    return out_list

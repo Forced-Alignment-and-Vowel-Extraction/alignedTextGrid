@@ -1,6 +1,7 @@
 from difflib import SequenceMatcher
 from functools import reduce
 import re
+import warnings
 
 class TierMixins:
     """Methods and attributes for Sequence Tiers
@@ -27,42 +28,7 @@ class TierMixins:
         if hasattr(self, "sequence_list"):
             raise IndexError(f"{type(self).__name__} tier with name"\
                              f" {self.name} has empty sequence_list")
-        raise AttributeError(f"{type(self).__name__} is not indexable.")
-
-    def __contains__(self, item):
-        return item in self.sequence_list
-    
-    def __getitem__(self, idx):
-        return self.sequence_list[idx]
-    
-    def __iter__(self):
-        self._idx = 0
-        return self
-
-    def __len__(self):
-        return len(self.sequence_list)
-
-    def __next__(self):
-        if self._idx < len(self.sequence_list):
-            out = self.sequence_list[self._idx]
-            self._idx += 1
-            return(out)
-        raise StopIteration
-
-    def index(
-            self, 
-            entry
-        ) -> int:
-        """Return index of a tier entry
-
-        Args:
-            entry (SequencePoint |SequenceInterval):
-                A SequenceInterval or a PointInterval to get the index of.
-
-        Returns:
-            (int): The entry's index
-        """
-        return self.sequence_list.index(entry)
+        raise AttributeError(f"{type(self).__name__} is not indexable.")\
     
 
 class TierGroupMixins:
@@ -72,55 +38,26 @@ class TierGroupMixins:
         []: Indexable and iterable
     """
 
-    def __contains__(self, item):
-        return item in self.tier_list
-    
-    def __getattr__(
-            self,
-            name: str
-    ):
+    def _set_tier_names(self):
         entry_class_names = [x.__name__ for x in self.entry_classes]
-        match_list = [x  for x in entry_class_names if x == name]
+        duplicate_names = [
+            name 
+            for name in entry_class_names 
+            if entry_class_names.count(name)>1
+        ]
 
-        if len(match_list) == 1:
-            match_idx = entry_class_names.index(name)
-            self.__setattr__(name, self.tier_list[match_idx])
-            return self.tier_list[match_idx]
-        
-        if len(match_list) > 1:
-            raise AttributeError(f"{type(self).__name__} has multiple entry classes for {name}")
-        
-        if len(match_list) < 1:
-            raise AttributeError(f"{type(self).__name__} has no attribute {name}")
-    
-    def __getitem__(
-            self,
-            idx: int|list
-    ):
-        if type(idx) is int:
-            return self.tier_list[idx]
-        if len(idx) != len(self):
-            raise Exception("Attempt to index with incompatible list")
-        if type(idx) is list:
-            out_list = []
-            for x, tier in zip(idx, self.tier_list):
-                out_list.append(tier[x])
-            return(out_list)
-    
-    def __iter__(self):
-        self._idx = 0
-        return self
+        if len(duplicate_names) > 0:
+            warnings.warn(
+                (
+                    f"Some tiers have the same entry class {set(duplicate_names)}. "
+                    "Named accessors will be unavailable."
+                 )
+            )
+            return
 
-    def __len__(self):
-        return len(self.tier_list)
+        for idx, name in enumerate(entry_class_names):
+            setattr(self, name, self.tier_list[idx])
 
-    def __next__(self):
-        if self._idx < len(self.tier_list):
-            out = self.tier_list[self._idx]
-            self._idx += 1
-            return(out)
-        raise StopIteration
-    
     @property
     def name(self):
         if self._name:

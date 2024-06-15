@@ -5,11 +5,11 @@ project:
 license: GPLv3
 
 website:
-  favicon: assets/logo.png
   image: assets/logo.png
+  favicon: assets/logo.png
   page-navigation: true
+  title: aligned-textgrid
   navbar:
-    logo: assets/logo.png
     left:
       - file: index.qmd
         text: Get Started
@@ -20,6 +20,7 @@ website:
         href: https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/      
   sidebar:
       - id: get-started
+        logo: assets/logo.png
         title: Get Started
         style: floating
         align: left
@@ -51,18 +52,7 @@ website:
             contents:
               - usage/05_Outputs/00_to_textgrid.ipynb
               - usage/05_Outputs/01_to_dataframe.ipynb              
-  #         - section: Processing patterns
-  #           contents: 
-  #             - getting-started/single-file.qmd
-  #             - getting-started/directory.qmd
-  #         - section: Customizing a recoding scheme
-  #           contents:
-  #             - getting-started/rule-scheme-basics.qmd
-  #             - getting-started/rule-application.qmd
-  #             - section: Details
-  #               contents:
-  #                 - getting-started/condition-attributes.qmd
-  #                 - getting-started/condition-relations.qmd
+              - usage/05_Outputs/02_pickling.ipynb
 
 format:
   html: 
@@ -75,15 +65,18 @@ format:
 metadata-files:
   - reference/_sidebar.yml
 
-# filters:
-#   - "interlinks"
+filters:
+  - "interlinks"
+resources: 
+  - objects.inv
 
 interlinks:
+  fast: true
   sources:
+    numpy:
+      url: https://numpy.org/doc/stable/
     python:
-      url: https://docs.python.org/3/
-    # griffe:
-    #   url: https://mkdocstrings.github.io/griffe/
+      url: https://docs.python.org/3/         
 
 
 quartodoc:
@@ -94,7 +87,7 @@ quartodoc:
   # write sidebar data to this file
   sidebar: "reference/_sidebar.yml"
   parser: google
-  #render_interlinks: true
+  render_interlinks: true
   sections:
     - title: Sequence Classes
       desc: |
@@ -160,8 +153,11 @@ quartodoc:
     - subtitle: Custom Class Creation
       desc: |
         This is a function that will quickly create custom classes
+      contents: 
         - package: aligned_textgrid.custom_classes
           name: custom_classes
+        - custom_classes.clone_class
+        - custom_classes.get_class_hierarchy
     - subtitle: Word and Phone Classes
       desc: |
         These are mostly intended to be used with textgrids that are the 
