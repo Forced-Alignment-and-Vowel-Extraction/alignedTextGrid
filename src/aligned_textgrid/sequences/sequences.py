@@ -3,13 +3,22 @@ Module includes the `SequenceInterval` base class as well as
 `Top` and `Bottom` classes.
 """
 
+import aligned_textgrid
 from praatio.utilities.constants import Interval
+import praatio
 from praatio.data_classes.interval_tier import IntervalTier
 from aligned_textgrid.mixins.mixins import InTierMixins, PrecedenceMixins
 from aligned_textgrid.mixins.within import WithinMixins
 from typing import Type, Any
 import numpy as np
 import warnings
+import sys
+from collections.abc import Sequence
+
+if sys.version_info >= (3,11):
+    from typing import Self
+else:
+    from typing_extensions import Self
 
 class HierarchyMixins:
 
@@ -258,7 +267,34 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     A class to describe an interval with precedence relationships and hierarchical relationships
 
     Args:
-        Interval: A Praat textgrid Interval
+        interval (list|tuple|Interval|Self): 
+            A Praat textgrid Interval. This could one of: 
+            i) A list or tuple of start, end and label values (e.g. `[0, 1, "foo"]`); 
+            ii) A `praatio.utilities.constants.Interval`
+            iii) Another `SequenceInterval`. 
+            In this last case, only the `start`, `end` and `label` values from the original
+            `SequenceInterval` are preserved in the new one. 
+
+    Examples:
+        A new `SequenceInterval` can be created from scratch by passing it a tuple
+        of a start time, end time, and a label
+        ```{python}
+        from aligned_textgrid import SequenceInterval
+
+        sample_interval = SequenceInterval((0, 1, "sample"))
+        print(sample_interval)
+        ```
+
+        You can pass a `SequenceInterval` to another
+        `SequenceInterval` or subclass (like [](`~aligned_textgrid.sequences.word_and_phone.Word`))
+        as well
+
+        ```{python}
+        from aligned_textgrid import Word
+
+        sample_word = Word(sample_interval)
+        print(sample_word)
+        ```
 
     Attributes:
         start (float):
@@ -267,6 +303,8 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             End time of the interval
         label (Any):
             Label of the interval
+        duration (float):
+            The duration of the interval
         intier (SequenceTier):
             The sequence tier the current interval is within.
         tier_index (int):
@@ -277,27 +315,47 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             Instance of the previous interval. Is the same subclass as current instance.
         super_instance (SequenceInterval): 
             The instance of the superset. Cannot be the same subclass as the current instance.
-        subset_list (List[SequenceInterval]): 
+        subset_list (list[SequenceInterval]): 
             A list of subset instances. Cannot be the same subclass of the current instance.
         sub_starts (numpy.ndarray):
             A numpy array of start times for the subset list
         sub_ends (numpy.ndarray):
             A numpy array of end times for the subset list
-        sub_labels (List[Any]):
+        sub_labels (list[Any]):
             A list of labels from the subset list
     """    
 
     # utilities
     def __init__(
         self, 
-        Interval: Interval = Interval(None, None, None)
+        interval: list|tuple|Interval|Self= (None, None, None),
+        *,
+        Interval = None
     ):
-        super().__init__()
-        if not Interval:
-            Interval = Interval(None, None, None)
-        self.start = Interval.start
-        self.end = Interval.end
-        self.label = Interval.label
+        if Interval:
+            interval = Interval
+
+        if isinstance(interval, SequenceInterval):
+            interval = (
+                interval.start,
+                interval.end,
+                interval.label
+            )
+        rep_none = 3 - len(interval)
+        interval += tuple([None]) * rep_none
+
+        if len(interval) > 3:
+            raise ValueError((
+                "The tuple or list to create a SequenceInterval should be no "
+                "more than 3 values long. "
+                f"{len(interval)} were provided."
+            ))
+
+        interval = praatio.utilities.constants.Interval(*interval)
+
+        self.start = interval.start
+        self.end = interval.end
+        self.label = interval.label
         
         self.fol = None
         self.prev = None
@@ -411,6 +469,14 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             return lab_list
         else:
             return []
+        
+    @property
+    def duration(self) -> float:
+        return self.end - self.start
+    
+    @property
+    def entry_class(self):
+        return self.__class__
       
     ## Fusion
     def fuse_rightwards(

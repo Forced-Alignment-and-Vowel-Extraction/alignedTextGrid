@@ -16,6 +16,7 @@ from typing import Type, Sequence, Literal
 from copy import copy
 import numpy as np
 from collections.abc import Sequence
+from pathlib import Path
 import warnings
 
 
@@ -23,9 +24,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
     """An aligned Textgrid
 
     Args:
-        textgrid (Textgrid, optional): A `praatio` TextGrid
-        textgrid_path (str, optional): A path to a TextGrid file to be 
-            read in with `praatio.textgrid.openTextgrid`
+        textgrid (str|Path|praatio.textgrid.Textgrid, optional): A `praatio` TextGrid
         entry_classes (Sequence[Sequence[Type[SequenceInterval]]] | Sequence[Type[SequenceInterval]], optional): 
             If a single list of `SequenceInterval` subclasses is given, they will be
             repeated as many times as necessary to assign a class to every tier. 
@@ -54,23 +53,20 @@ class AlignedTextGrid(Sequence, WithinMixins):
 
     def __init__(
         self,
-        textgrid: Textgrid = None,
-        textgrid_path: str =  None,
+        textgrid: Textgrid|str|Path = None,
         entry_classes: 
             Sequence[Sequence[Type[SequenceInterval]]] |
             Sequence[Type[SequenceInterval]]
-              = [SequenceInterval]
+              = [SequenceInterval],
+        *,
+        textgrid_path: str =  None
     ):
         self.entry_classes = self._reclone_classes(entry_classes)
+        if textgrid_path:
+            textgrid = textgrid_path
+
         if textgrid:
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(textgrid, self.entry_classes)
-        elif textgrid_path:
-            tg = openTextgrid(
-                fnFullPath=textgrid_path, 
-                includeEmptyIntervals=True,
-                duplicateNamesMode='rename'
-            )
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
+            self._process_textgrid_arg(textgrid)
         else:
             warnings.warn('Initializing an empty AlignedTextGrid')
             self._init_empty()
@@ -112,6 +108,20 @@ class AlignedTextGrid(Sequence, WithinMixins):
     
     def __setstate__(self, d):
         self.__dict__ = d
+
+    def _process_textgrid_arg(self, arg):
+        if isinstance(arg, str) or isinstance(arg, Path):
+            arg_str = str(arg)
+            tg = openTextgrid(
+                fnFullPath=arg_str, 
+                includeEmptyIntervals=True,
+                duplicateNamesMode='rename'
+            )
+        
+        if isinstance(arg, Textgrid):
+            tg = arg
+        
+        self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
 
     def _extend_classes(
             self, 
