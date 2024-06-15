@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -445,9 +479,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#aligned_textgrid.points.tiers.SequencePointTier" id="toc-aligned_textgrid.points.tiers.SequencePointTier" class="nav-link active" data-scroll-target="#aligned_textgrid.points.tiers.SequencePointTier">SequencePointTier</a>
-  <ul class="collapse">
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link active" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   <li><a href="#attributes" id="toc-attributes" class="nav-link" data-scroll-target="#attributes">Attributes</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
@@ -456,19 +489,32 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#aligned_textgrid.points.tiers.SequencePointTier.return_tier" id="toc-aligned_textgrid.points.tiers.SequencePointTier.return_tier" class="nav-link" data-scroll-target="#aligned_textgrid.points.tiers.SequencePointTier.return_tier">return_tier</a></li>
   <li><a href="#aligned_textgrid.points.tiers.SequencePointTier.save_as_tg" id="toc-aligned_textgrid.points.tiers.SequencePointTier.save_as_tg" class="nav-link" data-scroll-target="#aligned_textgrid.points.tiers.SequencePointTier.save_as_tg">save_as_tg</a></li>
   </ul></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Tiers</li><li class="breadcrumb-item"><a href="../reference/SequenceTier.html">Tiers and Tier Groups</a></li><li class="breadcrumb-item"><a href="../reference/SequencePointTier.html">SequencePointTier</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">SequencePointTier</h1>
+</div>
 
 
 
-<section id="aligned_textgrid.points.tiers.SequencePointTier" class="level1">
-<h1>SequencePointTier</h1>
-<p><code>points.tiers.SequencePointTier(self, tier=[], entry_class=SequencePoint)</code></p>
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><code>points.tiers.SequencePointTier(self, tier=[], entry_class=None)</code></p>
 <p>A SequencePointTier class</p>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
@@ -484,18 +530,40 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>tier</code></td>
-<td><code>PointTier</code> | <a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<code>Point</code>]</td>
-<td>Either a <code>praatio</code> PointTier or a list of <code>praatio</code> Points</td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<code>Point</code>] | <a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="../reference/SequencePoint.html#aligned_textgrid.points.points.SequencePoint">SequencePoint</a>] | <code>PointTier</code> | <code>Self</code></td>
+<td>A list of SequencePoints, or another SequencePointTier</td>
 <td><code>[]</code></td>
 </tr>
 <tr class="even">
 <td><code>entry_class</code></td>
 <td><a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequencePoint.html#aligned_textgrid.points.points.SequencePoint">SequencePoint</a>]</td>
 <td>A SequencePoint subclass</td>
-<td><code>SequencePoint</code></td>
+<td><code>None</code></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<div id="082ddb3e" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> SequencePoint, SequencePointTier</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>point_a <span class="op">=</span> SequencePoint((<span class="dv">0</span>,<span class="st">"a"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>point_b <span class="op">=</span> SequencePoint((<span class="dv">1</span>, <span class="st">"b"</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>point_tier <span class="op">=</span> SequencePointTier([point_a, point_b])</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(point_tier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sequence Point tier of SequencePoint;</code></pre>
+</div>
+</div>
+<div id="6c003cd7" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(point_tier.sequence_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[Class SequencePoint, label: a; tier_index: 0, Class SequencePoint, label: b; tier_index: 1]</code></pre>
+</div>
+</div>
 </section>
 <section id="attributes" class="level2">
 <h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
@@ -717,7 +785,6 @@ ul.task-list li input[type="checkbox"] {
 </table>
 
 
-</section>
 </section>
 </section>
 </section>

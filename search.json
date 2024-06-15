@@ -328,7 +328,7 @@
     "href": "reference/SequenceTier.html",
     "title": "SequenceTier",
     "section": "",
-    "text": "sequences.tiers.SequenceTier(self, tier=[], entry_class=SequenceInterval)\nA sequence tier\nGiven a praatio IntervalTier or list of Intervals, creates entry_class instances for every interval.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntier\nlist[Interval] | IntervalTier\nA list of interval entries. Defaults to [Interval(None, None, None)].\n[]\n\n\nentry_class\nType[SequenceInterval]\nThe sequence class for this tier. Defaults to SequenceInterval.\nSequenceInterval\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nsequence_list\nlist[SequenceInterval]\n\n\n\nentry_class\nType[SequenceInterval]\n\n\n\nsuperset_class\nType[SequenceInterval]\n\n\n\nsubset_class\nType[SequenceInterval]\n\n\n\nstarts\nnp.ndarray[np.float64]\n\n\n\nends\nnp.ndarray[np.float64]\n\n\n\nlabels\nlist[str]\n\n\n\nxmin\nfloat\n\n\n\nxmax\nfloat\n\n\n\nname\nstr\n\n\n\n[]\n\nIndexable. Returns a SequenceInterval\n\n\n\n\nIterable\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nget_interval_at_time\nGets interval index at specified time\n\n\npop\nPop an interval\n\n\nreturn_tier\nReturns a praatio interval tier\n\n\nsave_as_tg\nSaves as a textgrid\n\n\n\n\n\nsequences.tiers.SequenceTier.get_interval_at_time(time)\nGets interval index at specified time\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\nfloat\ntime at which to get an interval\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nint\nIndex of the interval\n\n\n\n\n\n\n\nsequences.tiers.SequenceTier.pop(entry)\nPop an interval\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nentry\nSequenceInterval\nInterval to pop\nrequired\n\n\n\n\n\n\n\nsequences.tiers.SequenceTier.return_tier()\nReturns a praatio interval tier\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\npraatio.data_classes.interval_tier.IntervalTier\nA praatio interval tier. Useful for saving results back as a Praat TextGrid.\n\n\n\n\n\n\n\nsequences.tiers.SequenceTier.save_as_tg(save_path)\nSaves as a textgrid\nUses praatio.data_classes.textgrid.Textgrid.save() method.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstr\nOutput path\nrequired",
+    "text": "sequences.tiers.SequenceTier(self, tier=[], entry_class=None)\nA sequence tier\nGiven a praatio IntervalTier or list of Intervals, creates entry_class instances for every interval.",
     "crumbs": [
       "Tiers",
       "Tiers and Tier Groups",
@@ -339,8 +339,20 @@
     "objectID": "reference/SequenceTier.html#parameters",
     "href": "reference/SequenceTier.html#parameters",
     "title": "SequenceTier",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ntier\nlist[Interval] | IntervalTier\nA list of interval entries. Defaults to [Interval(None, None, None)].\n[]\n\n\nentry_class\nType[SequenceInterval]\nThe sequence class for this tier. Defaults to SequenceInterval.\nSequenceInterval",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntier\nlist[Interval] | list[SequenceInterval] | IntervalTier | Self\nA list of interval entries. Defaults to [].\n[]\n\n\nentry_class\nType[SequenceInterval]\nThe sequence class for this tier. Defaults to SequenceInterval.\nNone",
+    "crumbs": [
+      "Tiers",
+      "Tiers and Tier Groups",
+      "SequenceTier"
+    ]
+  },
+  {
+    "objectID": "reference/SequenceTier.html#examples",
+    "href": "reference/SequenceTier.html#examples",
+    "title": "SequenceTier",
+    "section": "Examples",
+    "text": "Examples\n\nfrom aligned_textgrid import SequenceInterval, Word, SequenceTier\n\nthe = Word((0,1, \"the\"))\ndog = Word((0,1,\"dog\"))\n\nword_tier = SequenceTier([the, dog])\n\nprint(word_tier)\n\nSequence tier of Word; .superset_class: Top_wp; .subset_class: Phone\n\n\n\nprint(word_tier.sequence_list)\n\n[Class Word, label: the, .superset_class: Top_wp, .super_instance, None, .subset_class: Phone, Class Word, label: dog, .superset_class: Top_wp, .super_instance, None, .subset_class: Phone]",
     "crumbs": [
       "Tiers",
       "Tiers and Tier Groups",
@@ -351,8 +363,8 @@
     "objectID": "reference/SequenceTier.html#attributes",
     "href": "reference/SequenceTier.html#attributes",
     "title": "SequenceTier",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\nsequence_list\nlist[SequenceInterval]\n\n\n\nentry_class\nType[SequenceInterval]\n\n\n\nsuperset_class\nType[SequenceInterval]\n\n\n\nsubset_class\nType[SequenceInterval]\n\n\n\nstarts\nnp.ndarray[np.float64]\n\n\n\nends\nnp.ndarray[np.float64]\n\n\n\nlabels\nlist[str]\n\n\n\nxmin\nfloat\n\n\n\nxmax\nfloat\n\n\n\nname\nstr\n\n\n\n[]\n\nIndexable. Returns a SequenceInterval\n\n\n\n\nIterable",
+    "section": "Attributes",
+    "text": "Attributes\n\n\n\nName\nType\nDescription\n\n\n\n\nsequence_list\nlist[SequenceInterval]\n\n\n\nentry_class\nType[SequenceInterval]\n\n\n\nsuperset_class\nType[SequenceInterval]\n\n\n\nsubset_class\nType[SequenceInterval]\n\n\n\nstarts\nnp.ndarray[np.float64]\n\n\n\nends\nnp.ndarray[np.float64]\n\n\n\nlabels\nlist[str]\n\n\n\nxmin\nfloat\n\n\n\nxmax\nfloat\n\n\n\nname\nstr\n\n\n\n[]\n\nIndexable. Returns a SequenceInterval\n\n\n\n\nIterable",
     "crumbs": [
       "Tiers",
       "Tiers and Tier Groups",
@@ -363,8 +375,8 @@
     "objectID": "reference/SequenceTier.html#methods",
     "href": "reference/SequenceTier.html#methods",
     "title": "SequenceTier",
-    "section": "",
-    "text": "Name\nDescription\n\n\n\n\nget_interval_at_time\nGets interval index at specified time\n\n\npop\nPop an interval\n\n\nreturn_tier\nReturns a praatio interval tier\n\n\nsave_as_tg\nSaves as a textgrid\n\n\n\n\n\nsequences.tiers.SequenceTier.get_interval_at_time(time)\nGets interval index at specified time\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\nfloat\ntime at which to get an interval\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nint\nIndex of the interval\n\n\n\n\n\n\n\nsequences.tiers.SequenceTier.pop(entry)\nPop an interval\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nentry\nSequenceInterval\nInterval to pop\nrequired\n\n\n\n\n\n\n\nsequences.tiers.SequenceTier.return_tier()\nReturns a praatio interval tier\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\npraatio.data_classes.interval_tier.IntervalTier\nA praatio interval tier. Useful for saving results back as a Praat TextGrid.\n\n\n\n\n\n\n\nsequences.tiers.SequenceTier.save_as_tg(save_path)\nSaves as a textgrid\nUses praatio.data_classes.textgrid.Textgrid.save() method.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstr\nOutput path\nrequired",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nget_interval_at_time\nGets interval index at specified time\n\n\npop\nPop an interval\n\n\nreturn_tier\nReturns a praatio interval tier\n\n\nsave_as_tg\nSaves as a textgrid\n\n\n\n\nget_interval_at_time\nsequences.tiers.SequenceTier.get_interval_at_time(time)\nGets interval index at specified time\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\nfloat\ntime at which to get an interval\nrequired\n\n\n\n\n\nReturns\n\n\n\nType\nDescription\n\n\n\n\nint\nIndex of the interval\n\n\n\n\n\n\npop\nsequences.tiers.SequenceTier.pop(entry)\nPop an interval\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nentry\nSequenceInterval\nInterval to pop\nrequired\n\n\n\n\n\n\nreturn_tier\nsequences.tiers.SequenceTier.return_tier()\nReturns a praatio interval tier\n\nReturns\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\npraatio.data_classes.interval_tier.IntervalTier\nA praatio interval tier. Useful for saving results back as a Praat TextGrid.\n\n\n\n\n\n\nsave_as_tg\nsequences.tiers.SequenceTier.save_as_tg(save_path)\nSaves as a textgrid\nUses praatio.data_classes.textgrid.Textgrid.save() method.\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstr\nOutput path\nrequired",
     "crumbs": [
       "Tiers",
       "Tiers and Tier Groups",
@@ -400,7 +412,7 @@
     "href": "reference/AlignedTextGrid.html",
     "title": "AlignedTextGrid",
     "section": "",
-    "text": "aligned_textgrid.AlignedTextGrid(self, textgrid=None, textgrid_path=None, entry_classes=[SequenceInterval])\nAn aligned Textgrid",
+    "text": "aligned_textgrid.AlignedTextGrid(self, textgrid=None, entry_classes=[SequenceInterval], *, textgrid_path=None)\nAn aligned Textgrid",
     "crumbs": [
       "TextGrids",
       "AlignedTextGrid"
@@ -411,7 +423,7 @@
     "href": "reference/AlignedTextGrid.html#parameters",
     "title": "AlignedTextGrid",
     "section": "Parameters",
-    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntextgrid\nTextgrid\nA praatio TextGrid\nNone\n\n\ntextgrid_path\nstr\nA path to a TextGrid file to be read in with praatio.textgrid.openTextgrid\nNone\n\n\nentry_classes\nSequence[Sequence[Type[SequenceInterval]]] | Sequence[Type[SequenceInterval]]\nIf a single list of SequenceInterval subclasses is given, they will be repeated as many times as necessary to assign a class to every tier. So if there are three speakers, each with a word and phone tier, [Word, Phone] will process them each into a tier group. If your TextGrids are more complex, provide a nested list with the class for each tier within each tier group. Say, if only the first speaker had both a word and phone tier, and the remaining two had only a word tier, [[Word, Phone], [Word], [Word]]\n[SequenceInterval]",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntextgrid\nstr | Path | praatio.textgrid.Textgrid\nA praatio TextGrid\nNone\n\n\nentry_classes\nSequence[Sequence[Type[SequenceInterval]]] | Sequence[Type[SequenceInterval]]\nIf a single list of SequenceInterval subclasses is given, they will be repeated as many times as necessary to assign a class to every tier. So if there are three speakers, each with a word and phone tier, [Word, Phone] will process them each into a tier group. If your TextGrids are more complex, provide a nested list with the class for each tier within each tier group. Say, if only the first speaker had both a word and phone tier, and the remaining two had only a word tier, [[Word, Phone], [Word], [Word]]\n[SequenceInterval]",
     "crumbs": [
       "TextGrids",
       "AlignedTextGrid"
@@ -444,7 +456,7 @@
     "href": "reference/Word.html",
     "title": "Word",
     "section": "",
-    "text": "sequences.word_and_phone.Word(self, Interval=Interval(None, None, None))\nA Word subclass of SequenceInterval\nHas all the same methods and attributes as SequenceInterval in addition to attributes described below. superset_class set to Top, and subset_class set to Phone\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nInterval\nInterval\nA praatio Interval\nInterval(None, None, None)\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nphone_list\nlist[Phone]\nA list of Phone objects\n\n\nphones\nlist[str]\nA list of phone labels\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nset_phones\nConvenience function to set the phones\n\n\n\n\n\nsequences.word_and_phone.Word.set_phones(phone_list)\nConvenience function to set the phones\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nphone_list\nlist[Phone]\nList of Phone instances\nrequired",
+    "text": "sequences.word_and_phone.Word(self, interval=(None, None, None), *, Interval=None)\nA Word subclass of SequenceInterval\nHas all the same methods and attributes as SequenceInterval in addition to attributes described below.\nsuperset_class set to Top, and subset_class set to Phone",
     "crumbs": [
       "Custom Classes",
       "Word and Phone Classes",
@@ -455,8 +467,20 @@
     "objectID": "reference/Word.html#parameters",
     "href": "reference/Word.html#parameters",
     "title": "Word",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nInterval\nInterval\nA praatio Interval\nInterval(None, None, None)",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ninterval\nlist | tuple | Interval | SequenceInterval\nA tuple or list of start, end and label, or another SequenceInterval\n(None, None, None)",
+    "crumbs": [
+      "Custom Classes",
+      "Word and Phone Classes",
+      "Word"
+    ]
+  },
+  {
+    "objectID": "reference/Word.html#examples",
+    "href": "reference/Word.html#examples",
+    "title": "Word",
+    "section": "Examples",
+    "text": "Examples\n\nfrom aligned_textgrid import Word, Phone\n\nDH = Phone((0, 1, \"DH\"))\nAH0 = Phone((1, 2, \"AH0\"))\n\nTHE = Word((0, 2, \"THE\"))\n\nTHE.set_phones([DH, AH0])\n\nprint(THE.phones)\n\n['DH', 'AH0']",
     "crumbs": [
       "Custom Classes",
       "Word and Phone Classes",
@@ -467,8 +491,8 @@
     "objectID": "reference/Word.html#attributes",
     "href": "reference/Word.html#attributes",
     "title": "Word",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\nphone_list\nlist[Phone]\nA list of Phone objects\n\n\nphones\nlist[str]\nA list of phone labels",
+    "section": "Attributes",
+    "text": "Attributes\n\n\n\nName\nType\nDescription\n\n\n\n\nphone_list\nlist[Phone]\nA list of Phone objects\n\n\nphones\nlist[str]\nA list of phone labels",
     "crumbs": [
       "Custom Classes",
       "Word and Phone Classes",
@@ -479,8 +503,8 @@
     "objectID": "reference/Word.html#methods",
     "href": "reference/Word.html#methods",
     "title": "Word",
-    "section": "",
-    "text": "Name\nDescription\n\n\n\n\nset_phones\nConvenience function to set the phones\n\n\n\n\n\nsequences.word_and_phone.Word.set_phones(phone_list)\nConvenience function to set the phones\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nphone_list\nlist[Phone]\nList of Phone instances\nrequired",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nset_phones\nConvenience function to set the phones\n\n\n\n\nset_phones\nsequences.word_and_phone.Word.set_phones(phone_list)\nConvenience function to set the phones\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nphone_list\nlist[Phone]\nList of Phone instances\nrequired",
     "crumbs": [
       "Custom Classes",
       "Word and Phone Classes",
@@ -684,7 +708,7 @@
     "href": "reference/SequenceInterval.html",
     "title": "SequenceInterval",
     "section": "",
-    "text": "sequences.sequences.SequenceInterval(self, Interval=Interval(None, None, None))\nA class to describe an interval with precedence relationships and hierarchical relationships\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nInterval\nInterval\nA Praat textgrid Interval\nInterval(None, None, None)\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the interval\n\n\nend\nfloat\nEnd time of the interval\n\n\nlabel\nAny\nLabel of the interval\n\n\nintier\nSequenceTier\nThe sequence tier the current interval is within.\n\n\ntier_index\nint\nThe index of sequence within its tier.\n\n\nfol\nSequenceInterval\nInstance of the following interval. Is the same subclass as the current instance.\n\n\nprev\nSequenceInterval\nInstance of the previous interval. Is the same subclass as current instance.\n\n\nsuper_instance\nSequenceInterval\nThe instance of the superset. Cannot be the same subclass as the current instance.\n\n\nsubset_list\nList[SequenceInterval]\nA list of subset instances. Cannot be the same subclass of the current instance.\n\n\nsub_starts\nnumpy.ndarray\nA numpy array of start times for the subset list\n\n\nsub_ends\nnumpy.ndarray\nA numpy array of end times for the subset list\n\n\nsub_labels\nList[Any]\nA list of labels from the subset list\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nfuse_leftwards\nFuse the current segment with the previous segment\n\n\nfuse_rightwards\nFuse the current segment with the following segment\n\n\nindex\nReturns subset instance index\n\n\npop\nPop a sequence interval from the subset list\n\n\nset_feature\nSets arbitrary object attribute\n\n\n\n\n\nsequences.sequences.SequenceInterval.fuse_leftwards(label_fun=lambda x, y: ' '.join([x, y]))\nFuse the current segment with the previous segment\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nlabel_fun\nfunction\nFunction for joining interval labels.\nlambda x, y: ' '.join([x, y])\n\n\n\n\n\n\n\nsequences.sequences.SequenceInterval.fuse_rightwards(label_fun=lambda x, y: ' '.join([x, y]))\nFuse the current segment with the following segment\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nlabel_fun\nfunction\nFunction for joining interval labels.\nlambda x, y: ' '.join([x, y])\n\n\n\n\n\n\n\nsequences.sequences.SequenceInterval.index(subset_instance)\nReturns subset instance index\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsubset_instance\nSequenceInterval\nA subset instance to get the index of.\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nint\nThe index of subset_instance\n\n\n\n\n\n\n\nsequences.sequences.SequenceInterval.pop(subset_instance)\nPop a sequence interval from the subset list\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsubset_instance\nSequenceInterval\nA sequence interval to pop\nrequired\n\n\n\n\n\n\n\nsequences.sequences.SequenceInterval.set_feature(feature, value)\nSets arbitrary object attribute\nThis will be most useful for creating custom subclasses.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nfeature\nstr\nNew attribute name\nrequired\n\n\nvalue\nAny\nNew attribute value\nrequired",
+    "text": "sequences.sequences.SequenceInterval(self, interval=(None, None, None), *, Interval=None)\nA class to describe an interval with precedence relationships and hierarchical relationships",
     "crumbs": [
       "Sequence Classes",
       "Intervals",
@@ -695,8 +719,20 @@
     "objectID": "reference/SequenceInterval.html#parameters",
     "href": "reference/SequenceInterval.html#parameters",
     "title": "SequenceInterval",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nInterval\nInterval\nA Praat textgrid Interval\nInterval(None, None, None)",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ninterval\nlist | tuple | Interval | Self\nA Praat textgrid Interval. This could one of: i) A list or tuple of start, end and label values (e.g. [0, 1, \"foo\"]); ii) A praatio.utilities.constants.Interval iii) Another SequenceInterval. In this last case, only the start, end and label values from the original SequenceInterval are preserved in the new one.\n(None, None, None)",
+    "crumbs": [
+      "Sequence Classes",
+      "Intervals",
+      "SequenceInterval"
+    ]
+  },
+  {
+    "objectID": "reference/SequenceInterval.html#examples",
+    "href": "reference/SequenceInterval.html#examples",
+    "title": "SequenceInterval",
+    "section": "Examples",
+    "text": "Examples\nA new SequenceInterval can be created from scratch by passing it a tuple of a start time, end time, and a label\n\nfrom aligned_textgrid import SequenceInterval\n\nsample_interval = SequenceInterval((0, 1, \"sample\"))\nprint(sample_interval)\n\nClass SequenceInterval, label: sample, .superset_class: Top, .super_instance, None, .subset_class: Bottom\n\n\nYou can pass a SequenceInterval to another SequenceInterval or subclass (like Word) as well\n\nfrom aligned_textgrid import Word\n\nsample_word = Word(sample_interval)\nprint(sample_word)\n\nClass Word, label: sample, .superset_class: Top_wp, .super_instance, None, .subset_class: Phone",
     "crumbs": [
       "Sequence Classes",
       "Intervals",
@@ -707,8 +743,8 @@
     "objectID": "reference/SequenceInterval.html#attributes",
     "href": "reference/SequenceInterval.html#attributes",
     "title": "SequenceInterval",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the interval\n\n\nend\nfloat\nEnd time of the interval\n\n\nlabel\nAny\nLabel of the interval\n\n\nintier\nSequenceTier\nThe sequence tier the current interval is within.\n\n\ntier_index\nint\nThe index of sequence within its tier.\n\n\nfol\nSequenceInterval\nInstance of the following interval. Is the same subclass as the current instance.\n\n\nprev\nSequenceInterval\nInstance of the previous interval. Is the same subclass as current instance.\n\n\nsuper_instance\nSequenceInterval\nThe instance of the superset. Cannot be the same subclass as the current instance.\n\n\nsubset_list\nList[SequenceInterval]\nA list of subset instances. Cannot be the same subclass of the current instance.\n\n\nsub_starts\nnumpy.ndarray\nA numpy array of start times for the subset list\n\n\nsub_ends\nnumpy.ndarray\nA numpy array of end times for the subset list\n\n\nsub_labels\nList[Any]\nA list of labels from the subset list",
+    "section": "Attributes",
+    "text": "Attributes\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the interval\n\n\nend\nfloat\nEnd time of the interval\n\n\nlabel\nAny\nLabel of the interval\n\n\nduration\nfloat\nThe duration of the interval\n\n\nintier\nSequenceTier\nThe sequence tier the current interval is within.\n\n\ntier_index\nint\nThe index of sequence within its tier.\n\n\nfol\nSequenceInterval\nInstance of the following interval. Is the same subclass as the current instance.\n\n\nprev\nSequenceInterval\nInstance of the previous interval. Is the same subclass as current instance.\n\n\nsuper_instance\nSequenceInterval\nThe instance of the superset. Cannot be the same subclass as the current instance.\n\n\nsubset_list\nlist[SequenceInterval]\nA list of subset instances. Cannot be the same subclass of the current instance.\n\n\nsub_starts\nnumpy.ndarray\nA numpy array of start times for the subset list\n\n\nsub_ends\nnumpy.ndarray\nA numpy array of end times for the subset list\n\n\nsub_labels\nlist[Any]\nA list of labels from the subset list",
     "crumbs": [
       "Sequence Classes",
       "Intervals",
@@ -719,8 +755,8 @@
     "objectID": "reference/SequenceInterval.html#methods",
     "href": "reference/SequenceInterval.html#methods",
     "title": "SequenceInterval",
-    "section": "",
-    "text": "Name\nDescription\n\n\n\n\nfuse_leftwards\nFuse the current segment with the previous segment\n\n\nfuse_rightwards\nFuse the current segment with the following segment\n\n\nindex\nReturns subset instance index\n\n\npop\nPop a sequence interval from the subset list\n\n\nset_feature\nSets arbitrary object attribute\n\n\n\n\n\nsequences.sequences.SequenceInterval.fuse_leftwards(label_fun=lambda x, y: ' '.join([x, y]))\nFuse the current segment with the previous segment\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nlabel_fun\nfunction\nFunction for joining interval labels.\nlambda x, y: ' '.join([x, y])\n\n\n\n\n\n\n\nsequences.sequences.SequenceInterval.fuse_rightwards(label_fun=lambda x, y: ' '.join([x, y]))\nFuse the current segment with the following segment\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nlabel_fun\nfunction\nFunction for joining interval labels.\nlambda x, y: ' '.join([x, y])\n\n\n\n\n\n\n\nsequences.sequences.SequenceInterval.index(subset_instance)\nReturns subset instance index\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsubset_instance\nSequenceInterval\nA subset instance to get the index of.\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nint\nThe index of subset_instance\n\n\n\n\n\n\n\nsequences.sequences.SequenceInterval.pop(subset_instance)\nPop a sequence interval from the subset list\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsubset_instance\nSequenceInterval\nA sequence interval to pop\nrequired\n\n\n\n\n\n\n\nsequences.sequences.SequenceInterval.set_feature(feature, value)\nSets arbitrary object attribute\nThis will be most useful for creating custom subclasses.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nfeature\nstr\nNew attribute name\nrequired\n\n\nvalue\nAny\nNew attribute value\nrequired",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nfuse_leftwards\nFuse the current segment with the previous segment\n\n\nfuse_rightwards\nFuse the current segment with the following segment\n\n\nindex\nReturns subset instance index\n\n\npop\nPop a sequence interval from the subset list\n\n\nset_feature\nSets arbitrary object attribute\n\n\n\n\nfuse_leftwards\nsequences.sequences.SequenceInterval.fuse_leftwards(label_fun=lambda x, y: ' '.join([x, y]))\nFuse the current segment with the previous segment\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nlabel_fun\nfunction\nFunction for joining interval labels.\nlambda x, y: ' '.join([x, y])\n\n\n\n\n\n\nfuse_rightwards\nsequences.sequences.SequenceInterval.fuse_rightwards(label_fun=lambda x, y: ' '.join([x, y]))\nFuse the current segment with the following segment\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nlabel_fun\nfunction\nFunction for joining interval labels.\nlambda x, y: ' '.join([x, y])\n\n\n\n\n\n\nindex\nsequences.sequences.SequenceInterval.index(subset_instance)\nReturns subset instance index\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsubset_instance\nSequenceInterval\nA subset instance to get the index of.\nrequired\n\n\n\n\n\nReturns\n\n\n\nType\nDescription\n\n\n\n\nint\nThe index of subset_instance\n\n\n\n\n\n\npop\nsequences.sequences.SequenceInterval.pop(subset_instance)\nPop a sequence interval from the subset list\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsubset_instance\nSequenceInterval\nA sequence interval to pop\nrequired\n\n\n\n\n\n\nset_feature\nsequences.sequences.SequenceInterval.set_feature(feature, value)\nSets arbitrary object attribute\nThis will be most useful for creating custom subclasses.\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nfeature\nstr\nNew attribute name\nrequired\n\n\nvalue\nAny\nNew attribute value\nrequired",
     "crumbs": [
       "Sequence Classes",
       "Intervals",
@@ -744,7 +780,7 @@
     "href": "reference/Phone.html",
     "title": "Phone",
     "section": "",
-    "text": "sequences.word_and_phone.Phone(self, Interval=Interval(None, None, None))\nA Phone subclass of SequenceInterval\nHas all the same methods and attributes as SequenceInterval in addition to attributes described below. superset_class set to Word, and subset_class set to Bottom\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nInterval\nInterval\nA praatio Inteval\nInterval(None, None, None)\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\ninword\nWord\nThe word instance this phone appears in.\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nset_word\nConvenience function to set word for this Phone\n\n\n\n\n\nsequences.word_and_phone.Phone.set_word(word)\nConvenience function to set word for this Phone\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nword\nWord\nWord instance.\nrequired",
+    "text": "sequences.word_and_phone.Phone(self, interval=(None, None, None), *, Interval=None)\nA Phone subclass of SequenceInterval\nHas all the same methods and attributes as SequenceInterval in addition to attributes described below. superset_class set to Word, and subset_class set to Bottom",
     "crumbs": [
       "Custom Classes",
       "Word and Phone Classes",
@@ -755,8 +791,20 @@
     "objectID": "reference/Phone.html#parameters",
     "href": "reference/Phone.html#parameters",
     "title": "Phone",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nInterval\nInterval\nA praatio Inteval\nInterval(None, None, None)",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ninterval\nlist | tuple | Interval | SequenceInterval\nA tuple or list of start, end and label, or another SequenceInterval\n(None, None, None)",
+    "crumbs": [
+      "Custom Classes",
+      "Word and Phone Classes",
+      "Phone"
+    ]
+  },
+  {
+    "objectID": "reference/Phone.html#examples",
+    "href": "reference/Phone.html#examples",
+    "title": "Phone",
+    "section": "Examples",
+    "text": "Examples\n\nfrom aligned_textgrid import Word, Phone\n\nDH = Phone((0, 1, \"DH\"))\nAH0 = Phone((1, 2, \"AH0\"))\n\nTHE = Word((0, 2, \"THE\"))\n\nDH.set_word(THE)\nAH0.set_word(THE)\n\nprint(\n    (\n    f\"The phone is {DH.label}. \"\n    f\"The next phone is {DH.fol.label}. \"\n    f\"It is in the word {DH.inword.label}.\"\n    )\n)\n\nThe phone is DH. The next phone is AH0. It is in the word THE.",
     "crumbs": [
       "Custom Classes",
       "Word and Phone Classes",
@@ -767,8 +815,8 @@
     "objectID": "reference/Phone.html#attributes",
     "href": "reference/Phone.html#attributes",
     "title": "Phone",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\ninword\nWord\nThe word instance this phone appears in.",
+    "section": "Attributes",
+    "text": "Attributes\n\n\n\nName\nType\nDescription\n\n\n\n\ninword\nWord\nThe word instance this phone appears in.",
     "crumbs": [
       "Custom Classes",
       "Word and Phone Classes",
@@ -779,8 +827,8 @@
     "objectID": "reference/Phone.html#methods",
     "href": "reference/Phone.html#methods",
     "title": "Phone",
-    "section": "",
-    "text": "Name\nDescription\n\n\n\n\nset_word\nConvenience function to set word for this Phone\n\n\n\n\n\nsequences.word_and_phone.Phone.set_word(word)\nConvenience function to set word for this Phone\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nword\nWord\nWord instance.\nrequired",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nset_word\nConvenience function to set word for this Phone\n\n\n\n\nset_word\nsequences.word_and_phone.Phone.set_word(word)\nConvenience function to set word for this Phone\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nword\nWord\nWord instance.\nrequired",
     "crumbs": [
       "Custom Classes",
       "Word and Phone Classes",
@@ -945,7 +993,7 @@
     "href": "reference/SequencePointTier.html",
     "title": "SequencePointTier",
     "section": "",
-    "text": "points.tiers.SequencePointTier(self, tier=[], entry_class=SequencePoint)\nA SequencePointTier class\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntier\nPointTier | list[Point]\nEither a praatio PointTier or a list of praatio Points\n[]\n\n\nentry_class\nType[SequencePoint]\nA SequencePoint subclass\nSequencePoint\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n…\n\nAll attributes and methods included in TierMixins\n\n\nentry_class\nType[SequencePoint]\nThe class of entries within the tier\n\n\nname\nstr\nThe name of the tier\n\n\ntimes\nnp.array\nThe times of points in the tier\n\n\nlabels\nlist[str, …]\nThe labels of points in the tier\n\n\nxmin\nfloat\nThe time of the first point in the tier\n\n\nxmax\nfloat\nThe time of the last point in the tier\n\n\n[]\nfloat\nIndexable and iterable\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nget_nearest_point\nReturns nearest point\n\n\nget_nearest_point_index\nReturns the index of the closest point to time\n\n\nreturn_tier\nReturns SequencePointTier as a praatio PointTier\n\n\nsave_as_tg\nSaves the current point tier as a textgrid\n\n\n\n\n\npoints.tiers.SequencePointTier.get_nearest_point(time)\nReturns nearest point\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\nfloat\ntime at which to get the nearest point\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nSequencePoint\nthe nearest point to time\n\n\n\n\n\n\n\npoints.tiers.SequencePointTier.get_nearest_point_index(time)\nReturns the index of the closest point to time\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\nfloat\nThe time at which to get the nearest point\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nint\nThe index of the nearest point within the tier\n\n\n\n\n\n\n\npoints.tiers.SequencePointTier.return_tier()\nReturns SequencePointTier as a praatio PointTier\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nPointTier\nA praatio point tier\n\n\n\n\n\n\n\npoints.tiers.SequencePointTier.save_as_tg(save_path)\nSaves the current point tier as a textgrid\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstr\npath to where you want to save the textgrid.\nrequired",
+    "text": "points.tiers.SequencePointTier(self, tier=[], entry_class=None)\nA SequencePointTier class",
     "crumbs": [
       "Tiers",
       "Tiers and Tier Groups",
@@ -956,8 +1004,20 @@
     "objectID": "reference/SequencePointTier.html#parameters",
     "href": "reference/SequencePointTier.html#parameters",
     "title": "SequencePointTier",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ntier\nPointTier | list[Point]\nEither a praatio PointTier or a list of praatio Points\n[]\n\n\nentry_class\nType[SequencePoint]\nA SequencePoint subclass\nSequencePoint",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntier\nlist[Point] | list[SequencePoint] | PointTier | Self\nA list of SequencePoints, or another SequencePointTier\n[]\n\n\nentry_class\nType[SequencePoint]\nA SequencePoint subclass\nNone",
+    "crumbs": [
+      "Tiers",
+      "Tiers and Tier Groups",
+      "SequencePointTier"
+    ]
+  },
+  {
+    "objectID": "reference/SequencePointTier.html#examples",
+    "href": "reference/SequencePointTier.html#examples",
+    "title": "SequencePointTier",
+    "section": "Examples",
+    "text": "Examples\n\nfrom aligned_textgrid import SequencePoint, SequencePointTier\n\npoint_a = SequencePoint((0,\"a\"))\npoint_b = SequencePoint((1, \"b\"))\n\npoint_tier = SequencePointTier([point_a, point_b])\n\nprint(point_tier)\n\nSequence Point tier of SequencePoint;\n\n\n\nprint(point_tier.sequence_list)\n\n[Class SequencePoint, label: a; tier_index: 0, Class SequencePoint, label: b; tier_index: 1]",
     "crumbs": [
       "Tiers",
       "Tiers and Tier Groups",
@@ -968,8 +1028,8 @@
     "objectID": "reference/SequencePointTier.html#attributes",
     "href": "reference/SequencePointTier.html#attributes",
     "title": "SequencePointTier",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n…\n\nAll attributes and methods included in TierMixins\n\n\nentry_class\nType[SequencePoint]\nThe class of entries within the tier\n\n\nname\nstr\nThe name of the tier\n\n\ntimes\nnp.array\nThe times of points in the tier\n\n\nlabels\nlist[str, …]\nThe labels of points in the tier\n\n\nxmin\nfloat\nThe time of the first point in the tier\n\n\nxmax\nfloat\nThe time of the last point in the tier\n\n\n[]\nfloat\nIndexable and iterable",
+    "section": "Attributes",
+    "text": "Attributes\n\n\n\nName\nType\nDescription\n\n\n\n\n…\n\nAll attributes and methods included in TierMixins\n\n\nentry_class\nType[SequencePoint]\nThe class of entries within the tier\n\n\nname\nstr\nThe name of the tier\n\n\ntimes\nnp.array\nThe times of points in the tier\n\n\nlabels\nlist[str, …]\nThe labels of points in the tier\n\n\nxmin\nfloat\nThe time of the first point in the tier\n\n\nxmax\nfloat\nThe time of the last point in the tier\n\n\n[]\nfloat\nIndexable and iterable",
     "crumbs": [
       "Tiers",
       "Tiers and Tier Groups",
@@ -980,8 +1040,8 @@
     "objectID": "reference/SequencePointTier.html#methods",
     "href": "reference/SequencePointTier.html#methods",
     "title": "SequencePointTier",
-    "section": "",
-    "text": "Name\nDescription\n\n\n\n\nget_nearest_point\nReturns nearest point\n\n\nget_nearest_point_index\nReturns the index of the closest point to time\n\n\nreturn_tier\nReturns SequencePointTier as a praatio PointTier\n\n\nsave_as_tg\nSaves the current point tier as a textgrid\n\n\n\n\n\npoints.tiers.SequencePointTier.get_nearest_point(time)\nReturns nearest point\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\nfloat\ntime at which to get the nearest point\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nSequencePoint\nthe nearest point to time\n\n\n\n\n\n\n\npoints.tiers.SequencePointTier.get_nearest_point_index(time)\nReturns the index of the closest point to time\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\nfloat\nThe time at which to get the nearest point\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nint\nThe index of the nearest point within the tier\n\n\n\n\n\n\n\npoints.tiers.SequencePointTier.return_tier()\nReturns SequencePointTier as a praatio PointTier\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nPointTier\nA praatio point tier\n\n\n\n\n\n\n\npoints.tiers.SequencePointTier.save_as_tg(save_path)\nSaves the current point tier as a textgrid\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstr\npath to where you want to save the textgrid.\nrequired",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nget_nearest_point\nReturns nearest point\n\n\nget_nearest_point_index\nReturns the index of the closest point to time\n\n\nreturn_tier\nReturns SequencePointTier as a praatio PointTier\n\n\nsave_as_tg\nSaves the current point tier as a textgrid\n\n\n\n\nget_nearest_point\npoints.tiers.SequencePointTier.get_nearest_point(time)\nReturns nearest point\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\nfloat\ntime at which to get the nearest point\nrequired\n\n\n\n\n\nReturns\n\n\n\nType\nDescription\n\n\n\n\nSequencePoint\nthe nearest point to time\n\n\n\n\n\n\nget_nearest_point_index\npoints.tiers.SequencePointTier.get_nearest_point_index(time)\nReturns the index of the closest point to time\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\nfloat\nThe time at which to get the nearest point\nrequired\n\n\n\n\n\nReturns\n\n\n\nType\nDescription\n\n\n\n\nint\nThe index of the nearest point within the tier\n\n\n\n\n\n\nreturn_tier\npoints.tiers.SequencePointTier.return_tier()\nReturns SequencePointTier as a praatio PointTier\n\nReturns\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nPointTier\nA praatio point tier\n\n\n\n\n\n\nsave_as_tg\npoints.tiers.SequencePointTier.save_as_tg(save_path)\nSaves the current point tier as a textgrid\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstr\npath to where you want to save the textgrid.\nrequired",
     "crumbs": [
       "Tiers",
       "Tiers and Tier Groups",
@@ -1029,7 +1089,7 @@
     "href": "reference/SequencePoint.html",
     "title": "SequencePoint",
     "section": "",
-    "text": "points.points.SequencePoint(self, point=Point(0, ''))\nSequence Points\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\npoint\nPoint\na praatio.point object\nPoint(0, '')\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n…\n\nAll attributes and methods included in PrecedenceMixins and InTierMixins\n\n\ntime\nfloat\nTime value associated with the point.\n\n\nlabel\nstr\nLabel associated with the point\n\n\nintier\nSequencePointTier\nIf the SequencePoint is within a tier, this accesses the tier.\n\n\nfol\nSequencePoint\nIf defined, the following SequencePoint within the same tier\n\n\nprev\nSequencePoint\nIf defined, the previous SequencePoint within the same tier.\n\n\nfol_distance\nfloat\nIf fol is defined, the difference between the current point and fol (should be &gt;= 0)\n\n\nprev_distance\nfloat\nif prev is defined, the difference between the current point and prev (should be &lt;= 0).\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\ndistance_from\nDistance from an entry\n\n\nget_interval_at_point\nGet the SequenceInterval the current point falls within\n\n\nget_interval_index_at_time\nGet the index of an interval at the point’s time\n\n\n\n\n\npoints.points.SequencePoint.distance_from(entry)\nDistance from an entry\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nentry\nSelf | SequenceInterval\nA point or an interval to get the distance of the current point from\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nfloat | np.array\na single value in the case of a point, a numpy array in the case of an interval.\n\n\n\n\n\n\n\npoints.points.SequencePoint.get_interval_at_point(tier=None)\nGet the SequenceInterval the current point falls within\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntier\nSequenceTier\nThe sequence tier within which to look for a matching SequenceInterval\nNone\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nSequenceInterval\nThe SequenceInterval within which the current point falls\n\n\n\n\n\n\n\npoints.points.SequencePoint.get_interval_index_at_time(tier=None)\nGet the index of an interval at the point’s time\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntier\nSequenceTier\nA SequenceTier.\nNone\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nint\nThe index of the SequenceInterval within which the point falls",
+    "text": "points.points.SequencePoint(self, point=(0, ''))\nSequence Points",
     "crumbs": [
       "Sequence Classes",
       "Points",
@@ -1040,8 +1100,20 @@
     "objectID": "reference/SequencePoint.html#parameters",
     "href": "reference/SequencePoint.html#parameters",
     "title": "SequencePoint",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\npoint\nPoint\na praatio.point object\nPoint(0, '')",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\npoint\nlist | tuple | Point | Self\nA list or tuple of a time and label value.\n(0, '')",
+    "crumbs": [
+      "Sequence Classes",
+      "Points",
+      "SequencePoint"
+    ]
+  },
+  {
+    "objectID": "reference/SequencePoint.html#examples",
+    "href": "reference/SequencePoint.html#examples",
+    "title": "SequencePoint",
+    "section": "Examples",
+    "text": "Examples\n\nfrom aligned_textgrid import SequencePoint, SequenceInterval\n\nfirst_point = SequencePoint((0, \"first\"))\nprint(first_point)\n\nClass SequencePoint, label: first;\n\n\n\nsecond_point = SequencePoint((1, \"second\"))\ninterval = SequenceInterval((0.5, 2, \"word\"))\n\nprint(\n    first_point.distance_from(second_point)\n)\n\nprint(\n    first_point.distance_from(interval)\n)\n\n-1\n[-0.5 -2. ]",
     "crumbs": [
       "Sequence Classes",
       "Points",
@@ -1052,8 +1124,8 @@
     "objectID": "reference/SequencePoint.html#attributes",
     "href": "reference/SequencePoint.html#attributes",
     "title": "SequencePoint",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n…\n\nAll attributes and methods included in PrecedenceMixins and InTierMixins\n\n\ntime\nfloat\nTime value associated with the point.\n\n\nlabel\nstr\nLabel associated with the point\n\n\nintier\nSequencePointTier\nIf the SequencePoint is within a tier, this accesses the tier.\n\n\nfol\nSequencePoint\nIf defined, the following SequencePoint within the same tier\n\n\nprev\nSequencePoint\nIf defined, the previous SequencePoint within the same tier.\n\n\nfol_distance\nfloat\nIf fol is defined, the difference between the current point and fol (should be &gt;= 0)\n\n\nprev_distance\nfloat\nif prev is defined, the difference between the current point and prev (should be &lt;= 0).",
+    "section": "Attributes",
+    "text": "Attributes\n\n\n\nName\nType\nDescription\n\n\n\n\n…\n\nAll attributes and methods included in PrecedenceMixins and InTierMixins\n\n\ntime\nfloat\nTime value associated with the point.\n\n\nlabel\nstr\nLabel associated with the point\n\n\nintier\nSequencePointTier\nIf the SequencePoint is within a tier, this accesses the tier.\n\n\nfol\nSequencePoint\nIf defined, the following SequencePoint within the same tier\n\n\nprev\nSequencePoint\nIf defined, the previous SequencePoint within the same tier.\n\n\nfol_distance\nfloat\nIf fol is defined, the difference between the current point and fol (should be &gt;= 0)\n\n\nprev_distance\nfloat\nif prev is defined, the difference between the current point and prev (should be &lt;= 0).",
     "crumbs": [
       "Sequence Classes",
       "Points",
@@ -1064,8 +1136,8 @@
     "objectID": "reference/SequencePoint.html#methods",
     "href": "reference/SequencePoint.html#methods",
     "title": "SequencePoint",
-    "section": "",
-    "text": "Name\nDescription\n\n\n\n\ndistance_from\nDistance from an entry\n\n\nget_interval_at_point\nGet the SequenceInterval the current point falls within\n\n\nget_interval_index_at_time\nGet the index of an interval at the point’s time\n\n\n\n\n\npoints.points.SequencePoint.distance_from(entry)\nDistance from an entry\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nentry\nSelf | SequenceInterval\nA point or an interval to get the distance of the current point from\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nfloat | np.array\na single value in the case of a point, a numpy array in the case of an interval.\n\n\n\n\n\n\n\npoints.points.SequencePoint.get_interval_at_point(tier=None)\nGet the SequenceInterval the current point falls within\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntier\nSequenceTier\nThe sequence tier within which to look for a matching SequenceInterval\nNone\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nSequenceInterval\nThe SequenceInterval within which the current point falls\n\n\n\n\n\n\n\npoints.points.SequencePoint.get_interval_index_at_time(tier=None)\nGet the index of an interval at the point’s time\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntier\nSequenceTier\nA SequenceTier.\nNone\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nint\nThe index of the SequenceInterval within which the point falls",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\ndistance_from\nDistance from an entry\n\n\nget_interval_at_point\nGet the SequenceInterval the current point falls within\n\n\nget_interval_index_at_time\nGet the index of an interval at the point’s time\n\n\n\n\ndistance_from\npoints.points.SequencePoint.distance_from(entry)\nDistance from an entry\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nentry\nSelf | SequenceInterval\nA point or an interval to get the distance of the current point from\nrequired\n\n\n\n\n\nReturns\n\n\n\nType\nDescription\n\n\n\n\nnp.array\na single value in the case of a point, a numpy array in the case of an interval.\n\n\n\n\n\n\nget_interval_at_point\npoints.points.SequencePoint.get_interval_at_point(tier=None)\nGet the SequenceInterval the current point falls within\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntier\nSequenceTier\nThe sequence tier within which to look for a matching SequenceInterval\nNone\n\n\n\n\n\nReturns\n\n\n\nType\nDescription\n\n\n\n\nSequenceInterval\nThe SequenceInterval within which the current point falls\n\n\n\n\n\n\nget_interval_index_at_time\npoints.points.SequencePoint.get_interval_index_at_time(tier=None)\nGet the index of an interval at the point’s time\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntier\nSequenceTier\nA SequenceTier.\nNone\n\n\n\n\n\nReturns\n\n\n\nType\nDescription\n\n\n\n\nint\nThe index of the SequenceInterval within which the point falls",
     "crumbs": [
       "Sequence Classes",
       "Points",

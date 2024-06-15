@@ -515,7 +515,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><code>aligned_textgrid.AlignedTextGrid(self, textgrid=None, textgrid_path=None, entry_classes=[SequenceInterval])</code></p>
+<p><code>aligned_textgrid.AlignedTextGrid(self, textgrid=None, entry_classes=[SequenceInterval], *, textgrid_path=None)</code></p>
 <p>An aligned Textgrid</p>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
@@ -531,17 +531,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td><code>textgrid</code></td>
-<td><code>Textgrid</code></td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | <a href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a> | <code>praatio</code>.<code>textgrid</code>.<code>Textgrid</code></td>
 <td>A <code>praatio</code> TextGrid</td>
 <td><code>None</code></td>
 </tr>
 <tr class="even">
-<td><code>textgrid_path</code></td>
-<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
-<td>A path to a TextGrid file to be read in with <code>praatio.textgrid.openTextgrid</code></td>
-<td><code>None</code></td>
-</tr>
-<tr class="odd">
 <td><code>entry_classes</code></td>
 <td><a href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence">Sequence</a>[<a href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence">Sequence</a>[<a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]]] | <a href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence">Sequence</a>[<a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]]</td>
 <td>If a single list of <code>SequenceInterval</code> subclasses is given, they will be repeated as many times as necessary to assign a class to every tier. So if there are three speakers, each with a word and phone tier, <code>[Word, Phone]</code> will process them each into a tier group. If your TextGrids are more complex, provide a nested list with the class for each tier within each tier group. Say, if only the first speaker had both a word and phone tier, and the remaining two had only a word tier, <code>[[Word, Phone], [Word], [Word]]</code></td>
@@ -769,7 +763,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div id="0e74fba8" class="cell" data-execution_count="1">
+<div id="ae1c3f0c" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid, Word, Phone</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>atg <span class="op">=</span> AlignedTextGrid(</span>
@@ -781,7 +775,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>AlignedTextGrid with 1 groups named ['group_0'] each with [2] tiers. [['Word', 'Phone']]</code></pre>
 </div>
 </div>
-<div id="d0c19890" class="cell" data-execution_count="2">
+<div id="329029a3" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>atg.interleave_class(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">"Syllable"</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    above <span class="op">=</span> <span class="st">"Phone"</span>,</span>
@@ -823,7 +817,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
-<div id="390b97ca" class="cell" data-execution_count="3">
+<div id="394ca614" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid, custom_classes</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>atg <span class="op">=</span> AlignedTextGrid(</span>
@@ -842,7 +836,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>AlignedTextGrid with 1 groups named ['group_0'] each with [6] tiers. [['PrWord', 'Foot', 'Syl', 'OnsetRime', 'SylPart', 'Phone']]</code></pre>
 </div>
 </div>
-<div id="c152f7bf" class="cell" data-execution_count="4">
+<div id="832b33a1" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>atg.pop_class(<span class="st">"SylPart"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(atg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

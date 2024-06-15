@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -445,9 +479,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#aligned_textgrid.points.points.SequencePoint" id="toc-aligned_textgrid.points.points.SequencePoint" class="nav-link active" data-scroll-target="#aligned_textgrid.points.points.SequencePoint">SequencePoint</a>
-  <ul class="collapse">
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link active" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   <li><a href="#attributes" id="toc-attributes" class="nav-link" data-scroll-target="#attributes">Attributes</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
@@ -455,29 +488,36 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#aligned_textgrid.points.points.SequencePoint.get_interval_at_point" id="toc-aligned_textgrid.points.points.SequencePoint.get_interval_at_point" class="nav-link" data-scroll-target="#aligned_textgrid.points.points.SequencePoint.get_interval_at_point">get_interval_at_point</a></li>
   <li><a href="#aligned_textgrid.points.points.SequencePoint.get_interval_index_at_time" id="toc-aligned_textgrid.points.points.SequencePoint.get_interval_index_at_time" class="nav-link" data-scroll-target="#aligned_textgrid.points.points.SequencePoint.get_interval_index_at_time">get_interval_index_at_time</a></li>
   </ul></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Sequence Classes</li><li class="breadcrumb-item"><a href="../reference/SequencePoint.html">Points</a></li><li class="breadcrumb-item"><a href="../reference/SequencePoint.html">SequencePoint</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">SequencePoint</h1>
+</div>
 
 
 
-<section id="aligned_textgrid.points.points.SequencePoint" class="level1">
-<h1>SequencePoint</h1>
-<p><code>points.points.SequencePoint(self, point=Point(0, ''))</code></p>
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><code>points.points.SequencePoint(self, point=(0, ''))</code></p>
 <p>Sequence Points</p>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 47%">
-<col style="width: 26%">
-<col style="width: 16%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -489,12 +529,40 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>point</code></td>
-<td><code>Point</code></td>
-<td>a <code>praatio.point</code> object</td>
-<td><code>Point(0, '')</code></td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a> | <a href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a> | <code>Point</code> | <code>Self</code></td>
+<td>A list or tuple of a time and label value.</td>
+<td><code>(0, '')</code></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<div id="2a9d8871" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> SequencePoint, SequenceInterval</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>first_point <span class="op">=</span> SequencePoint((<span class="dv">0</span>, <span class="st">"first"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(first_point)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Class SequencePoint, label: first;</code></pre>
+</div>
+</div>
+<div id="f7552e41" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>second_point <span class="op">=</span> SequencePoint((<span class="dv">1</span>, <span class="st">"second"</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>interval <span class="op">=</span> SequenceInterval((<span class="fl">0.5</span>, <span class="dv">2</span>, <span class="st">"word"</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    first_point.distance_from(second_point)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    first_point.distance_from(interval)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-1
+[-0.5 -2. ]</code></pre>
+</div>
+</div>
 </section>
 <section id="attributes" class="level2">
 <h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
@@ -610,7 +678,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="https://docs.python.org/3/library/functions.html#float">float</a> | <a href="https://numpy.org/doc/stable/reference/index.html#module-numpy">np</a>.<a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array">array</a></td>
+<td><a href="https://numpy.org/doc/stable/reference/index.html#module-numpy">np</a>.<a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array">array</a></td>
 <td>a single value in the case of a point, a numpy array in the case of an interval.</td>
 </tr>
 </tbody>
@@ -703,7 +771,6 @@ ul.task-list li input[type="checkbox"] {
 </table>
 
 
-</section>
 </section>
 </section>
 </section>

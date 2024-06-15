@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -445,14 +479,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#aligned_textgrid.sequences.word_and_phone.Word" id="toc-aligned_textgrid.sequences.word_and_phone.Word" class="nav-link active" data-scroll-target="#aligned_textgrid.sequences.word_and_phone.Word">Word</a>
-  <ul class="collapse">
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link active" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   <li><a href="#attributes" id="toc-attributes" class="nav-link" data-scroll-target="#attributes">Attributes</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
   <li><a href="#aligned_textgrid.sequences.word_and_phone.Word.set_phones" id="toc-aligned_textgrid.sequences.word_and_phone.Word.set_phones" class="nav-link" data-scroll-target="#aligned_textgrid.sequences.word_and_phone.Word.set_phones">set_phones</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -460,23 +492,32 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Custom Classes</li><li class="breadcrumb-item"><a href="../reference/Word.html">Word and Phone Classes</a></li><li class="breadcrumb-item"><a href="../reference/Word.html">Word</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Word</h1>
+</div>
 
 
 
-<section id="aligned_textgrid.sequences.word_and_phone.Word" class="level1">
-<h1>Word</h1>
-<p><code>sequences.word_and_phone.Word(self, Interval=Interval(None, None, None))</code></p>
-<p>A Word subclass of SequenceInterval</p>
-<p>Has all the same methods and attributes as SequenceInterval in addition to attributes described below. <code>superset_class</code> set to <code>Top</code>, and <code>subset_class</code> set to <code>Phone</code></p>
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><code>sequences.word_and_phone.Word(self, interval=(None, None, None), *, Interval=None)</code></p>
+<p>A Word subclass of <a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval"><code>SequenceInterval</code></a></p>
+<p>Has all the same methods and attributes as <a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval"><code>SequenceInterval</code></a> in addition to attributes described below.<br>
+<code>superset_class</code> set to <a href="../reference/Top.html#aligned_textgrid.sequences.sequences.Top"><code>Top</code></a>, and <code>subset_class</code> set to <a href="../reference/Phone.html#aligned_textgrid.sequences.word_and_phone.Phone"><code>Phone</code></a></p>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 44%">
-<col style="width: 18%">
-<col style="width: 25%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -487,13 +528,31 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>Interval</code></td>
-<td><code>Interval</code></td>
-<td>A praatio <code>Interval</code></td>
-<td><code>Interval(None, None, None)</code></td>
+<td><code>interval</code></td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a> | <a href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a> | <code>Interval</code> | <a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a></td>
+<td>A tuple or list of start, end and label, or another <a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval"><code>SequenceInterval</code></a></td>
+<td><code>(None, None, None)</code></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<div id="de43c250" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> Word, Phone</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>DH <span class="op">=</span> Phone((<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">"DH"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>AH0 <span class="op">=</span> Phone((<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"AH0"</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>THE <span class="op">=</span> Word((<span class="dv">0</span>, <span class="dv">2</span>, <span class="st">"THE"</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>THE.set_phones([DH, AH0])</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(THE.phones)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['DH', 'AH0']</code></pre>
+</div>
+</div>
 </section>
 <section id="attributes" class="level2">
 <h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
@@ -561,7 +620,6 @@ ul.task-list li input[type="checkbox"] {
 </table>
 
 
-</section>
 </section>
 </section>
 </section>
