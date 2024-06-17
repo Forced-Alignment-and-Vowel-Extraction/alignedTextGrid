@@ -9,6 +9,7 @@ import praatio
 from praatio.data_classes.interval_tier import IntervalTier
 from aligned_textgrid.mixins.mixins import InTierMixins, PrecedenceMixins
 from aligned_textgrid.mixins.within import WithinMixins
+from aligned_textgrid.sequence_list import SequenceList
 from typing import Type, Any
 import numpy as np
 import warnings
@@ -20,145 +21,6 @@ if sys.version_info >= (3,11):
 else:
     from typing_extensions import Self
 
-class IntervalList(Sequence):
-    """A list of SequenceIntervals that
-    remains sorted
-
-    Args:
-        *args (SequenceInterval):
-            SequenceIntervals
-
-    Attributes:
-        starts (np.array):
-            An array of start times
-        ends (np.array):
-            An array of end times
-        labels (list[str]):
-            A list of labels
-    """
-
-    def __init__(self, *args):
-        self._values = []
-        self.entry_class = None
-        for arg in args:
-            self.append(arg)
-
-    def __getitem__(self, idx):
-        return self._values[idx]
-    
-    def __len__(self):
-        return len(self._values)
-    
-    def __add__(self, other:Sequence):
-        unique_other_classes = set([x.__class__ for x in other])
-
-        if len(unique_other_classes) > 1:
-            raise ValueError("All values in added list must have the same class.")
-    
-        if len(unique_other_classes) < 1:
-            return
-        
-        incoming_class = next(iter(unique_other_classes))
-
-        if not incoming_class is self.entry_class:
-            raise ValueError("All values in added list must have the same class as original list.")
-        
-        return IntervalList(*(self._values + [x for x in other]))
-
-    def __repr__(self):
-        return self._values.__repr__()
-            
-    def _sort(self):
-        if len(self._values) > 0:
-            item_starts = np.array([x.start for x in self._values])
-            item_order = np.argsort(item_starts)
-            self._values = [self._values[idx] for idx in item_order]
-    
-    def _entry_class_checker(self, value):
-        if self.entry_class is None:
-            self.entry_class = value.__class__
-        
-        if not self.entry_class is value.__class__:
-            raise ValueError("All values must have the same class.")
-    
-    def _shift(self, increment):
-        for value in self:
-            value._shift(increment)
-
-    @property
-    def starts(self)->np.array:
-        if len(self) > 0:
-            return np.array([x.start for x in self])
-
-        return np.array([])
-    
-    @property
-    def ends(self) -> np.array:
-        if len(self) > 0:
-            return np.array([x.end for x in self])
-        
-        return np.array([])
-    
-    @property
-    def labels(self) -> list[str]:
-        if len(self) > 0:
-            return [x.label for x in self]
-
-        return []
-    
-    def append(self, value, shift:bool = False):
-        """Append a SequenceInterval to the list.
-
-        After appending, the SequenceIntervals are re-sorted
-
-        Args:
-            value (SequenceInterval): 
-                A SequenceInterval to append
-        """
-
-        self._entry_class_checker(value)
-
-        increment = 0
-        if len(self.ends) > 0:
-            increment = self.ends[-1]
-        if shift:
-            value._shift(increment)
-
-        self._values.append(value)
-        self._sort()
-
-    def concat(self, intervals:list|Self):
-        intervals = IntervalList(*intervals)
-
-        increment = 0
-        if len(self.ends) > 0:
-            increment = self.ends[-1]
-        
-        intervals._shift(increment)          
-        
-        new_values = self + intervals
-        self._values = new_values
-
-       
-    def remove(self, x):
-        """Remove a SequenceInterval from the list
-
-        Args:
-            x (SequenceInterval):
-                The SequenceInterval to remove.
-        """
-        self._values.remove(x)
-
-    def pop(self, x):
-        """Pop a SequneceInterval
-
-        Args:
-            x (SequenceInterval):
-                SequenceInterval to pop
-        """
-        if x in self:
-            pop_idx = self.index(x)
-            self._values.pop(pop_idx)
 
 class HierarchyMixins:
 
@@ -257,7 +119,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
                 set as the `super_instance` of all objects in the list.
         """
 
-        self._subset_list = IntervalList()
+        self._subset_list = SequenceList()
         if subset_list is None:
             return
         if all([isinstance(subint, self.subset_class) for subint in subset_list]):
@@ -265,7 +127,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
                 self.append_subset_list(element)
             self._set_within()
             self._set_subset_precedence()
-            self.validate()
+            #self.validate()
         else:
             subset_class_set = set([type(x).__name__ for x in subset_list])
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
@@ -289,7 +151,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             # avoid recursion
             if not self is subset_instance.super_instance:
                 subset_instance.set_super_instance(self)
-            self.validate()
+            #self.validate()
         elif isinstance(subset_instance, self.subset_class):
             pass
         else:
@@ -309,7 +171,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         subset_instance.super_instance = None
         subset_instance.within = None
         self._set_subset_precedence()
-        self.validate()
+        #self.validate()
     
     def remove_superset(self):
         """Remove the superset instance from the current subset class
@@ -510,7 +372,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
         if self.label != "#":
             self.set_initial()
 
-        self._subset_list = IntervalList()
+        self._subset_list = SequenceList()
         self.super_instance= None
 
         self.intier = None
@@ -587,8 +449,8 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
         return self._subset_list
     
     @subset_list.setter
-    def subset_list(self, intervals: list[Self]|IntervalList[Self]):
-        intervals = IntervalList(*intervals)
+    def subset_list(self, intervals: list[Self]|SequenceList[Self]):
+        intervals = SequenceList(*intervals)
         self.set_subset_list(intervals)
 
     @property
@@ -661,7 +523,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
                 if fuser.intier:
                     fuser.intier.pop(fusee)
                 if fuser.super_instance:
-                    fuser.super_instance.pop(fusee)                    
+                    fuser.super_instance.subset_list.remove(fusee)                    
         else:
             raise Exception("Cannot fuse rightwards at right edge")
         
@@ -693,7 +555,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
                 if fuser.intier:
                     fuser.intier.pop(fusee)
                 if fuser.super_instance:
-                    fuser.super_instance.pop(fusee)                    
+                    fuser.super_instance.subset_list.remove(fusee)                    
         else:
             raise Exception("Cannot fuse leftwards at right edge")
     
