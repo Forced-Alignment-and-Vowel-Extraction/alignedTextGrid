@@ -7,6 +7,7 @@ from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
 from aligned_textgrid.mixins.within import WithinMixins
+from aligned_textgrid.sequence_list import SequenceList
 import numpy as np
 from typing import Type
 from collections.abc import Sequence
@@ -65,7 +66,7 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
     """
     def __init__(
         self, 
-        tier:list[Point]|list[SequencePoint]|PointTier|Self = [], 
+        tier:list[Point]|list[SequencePoint]|SequenceList|PointTier|Self = [], 
         entry_class:Type[SequencePoint] = None
     ):
         to_check = tier
@@ -97,11 +98,11 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
         self.name = name
         entry_order = np.argsort([x.time for x in self.entry_list])
         self.entry_list = [self.entry_list[idx] for idx in entry_order]
-        self.sequence_list = []
-
+        self.sequence_list = SequenceList()
+       
         for entry in self.entry_list:
             this_point = self.entry_class(entry)
-            self.sequence_list += [this_point]
+            self.sequence_list.append(this_point)
         self.__set_precedence()
     
     def __getitem__(self, idx):
@@ -135,9 +136,7 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
 
     @property
     def times(self):
-        return np.array(
-            [x.time for x in self.sequence_list]
-        )
+        return self.sequence_list.starts
     
     @times.setter
     def times(self, new_times):
@@ -149,19 +148,19 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
 
     @property
     def labels(self):
-        return [x.label for x in self.sequence_list]
+        return self.sequence_list.labels
     
     @property
     def xmin(self):
         if len(self.sequence_list) > 0:
-            return self.sequence_list[0].time
+            return self.sequence_list.starts.min()
         else:
             return None
     
     @property
     def xmax(self):
         if len(self.sequence_list) > 0:
-            return self.sequence_list[-1].time
+            return self.sequence_list.starts.max()
         else:
             return None
         
