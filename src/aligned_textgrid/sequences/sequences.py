@@ -72,8 +72,18 @@ class IntervalList(Sequence):
         if len(self._values) > 0:
             item_starts = np.array([x.start for x in self._values])
             item_order = np.argsort(item_starts)
-            self._values = [self._values[idx] for idx in item_order]    
-
+            self._values = [self._values[idx] for idx in item_order]
+    
+    def _entry_class_checker(self, value):
+        if self.entry_class is None:
+            self.entry_class = value.__class__
+        
+        if not self.entry_class is value.__class__:
+            raise ValueError("All values must have the same class.")
+    
+    def _shift(self, increment):
+        for value in self:
+            value._shift(increment)
 
     @property
     def starts(self)->np.array:
@@ -96,7 +106,7 @@ class IntervalList(Sequence):
 
         return []
     
-    def append(self, value):
+    def append(self, value, shift:bool = False):
         """Append a SequenceInterval to the list.
 
         After appending, the SequenceIntervals are re-sorted
@@ -105,15 +115,31 @@ class IntervalList(Sequence):
             value (SequenceInterval): 
                 A SequenceInterval to append
         """
-        if self.entry_class is None:
-            self.entry_class = value.__class__
-        
-        if not self.entry_class is value.__class__:
-            raise ValueError("All values must have the same class.")
+
+        self._entry_class_checker(value)
+
+        increment = 0
+        if len(self.ends) > 0:
+            increment = self.ends[-1]
+        if shift:
+            value._shift(increment)
 
         self._values.append(value)
         self._sort()
 
+    def concat(self, intervals:list|Self):
+        intervals = IntervalList(*intervals)
+
+        increment = 0
+        if len(self.ends) > 0:
+            increment = self.ends[-1]
+        
+        intervals._shift(increment)          
+        
+        new_values = self + intervals
+        self._values = new_values
+
+       
     def remove(self, x):
         """Remove a SequenceInterval from the list
 
