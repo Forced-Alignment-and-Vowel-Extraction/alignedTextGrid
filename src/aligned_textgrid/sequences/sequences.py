@@ -133,7 +133,7 @@ class IntervalList(Sequence):
         if x in self:
             pop_idx = self.index(x)
             self._values.pop(pop_idx)
-            
+
 class HierarchyMixins:
 
     # Ultimately, both of these class variables should be be
@@ -239,7 +239,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
                 self.append_subset_list(element)
             self._set_within()
             self._set_subset_precedence()
-
+            self.validate()
         else:
             subset_class_set = set([type(x).__name__ for x in subset_list])
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
@@ -263,6 +263,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             # avoid recursion
             if not self is subset_instance.super_instance:
                 subset_instance.set_super_instance(self)
+            self.validate()
         elif isinstance(subset_instance, self.subset_class):
             pass
         else:
@@ -282,6 +283,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         subset_instance.super_instance = None
         subset_instance.within = None
         self._set_subset_precedence()
+        self.validate()
     
     def remove_superset(self):
         """Remove the superset instance from the current subset class
@@ -338,36 +340,39 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         validation_concerns = []
         if len(self.subset_list) == 0:
             return True
-        else:
-            if not np.allclose(self.start, self.sub_starts[0]):
-                if self.start < self.sub_starts[0]:
-                    validation_concerns.append(
-                        "First subset interval starts after current interval"
-                    )
-                else:
-                    validation_concerns.append(
-                        "First subset interval starts before current interval"
-                    )
-            if not np.allclose(self.end, self.sub_ends[-1]):
-                if self.end > self.sub_ends[-1]:
-                    validation_concerns.append(
-                        "Last subset interval ends before current interval"
-                    )
-                else:
-                    validation_concerns.append(
-                        "Last subset interval ends after current interval"
-                    )
-            if not np.allclose(self.sub_starts[1:], self.sub_ends[:-1]):
+        
+        if self.start is None:
+            return True
+
+        if not np.allclose(self.start, self.sub_starts[0]):
+            if self.start < self.sub_starts[0]:
                 validation_concerns.append(
-                    "Not all subintervals fit snugly"
+                    "First subset interval starts after current interval"
                 )
-            ## prepping messages
-            if len(validation_concerns) == 0:
-                return True
             else:
-                validation_warn = "\n".join(validation_concerns)
-                warnings.warn(validation_warn)
-                return False         
+                validation_concerns.append(
+                    "First subset interval starts before current interval"
+                )
+        if not np.allclose(self.end, self.sub_ends[-1]):
+            if self.end > self.sub_ends[-1]:
+                validation_concerns.append(
+                    "Last subset interval ends before current interval"
+                )
+            else:
+                validation_concerns.append(
+                    "Last subset interval ends after current interval"
+                )
+        if not np.allclose(self.sub_starts[1:], self.sub_ends[:-1]):
+            validation_concerns.append(
+                "Not all subintervals fit snugly"
+            )
+        ## prepping messages
+        if len(validation_concerns) == 0:
+            return True
+
+        validation_warn = "\n".join(validation_concerns)
+        warnings.warn(validation_warn)
+        return False         
                 
 class HierarchyPart(HierarchyMixins):
     def __init__(self):
