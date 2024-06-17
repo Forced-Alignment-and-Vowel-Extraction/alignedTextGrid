@@ -47,9 +47,11 @@ class SequenceList(Sequence):
         
         incoming_class = next(iter(unique_other_classes))
 
-        if not incoming_class is self.entry_class:
+        if not incoming_class.__name__ == self.entry_class.__name__:
             raise ValueError("All values in added list must have the same class as original list.")
-        output =  SequenceList(*(self._values + [x for x in other]))
+        new_list = self._values + [x for x in other]
+        new_intervals = [self.entry_class(x) if not x.entry_class is self.entry_class else x for x in new_list]
+        output =  SequenceList(*new_intervals)
         output._check_no_overlaps()
         return output
 
