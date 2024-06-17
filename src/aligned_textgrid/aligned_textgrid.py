@@ -61,6 +61,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
         *,
         textgrid_path: str =  None
     ):
+        self.entry_classes = None
         self.entry_classes = self._reclone_classes(entry_classes)
         if textgrid_path:
             textgrid = textgrid_path
@@ -168,6 +169,17 @@ class AlignedTextGrid(Sequence, WithinMixins):
         
         unique_classes = list(set(flat_classes))
 
+        orig_classes = []
+        orig_class_names = []
+        if self.entry_classes:
+            orig_classes = [c for tg in self.entry_classes for c in tg]
+            orig_class_names = [c.__name__ for c in orig_classes]
+    
+        
+        already_cloned = [c.__name__ in orig_classes for c in flat_classes]
+        if all(already_cloned):
+            return
+
         points = [c for c in unique_classes if issubclass(c, SequencePoint)]
         tops = [
             c 
@@ -176,8 +188,23 @@ class AlignedTextGrid(Sequence, WithinMixins):
             if issubclass(c.superset_class, Top)
         ]
 
-        points_clone = [clone_class(p) for p  in points]
-        tops_clone = [clone_class(t) for t in tops]
+        points_clone = []
+        for p in points:
+            if p.__name__ in orig_class_names:
+                points_clone.append(
+                    orig_classes[orig_class_names.index(p.__name__)]
+                )
+            else:
+                points_clone.append(clone_class(p))
+        tops_clone = []
+        for t in tops:
+            if t.__name__ in orig_class_names:
+                tops_clone.append(
+                    orig_classes[orig_class_names.index(t.__name__)]
+                )
+            else:
+                tops_clone.append(clone_class(t))
+
         full_seq_clone = []
         for tclone in tops_clone:
             full_seq_clone += get_class_hierarchy(tclone, [])
@@ -346,6 +373,30 @@ class AlignedTextGrid(Sequence, WithinMixins):
             raise ValueError('No maximum time for empty TextGrid.')
         return np.array([tgroup.xmax for tgroup in self.tier_groups]).max()
     
+    def append(self, tier_group:TierGroup):
+        new_classes = self._reclone_classes(tier_group.entry_classes)
+        new_tiers = TierGroup(
+            [
+                SequenceTier(t, e)
+                for t,e in zip(tier_group, new_classes)
+            ]
+        )
+
+        self.tier_groups.append(new_tiers)
+        self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
+
+    def cleanup(self):
+        for tg in self.tier_groups:
+            tg.cleanup()
+        
+        interval_tgs = [tg for tg in self if isinstance(tg, TierGroup)]
+        tg_starts = np.array([tg.xmin for tg in interval_tgs])
+        tg_ends = np.array([tg.xmax for tg in interval_tgs])
+
+        if np.allclose(tg_starts.min(), tg_starts.max()):
+            return
+                                
+
     def shift(
             self,
             increment: float
