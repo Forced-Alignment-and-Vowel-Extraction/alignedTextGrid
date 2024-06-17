@@ -167,6 +167,9 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
     def _shift(self, increment):
         self.times += increment
     
+    def cleanup(self):
+        pass
+    
     def get_nearest_point_index(
             self, 
             time: float

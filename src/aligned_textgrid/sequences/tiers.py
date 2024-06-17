@@ -218,6 +218,25 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         else:
             return None
 
+    def cleanup(self):
+        """
+        Insert empty intervals where there are gaps in the existing tier.
+        """
+        existing_intervals = self.sequence_list
+        for i in range(len(existing_intervals)):
+            if i+1 == len(existing_intervals):
+                break
+
+            this_end = existing_intervals[i].end
+            next_start = existing_intervals[i+1].start
+            
+            if np.allclose(this_end, next_start):
+                continue
+
+            self.sequence_list.append(
+                self.entry_class((this_end, next_start, ""))
+            )
+
     def get_interval_at_time(
             self, 
             time: float
@@ -287,12 +306,24 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     """
     def __init__(
         self,
-        tiers: list[SequenceTier] = [SequenceTier()]
+        tiers: list[SequenceTier]|Self = [SequenceTier()]
     ):
+        name = None        
+        if hasattr(tiers, "name"):
+            name = tiers.name
+
+        if isinstance(tiers, TierGroup):
+            tiers = [tier for tier in tiers]
+
         self.tier_list = self._arrange_tiers(tiers)
-        #self.entry_classes = [x.__class__ for x in self.tier_list]
-        self._name = self.make_name()
+
+        if name:
+            self._name = name
+        else:
+            self._name = self.make_name()
         self._set_tier_names()
+
+        #self.entry_classes = [x.__class__ for x in self.tier_list]
         for idx, tier in enumerate(self.tier_list):
             if idx == len(self.tier_list)-1:
                 break
