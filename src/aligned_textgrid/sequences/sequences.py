@@ -262,6 +262,120 @@ class HierarchyPart(HierarchyMixins):
     def __init__(self):
         pass
 
+class IntervalList(Sequence):
+    """A list of SequenceIntervals that
+    remains sorted
+
+    Args:
+        *args (SequenceInterval):
+            SequenceIntervals
+
+    Attributes:
+        starts (np.array):
+            An array of start times
+        ends (np.array):
+            An array of end times
+        labels (list[str]):
+            A list of labels
+    """
+
+    def __init__(self, *args):
+        self._values = []
+        self.entry_class = None
+        for arg in args:
+            self.append(arg)
+
+    def __getitem__(self, idx):
+        return self._values[idx]
+    
+    def __len__(self):
+        return len(self._values)
+    
+    def __add__(self, other:Sequence):
+        unique_other_classes = set([x.__class__ for x in other])
+
+        if len(unique_other_classes) > 1:
+            raise ValueError("All values in added list must have the same class.")
+    
+        if len(unique_other_classes) < 1:
+            return
+        
+        incoming_class = next(iter(unique_other_classes))
+
+        if not incoming_class is self.entry_class:
+            raise ValueError("All values in added list must have the same class as original list.")
+        
+        return IntervalList(*(self._values + [x for x in other]))
+
+    def __repr__(self):
+        return self._values.__repr__()
+            
+    def _sort(self):
+        if len(self._values) > 0:
+            item_starts = np.array([x.start for x in self._values])
+            item_order = np.argsort(item_starts)
+            self._values = [self._values[idx] for idx in item_order]    
+
+
+    @property
+    def starts(self)->np.array:
+        if len(self) > 0:
+            return np.array([x.start for x in self])
+
+        return np.array([])
+    
+    @property
+    def ends(self) -> np.array:
+        if len(self) > 0:
+            return np.array([x.end for x in self])
+        
+        return np.array([])
+    
+    @property
+    def labels(self) -> list[str]:
+        if len(self) > 0:
+            return [x.label for x in self]
+
+        return []
+    
+    def append(self, value):
+        """Append a SequenceInterval to the list.
+
+        After appending, the SequenceIntervals are re-sorted
+
+        Args:
+            value (SequenceInterval): 
+                A SequenceInterval to append
+        """
+        if self.entry_class is None:
+            self.entry_class = value.__class__
+        
+        if not self.entry_class is value.__class__:
+            raise ValueError("All values must have the same class.")
+
+        self._values.append(value)
+        self._sort()
+
+    def remove(self, x):
+        """Remove a SequenceInterval from the list
+
+        Args:
+            x (SequenceInterval):
+                The SequenceInterval to remove.
+        """
+        self._values.remove(x)
+
+    def pop(self, x):
+        """Pop a SequneceInterval
+
+        Args:
+            x (SequenceInterval):
+                SequenceInterval to pop
+        """
+        if x in self:
+            pop_idx = self.index(x)
+            self._values.pop(pop_idx)
+
 class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, HierarchyPart):
     """
     A class to describe an interval with precedence relationships and hierarchical relationships
