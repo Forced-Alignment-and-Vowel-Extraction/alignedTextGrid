@@ -94,6 +94,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
 
         self.entry_list = entries
         self.name = name
+        self._sequence_list = SequenceList()
         self.__set_classes(entry_class)
         self.__build_sequence_list()
         self.__set_precedence()
@@ -107,15 +108,9 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         self.subset_class =  self.entry_class.subset_class
         
     def __build_sequence_list(self):
-        #entry_order = np.argsort([x.start for x in self.entry_list])
-        #self.entry_list = [self.entry_list[idx] for idx in entry_order]
         intervals = [self.entry_class(entry) for entry in self.entry_list]
         self.sequence_list = SequenceList(*intervals)
-        # for entry in self.entry_list:
-        #     this_seq = self.entry_class(entry)
-        #     this_seq.set_superset_class(self.superset_class)
-        #     this_seq.set_subset_class(self.subset_class)
-        #     self.sequence_list += [this_seq]
+
 
     def __getitem__(self, idx):
         return self.sequence_list[idx]
@@ -125,18 +120,18 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
 
 
     def __set_precedence(self):
-        for idx,seq in enumerate(self.sequence_list):
+        for idx,seq in enumerate(self._sequence_list):
             self.__set_intier(seq)
             if idx == 0:
                 seq.set_initial()
             else:
-                seq.set_prev(self.sequence_list[idx-1])
-            if idx == len(self.sequence_list)-1:
+                seq.set_prev(self._sequence_list[idx-1])
+            if idx == len(self._sequence_list)-1:
                 seq.set_final()
             else:
-                seq.set_fol(self.sequence_list[idx+1])
+                seq.set_fol(self._sequence_list[idx+1])
         if issubclass(self.superset_class, Top):
-            self.contains = self.sequence_list
+            self.contains = self._sequence_list
 
     def __set_intier(
             self,
@@ -167,7 +162,16 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
 
     def __repr__(self):
         return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
-                
+    
+    @property
+    def sequence_list(self):
+        return self._sequence_list
+    
+    @sequence_list.setter
+    def sequence_list(self, new):
+        self._sequence_list = SequenceList(*new)
+        self.__set_precedence()        
+
     @property
     def starts(self):
         return np.array([x.start for x in self.sequence_list])
