@@ -12,6 +12,28 @@ class TierMixins:
         last (SequenceInterval): The last entry in the tier.
     """
 
+    def __add__(self, new):
+        if self.entry_class.__name__ != new.entry_class.__name__:
+            raise ValueError("Added tiers must have the same entry class")
+        
+        entries = self.sequence_list + new.sequence_list
+        new_tier = self.__class__(entries)
+        return new_tier
+
+
+
+    def concat(self, new):
+        if self.entry_class.__name__ != new.entry_class.__name__:
+            raise ValueError("Added tiers must have the same entry class")
+        
+        lhs = self.sequence_list
+        rhs = new.sequence_list
+
+        lhs.concat(rhs)
+
+        self.sequence_list = lhs
+
+
     @property
     def first(self):
         if hasattr(self, "sequence_list") and len(self.sequence_list) > 0:
