@@ -1,5 +1,6 @@
 import pytest
 from aligned_textgrid.sequences.sequences import *
+from aligned_textgrid.sequence_list import SequenceList
 from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import *
 import numpy as np
@@ -30,7 +31,7 @@ class TestSequenceIntervalDefault:
         assert self.seq_int.super_instance is None
 
     def test_default_subset_list(self):
-        assert isinstance(self.seq_int.subset_list, IntervalList)
+        assert isinstance(self.seq_int.subset_list, SequenceList)
         assert len(self.seq_int.subset_list) == 0
 
     def test_default_sub_starts(self):

@@ -6,6 +6,7 @@ from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.textgrid import Textgrid
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
+from aligned_textgrid.sequence_list import SequenceList
 from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
 from aligned_textgrid.mixins.within import WithinMixins
 import numpy as np
@@ -64,7 +65,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
     """
     def __init__(
         self,
-        tier: list[Interval] | list[SequenceInterval] | IntervalTier | Self  = [],
+        tier: list[Interval] | list[SequenceInterval] | SequenceList | IntervalTier | Self  = SequenceList(),
         entry_class: Type[SequenceInterval] = None
     ):
         
@@ -72,7 +73,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         if isinstance(tier, IntervalTier):
             to_check = tier.entries
 
-        has_class = any([hasattr(x, "entry_class") for x in to_check])       
+        has_class = any([hasattr(x, "entry_class") for x in to_check]) 
 
         if not entry_class and has_class:
             entry_class = tier[0].entry_class
@@ -106,14 +107,15 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         self.subset_class =  self.entry_class.subset_class
         
     def __build_sequence_list(self):
-        entry_order = np.argsort([x.start for x in self.entry_list])
-        self.entry_list = [self.entry_list[idx] for idx in entry_order]
-        self.sequence_list = []
-        for entry in self.entry_list:
-            this_seq = self.entry_class(entry)
-            this_seq.set_superset_class(self.superset_class)
-            this_seq.set_subset_class(self.subset_class)
-            self.sequence_list += [this_seq]
+        #entry_order = np.argsort([x.start for x in self.entry_list])
+        #self.entry_list = [self.entry_list[idx] for idx in entry_order]
+        intervals = [self.entry_class(entry) for entry in self.entry_list]
+        self.sequence_list = SequenceList(*intervals)
+        # for entry in self.entry_list:
+        #     this_seq = self.entry_class(entry)
+        #     this_seq.set_superset_class(self.superset_class)
+        #     this_seq.set_subset_class(self.subset_class)
+        #     self.sequence_list += [this_seq]
 
     def __getitem__(self, idx):
         return self.sequence_list[idx]
@@ -157,8 +159,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
 
         """
         if entry in self.sequence_list:
-            pop_idx = self.index(entry)
-            self.sequence_list.pop(pop_idx)
+            self.sequence_list.remove(entry)
             if self.superset_class is Top:
                 self.__set_precedence()
         else:
