@@ -2,6 +2,7 @@ from difflib import SequenceMatcher
 from functools import reduce
 import re
 import warnings
+import numpy as np
 
 class TierMixins:
     """Methods and attributes for Sequence Tiers
@@ -33,7 +34,6 @@ class TierMixins:
 
         self.sequence_list = lhs
 
-
     @property
     def first(self):
         if hasattr(self, "sequence_list") and len(self.sequence_list) > 0:
@@ -50,7 +50,9 @@ class TierMixins:
         if hasattr(self, "sequence_list"):
             raise IndexError(f"{type(self).__name__} tier with name"\
                              f" {self.name} has empty sequence_list")
-        raise AttributeError(f"{type(self).__name__} is not indexable.")\
+        raise AttributeError(f"{type(self).__name__} is not indexable.")
+    
+
     
 
 class TierGroupMixins:
@@ -59,6 +61,41 @@ class TierGroupMixins:
     Attributes:
         []: Indexable and iterable
     """
+
+    def _class_check(self, new):
+        if len(self) != len(new):
+            raise ValueError("Original TierGroup and new TierGroup must have the same number of tiers.")
+        
+        orig_classes = [x.__name__ for x in self.entry_classes]
+        new_classes = [x.__name__ for x in new.entry_classes]
+
+        for o, n  in zip(orig_classes, new_classes):
+            if o != n:
+                raise ValueError("Entry classes must be the same between added tier groups")
+
+    def __add__(self, new):
+
+        self._class_check(new)
+            
+        new_tiers = [
+            t1 + t2 for t1, t2 in zip(self, new)
+        ]
+
+        new_tg = self.__class__(new_tiers)
+        new_tg.name = self.name
+
+        return new_tg
+        
+
+
+    def concat(self, new):
+        self._class_check(new)
+
+        _ = [
+            t1.concat(t2) for t1, t2 in zip(self, new)
+        ]
+
+
 
     def _set_tier_names(self):
         entry_class_names = [x.__name__ for x in self.entry_classes]
