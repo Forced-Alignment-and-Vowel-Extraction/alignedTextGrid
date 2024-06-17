@@ -622,6 +622,8 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     def _shift(self, increment):
         self.start += increment
         self.end += increment
+        if len(self.subset_list) > 0:
+            self.subset_list._shift(increment)
         
     @property
     def duration(self) -> float:
