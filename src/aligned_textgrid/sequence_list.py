@@ -49,8 +49,9 @@ class SequenceList(Sequence):
 
         if not incoming_class is self.entry_class:
             raise ValueError("All values in added list must have the same class as original list.")
-        
-        return SequenceList(*(self._values + [x for x in other]))
+        output =  SequenceList(*(self._values + [x for x in other]))
+        output._check_no_overlaps()
+        return output
 
     def __repr__(self):
         return self._values.__repr__()
@@ -74,6 +75,24 @@ class SequenceList(Sequence):
     def _shift(self, increment):
         for value in self:
             value._shift(increment)
+
+    def _check_no_overlaps(
+          self
+    )->bool:
+        starts = self.starts
+        ends = self.ends
+
+        a = np.array([e > starts for e in ends])
+        b = np.array([s < ends for s in starts])
+
+        n_overlaps = (a&b).sum()
+
+        overlaps = n_overlaps > len(self)
+
+        if overlaps:
+            warnings.warn("Some intervals provided overlap in time")
+
+        return not n_overlaps > len(self)            
 
     @property
     def starts(self)->np.array:
