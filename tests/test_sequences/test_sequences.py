@@ -30,7 +30,7 @@ class TestSequenceIntervalDefault:
         assert self.seq_int.super_instance is None
 
     def test_default_subset_list(self):
-        assert type(self.seq_int.subset_list) is list
+        assert isinstance(self.seq_int.subset_list, IntervalList)
         assert len(self.seq_int.subset_list) == 0
 
     def test_default_sub_starts(self):
