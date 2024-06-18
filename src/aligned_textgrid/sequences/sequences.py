@@ -106,6 +106,9 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
     def append(self, other):
         if issubclass(self.subset_class, other.entry_class):
             self.subset_list += [other]
+            if self.intier and self.intier.within:
+                self_tier_idx = self.intier.within_index
+                self.intier.within[self_tier_idx+1].append(other)
             return
         raise ValueError("Appended SequenceInterval must be the subset class of the original.")
 
