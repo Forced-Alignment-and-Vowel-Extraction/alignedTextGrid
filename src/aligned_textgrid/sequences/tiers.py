@@ -207,14 +207,14 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
     @property
     def xmin(self):
         if len(self.sequence_list) > 0:
-            return self.sequence_list[0].start
+            return self.sequence_list.starts.min()
         else:
             return None
     
     @property
     def xmax(self):
         if len(self.sequence_list) > 0:
-            return self.sequence_list[-1].end
+            return self.sequence_list.ends.max()
         else:
             return None
 
@@ -433,6 +433,40 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     def xmax(self):
         return np.array([tier.xmax for tier in self.tier_list]).min()
     
+    def cleanup(self):
+        for tier in self:
+            tier.cleanup()
+        
+   
+
+        starts = np.array([tier.xmin for tier in self])
+        ends = np.array([tier.xmax for tier in self])
+
+        if ~np.allclose(starts.ptp(), 0.0):
+            new_start = self.xmin
+            
+            for tier in self:
+                if np.allclose(tier.xmin, new_start):
+                    continue
+
+                empty_interval = tier.entry_class((new_start, tier.xmin, ""))
+                tier.append(empty_interval)
+            
+
+        
+        if ~np.allclose(ends.ptp(), 0.0):
+            new_end = self.xmax
+
+            for tier in self:
+                if np.allclose(tier.xmax, new_end):
+                    continue
+                
+                empty_interval = tier.entry_class((tier.xmax, new_end, ""))
+                tier.append(empty_interval)
+
+        self = TierGroup(self)
+
+
     def shift(
             self,
             increment: float
