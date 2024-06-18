@@ -36,19 +36,38 @@ class SequenceList(Sequence):
     def __len__(self):
         return len(self._values)
     
+    def __contains__(self, other):
+        if other in self._values:
+            return True
+        self_tuples = [tuple(x.return_interval()) for x in self]
+        other_tuple = tuple(other.return_interval())
+        if other_tuple in self._values:
+            return True
+        
+        return False
+    
     def __add__(self, other:Sequence):
+
+        other = [x for x in other if x not in self]
+
+        if len(other) < 1:
+            return self
+
         unique_other_classes = set([x.__class__ for x in other])
 
         if len(unique_other_classes) > 1:
             raise ValueError("All values in added list must have the same class.")
     
         if len(unique_other_classes) < 1:
-            return
+            return self
         
         incoming_class = next(iter(unique_other_classes))
-
-        if not incoming_class.__name__ == self.entry_class.__name__:
+        if self.entry_class and not incoming_class.__name__ == self.entry_class.__name__:
             raise ValueError("All values in added list must have the same class as original list.")
+        
+        if not self.entry_class:
+            self.entry_class = next(iter(unique_other_classes))
+
         new_list = self._values + [x for x in other]
         new_intervals = [self.entry_class(x) if not x.entry_class is self.entry_class else x for x in new_list]
         output =  SequenceList(*new_intervals)
@@ -134,7 +153,9 @@ class SequenceList(Sequence):
             value (SequenceInterval): 
                 A SequenceInterval to append
         """
-
+        if value in self:
+            return
+        
         self._entry_class_checker(value)
 
         increment = 0
