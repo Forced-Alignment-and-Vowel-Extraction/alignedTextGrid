@@ -14,14 +14,33 @@ class TierMixins:
     """
 
     def __add__(self, new):
-        if self.entry_class.__name__ != new.entry_class.__name__:
+        if not isinstance(new, self.__class__):
+            msg = f"A {type(self).__name__} can only be added to a {type(self).__name__}."
+            if isinstance(new, PrecedenceMixins):
+                msg += " Did you mean to use append()?"
+            raise ValueError(msg)
+        if not issubclass(self.entry_class, new.entry_class):
             raise ValueError("Added tiers must have the same entry class")
         
         entries = self.sequence_list + new.sequence_list
         new_tier = self.__class__(entries)
         return new_tier
 
-
+    def append(self, new):
+        if not isinstance(new, PrecedenceMixins):
+            msg = "Only SequenceIntervals or SequencePoints can be appended to a tier."
+            if isinstance(new, TierMixins):
+                msg += " Did you mean do add (+)?"
+            raise ValueError(msg)
+        if not issubclass(self.entry_class, new.entry_class):
+            raise ValueError("Entry class must match for appended values.")
+        
+        entries = self.sequence_list
+        entries.append(new)
+        new_tier = self.__class__(entries)
+        orig_within = self.within
+        self = new_tier
+        orig_within.re_relate()
 
     def concat(self, new):
         if self.entry_class.__name__ != new.entry_class.__name__:
