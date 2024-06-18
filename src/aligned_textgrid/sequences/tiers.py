@@ -88,7 +88,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
             entries = tier.entries
             name = tier.name
         if isinstance(tier, SequenceTier):
-            entries = tier.entry_list
+            entries = tier.sequence_list
             if tier.name != tier.entry_class.__name__:
                 name = tier.name            
 
