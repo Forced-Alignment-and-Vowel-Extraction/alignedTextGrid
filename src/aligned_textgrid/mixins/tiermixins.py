@@ -38,11 +38,14 @@ class TierMixins:
         
         entries = self.sequence_list
         entries.append(new)
-        new_tier = self.__class__(entries)
         orig_within = self.within
-        self = new_tier
+        new_tier = self.__class__(entries)
+        self.__dict__ = new_tier.__dict__
         if orig_within:
-            orig_within.re_relate()
+            self.within = orig_within
+            self.within.re_relate()
+
+
 
     def concat(self, new):
         if not issubclass(self.entry_class, new.entry_class):
