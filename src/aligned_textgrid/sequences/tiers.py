@@ -237,6 +237,9 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
                 self.entry_class((this_end, next_start, ""))
             )
 
+        if self.within:
+            self.within.re_relate()
+
     def get_interval_at_time(
             self, 
             time: float
