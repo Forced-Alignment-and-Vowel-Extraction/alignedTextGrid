@@ -88,9 +88,9 @@ class SequenceList(Sequence):
     
     def _entry_class_checker(self, value):
         if self.entry_class is None:
-            self.entry_class = value.__class__
+            self.entry_class = value.entry_class
         
-        if not self.entry_class is value.__class__:
+        if not issubclass(self.entry_class, value.entry_class):
             raise ValueError("All values must have the same class.")
     
     def _shift(self, increment):
@@ -157,7 +157,8 @@ class SequenceList(Sequence):
             return
         
         self._entry_class_checker(value)
-
+        value = self.entry_class(value)
+        
         increment = 0
         if len(self.ends) > 0:
             increment = self.ends[-1]
