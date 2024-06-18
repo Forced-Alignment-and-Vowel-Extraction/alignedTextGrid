@@ -154,7 +154,26 @@ class TierGroupMixins:
         self._name = name
 
     def re_relate(self):
-        self = self.__class__(self)
+        
+        new_tiers = [
+            tier.__class__(tier)
+            for tier in self
+        ]
+
+ 
+
+        orig_within = self.within
+        new_tg  = self.__class__(new_tiers)
+        
+        for old_tier, new_tier in zip(self, new_tg):
+            for old_seq, new_seq in zip(old_tier, new_tier):
+                old_seq.__dict__ = new_seq.__dict__
+            old_tier.__dict__ = new_tier.__dict__
+        self.__dict__ = new_tg.__dict__
+        
+        if orig_within:
+            self.within = orig_within
+
     
     def get_longest_name_string(
             self,
