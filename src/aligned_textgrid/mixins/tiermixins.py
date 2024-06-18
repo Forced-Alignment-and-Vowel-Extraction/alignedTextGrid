@@ -1,4 +1,5 @@
 from difflib import SequenceMatcher
+from aligned_textgrid.mixins.mixins import PrecedenceMixins
 from functools import reduce
 import re
 import warnings
@@ -43,7 +44,7 @@ class TierMixins:
         orig_within.re_relate()
 
     def concat(self, new):
-        if self.entry_class.__name__ != new.entry_class.__name__:
+        if not issubclass(self.entry_class, new.entry_class):
             raise ValueError("Added tiers must have the same entry class")
         
         lhs = self.sequence_list
