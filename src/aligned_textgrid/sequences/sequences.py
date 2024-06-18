@@ -89,6 +89,23 @@ class HierarchyMixins:
 
 class InstanceMixins(HierarchyMixins, WithinMixins):
 
+
+    def __add__(self, other):
+        if issubclass(self.entry_class, other.superset_class):
+            self.subset_list += [other]
+            return self
+        if issubclass(self.entry_class, other.subset_class):
+            other.subset_list += [self]
+            return self
+        
+        raise ValueError("An added SequenceInterval must either be a subset or superset class of the original.")
+
+    def append(self, other):
+        if issubclass(self.subset_class, other.entry_class):
+            self += other
+            return
+        raise ValueError("Appended SequenceInterval must be the subset class of the original.")
+
     def set_super_instance(self, super_instance = None):
         """Sets the specific superset relationship
 
