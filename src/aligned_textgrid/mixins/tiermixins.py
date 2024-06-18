@@ -148,6 +148,8 @@ class TierGroupMixins:
     def name(self, name):
         self._name = name
         
+    def re_relate(self):
+        self = self.__class__(self)
     
     def get_longest_name_string(
             self,
