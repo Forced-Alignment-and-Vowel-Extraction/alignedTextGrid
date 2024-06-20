@@ -360,6 +360,7 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
         *,
         Interval = None
     ):
+        self._seq_type = SequenceInterval
         if Interval:
             interval = Interval
 
@@ -369,8 +370,6 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
                 interval.end,
                 interval.label
             )
-        rep_none = 3 - len(interval)
-        interval += tuple([None]) * rep_none
 
         if len(interval) > 3:
             raise ValueError((
