@@ -124,6 +124,10 @@ class  SequencePoint(SequenceBaseClass, PrecedenceMixins, InTierMixins, WithinMi
         self._time = time
 
     @property
+    def start(self):
+        return self.time
+
+    @property
     def fol_distance(self):
         if self.fol and self.fol.time:
             return self.fol.time - self.time
