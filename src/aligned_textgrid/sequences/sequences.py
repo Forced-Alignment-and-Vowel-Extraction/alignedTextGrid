@@ -291,7 +291,7 @@ class HierarchyPart(HierarchyMixins):
 
 
 
-class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, HierarchyPart):
+class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, PrecedenceMixins, HierarchyPart):
     """
     A class to describe an interval with precedence relationships and hierarchical relationships
 
@@ -629,3 +629,4 @@ Top.set_superset_class()
 Bottom.set_subset_class()
 SequenceInterval.set_superset_class(Top)
 SequenceInterval.set_subset_class(Bottom)
+SequenceInterval._set_seq_type(SequenceInterval)

@@ -13,7 +13,7 @@ else:
     from typing_extensions import Self
 
 
-class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
+class  SequencePoint(SequenceBaseClass, PrecedenceMixins, InTierMixins, WithinMixins):
     """Sequence Points
     
     Args:
@@ -209,4 +209,4 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
             return tier[self.get_interval_index_at_time(tier)]
 
     
-    
+SequencePoint._set_seq_type(SequencePoint)
