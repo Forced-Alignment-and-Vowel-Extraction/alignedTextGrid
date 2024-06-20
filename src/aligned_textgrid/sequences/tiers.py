@@ -232,10 +232,11 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
             
             if np.allclose(this_end, next_start):
                 continue
-
-            self.sequence_list.append(
+            
+            ## triggers precedence resetting
+            self.sequence_list += [
                 self.entry_class((this_end, next_start, ""))
-            )
+            ]
 
         if self.within:
             self.within.re_relate()
@@ -326,6 +327,11 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
             self._name = self.make_name()
         self._set_tier_names()
 
+        for tier in tiers:
+            for entry in tier:
+                if hasattr(entry, "super_instance"):
+                    
+                    entry.remove_superset()
         #self.entry_classes = [x.__class__ for x in self.tier_list]
         for idx, tier in enumerate(self.tier_list):
             if idx == len(self.tier_list)-1:
