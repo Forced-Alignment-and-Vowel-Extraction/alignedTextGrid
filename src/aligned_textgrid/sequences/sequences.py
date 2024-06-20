@@ -520,7 +520,41 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
     @property
     def entry_class(self):
         return self.__class__
-      
+    
+    def cleanup(self):
+        if isinstance(self.subset_class, Bottom):
+            return
+        if not len(self.subset_list) > 0:
+            self.append(
+                self.subset_class((
+                    self.start,
+                    self.end,
+                    ""
+                ))
+            )
+            return
+        
+        to_add = SequenceList()
+
+        if not np.allclose(self.start, self.sub_starts[0]):
+            new_interval = self.subset_class((self.start, self.sub_starts[0], ""))
+            to_add += [new_interval]
+        
+        if not np.allclose(self.end, self.sub_ends[-1]):
+            new_interval = self.subset_class((self.sub_ends[-1], self.end, ""))
+            to_add += [new_interval]
+
+        for idx, interval in enumerate(self.subset_list):
+            if idx + 1 == len(self):
+                break
+
+            if not np.allclose(interval.end, self.subset_list[idx+1].start):
+                new_interval = self.subset_class((interval.end,self.subset_list[idx+1].start, ""))
+                to_add += [new_interval]
+            
+        for interval in to_add:
+            self.append(interval)
+
     ## Fusion
     def fuse_rightwards(
             self, 
