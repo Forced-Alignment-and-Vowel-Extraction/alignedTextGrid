@@ -402,8 +402,8 @@ class TestHierarchy:
     def test_subset_pop(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
         lower1 = self.LowerClass(Interval(0,5,"lower1"))
-        lower2 = self.LowerClass(Interval(5,10,"lower2"))
-        lower3 = self.LowerClass(Interval(5,10,"lower2"))
+        lower2 = self.LowerClass(Interval(5,8,"lower2"))
+        lower3 = self.LowerClass(Interval(8,10,"lower3"))
 
         upper1.set_subset_list([lower1, lower2, lower3])
 
