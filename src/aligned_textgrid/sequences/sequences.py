@@ -202,8 +202,12 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         
         if self.super_instance is None:
             return
+        if self in self.super_instance.subset_list:
+            self.super_instance.remove_from_subset_list(self)
+        
+        self.super_instance = None
+        self.within = None
 
-        self.super_instance.remove_from_subset_list(self)
 
 
     def _set_subset_precedence(self):
@@ -443,7 +447,7 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
         Args:
             subset_instance (SequenceInterval): A sequence interval to pop
         """
-        self.subset_list.pop(subset_instance)
+        self._subset_list.pop(subset_instance)
         self._set_subset_precedence()
     
     def __repr__(self) -> str:

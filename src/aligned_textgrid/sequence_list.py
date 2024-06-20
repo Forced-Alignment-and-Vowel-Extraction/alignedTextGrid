@@ -128,12 +128,12 @@ class SequenceList(Sequence):
     def starts(self)->np.array:
         if len(self) < 1:
             return np.array([])
-        
+        if hasattr(self[0], "time"):
+            return np.array([x.time for x in self])        
         if hasattr(self[0], "start"):
             return np.array([x.start for x in self])
         
-        if hasattr(self[0], "time"):
-            return np.array([x.time for x in self])
+
 
     @property
     def ends(self) -> np.array:
@@ -204,7 +204,7 @@ class SequenceList(Sequence):
             x.remove_superset()
 
     def pop(self, x):
-        """Pop a SequneceInterval
+        """Pop a SequenceInterval
 
         Args:
             x (SequenceInterval):
@@ -214,4 +214,5 @@ class SequenceList(Sequence):
             pop_idx = self.index(x)
             self._values.pop(pop_idx)
             if hasattr(x, "super_instance"):
+                print("removing")
                 x.remove_superset()
