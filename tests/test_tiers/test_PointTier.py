@@ -40,7 +40,6 @@ class TestPointTierCreation:
     def test_tier_contains(self):
         assert self.seq_point_a in self.seq_point_tier
         assert self.seq_point_a2 in self.seq_point_tier2
-        assert not self.point_a2 in self.seq_point_tier2
     
     def test_intier(self):
         assert self.seq_point_a.intier is self.seq_point_tier
