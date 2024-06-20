@@ -7,7 +7,7 @@ import aligned_textgrid
 from praatio.utilities.constants import Interval
 import praatio
 from praatio.data_classes.interval_tier import IntervalTier
-from aligned_textgrid.mixins.mixins import InTierMixins, PrecedenceMixins
+from aligned_textgrid.mixins.mixins import InTierMixins, PrecedenceMixins, SequenceBaseClass
 from aligned_textgrid.mixins.within import WithinMixins
 from aligned_textgrid.sequence_list import SequenceList
 from typing import Type, Any
@@ -201,9 +201,8 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         """
         
         if self.super_instance is None:
-            warnings.warn("Provided SequenceInterval has no superset instance")
             return
-        
+
         self.super_instance.remove_from_subset_list(self)
 
 
@@ -473,8 +472,13 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
     
     @subset_list.setter
     def subset_list(self, intervals: list[Self]|SequenceList[Self]):
+        orig_values = self.subset_list
         intervals = SequenceList(*intervals)
         self.set_subset_list(intervals)
+        for orig in orig_values:
+
+            if not orig in self.subset_list:
+                orig.remove_superset()
 
     @property
     def start(self):
