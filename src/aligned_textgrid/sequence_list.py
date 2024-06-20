@@ -213,5 +213,5 @@ class SequenceList(Sequence):
         if x in self:
             pop_idx = self.index(x)
             self._values.pop(pop_idx)
-            if hasattr(self.super_instance):
+            if hasattr(x, "super_instance"):
                 x.remove_superset()
