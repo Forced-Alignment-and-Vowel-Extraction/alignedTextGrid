@@ -541,14 +541,14 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
             fuser.label = label_fun(fuser.label, fusee.label)
 
             new_list = fuser._subset_list + fusee.subset_list
-            fuser.set_subset_list(new_list)
-            
+            fuser.subset_list = new_list
+
             if fuser.superset_class is Top and fuser.intier:
                 fuser.intier.pop(fusee)
             else:
                 if fuser.intier:
                     fuser.intier.pop(fusee)
-                if fuser.super_instance:
+                if fuser.super_instance and fusee in fuser.super_instance:
                     fuser.super_instance.subset_list.remove(fusee)                    
         else:
             raise Exception("Cannot fuse rightwards at right edge")
@@ -565,7 +565,6 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
         fusee = self.prev
         fuser = self
 
-
         if not fusee.label == "#":
 
             fuser.start = fusee.start
@@ -573,14 +572,14 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
             fuser.label = label_fun(fusee.label, fuser.label)
 
             new_list = fusee.subset_list + fuser._subset_list
-            fuser.set_subset_list(new_list)
-            
+
+            fuser.subset_list = new_list
             if fuser.superset_class is Top and fuser.intier:
                 fuser.intier.pop(fusee)
             else:
                 if fuser.intier:
                     fuser.intier.pop(fusee)
-                if fuser.super_instance:
+                if fuser.super_instance and fusee in fuser.super_instance:
                     fuser.super_instance.subset_list.remove(fusee)                    
         else:
             raise Exception("Cannot fuse leftwards at right edge")
