@@ -454,7 +454,6 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
         up_index = interval.intier.within_index - 1
         up_tier:SequenceTier = interval.intier.within[up_index]
         midp = interval.start + (interval.duration/2)
-        print("midp", midp)
         if not up_tier.get_interval_at_time(midp) is None:
             return
         new_interval = up_tier.entry_class((
