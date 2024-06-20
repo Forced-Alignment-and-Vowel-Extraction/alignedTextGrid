@@ -37,11 +37,15 @@ class SequenceList(Sequence):
         return len(self._values)
     
     def __contains__(self, other):
+        if len(self) < 1:
+            return False
+        
         if other in self._values:
             return True
-        self_tuples = [tuple(x.return_interval()) for x in self]
-        other_tuple = tuple(other.return_interval())
-        if other_tuple in self._values:
+        
+        self_tuples = [tuple(x.return_praatio()) for x in self]
+        other_tuple = tuple(other.return_praatio())
+        if other_tuple in self_tuples:
             return True
         
         return False

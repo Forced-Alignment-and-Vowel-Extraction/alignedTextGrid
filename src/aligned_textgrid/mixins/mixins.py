@@ -163,6 +163,13 @@ class InTierMixins:
             return self.intier[self.tier_index + idx]
         else:
             return None
+        
+    def return_praatio(self):
+        if "Interval" in self._seq_type.__name__:
+            return self.return_interval()
+        
+        if "Point" in self._seq_type.__name__:
+            return self.return_point()
 
     def return_interval(self) -> Interval:
         """Return current object as `Interval`
