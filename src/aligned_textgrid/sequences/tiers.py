@@ -256,7 +256,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         out_idx = np.argwhere(
             np.logical_and(
                 self.starts <= time,
-                self.ends >= time
+                self.ends > time
             )
         )
         if out_idx.size >= 1:
