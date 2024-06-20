@@ -101,7 +101,7 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
         self.sequence_list = SequenceList()
        
         for entry in self.entry_list:
-            this_point = self.entry_class(entry)
+            this_point = self.entry_class._cast(entry)
             self.sequence_list.append(this_point)
         self.__set_precedence()
     
