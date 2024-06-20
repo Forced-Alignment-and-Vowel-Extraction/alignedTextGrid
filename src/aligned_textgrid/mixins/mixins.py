@@ -5,6 +5,21 @@ from typing import Type, Any
 import numpy as np
 import warnings
 
+class SequenceBaseClass:
+
+    @classmethod
+    def _cast(cls, obj, re_init = False):
+        assert isinstance(obj, cls._seq_type), \
+            f"A {obj._seq_type.__name__} can only be cast to another {obj._seq_type.__name__}"
+        
+        obj.__class__ = cls
+
+        if re_init:
+            obj.__init__(obj)
+
+    @classmethod
+    def _set_seq_type(cls, cls2):
+        cls._seq_type = cls2
 
 class PrecedenceMixins:
     """Methods and attributes for SequenceIntervals and SequencePoints
