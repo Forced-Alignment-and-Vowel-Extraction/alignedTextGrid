@@ -64,11 +64,11 @@ class  SequencePoint(SequenceBaseClass, PrecedenceMixins, InTierMixins, WithinMi
 
     def __init__(
             self,
-            point: list|tuple|Point|Self = (0, "")
+            point: list|tuple|Point|Self = (None, None)
         ):
-
+        self._seq_type = SequencePoint
         if isinstance(point, SequencePoint):
-            point = (point.time, point.label)
+            point = Point(point.time, point.label)
 
         if len(point) > 2:
             raise ValueError((
@@ -76,7 +76,9 @@ class  SequencePoint(SequenceBaseClass, PrecedenceMixins, InTierMixins, WithinMi
                 "no more than 2 values long. "
                 f"{len(point)} were provided."
             ))
+
         point = Point(*point)
+
 
         self.time = point.time
         self.label = point.label
