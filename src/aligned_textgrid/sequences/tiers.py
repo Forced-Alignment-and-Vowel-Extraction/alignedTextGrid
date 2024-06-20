@@ -448,6 +448,23 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     def xmax(self):
         return np.array([tier.xmax for tier in self.tier_list]).min()
     
+    def project_up(self, interval:SequenceInterval):
+        if issubclass(interval.superset_class, Top):
+            return
+        up_index = interval.intier.within_index - 1
+        up_tier:SequenceTier = interval.intier.within[up_index]
+        midp = interval.start + (interval.duration/2)
+        print("midp", midp)
+        if not up_tier.get_interval_at_time(midp) is None:
+            return
+        new_interval = up_tier.entry_class((
+            interval.start,
+            interval.end,
+            ""
+        ))
+
+        up_tier.append(new_interval)
+        
     def cleanup(self):
         for tier in self:
             tier.cleanup()
