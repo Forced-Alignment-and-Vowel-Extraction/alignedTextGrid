@@ -9,6 +9,9 @@ class SequenceBaseClass:
 
     @classmethod
     def _cast(cls, obj, re_init = False):
+        if not isinstance(obj, SequenceBaseClass):
+            obj = cls(obj)
+            return obj
         assert isinstance(obj, cls._seq_type), \
             f"A {obj._seq_type.__name__} can only be cast to another {obj._seq_type.__name__}"
         
