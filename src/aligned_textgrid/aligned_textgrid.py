@@ -381,7 +381,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
                 for t,e in zip(tier_group, new_classes)
             ]
         )
-
+     
         self.tier_groups.append(new_tiers)
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
 
@@ -393,10 +393,37 @@ class AlignedTextGrid(Sequence, WithinMixins):
         tg_starts = np.array([tg.xmin for tg in interval_tgs])
         tg_ends = np.array([tg.xmax for tg in interval_tgs])
 
-        if np.allclose(tg_starts.min(), tg_starts.max()):
+        if np.allclose(tg_starts.min(), tg_starts.max()) and \
+           np.allclose(tg_ends.min(), tg_ends.max()):
             return
-                                
+        
+        for tg in self.tier_groups:
+            if np.allclose(tg.xmin, tg_starts.min()):
+                continue
 
+            start = tg_starts.min()
+            end = tg.xmin
+
+            tg_classes = tg.entry_classes
+
+            empty_intervals = [c((start, end, "")) for c in tg_classes]
+            for tier, interval in zip(tg, empty_intervals):
+                tier.append(interval)
+
+            
+        for tg in self.tier_groups:
+            if np.allclose(tg.xmax, tg_starts.max()):
+                continue
+
+            start = tg.xmax
+            end = tg_starts.max()
+
+            tg_classes = tg.entry_classes
+            
+            empty_intervals = [c((start, end, "")) for c in tg_classes]
+            for tier, interval in zip(tg, empty_intervals):
+                tier.append(interval)
+            
     def shift(
             self,
             increment: float
