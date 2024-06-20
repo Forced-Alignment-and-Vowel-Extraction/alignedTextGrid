@@ -99,9 +99,9 @@ class PrecedenceMixins:
         instance does not appear in `self.super_instance.subset_list`
         """
         
-        if hasattr(self, "start"):
+        if "Interval" in self._seq_type.__name__:
             self.set_fol(type(self)(Interval(None, None, "#")))
-        elif hasattr(self, "time"):
+        elif "Point" in self._seq_type.__name__:
             self.set_fol(type(self)(Point(None, "#")))
 
     def set_initial(self):
@@ -110,9 +110,9 @@ class PrecedenceMixins:
         While `self.prev` is defined for these entries, the actual 
         instance does not appear in `self.super_instance.subset_list`
         """
-        if hasattr(self, "start"):
+        if "Interval" in self._seq_type.__name__:
             self.set_prev(type(self)(Interval(None, None, "#")))
-        elif hasattr(self, "time"):
+        elif "Point" in self._seq_type.__name__:
             self.set_prev(type(self)(Point(None, "#")))
 
 class InTierMixins:
