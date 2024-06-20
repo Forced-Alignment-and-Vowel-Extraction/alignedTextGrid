@@ -253,10 +253,16 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         Returns:
             (int): Index of the interval
         """
-        out_idx = np.searchsorted(self.starts, time, side = "left") - 1
-        if np.allclose(self.starts[out_idx+1], time):
-            out_idx = out_idx+1
-        return out_idx
+        out_idx = np.argwhere(
+            np.logical_and(
+                self.starts <= time,
+                self.ends >= time
+            )
+        )
+        if out_idx.size >= 1:
+            return int(out_idx.squeeze())
+        else:
+            return None
     
     def return_tier(self) -> IntervalTier:
         """Returns a `praatio` interval tier
