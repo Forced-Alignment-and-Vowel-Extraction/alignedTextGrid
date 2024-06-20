@@ -1,5 +1,5 @@
 from difflib import SequenceMatcher
-from aligned_textgrid.mixins.mixins import PrecedenceMixins
+from aligned_textgrid.mixins.mixins import SequenceBaseClass
 from functools import reduce
 import re
 import warnings
@@ -27,22 +27,35 @@ class TierMixins:
         new_tier = self.__class__(entries)
         return new_tier
 
-    def append(self, new):
-        if not isinstance(new, PrecedenceMixins):
+    def append(self, new, re_relate = True):
+        if not isinstance(new, SequenceBaseClass):
             msg = "Only SequenceIntervals or SequencePoints can be appended to a tier."
             if isinstance(new, TierMixins):
-                msg += " Did you mean do add (+)?"
+                msg += " Did you mean to add (+)?"
             raise ValueError(msg)
-        if not issubclass(self.entry_class, new.entry_class):
+        if not (issubclass(self.entry_class, new.entry_class)
+                or issubclass(new.entry_class, self.entry_class)):
             raise ValueError("Entry class must match for appended values.")
+
+        if new in self:
+            return
         
-        entries = self.sequence_list
-        entries.append(new)
-        orig_within = self.within
-        new_tier = self.__class__(entries)
-        self.__dict__ = new_tier.__dict__
-        if orig_within:
-            self.within = orig_within
+        ## triggers precedence resetting
+        self.sequence_list += [new]
+        if hasattr(new, "subset_list") \
+           and len(new) > 0 \
+           and self.within:
+            down_tier = self.within_index+1
+            for interval in new.subset_list:
+                self.within[down_tier].append(interval, re_relate = False)
+        
+        if hasattr(new, "super_instance")\
+           and new.super_instance \
+           and self.within:
+            uptier  = self.within_index-1
+            self.within[uptier].append(new.super_instance, re_relate = False)
+            
+        if self.within and re_relate:
             self.within.re_relate()
 
 
