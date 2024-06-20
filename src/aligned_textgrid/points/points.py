@@ -1,5 +1,5 @@
 from praatio.utilities.constants import Point
-from aligned_textgrid.mixins.mixins import PrecedenceMixins, InTierMixins
+from aligned_textgrid.mixins.mixins import PrecedenceMixins, InTierMixins, SequenceBaseClass
 from aligned_textgrid.mixins.within import WithinMixins
 from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.sequences.sequences import SequenceInterval

@@ -69,7 +69,7 @@ class SequenceList(Sequence):
             self.entry_class = next(iter(unique_other_classes))
 
         new_list = self._values + [x for x in other]
-        new_intervals = [self.entry_class(x) if not x.entry_class is self.entry_class else x for x in new_list]
+        new_intervals = [self.entry_class._cast(x) if not x.entry_class is self.entry_class else x for x in new_list]
         output =  SequenceList(*new_intervals)
         output._check_no_overlaps()
         return output
@@ -157,7 +157,9 @@ class SequenceList(Sequence):
             return
         
         self._entry_class_checker(value)
-        value = self.entry_class(value)
+        value = self.entry_class._cast(value)
+        if re_init:
+            value.__init__(value)
         
         increment = 0
         if len(self.ends) > 0:

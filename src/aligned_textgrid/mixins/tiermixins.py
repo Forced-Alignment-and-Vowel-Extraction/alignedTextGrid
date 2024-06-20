@@ -17,7 +17,7 @@ class TierMixins:
     def __add__(self, new):
         if not isinstance(new, self.__class__):
             msg = f"A {type(self).__name__} can only be added to a {type(self).__name__}."
-            if isinstance(new, PrecedenceMixins):
+            if isinstance(new, SequenceBaseClass):
                 msg += " Did you mean to use append()?"
             raise ValueError(msg)
         if not issubclass(self.entry_class, new.entry_class):
@@ -154,26 +154,7 @@ class TierGroupMixins:
         self._name = name
 
     def re_relate(self):
-        
-        new_tiers = [
-            tier.__class__(tier)
-            for tier in self
-        ]
-
- 
-
-        orig_within = self.within
-        new_tg  = self.__class__(new_tiers)
-        
-        for old_tier, new_tier in zip(self, new_tg):
-            for old_seq, new_seq in zip(old_tier, new_tier):
-                old_seq.__dict__ = new_seq.__dict__
-            old_tier.__dict__ = new_tier.__dict__
-        self.__dict__ = new_tg.__dict__
-        
-        if orig_within:
-            self.within = orig_within
-
+        self.__init__(self)
     
     def get_longest_name_string(
             self,

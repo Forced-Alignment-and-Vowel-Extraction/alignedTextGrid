@@ -16,6 +16,8 @@ class SequenceBaseClass:
 
         if re_init:
             obj.__init__(obj)
+        
+        return obj
 
     @classmethod
     def _set_seq_type(cls, cls2):

@@ -108,7 +108,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         self.subset_class =  self.entry_class.subset_class
         
     def __build_sequence_list(self):
-        intervals = [self.entry_class(entry) for entry in self.entry_list]
+        intervals = [self.entry_class._cast(entry) for entry in self.entry_list]
         self.sequence_list = SequenceList(*intervals)
 
 
