@@ -48,6 +48,9 @@ class SequenceList(Sequence):
     
     def __add__(self, other:Sequence):
 
+        if not isinstance(self, Sequence):
+            raise ValueError("Only a list, tuple, or SequenceList can be added to SequenceList")
+
         other = [x for x in other if x not in self]
 
         if len(other) < 1:
@@ -71,6 +74,7 @@ class SequenceList(Sequence):
         new_list = self._values + [x for x in other]
         new_intervals = [self.entry_class._cast(x) if not x.entry_class is self.entry_class else x for x in new_list]
         output =  SequenceList(*new_intervals)
+        output._sort()
         output._check_no_overlaps()
         return output
 
@@ -90,7 +94,8 @@ class SequenceList(Sequence):
         if self.entry_class is None:
             self.entry_class = value.entry_class
         
-        if not issubclass(self.entry_class, value.entry_class):
+        if not (issubclass(self.entry_class, value.entry_class) 
+                or issubclass(value.entry_class, self.entry_class)):
             raise ValueError("All values must have the same class.")
     
     def _shift(self, increment):
@@ -144,7 +149,7 @@ class SequenceList(Sequence):
 
         return []
     
-    def append(self, value, shift:bool = False):
+    def append(self, value, shift:bool = False, re_init = False):
         """Append a SequenceInterval to the list.
 
         After appending, the SequenceIntervals are re-sorted
@@ -191,6 +196,8 @@ class SequenceList(Sequence):
                 The SequenceInterval to remove.
         """
         self._values.remove(x)
+        if hasattr(x, "super_instance"):
+            x.remove_superset()
 
     def pop(self, x):
         """Pop a SequneceInterval
@@ -202,3 +209,5 @@ class SequenceList(Sequence):
         if x in self:
             pop_idx = self.index(x)
             self._values.pop(pop_idx)
+            if hasattr(self.super_instance):
+                x.remove_superset()
