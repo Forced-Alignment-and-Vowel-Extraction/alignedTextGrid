@@ -75,7 +75,7 @@ class SequenceList(Sequence):
             return self
         
         incoming_class = next(iter(unique_other_classes))
-        if self.entry_class and not incoming_class.__name__ == self.entry_class.__name__:
+        if self.entry_class and not (issubclass(incoming_class, self.entry_class) or (issubclass(self.entry_class, incoming_class))):
             raise ValueError("All values in added list must have the same class as original list.")
         
         if not self.entry_class:
