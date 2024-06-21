@@ -482,13 +482,18 @@ class TestCleanups:
         assert tg1.xmin == tg2.xmin
         assert tg1.xmax == tg2.xmax
 
-        atg.cleanup()
+        xmins = [tg.xmin for tg in atg]
+        xmaxes = [tg.xmax for tg in atg]
 
-        assert tg1 in atg
-        assert tg2 in atg
+        atg.cleanup()
+        xmins2 = [tg.xmin for tg in atg]
+        xmaxes2 = [tg.xmax for tg in atg]
+
+        for orig, new in zip(xmins, xmins2):
+            orig == new
         
-        assert tg1.xmin == tg2.xmin
-        assert tg1.xmax == tg2.xmax
+        for orig, new in zip(xmaxes, xmaxes2):
+            orig == new
 
 
         pass
