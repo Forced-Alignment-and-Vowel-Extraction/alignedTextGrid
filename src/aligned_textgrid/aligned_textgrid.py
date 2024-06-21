@@ -356,24 +356,64 @@ class AlignedTextGrid(Sequence, WithinMixins):
             setattr(self, name, self.tier_groups[idx])
 
     @property
-    def tier_names(self):
+    def tier_names(self) -> list[str]:
         if len(self) == 0:
             raise ValueError('No tier names in an empty TextGrid.')
         return [x.tier_names for x in self.tier_groups]
 
     @property
-    def xmin(self):
+    def xmin(self)->np.array:
         if len(self) == 0:
             raise ValueError('No minimum time for empty TextGrid.')
         return np.array([tgroup.xmin for tgroup in self.tier_groups]).min()
 
     @property
-    def xmax(self):
+    def xmax(self)->np.array:
         if len(self) == 0:
             raise ValueError('No maximum time for empty TextGrid.')
         return np.array([tgroup.xmax for tgroup in self.tier_groups]).max()
     
     def append(self, tier_group:TierGroup):
+        """Append a new TierGroup to an existing 
+        AlignedTextGrid.
+
+        Examples:
+            ```{python}
+            #| warning: false
+            from aligned_textgrid import Word, Phone, SequenceTier, TierGroup, AlignedTextGrid
+
+            speaker1 = TierGroup([
+                SequenceTier([
+                    Word((0,10, "Hi"))
+                ]),
+                SequenceTier([
+                    Phone((0,5, "HH")),
+                    Phone((5,10, "AY"))
+                ])
+            ])
+
+            speaker2 = TierGroup([
+                SequenceTier([
+                    Word((10,20, "Hi"))
+                ]),
+                SequenceTier([
+                    Phone((10,15, "HH")),
+                    Phone((15,20, "AY"))
+                ])
+            ])
+
+            atg = AlignedTextGrid()
+
+            atg.append(speaker1)
+            atg.append(speaker2)
+
+            print(atg)
+            ```
+
+        Args:
+            tier_group (TierGroup):
+                The TierGroup to append to the AlignedTextGrid
+        """
         new_classes = self._reclone_classes(tier_group.entry_classes)
         for cl, tier in zip(new_classes, tier_group):
             entries = [cl._cast(i) for i in tier]
@@ -384,45 +424,55 @@ class AlignedTextGrid(Sequence, WithinMixins):
         self.tier_groups.append(tier_group)
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
 
-    def cleanup(self):
-        for tg in self.tier_groups:
-            tg.cleanup()
+    def cleanup(self)->None:
+        """Cleanup gaps in AlignedTextGrid
         
-        interval_tgs = [tg for tg in self if isinstance(tg, TierGroup)]
-        tg_starts = np.array([tg.xmin for tg in interval_tgs])
-        tg_ends = np.array([tg.xmax for tg in interval_tgs])
+        If any tiers have time gaps between 
+        intervals, missing subset or superset intervals
+        or TierGroups with different start and ent times,
+        this will clean them up by adding intervals with 
+        a blank label.
 
-        if np.allclose(tg_starts.min(), tg_starts.max()) and \
-           np.allclose(tg_ends.min(), tg_ends.max()):
-            return
-        
-        for tg in self.tier_groups:
-            if np.allclose(tg.xmin, tg_starts.min()):
-                continue
-
-            start = tg_starts.min()
-            end = tg.xmin
-
-            tg_classes = tg.entry_classes
-
-            empty_intervals = [c((start, end, "")) for c in tg_classes]
-            for tier, interval in zip(tg, empty_intervals):
-                tier.append(interval)
-
+        """
+        with warnings.simplefilter("ignore"):
+            for tg in self.tier_groups:
+                tg.cleanup()
             
-        for tg in self.tier_groups:
-            if np.allclose(tg.xmax, tg_starts.max()):
-                continue
+            interval_tgs = [tg for tg in self if isinstance(tg, TierGroup)]
+            tg_starts = np.array([tg.xmin for tg in interval_tgs])
+            tg_ends = np.array([tg.xmax for tg in interval_tgs])
 
-            start = tg.xmax
-            end = tg_ends.max()
+            if np.allclose(tg_starts.min(), tg_starts.max()) and \
+            np.allclose(tg_ends.min(), tg_ends.max()):
+                return
+            
+            for tg in self.tier_groups:
+                if np.allclose(tg.xmin, tg_starts.min()):
+                    continue
 
-            tg_classes = tg.entry_classes
-            
-            empty_intervals = [c((start, end, "")) for c in tg_classes]
-            for tier, interval in zip(tg, empty_intervals):
-                tier.append(interval)
-            
+                start = tg_starts.min()
+                end = tg.xmin
+
+                tg_classes = tg.entry_classes
+
+                empty_intervals = [c((start, end, "")) for c in tg_classes]
+                for tier, interval in zip(tg, empty_intervals):
+                    tier.append(interval)
+
+                
+            for tg in self.tier_groups:
+                if np.allclose(tg.xmax, tg_starts.max()):
+                    continue
+
+                start = tg.xmax
+                end = tg_ends.max()
+
+                tg_classes = tg.entry_classes
+                
+                empty_intervals = [c((start, end, "")) for c in tg_classes]
+                for tier, interval in zip(tg, empty_intervals):
+                    tier.append(interval)
+                
     def shift(
             self,
             increment: float
