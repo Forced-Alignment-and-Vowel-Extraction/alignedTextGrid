@@ -200,12 +200,17 @@ class TierGroupMixins:
 
         pass
 
-    def concat(self, new):
+    def concat(self, new:'TierGroup'):
         self._class_check(new)
-
-        _ = [
-            t1.concat(t2) for t1, t2 in zip(self, new)
-        ]
+        increment = self.xmax
+        for t1, t2 in zip(self, new):
+            for interval in t2:
+                if interval.super_instance is not None:
+                    continue
+                if interval in t1:
+                    continue
+                interval._shift(increment)
+                t1.append(interval)
 
 
 
