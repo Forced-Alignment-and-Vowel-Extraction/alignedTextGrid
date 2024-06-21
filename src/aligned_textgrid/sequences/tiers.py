@@ -446,7 +446,7 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     
     @property
     def xmax(self):
-        return np.array([tier.xmax for tier in self.tier_list]).min()
+        return np.array([tier.xmax for tier in self.tier_list]).max()
     
     def project_up(self, interval:SequenceInterval):
         if issubclass(interval.superset_class, Top):
