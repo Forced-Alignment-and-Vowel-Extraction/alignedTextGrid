@@ -4,7 +4,9 @@ from aligned_textgrid import SequenceInterval, \
     SequencePointTier,\
     TierGroup,\
     PointsGroup,\
+    AlignedTextGrid,\
     custom_classes
+import numpy as np
 
 import pytest
 
@@ -404,9 +406,6 @@ class TestCleanups:
         assert word1.last.label == ""
         assert phone1.within_index == 1
 
-
-        pass
-
     def test_tier_cleanups(self):
         MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
         word1 = MyWord((0,15,"a"))
@@ -416,7 +415,73 @@ class TestCleanups:
         assert len(word_tier) == 2
 
         word_tier.cleanup()
-        assert len(word_tier) == 3  
+        assert len(word_tier) == 3
+
+    def test_tier_group_cleanups(self):
+        MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
+        word1 = MyWord((2,15,"a"))
+        word2 = MyWord((20,25,"b"))
+        phone1 = MyPhone((2,5,"A"))
+        phone2 = MyPhone((20,22,"BB"))
+
+        tier_group = TierGroup(
+            [
+                SequenceTier([word1, word2]),
+                SequenceTier([phone1, phone2])
+            ]
+        )
+
+        for tier in tier_group:
+            assert len(tier) == 2
+        tier_group.cleanup()
+        for tier in tier_group:
+            assert len(tier) > 2
+
+        assert len(word1) == 2
+        assert len(word2) == 2
+
+        starts = np.array([tier.xmin for tier in tier_group])
+        ends = np.array([tier.xmax for tier in tier_group])
+        assert np.allclose(*starts)
+        assert np.allclose(*ends)
+
+    
+    def test_atg_cleanup(self):
+        MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
+        word1 = MyWord((2,15,"a"))
+        word2 = MyWord((20,25,"b"))
+        word3 = MyWord((0,15,"a"))
+        word4 = MyWord((20,22,"b"))        
+        phone1 = MyPhone((2,5,"A"))
+        phone2 = MyPhone((20,25,"BB"))     
+        phone3 = MyPhone((2,5,"A"))
+        phone4 = MyPhone((20,22,"BB"))     
+
+        tg1 = TierGroup([
+            SequenceTier([word1, word2]),
+            SequenceTier([phone1, phone2])
+        ])
+
+        tg2 = TierGroup([
+            SequenceTier([word3, word4]),
+            SequenceTier([phone3, phone4])
+        ])
+
+        atg = AlignedTextGrid()        
+        atg.append(tg1)
+        atg.append(tg2)
+
+        assert tg1.xmin != tg2.xmin
+        assert tg1.xmax != tg2.xmax
+
+        atg.cleanup()
+
+        assert tg1 in atg
+        assert tg2 in atg
+        
+        assert tg1.xmin == tg2.xmin
+        assert tg1.xmax == tg2.xmax
+        pass
 
 
     pass
