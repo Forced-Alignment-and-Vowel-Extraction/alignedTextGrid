@@ -185,6 +185,32 @@ class TestTiers:
 
         assert word1.fol is word2
 
+    def test_sequence_tier_intg_append(self):
+        MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
+        word1 = MyWord((0,10,"a"))
+        word2 = MyWord((10,20,"b"))
+        word3 = MyWord((20,30,"c"))
+        phone1 = MyPhone((0,10,"A"))
+        phone2 = MyPhone((10,15,"B"))
+        phone3 = MyPhone((20, 30, "C"))
+
+        word2.append(phone2)
+        word3.append(phone3)
+
+        word_tier = SequenceTier([word1])
+        phone_tier = SequenceTier([phone1])
+
+        tier_group = TierGroup([word_tier, phone_tier])
+
+        assert not phone2 in phone_tier
+        word_tier.append(word2)
+        assert phone2 in phone_tier
+
+        assert not word3 in word_tier
+        phone_tier.append(phone3)
+        assert word3 in word_tier
+
+
     def test_sequence_tier_append_casting(self):
         MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
         class MyWordSub(MyWord):
@@ -214,9 +240,13 @@ class TestTiers:
         seq_1 = SequenceInterval((0,5,"A"))
 
         word_tier1 = SequenceTier(entry_class=MyWord)
+        word_tier2 = SequenceTier([word1])
 
         with pytest.raises(ValueError):
             word_tier1.append(phone1)
+
+        with pytest.raises(ValueError):
+            word_tier1.append(word_tier2)
 
     def test_sequence_tier_concat(self):
         MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
@@ -354,6 +384,39 @@ class TestTierGroups:
             assert phone in tier_group1.MyPhone
 
         assert word1.fol is word2
+
+
+class TestCleanups:
+    def test_sequence_cleanup(self):
+        MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
+        word1 = MyWord((0,20,"a"))
+        phone1 = MyPhone((2,5,"A"))
+        phone2 = MyPhone((10,15,"AA"))
+
+        word1.append(phone1)
+        word1.append(phone2)
+
+        assert len(word1)==2
+
+        word1.cleanup()
+        assert len(word1)==5
+        assert word1.first.label == ""
+        assert word1.last.label == ""
+        assert phone1.within_index == 1
+
+
         pass
+
+    def test_tier_cleanups(self):
+        MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
+        word1 = MyWord((0,15,"a"))
+        word2 = MyWord((20,25,"b"))
+
+        word_tier = SequenceTier([word1, word2])
+        assert len(word_tier) == 2
+
+        word_tier.cleanup()
+        assert len(word_tier) == 3  
+
 
     pass
