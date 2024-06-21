@@ -415,7 +415,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
                 continue
 
             start = tg.xmax
-            end = tg_starts.max()
+            end = tg_ends.max()
 
             tg_classes = tg.entry_classes
             
