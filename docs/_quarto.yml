@@ -121,7 +121,10 @@ quartodoc:
         don't have hierarchical relationships defined.
       contents:
         - package:  aligned_textgrid.points.points
-          name: SequencePoint                  
+          name: SequencePoint 
+    - title: SequenceList
+      contents:
+        - SequenceList              
     - title: Tiers
       desc: Tiers Classes
     - subtitle: Common Features
