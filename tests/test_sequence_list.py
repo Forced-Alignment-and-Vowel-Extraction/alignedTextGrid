@@ -2,7 +2,7 @@ from aligned_textgrid import SequenceList, SequenceInterval, SequencePoint, cust
 import numpy as np
 import pytest
 
-def make_sequences(cls, n):
+def make_sequences(cls, n)->list[SequenceInterval]:
     starts, step = np.linspace(0, 20, num = n, retstep=True)
     ends = starts + step
 
@@ -17,8 +17,6 @@ def make_sequences(cls, n):
             out_list += [cls((start, label))]
     return out_list
     
-
-
 class TestSequenceList:
     def test_interval_list(self):
         MyInterval, = custom_classes(["MyInterval"])
@@ -142,5 +140,25 @@ class TestSequenceList:
 
         assert not phones[0] in word
         assert not phones[0].super_instance is word
-        
+
+    def test_concat(self):
+        MyWord, = custom_classes(["MyWord"])
+
+        n = 5
+
+        words1 = make_sequences(MyWord, n)
+        words2 = make_sequences(MyWord, n)
+
+        my_list1 = SequenceList(*words1)
+        my_list2 = SequenceList(*words2)
+
+        orig_end = my_list1.ends.max()
+
+        my_list1.concat(my_list2)
+
+        assert len(my_list1) == (n*2)
+        assert my_list1.ends.max() == orig_end + orig_end
+
+
+
     pass
