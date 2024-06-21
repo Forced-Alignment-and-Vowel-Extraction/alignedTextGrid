@@ -35,8 +35,8 @@ class HierarchyMixins:
     @classmethod
     def set_superset_class(
             cls, 
-            superset_class: type = None
-        ):
+            superset_class: type['SequenceInterval'] = None
+        ) -> None:
         """_Set the superset class_
 
         Args:
@@ -62,7 +62,7 @@ class HierarchyMixins:
             raise Exception(f"Unknown error setting {superset_class.__name__} as superset class of {cls.__name__}")
         
     @classmethod
-    def set_subset_class(cls, subset_class = None):
+    def set_subset_class(cls, subset_class:type['SequenceInterval'] = None)->None:
         """summary
 
         Args:
@@ -90,9 +90,9 @@ class HierarchyMixins:
 class InstanceMixins(HierarchyMixins, WithinMixins):
 
 
-    def __add__(self, other):
-
-        self_copy = self.entry_class(self)
+    def __add__(self, other:'SequenceInterval')->'SequenceInterval':
+        self_copy:SequenceInterval = self.entry_class(self)
+        self_copy.__dict__ = self.__dict__
 
         if issubclass(self.entry_class, other.superset_class):
             self_copy.subset_list += [other]
@@ -103,7 +103,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         
         raise ValueError("An added SequenceInterval must either be a subset or superset class of the original.")
 
-    def append(self, other):
+    def append(self, other:'SequenceInterval')->None:
         if issubclass(self.subset_class, other.entry_class):
             self.subset_list += [other]
             if self.intier and self.intier.within:
@@ -112,7 +112,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             return
         raise ValueError("Appended SequenceInterval must be the subset class of the original.")
 
-    def set_super_instance(self, super_instance = None):
+    def set_super_instance(self, super_instance:'SequenceInterval' = None)->None:
         """Sets the specific superset relationship
 
         Args:
@@ -132,7 +132,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
 
     ## Subset Methods
         
-    def set_subset_list(self, subset_list = None):
+    def set_subset_list(self, subset_list:SequenceList['SequenceInterval'] = None)->None:
         """Appends all objects to the `subset_list`
 
         Args:
@@ -155,7 +155,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             subset_class_set = set([type(x).__name__ for x in subset_list])
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
 
-    def append_subset_list(self, subset_instance = None):
+    def append_subset_list(self, subset_instance:SequenceList['SequenceInterval'] = None)->None:
         """Append a single item to subset list
 
         Args:
@@ -180,7 +180,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         else:
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
         
-    def remove_from_subset_list(self, subset_instance = None):
+    def remove_from_subset_list(self, subset_instance:'SequenceInterval' = None)->None:
         """Remove a sequence interval from the subset list
 
         Args:
@@ -196,7 +196,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         self._set_subset_precedence()
         #self.validate()
     
-    def remove_superset(self):
+    def remove_superset(self)->None:
         """Remove the superset instance from the current subset class
         """
         
@@ -210,7 +210,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
 
 
 
-    def _set_subset_precedence(self):
+    def _set_subset_precedence(self)->None:
         """summary
             Private method. Sorts subset list and re-sets precedence 
             relationshops.
@@ -225,7 +225,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             else:
                 p.set_fol(self._subset_list[idx+1])
 
-    def _set_within(self):
+    def _set_within(self)->None:
         """summary
             Private method. Sets within
         """
@@ -402,17 +402,17 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
 
         self.intier = None
 
-    def __contains__(self, item):
+    def __contains__(self, item:'SequenceInterval')->bool:
         return item in self.subset_list
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx:int)->'SequenceInterval':
         return self.subset_list[idx]
 
     def __iter__(self):
         self.current = 0
         return self
     
-    def __len__(self):
+    def __len__(self)->int:
         return len(self.subset_list)
     
     def __next__(self):
@@ -425,7 +425,7 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
         
     def index(
             self,
-            subset_instance
+            subset_instance:'SequenceInterval'
     ) -> int:
         """Returns subset instance index
 
@@ -440,8 +440,8 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
 
     def pop(
             self,
-            subset_instance
-    ):
+            subset_instance:'SequenceInterval'
+    ) -> bool:
         """Pop a sequence interval from the subset list
 
         Args:
@@ -470,11 +470,11 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
     
     # properties
     @property
-    def subset_list(self):
+    def subset_list(self)->SequenceList['SequenceInterval']:
         return self._subset_list
     
     @subset_list.setter
-    def subset_list(self, intervals: list[Self]|SequenceList[Self]):
+    def subset_list(self, intervals: list[Self]|SequenceList[Self])->None:
         orig_values = self.subset_list
         intervals = SequenceList(*intervals)
         self.set_subset_list(intervals)
@@ -484,34 +484,34 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
                 orig.remove_superset()
 
     @property
-    def start(self):
+    def start(self)->float:
         return self._start
     
     @start.setter
-    def start(self, time):
+    def start(self, time:float):
         self._start = time
 
     @property
-    def end(self):
+    def end(self)->float:
         return self._end
     
     @end.setter
-    def end(self, time):
+    def end(self, time:float):
         self._end = time
 
     @property
-    def sub_starts(self):
+    def sub_starts(self)->np.array:
         return self.subset_list.starts
         
     @property
-    def sub_ends(self):
+    def sub_ends(self)->np.array:
         return self.subset_list.ends
     
     @property
-    def sub_labels(self):
+    def sub_labels(self) -> list[str]:
         return self.subset_list.labels
     
-    def _shift(self, increment):
+    def _shift(self, increment:float)->None:
         self.start += increment
         self.end += increment
         if len(self.subset_list) > 0:
@@ -522,10 +522,10 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
         return self.end - self.start
     
     @property
-    def entry_class(self):
+    def entry_class(self)->type['SequenceInterval']:
         return self.__class__
     
-    def cleanup(self):
+    def cleanup(self)->None:
         if isinstance(self.subset_class, Bottom):
             return
         if not len(self.subset_list) > 0:
@@ -563,7 +563,7 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
     def fuse_rightwards(
             self, 
             label_fun = lambda x, y: " ".join([x, y])
-        ):
+        ) -> None:
         """Fuse the current segment with the following segment
 
         Args:
@@ -594,7 +594,7 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
     def fuse_leftwards(
             self, 
             label_fun = lambda x, y: " ".join([x, y])
-        ):
+        )->None:
         """Fuse the current segment with the previous segment
 
         Args:
@@ -622,10 +622,10 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
         else:
             raise Exception("Cannot fuse leftwards at right edge")
     
-    def fuse_rightward(self):
+    def fuse_rightward(self)->None:
         self.fuse_rightwards()
 
-    def fuse_leftward(self):
+    def fuse_leftward(self)->None:
         self.fuse_leftwards()        
 
     ## Extensions and Saving
