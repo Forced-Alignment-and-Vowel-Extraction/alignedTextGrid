@@ -108,7 +108,14 @@ class  SequencePoint(SequenceBaseClass, PrecedenceMixins, InTierMixins, WithinMi
     
     def __getitem__(self, idex):
         warnings.warn("Indexing is not valid for a SequencePoint")
-        return None    
+        return None
+    
+    def __add__(self, x):
+        warnings.warn("+ is not implemented for SequencePoint")
+        return self
+    
+    def append(self, x):
+        warnings.warn("append() is not implemented for SequencePoint")
     
     ## Properties
     @property
