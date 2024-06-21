@@ -58,6 +58,19 @@ class TestSequenceInterval:
         assert phone2 in word
         assert word2 is word
 
+    def test_solo_exceptions(self):
+        MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
+        YourWord, YourPhone = custom_classes(["YourWord", "YourPhone"])
+        word = MyWord((0, 10, "a"))
+        phone = YourPhone((0,5,"A"))
+
+        with pytest.raises(ValueError):
+            word += [phone]
+
+        with pytest.raises(ValueError):
+            word.append(phone)
+
+
 class TestSequenceInTier:
     
     def test_no_tiergroup(self):
@@ -444,6 +457,23 @@ class TestCleanups:
         ends = np.array([tier.xmax for tier in tier_group])
         assert np.allclose(*starts)
         assert np.allclose(*ends)
+
+    def test_up_copy(self):
+        MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
+        phone1 = MyPhone((0,5,"A"))
+
+        tier_group = TierGroup([
+            SequenceTier(entry_class=MyWord),
+            SequenceTier([phone1])
+        ])
+
+        assert len(tier_group.MyWord) == 0
+        
+        tier_group.cleanup()
+
+        assert len(tier_group.MyWord) == 1
+
+        assert phone1 in tier_group.MyWord.first
 
     
     def test_atg_cleanup(self):
