@@ -146,11 +146,11 @@ class SequenceList(Sequence):
         if len(self) < 1:    
             return np.array([])
 
-        if hasattr(self[0], "end"):
-            return np.array([x.end for x in self])
-        
         if hasattr(self[0], "time"):
             return np.array([x.time for x in self])
+        
+        if hasattr(self[0], "end"):
+            return np.array([x.end for x in self])
     
     @property
     def labels(self) -> list[str]:
