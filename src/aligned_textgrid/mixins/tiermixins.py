@@ -13,6 +13,9 @@ class TierMixins:
         first (SequenceInterval): The first entry in the tier.
         last (SequenceInterval): The last entry in the tier.
     """
+    @classmethod
+    def _set_seq_type(cls, seq_type):
+        cls._seq_type = seq_type
 
     def __add__(self, new):
         if not isinstance(new, self.__class__):

@@ -321,3 +321,5 @@ class PointsGroup(Sequence, TierGroupMixins, WithinMixins):
         classes = [x.__name__ for x in self.entry_classes]
         return f"PointsGroup with {n_tiers} tiers. {repr(classes)}"
     
+SequencePointTier._set_seq_type(SequencePoint)
+PointsGroup._set_seq_type(SequencePoint)

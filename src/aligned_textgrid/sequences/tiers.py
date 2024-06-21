@@ -524,4 +524,6 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
             print(f"{tab*(idx+1)}{tier.entry_class.__name__}(\n")
             if idx == len(self.tier_list)-1:
                 print(f"{tab*(idx+2)}{tier.subset_class.__name__}(\n")
-    
+
+SequenceTier._set_seq_type(SequenceInterval)
+TierGroup._set_seq_type(SequenceInterval)
