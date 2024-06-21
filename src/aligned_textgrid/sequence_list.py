@@ -190,7 +190,7 @@ class SequenceList(Sequence):
 
         increment = 0
         if len(self.ends) > 0:
-            increment = self.ends[-1]
+            increment = self.ends.max()
         
         intervals._shift(increment)          
         
