@@ -101,6 +101,9 @@ class TierGroupMixins:
     Attributes:
         []: Indexable and iterable
     """
+    @classmethod
+    def _set_seq_type(cls, seq_type):
+        cls._seq_type = seq_type
 
     def _class_check(self, new):
         if len(self) != len(new):
