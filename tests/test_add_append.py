@@ -65,7 +65,7 @@ class TestSequenceInterval:
         phone = YourPhone((0,5,"A"))
 
         with pytest.raises(ValueError):
-            word += [phone]
+            word += phone
 
         with pytest.raises(ValueError):
             word.append(phone)
