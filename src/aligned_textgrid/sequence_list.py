@@ -7,6 +7,12 @@ if sys.version_info >= (3,11):
 else:
     from typing_extensions import Self
 
+from typing import TYPE_CHECKING, TypeVar
+if TYPE_CHECKING:
+    from aligned_textgrid import SequenceInterval, SequencePoint
+
+SeqVar = TypeVar("SeqVar", 'SequenceInterval', 'SequencePoint')
+
 class SequenceList(Sequence):
     """A list of SequenceIntervals or SequencePoints that
     remains sorted
@@ -24,19 +30,19 @@ class SequenceList(Sequence):
             A list of labels
     """
 
-    def __init__(self, *args):
+    def __init__(self, *args:SeqVar):
         self._values = []
         self.entry_class = None
         for arg in args:
             self.append(arg)
 
-    def __getitem__(self, idx):
+    def __getitem__(self:Sequence[SeqVar], idx:int)->SeqVar:
         return self._values[idx]
     
-    def __len__(self):
+    def __len__(self)->int:
         return len(self._values)
     
-    def __contains__(self, other):
+    def __contains__(self:Sequence[SeqVar], other:SeqVar)->bool:
         if len(self) < 1:
             return False
         
@@ -50,7 +56,7 @@ class SequenceList(Sequence):
         
         return False
     
-    def __add__(self, other:Sequence):
+    def __add__(self, other:Sequence[SeqVar]) -> Self:
 
         if not isinstance(self, Sequence):
             raise ValueError("Only a list, tuple, or SequenceList can be added to SequenceList")
@@ -85,7 +91,7 @@ class SequenceList(Sequence):
     def __repr__(self):
         return self._values.__repr__()
             
-    def _sort(self):
+    def _sort(self)->None:
         if len(self._values) > 0:
             if hasattr(self[0], "start"):
                 item_starts = np.array([x.start for x in self._values])
@@ -94,7 +100,7 @@ class SequenceList(Sequence):
             item_order = np.argsort(item_starts)
             self._values = [self._values[idx] for idx in item_order]
     
-    def _entry_class_checker(self, value):
+    def _entry_class_checker(self, value) -> None:
         if self.entry_class is None:
             self.entry_class = value.entry_class
         
@@ -102,7 +108,7 @@ class SequenceList(Sequence):
                 or issubclass(value.entry_class, self.entry_class)):
             raise ValueError("All values must have the same class.")
     
-    def _shift(self, increment):
+    def _shift(self, increment)->None:
         for value in self:
             value._shift(increment)
 
@@ -153,7 +159,7 @@ class SequenceList(Sequence):
 
         return []
     
-    def append(self, value, shift:bool = False, re_init = False):
+    def append(self:Sequence[SeqVar], value:SeqVar, shift:bool = False, re_init = False)->None:
         """Append a SequenceInterval to the list.
 
         After appending, the SequenceIntervals are re-sorted
@@ -179,7 +185,7 @@ class SequenceList(Sequence):
         self._values.append(value)
         self._sort()
 
-    def concat(self, intervals:list|Self):
+    def concat(self:Sequence[SeqVar], intervals:Sequence[SeqVar])->None:
         intervals = SequenceList(*intervals)
 
         increment = 0
@@ -192,7 +198,7 @@ class SequenceList(Sequence):
         self._values = new_values
 
        
-    def remove(self, x):
+    def remove(self:Sequence[SeqVar], x:SeqVar)->None:
         """Remove a SequenceInterval from the list
 
         Args:
@@ -203,7 +209,7 @@ class SequenceList(Sequence):
         if hasattr(x, "super_instance"):
             x.remove_superset()
 
-    def pop(self, x):
+    def pop(self:Sequence[SeqVar], x:SeqVar)->None:
         """Pop a SequenceInterval
 
         Args:
