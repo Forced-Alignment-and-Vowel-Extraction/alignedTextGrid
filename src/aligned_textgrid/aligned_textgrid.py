@@ -375,14 +375,13 @@ class AlignedTextGrid(Sequence, WithinMixins):
     
     def append(self, tier_group:TierGroup):
         new_classes = self._reclone_classes(tier_group.entry_classes)
-        new_tiers = TierGroup(
-            [
-                SequenceTier(t, e)
-                for t,e in zip(tier_group, new_classes)
-            ]
-        )
+        for cl, tier in zip(new_classes, tier_group):
+            entries = [cl._cast(i) for i in tier]
+            tier.__init__(entries)
+        
+        tier_group.__init__(tier_group)
      
-        self.tier_groups.append(new_tiers)
+        self.tier_groups.append(tier_group)
         self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
 
     def cleanup(self):
