@@ -15,12 +15,15 @@ import numpy as np
 import warnings
 import sys
 from collections.abc import Sequence
+from typing import TYPE_CHECKING
 
 if sys.version_info >= (3,11):
     from typing import Self
 else:
     from typing_extensions import Self
 
+if TYPE_CHECKING:
+    from aligned_textgrid import SequenceTier
 
 class HierarchyMixins:
 
@@ -400,7 +403,7 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
         self._subset_list = SequenceList()
         self.super_instance= None
 
-        self.intier = None
+        self.intier:'SequenceTier|None' = None
 
     def __contains__(self, item:'SequenceInterval')->bool:
         return item in self.subset_list

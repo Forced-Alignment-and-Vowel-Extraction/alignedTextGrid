@@ -5,6 +5,7 @@ from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.sequences.sequences import SequenceInterval
 import warnings
 import numpy as np
+from typing import TYPE_CHECKING
 
 import sys
 if sys.version_info >= (3,11):
@@ -12,6 +13,8 @@ if sys.version_info >= (3,11):
 else:
     from typing_extensions import Self
 
+if TYPE_CHECKING:
+    from aligned_textgrid import SequencePointTier
 
 class  SequencePoint(SequenceBaseClass, PrecedenceMixins, InTierMixins, WithinMixins):
     """Sequence Points
@@ -83,12 +86,12 @@ class  SequencePoint(SequenceBaseClass, PrecedenceMixins, InTierMixins, WithinMi
         self.time = point.time
         self.label = point.label
 
-        self.intier = None
-        self.tiername = None
+        self.intier:'SequencePointTier|None' = None
+        self.tiername:str|None = None
         self.pointspool = None
 
-        self.fol = None
-        self.prev = None
+        self.fol:SequencePoint|None = None
+        self.prev:SequencePoint|None = None
 
         if self.label != "#":
             self.set_final()
