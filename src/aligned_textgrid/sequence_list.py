@@ -18,7 +18,7 @@ class SequenceList(Sequence):
     remains sorted
 
     Args:
-        *args (SequenceInterval, SequencePoint):
+        *args ('SequenceInterval|SequencePoint'):
             SequenceIntervals or SequencePoints
 
     Attributes:
@@ -186,6 +186,17 @@ class SequenceList(Sequence):
         self._sort()
 
     def concat(self:Sequence[SeqVar], intervals:Sequence[SeqVar])->None:
+        """Concatenate two sequence lists
+
+        In concatenation, the time values of `intervals` are
+        time shfted by the end time of the original
+        SequenceList.
+
+        Args:
+            intervals (Sequence[SeqVar]):
+                A list or SequenceList of 
+                SequenceIntervals or SequencePoints
+        """
         intervals = SequenceList(*intervals)
 
         increment = 0
