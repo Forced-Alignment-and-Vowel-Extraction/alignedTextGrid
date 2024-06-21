@@ -481,6 +481,16 @@ class TestCleanups:
         
         assert tg1.xmin == tg2.xmin
         assert tg1.xmax == tg2.xmax
+
+        atg.cleanup()
+
+        assert tg1 in atg
+        assert tg2 in atg
+        
+        assert tg1.xmin == tg2.xmin
+        assert tg1.xmax == tg2.xmax
+
+
         pass
 
 
