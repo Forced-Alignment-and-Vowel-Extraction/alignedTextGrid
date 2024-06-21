@@ -4,6 +4,27 @@ from functools import reduce
 import re
 import warnings
 import numpy as np
+import sys
+from collections.abc import Sequence
+if sys.version_info >= (3,11):
+    from typing import Self
+else:
+    from typing_extensions import Self
+
+from typing import TypeVar, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from aligned_textgrid import SequenceInterval, \
+        SequencePoint, \
+        SequenceTier, \
+        SequencePointTier,\
+        TierGroup,\
+        PointsGroup
+
+TierType = TypeVar("TierType", 'SequenceTier', 'SequencePointTier')
+TierGroupType = TypeVar("TierGroupType", 'TierGroup', 'PointsGroup')
+
+
 
 class TierMixins:
     """Methods and attributes for Sequence Tiers
@@ -17,13 +38,13 @@ class TierMixins:
     def _set_seq_type(cls, seq_type):
         cls._seq_type = seq_type
 
-    def __add__(self, new):
+    def __add__(self:TierType, new:TierType):
         if not isinstance(new, self.__class__):
             msg = f"A {type(self).__name__} can only be added to a {type(self).__name__}."
             if isinstance(new, SequenceBaseClass):
                 msg += " Did you mean to use append()?"
             raise ValueError(msg)
-        if not issubclass(self.entry_class, new.entry_class):
+        if not (issubclass(self.entry_class, new.entry_class) or issubclass(new.entry_class, self.entry_class)):
             raise ValueError("Added tiers must have the same entry class")
         
         entries = self.sequence_list + new.sequence_list
@@ -63,8 +84,8 @@ class TierMixins:
 
 
 
-    def concat(self, new):
-        if not issubclass(self.entry_class, new.entry_class):
+    def concat(self:TierType, new:TierType):
+        if not (issubclass(self.entry_class, new.entry_class) or issubclass(new.entry_class, self.entry_class)):
             raise ValueError("Added tiers must have the same entry class")
         
         lhs = self.sequence_list
@@ -75,7 +96,7 @@ class TierMixins:
         self.sequence_list = lhs
 
     @property
-    def first(self):
+    def first(self) -> 'SequenceInterval|SequencePoint':
         if hasattr(self, "sequence_list") and len(self.sequence_list) > 0:
             return self.sequence_list[0]
         if hasattr(self, "sequence_list"):
@@ -84,7 +105,7 @@ class TierMixins:
         raise AttributeError(f"{type(self).__name__} is not indexable.")
 
     @property
-    def last(self):
+    def last(self)->'SequenceInterval|SequencePoint':
         if hasattr(self, "sequence_list") and len(self.sequence_list) > 0:
             return self.sequence_list[-1]
         if hasattr(self, "sequence_list"):
@@ -105,7 +126,7 @@ class TierGroupMixins:
     def _set_seq_type(cls, seq_type):
         cls._seq_type = seq_type
 
-    def _class_check(self, new):
+    def _class_check(self:TierGroupType, new:TierGroupType):
         if len(self) != len(new):
             raise ValueError("Original TierGroup and new TierGroup must have the same number of tiers.")
         
@@ -116,7 +137,7 @@ class TierGroupMixins:
             if o != n:
                 raise ValueError("Entry classes must be the same between added tier groups")
 
-    def __add__(self, new):
+    def __add__(self:TierGroupType, new:TierGroupType):
 
         self._class_check(new)
             
