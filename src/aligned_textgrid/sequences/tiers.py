@@ -9,6 +9,7 @@ from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
 from aligned_textgrid.sequence_list import SequenceList
 from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
 from aligned_textgrid.mixins.within import WithinMixins
+from aligned_textgrid.sequence_list import SequenceList
 import numpy as np
 from typing import Type
 from collections.abc import Sequence
@@ -29,7 +30,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
 
     Args:
         tier (list[Interval] | list[SequenceInterval] | IntervalTier | Self, optional): 
-            A list of interval entries. Defaults to `[]`.
+            A list of interval entries. Defaults to `SequenceList()`.
         entry_class (Type[SequenceInterval], optional): 
             The sequence class for this tier. Defaults to SequenceInterval.
 
@@ -50,16 +51,26 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         ```
     
     Attributes:
-        sequence_list (list[SequenceInterval]):
+        sequence_list (SequenceList[SequenceInterval]):
+            A `SequenceList` of intervals in the tier.
         entry_class (Type[SequenceInterval]):
+            The entry class of the tier
         superset_class (Type[SequenceInterval]):
+            The superset class of the tier
         subset_class (Type[SequenceInterval]):
+            The subset class of the tier
         starts (np.ndarray[np.float64]):
+            An array of start times for all intervals
         ends (np.ndarray[np.float64]):
+            An array of end times for all intervals
         labels (list[str]): 
+            A list of the labels of all intervals
         xmin (float):
+            The minimum start time of the tier
         xmax (float):
+            The minumum end time of the tier
         name (str):
+            The name of the tier
         [] : Indexable. Returns a SequenceInterval
         : Iterable
     """
@@ -101,25 +112,25 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
 
     def __set_classes(
             self,
-            entry_class
-    ):
+            entry_class:type[SequenceInterval]
+    )->None:
         self.entry_class = entry_class
         self.superset_class = self.entry_class.superset_class
         self.subset_class =  self.entry_class.subset_class
         
-    def __build_sequence_list(self):
+    def __build_sequence_list(self)->None:
         intervals = [self.entry_class._cast(entry) for entry in self.entry_list]
         self.sequence_list = SequenceList(*intervals)
 
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx:int)->SequenceInterval:
         return self.sequence_list[idx]
 
-    def __len__(self):
+    def __len__(self)->int:
         return len(self.sequence_list)
 
 
-    def __set_precedence(self):
+    def __set_precedence(self)->None:
         for idx,seq in enumerate(self._sequence_list):
             self.__set_intier(seq)
             if idx == 0:
@@ -135,8 +146,8 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
 
     def __set_intier(
             self,
-            entry
-        ):
+            entry:SequenceInterval
+        )->None:
         """
         Sets the intier attribute of the entry
         """
@@ -145,8 +156,8 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
     
     def pop(
             self,
-            entry
-    ):
+            entry:SequenceInterval
+    )->None:
         """Pop an interval
 
         Args:
@@ -164,16 +175,16 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         return f"Sequence tier of {self.entry_class.__name__}; .superset_class: {self.superset_class.__name__}; .subset_class: {self.subset_class.__name__}"
     
     @property
-    def sequence_list(self):
+    def sequence_list(self)->SequenceList:
         return self._sequence_list
     
     @sequence_list.setter
-    def sequence_list(self, new):
+    def sequence_list(self, new:Sequence):
         self._sequence_list = SequenceList(*new)
         self.__set_precedence()        
 
     @property
-    def starts(self):
+    def starts(self)->np.array:
         return np.array([x.start for x in self.sequence_list])
     
     @starts.setter
@@ -185,7 +196,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
             i.start = t
 
     @property
-    def ends(self):
+    def ends(self)->np.array:
         return np.array([x.end for x in self.sequence_list])
 
     @ends.setter
@@ -196,29 +207,29 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         for t, i in zip(times, self.sequence_list):
             i.end = t
 
-    def _shift(self, increment):
+    def _shift(self, increment:float) -> None:
         self.starts += increment
         self.ends   += increment
 
     @property
-    def labels(self):
+    def labels(self)->list[str]:
         return [x.label for x in self.sequence_list]
 
     @property
-    def xmin(self):
+    def xmin(self)->float:
         if len(self.sequence_list) > 0:
             return self.sequence_list.starts.min()
         else:
             return None
     
     @property
-    def xmax(self):
+    def xmax(self)->float:
         if len(self.sequence_list) > 0:
             return self.sequence_list.ends.max()
         else:
             return None
 
-    def cleanup(self):
+    def cleanup(self)->None:
         """
         Insert empty intervals where there are gaps in the existing tier.
         """
@@ -365,7 +376,7 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     def __getitem__(
             self,
             idx: int|list
-    ):
+    )->SequenceTier:
         if type(idx) is int:
             return self.tier_list[idx]
         if len(idx) != len(self):
@@ -376,10 +387,10 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
                 out_list.append(tier[x])
             return(out_list)
 
-    def __len__(self):
+    def __len__(self)->int:
         return len(self.tier_list)
         
-    def __repr__(self):
+    def __repr__(self)->str:
         n_tiers = len(self.tier_list)
         classes = [x.__name__ for x in self.entry_classes]
         return f"TierGroup with {n_tiers} tiers. {repr(classes)}"
@@ -433,22 +444,25 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
         return(top_to_bottom)
             
     @property
-    def entry_classes(self):
+    def entry_classes(self)->list[type[SequenceInterval]]:
         return [x.entry_class for x in self.tier_list]
     
     @property
-    def tier_names(self):
+    def tier_names(self)->list[str]:
         return [x.name for x in self.tier_list]
     
     @property
-    def xmin(self):
+    def xmin(self)->float:
         return np.array([tier.xmin for tier in self.tier_list]).min()
     
     @property
-    def xmax(self):
+    def xmax(self)->float:
         return np.array([tier.xmax for tier in self.tier_list]).max()
     
-    def project_up(self, interval:SequenceInterval):
+    def _project_up(self, interval:SequenceInterval)->None:
+        """
+        Copy super instance up
+        """
         if issubclass(interval.superset_class, Top):
             return
         up_index = interval.intier.within_index - 1
@@ -464,7 +478,11 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
 
         up_tier.append(new_interval)
         
-    def cleanup(self):
+    def cleanup(self) -> None:
+        """
+        This will fill any gaps between intervals with intervals
+        with an empty label.
+        """
         for idx, tier in enumerate(self):
             if issubclass(tier.subset_class, Bottom):
                 break
@@ -474,7 +492,7 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
         
         for idx, tier in enumerate(reversed(self)):
             for interval in tier:
-                self.project_up(interval)
+                self._project_up(interval)
 
         for tier in self:
             tier.cleanup()
@@ -485,7 +503,7 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     def shift(
             self,
             increment: float
-        ):
+        )->None:
         """Shift the start and end times of all intervals within
         the TierGroup by the increment size
 
