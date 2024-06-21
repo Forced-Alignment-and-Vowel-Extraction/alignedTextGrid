@@ -129,7 +129,55 @@ class TierGroupMixins:
 
         return new_tg
         
+    def append(self:TierGroupType, new:TierType):
+        if not self._seq_type is new._seq_type:
+            raise ValueError((
+                f"Only a tier of {self._seq_type.__name__} "
+                f"can be appended to a {self.__class__.__name__}"
+            ))
 
+        possible_set = {SequenceBaseClass}
+        existing_set = set()
+        if len(self) > 0:
+            if hasattr(self[0], "subset_class"):
+                possible_classes = [
+                    [tier.subset_class, tier.superset_class]
+                    for tier in self
+                ]
+                possible_flat = [cl for gr in possible_classes for cl in gr]
+                possible_set = set(possible_flat)
+
+            existing_set = {tier.entry_class for tier in self}
+
+        existing_matches = [
+            issubclass(cl, new.entry_class) or issubclass(new.entry_class, cl)
+            for cl in existing_set
+        ]
+
+        if any(existing_matches):
+            raise ValueError((
+                f"This {self.__class__.__name__} already has a "
+                f"{new.entry_class.__name__} tier"
+            ))
+
+        possible_matches = [
+            issubclass(cl, new.entry_class) or issubclass(new.entry_class, cl)
+            for cl in possible_set
+        ]
+
+        if not any(possible_matches):
+            raise ValueError((
+                f"A tier with {new.entry_class.__name__} entry class "
+                "does not fit into the sequence hierarchy."
+            ))
+
+        orig_tiers = self.tier_list
+        orig_tiers += [new]
+
+        self.__init__(orig_tiers)
+        
+
+        pass
 
     def concat(self, new):
         self._class_check(new)
