@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../reference/Top.html" rel="next">
-<link href="../reference/InTierMixins.html" rel="prev">
+<link href="../reference/AlignedTextGrid.html" rel="next">
+<link href="../reference/TierGroup.html" rel="prev">
 <link href="../assets/logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -153,7 +119,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Sequence Classes</li><li class="breadcrumb-item"><a href="../reference/SequenceInterval.html">Intervals</a></li><li class="breadcrumb-item"><a href="../reference/SequenceInterval.html">SequenceInterval</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Tiers</li><li class="breadcrumb-item"><a href="../reference/SequenceTier.html">Tiers and Tier Groups</a></li><li class="breadcrumb-item"><a href="../reference/PointsGroup.html">PointsGroup</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -216,16 +182,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
  <span class="menu-text">Intervals</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/SequenceInterval.html" class="sidebar-item-text sidebar-link active">
+  <a href="../reference/SequenceInterval.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">SequenceInterval</span></a>
   </div>
 </li>
@@ -313,13 +279,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
  <span class="menu-text">Tiers and Tier Groups</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/SequenceTier.html" class="sidebar-item-text sidebar-link">
@@ -340,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/PointsGroup.html" class="sidebar-item-text sidebar-link">
+  <a href="../reference/PointsGroup.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">PointsGroup</span></a>
   </div>
 </li>
@@ -508,16 +474,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#parameters" id="toc-parameters" class="nav-link active" data-scroll-target="#parameters">Parameters</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
-  <li><a href="#attributes" id="toc-attributes" class="nav-link" data-scroll-target="#attributes">Attributes</a></li>
+  <li><a href="#aligned_textgrid.points.tiers.PointsGroup" id="toc-aligned_textgrid.points.tiers.PointsGroup" class="nav-link active" data-scroll-target="#aligned_textgrid.points.tiers.PointsGroup">PointsGroup</a>
+  <ul class="collapse">
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
-  <li><a href="#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards" id="toc-aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards" class="nav-link" data-scroll-target="#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards">fuse_leftwards</a></li>
-  <li><a href="#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_rightwards" id="toc-aligned_textgrid.sequences.sequences.SequenceInterval.fuse_rightwards" class="nav-link" data-scroll-target="#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_rightwards">fuse_rightwards</a></li>
-  <li><a href="#aligned_textgrid.sequences.sequences.SequenceInterval.index" id="toc-aligned_textgrid.sequences.sequences.SequenceInterval.index" class="nav-link" data-scroll-target="#aligned_textgrid.sequences.sequences.SequenceInterval.index">index</a></li>
-  <li><a href="#aligned_textgrid.sequences.sequences.SequenceInterval.pop" id="toc-aligned_textgrid.sequences.sequences.SequenceInterval.pop" class="nav-link" data-scroll-target="#aligned_textgrid.sequences.sequences.SequenceInterval.pop">pop</a></li>
-  <li><a href="#aligned_textgrid.sequences.sequences.SequenceInterval.set_feature" id="toc-aligned_textgrid.sequences.sequences.SequenceInterval.set_feature" class="nav-link" data-scroll-target="#aligned_textgrid.sequences.sequences.SequenceInterval.set_feature">set_feature</a></li>
+  <li><a href="#aligned_textgrid.points.tiers.PointsGroup.get_nearest_points_index" id="toc-aligned_textgrid.points.tiers.PointsGroup.get_nearest_points_index" class="nav-link" data-scroll-target="#aligned_textgrid.points.tiers.PointsGroup.get_nearest_points_index">get_nearest_points_index</a></li>
+  <li><a href="#aligned_textgrid.points.tiers.PointsGroup.shift" id="toc-aligned_textgrid.points.tiers.PointsGroup.shift" class="nav-link" data-scroll-target="#aligned_textgrid.points.tiers.PointsGroup.shift">shift</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -525,27 +489,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Sequence Classes</li><li class="breadcrumb-item"><a href="../reference/SequenceInterval.html">Intervals</a></li><li class="breadcrumb-item"><a href="../reference/SequenceInterval.html">SequenceInterval</a></li></ol></nav>
-<div class="quarto-title">
-<h1 class="title">SequenceInterval</h1>
-</div>
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p><code>sequences.sequences.SequenceInterval(self, interval=(None, None, None), *, Interval=None)</code></p>
-<p>A class to describe an interval with precedence relationships and hierarchical relationships</p>
+<section id="aligned_textgrid.points.tiers.PointsGroup" class="level1">
+<h1>PointsGroup</h1>
+<p><code>points.tiers.PointsGroup(self, tiers=[SequencePointTier()])</code></p>
+<p>A collection of point tiers <code>PointsGroup</code>s have all the same methods and attributes as <a href="../reference/TierGroupMixins.html#aligned_textgrid.mixins.tiermixins.TierGroupMixins"><code>TierGroupMixins</code></a> and <a href="../reference/WithinMixins.html#aligned_textgrid.mixins.within.WithinMixins"><code>WithinMixins</code></a></p>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="caption-top table">
@@ -559,112 +509,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>interval</code></td>
-<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a> | <a href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a> | <code>Interval</code> | <code>Self</code></td>
-<td>A Praat textgrid Interval. This could one of: i) A list or tuple of start, end and label values (e.g.&nbsp;<code>[0, 1, "foo"]</code>); ii) A <code>praatio.utilities.constants.Interval</code> iii) Another <code>SequenceInterval</code>. In this last case, only the <code>start</code>, <code>end</code> and <code>label</code> values from the original <code>SequenceInterval</code> are preserved in the new one.</td>
-<td><code>(None, None, None)</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="examples" class="level2">
-<h2 class="anchored" data-anchor-id="examples">Examples</h2>
-<p>A new <code>SequenceInterval</code> can be created from scratch by passing it a tuple of a start time, end time, and a label</p>
-<div id="c1193f65" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> SequenceInterval</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sample_interval <span class="op">=</span> SequenceInterval((<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">"sample"</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sample_interval)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Class SequenceInterval, label: sample, .superset_class: Top, .super_instance, None, .subset_class: Bottom</code></pre>
-</div>
-</div>
-<p>You can pass a <code>SequenceInterval</code> to another <code>SequenceInterval</code> or subclass (like <a href="../reference/Word.html#aligned_textgrid.sequences.word_and_phone.Word"><code>Word</code></a>) as well</p>
-<div id="40f2a75c" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> Word</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sample_word <span class="op">=</span> Word(sample_interval)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sample_word)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Class Word, label: sample, .superset_class: Top_wp, .super_instance, None, .subset_class: Phone</code></pre>
-</div>
-</div>
-</section>
-<section id="attributes" class="level2">
-<h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>start</td>
-<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
-<td>Start time of the interval</td>
-</tr>
-<tr class="even">
-<td>end</td>
-<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
-<td>End time of the interval</td>
-</tr>
-<tr class="odd">
-<td>label</td>
-<td><a href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></td>
-<td>Label of the interval</td>
-</tr>
-<tr class="even">
-<td>duration</td>
-<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
-<td>The duration of the interval</td>
-</tr>
-<tr class="odd">
-<td>intier</td>
-<td><code>SequenceTier</code></td>
-<td>The sequence tier the current interval is within.</td>
-</tr>
-<tr class="even">
-<td>tier_index</td>
-<td><a href="https://docs.python.org/3/library/functions.html#int">int</a></td>
-<td>The index of sequence within its tier.</td>
-</tr>
-<tr class="odd">
-<td>fol</td>
-<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a></td>
-<td>Instance of the following interval. Is the same subclass as the current instance.</td>
-</tr>
-<tr class="even">
-<td>prev</td>
-<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a></td>
-<td>Instance of the previous interval. Is the same subclass as current instance.</td>
-</tr>
-<tr class="odd">
-<td>super_instance</td>
-<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a></td>
-<td>The instance of the superset. Cannot be the same subclass as the current instance.</td>
-</tr>
-<tr class="even">
-<td>subset_list</td>
-<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]</td>
-<td>A list of subset instances. Cannot be the same subclass of the current instance.</td>
-</tr>
-<tr class="odd">
-<td>sub_starts</td>
-<td><a href="https://numpy.org/doc/stable/reference/index.html#module-numpy">numpy</a>.<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray">ndarray</a></td>
-<td>A numpy array of start times for the subset list</td>
-</tr>
-<tr class="even">
-<td>sub_ends</td>
-<td><a href="https://numpy.org/doc/stable/reference/index.html#module-numpy">numpy</a>.<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray">ndarray</a></td>
-<td>A numpy array of end times for the subset list</td>
-</tr>
-<tr class="odd">
-<td>sub_labels</td>
-<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>]</td>
-<td>A list of labels from the subset list</td>
+<td><code>tiers</code></td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="../reference/SequencePointTier.html#aligned_textgrid.points.tiers.SequencePointTier">SequencePointTier</a>]</td>
+<td>A list of SequencePointTiers</td>
+<td><code>[SequencePointTier()]</code></td>
 </tr>
 </tbody>
 </table>
@@ -680,40 +528,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards">fuse_leftwards</a></td>
-<td>Fuse the current segment with the previous segment</td>
+<td><a href="#aligned_textgrid.points.tiers.PointsGroup.get_nearest_points_index">get_nearest_points_index</a></td>
+<td>Get indicies of nearest point</td>
 </tr>
 <tr class="even">
-<td><a href="#aligned_textgrid.sequences.sequences.SequenceInterval.fuse_rightwards">fuse_rightwards</a></td>
-<td>Fuse the current segment with the following segment</td>
-</tr>
-<tr class="odd">
-<td><a href="#aligned_textgrid.sequences.sequences.SequenceInterval.index">index</a></td>
-<td>Returns subset instance index</td>
-</tr>
-<tr class="even">
-<td><a href="#aligned_textgrid.sequences.sequences.SequenceInterval.pop">pop</a></td>
-<td>Pop a sequence interval from the subset list</td>
-</tr>
-<tr class="odd">
-<td><a href="#aligned_textgrid.sequences.sequences.SequenceInterval.set_feature">set_feature</a></td>
-<td>Sets arbitrary object attribute</td>
+<td><a href="#aligned_textgrid.points.tiers.PointsGroup.shift">shift</a></td>
+<td>Shift the times of all points within</td>
 </tr>
 </tbody>
 </table>
-<section id="aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.sequences.sequences.SequenceInterval.fuse_leftwards">fuse_leftwards</h3>
-<p><code>sequences.sequences.SequenceInterval.fuse_leftwards(label_fun=lambda x, y: ' '.join([x, y]))</code></p>
-<p>Fuse the current segment with the previous segment</p>
+<section id="aligned_textgrid.points.tiers.PointsGroup.get_nearest_points_index" class="level3">
+<h3 class="anchored" data-anchor-id="aligned_textgrid.points.tiers.PointsGroup.get_nearest_points_index">get_nearest_points_index</h3>
+<p><code>points.tiers.PointsGroup.get_nearest_points_index(time)</code></p>
+<p>Get indicies of nearest point</p>
 <section id="parameters-1" class="level4">
 <h4 class="anchored" data-anchor-id="parameters-1">Parameters</h4>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 22%">
-<col style="width: 35%">
-<col style="width: 30%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -724,67 +554,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>label_fun</code></td>
-<td><code>function</code></td>
-<td>Function for joining interval labels.</td>
-<td><code>lambda x, y: ' '.join([x, y])</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="aligned_textgrid.sequences.sequences.SequenceInterval.fuse_rightwards" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.sequences.sequences.SequenceInterval.fuse_rightwards">fuse_rightwards</h3>
-<p><code>sequences.sequences.SequenceInterval.fuse_rightwards(label_fun=lambda x, y: ' '.join([x, y]))</code></p>
-<p>Fuse the current segment with the following segment</p>
-<section id="parameters-2" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-2">Parameters</h4>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 22%">
-<col style="width: 35%">
-<col style="width: 30%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>label_fun</code></td>
-<td><code>function</code></td>
-<td>Function for joining interval labels.</td>
-<td><code>lambda x, y: ' '.join([x, y])</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="aligned_textgrid.sequences.sequences.SequenceInterval.index" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.sequences.sequences.SequenceInterval.index">index</h3>
-<p><code>sequences.sequences.SequenceInterval.index(subset_instance)</code></p>
-<p>Returns subset instance index</p>
-<section id="parameters-3" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-3">Parameters</h4>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>subset_instance</code></td>
-<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a></td>
-<td>A subset instance to get the index of.</td>
+<td><code>time</code></td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
+<td>time from which the nearest index should be returned.</td>
 <td><em>required</em></td>
 </tr>
 </tbody>
@@ -801,19 +573,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="https://docs.python.org/3/library/functions.html#int">int</a></td>
-<td>The index of <code>subset_instance</code></td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a></td>
+<td>A list of indices</td>
 </tr>
 </tbody>
 </table>
 </section>
 </section>
-<section id="aligned_textgrid.sequences.sequences.SequenceInterval.pop" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.sequences.sequences.SequenceInterval.pop">pop</h3>
-<p><code>sequences.sequences.SequenceInterval.pop(subset_instance)</code></p>
-<p>Pop a sequence interval from the subset list</p>
-<section id="parameters-4" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-4">Parameters</h4>
+<section id="aligned_textgrid.points.tiers.PointsGroup.shift" class="level3">
+<h3 class="anchored" data-anchor-id="aligned_textgrid.points.tiers.PointsGroup.shift">shift</h3>
+<p><code>points.tiers.PointsGroup.shift(increment)</code></p>
+<p>Shift the times of all points within the PointsGroup by the increment size</p>
+<section id="parameters-2" class="level4">
+<h4 class="anchored" data-anchor-id="parameters-2">Parameters</h4>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -825,48 +597,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>subset_instance</code></td>
-<td><a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a></td>
-<td>A sequence interval to pop</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="aligned_textgrid.sequences.sequences.SequenceInterval.set_feature" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.sequences.sequences.SequenceInterval.set_feature">set_feature</h3>
-<p><code>sequences.sequences.SequenceInterval.set_feature(feature, value)</code></p>
-<p>Sets arbitrary object attribute</p>
-<p>This will be most useful for creating custom subclasses.</p>
-<section id="parameters-5" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-5">Parameters</h4>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>feature</code></td>
-<td><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
-<td>New attribute name</td>
-<td><em>required</em></td>
-</tr>
-<tr class="even">
-<td><code>value</code></td>
-<td><a href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></td>
-<td>New attribute value</td>
+<td><code>increment</code></td>
+<td><a href="https://docs.python.org/3/library/functions.html#float">float</a></td>
+<td>The time increment by which to shift the points within the PointsGroup. Could be positive or negative</td>
 <td><em>required</em></td>
 </tr>
 </tbody>
 </table>
 
 
+</section>
 </section>
 </section>
 </section>
@@ -1466,13 +1206,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../reference/InTierMixins.html" class="pagination-link" aria-label="InTierMixins">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">InTierMixins</span>
+      <a href="../reference/TierGroup.html" class="pagination-link" aria-label="TierGroup">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">TierGroup</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../reference/Top.html" class="pagination-link" aria-label="Top">
-        <span class="nav-page-text">Top</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../reference/AlignedTextGrid.html" class="pagination-link" aria-label="AlignedTextGrid">
+        <span class="nav-page-text">AlignedTextGrid</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
