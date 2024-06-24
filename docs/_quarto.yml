@@ -60,6 +60,7 @@ format:
       light: flatly
       dark: darkly
     toc: true
+    code-annotations: hover
 
 # tell quarto to read the generated sidebar
 metadata-files:
@@ -99,6 +100,8 @@ quartodoc:
         These classes define common attributes and methods available
         to intervals and points.
       contents:
+        - package: aligned_textgrid.mixins.within
+          name: WithinMixins
         - package: aligned_textgrid.mixins.mixins
           name: PrecedenceMixins
         - package: aligned_textgrid.mixins.mixins
@@ -146,6 +149,8 @@ quartodoc:
           name: SequencePointTier
         - package: aligned_textgrid.sequences.tiers
           name: TierGroup
+        - package: aligned_textgrid.points.tiers
+          name: PointsGroup        
     - title: TextGrids
       desc: TextGrid Classes
       contents: 

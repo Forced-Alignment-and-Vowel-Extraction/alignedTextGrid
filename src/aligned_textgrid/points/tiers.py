@@ -23,6 +23,10 @@ import warnings
 class SequencePointTier(Sequence, TierMixins, WithinMixins):
     """A SequencePointTier class
 
+    `SequencePointTier`s have all the same methods and attributes as
+    [](`~aligned_textgrid.mixins.tiermixins.TierMixins`) and 
+    [](`~aligned_textgrid.mixins.within.WithinMixins`)
+
     Args:
         tier (list[Point]|list[SequencePoint]|PointTier|Self): 
             A list of SequencePoints, or another SequencePointTier
@@ -44,10 +48,8 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
         ```{python}
         print(point_tier.sequence_list)
         ```
-    
+
     Attributes:
-        ...: 
-            All attributes and methods included in TierMixins
         entry_class (Type[SequencePoint]):
             The class of entries within the tier
         name (str):
@@ -225,15 +227,15 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
 
 class PointsGroup(Sequence, TierGroupMixins, WithinMixins):
     """A collection of point tiers
+    `PointsGroup`s have all the same methods and attributes as
+    [](`~aligned_textgrid.mixins.tiermixins.TierGroupMixins`) and 
+    [](`~aligned_textgrid.mixins.within.WithinMixins`)
 
     Args:
         tiers (list[SequencePointTier]: 
             A list of SequencePointTiers
     
     Attributes:
-        ...:
-            All attributes and methods availale from TierGroupMixins
-        entry_classes (list[Type[SequencePointTier],...]):
             A list of the entry classes
     """    
     def __init__(

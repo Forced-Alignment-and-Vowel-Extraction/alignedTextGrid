@@ -183,6 +183,12 @@ class InTierMixins:
             return None
         
     def return_praatio(self)->Interval|Point:
+        """Return the correct `praatio` class.
+
+        Returns:
+            (Interval|Point):
+                A `praatio` Interval or Point.
+        """
         if "Interval" in self._seq_type.__name__:
             return self.return_interval()
         

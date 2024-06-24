@@ -51,7 +51,49 @@ class TierMixins:
         new_tier = self.__class__(entries)
         return new_tier
 
-    def append(self, new, re_relate = True):
+    def append(self, new:'SequenceInterval|SequencePoint', re_relate = True):
+        """Append a new SequenceInterval or Sequence Point to a tier.
+
+        If the tier is already in a TierGroup, and an appended SequenceInterval
+        already has a subset_list, or super_instance, these will be appended to the
+        appropriate tiers above and below.
+
+        Examples:
+            ```{python}
+            from aligned_textgrid import SequenceTier, TierGroup, Word, Phone
+
+            word_tier = SequenceTier([     # <1>
+                Word((0,10, "the"))        # <1>
+            ])                             # <1>
+            phone_tier = SequenceTier([    # <1>
+                Phone((0,5,"DH")),         # <1>
+                Phone((5,10, "AH0"))       # <1>
+            ])                             # <1>
+
+            tier_group = TierGroup([word_tier, phone_tier]) # <2>
+
+            dog = Word((10, 25, "dog"))         # <3>
+            dog.append(Phone((10,15, "D")))     # <3>
+            dog.append(Phone((15, 20, "AO1")))  # <3>
+            dog.append(Phone((20,25, "G")))     # <3>
+
+            word_tier.append(dog)               # <4>
+
+            print(phone_tier.labels)            # <5>
+            ```
+            1. Creation of  Word and Phone tier containing "the" and its phones.
+            2. Relating the Word and Phone tiers within a tier group.
+            3. Creating a Word for "dog" and appending its phones.
+            4. Appending the "dog" word to the Word tier.
+            5. The phones of "dog" have been automatically appended to the Phone tier.
+
+        Args:
+            new (SequenceInterval|SequencePoint): 
+                The SequenceInterval or SequencePoint object to append
+            re_relate (bool, optional): 
+                If the tier is already within a TierGroup, whether or not 
+                to re-run tier-relation. Defaults to True.
+        """
         if not isinstance(new, SequenceBaseClass):
             msg = "Only SequenceIntervals or SequencePoints can be appended to a tier."
             if isinstance(new, TierMixins):
@@ -85,6 +127,16 @@ class TierMixins:
 
 
     def concat(self:TierType, new:TierType):
+        """Horizontally concatenate a new tier.
+
+        This will horizontally concatenate the `new` tier onto the existing tier.
+        The time values of `new` will be rightward shifted according to the 
+        end of the original tier.
+
+        Args:
+            new (TierType): 
+                The tier to concatenate.
+        """
         if not (issubclass(self.entry_class, new.entry_class) or issubclass(new.entry_class, self.entry_class)):
             raise ValueError("Added tiers must have the same entry class")
         
@@ -151,6 +203,30 @@ class TierGroupMixins:
         return new_tg
         
     def append(self:TierGroupType, new:TierType):
+        """Append a new tier to a TierGroup.
+
+        This will add a new tier to a TierGroup
+
+        Examples:
+            ```{python}
+            from aligned_textgrid import TierGroup, SequenceTier, Word, Phone
+
+            word_tier = SequenceTier([
+                Word((0,10,"the"))
+            ])
+            phone_tier = SequenceTier([
+                Phone((0,5,"DH")),
+                Phone((5,10,"AH0"))
+            ])
+
+            tier_group = TierGroup([word_tier])
+            tier_group.append(phone_tier)
+            ```
+
+        Args:
+            new (TierType): 
+                A SequenceTier if a TierGroup, or a SequencePointTier if a PointsGroup
+        """
         if not self._seq_type is new._seq_type:
             raise ValueError((
                 f"Only a tier of {self._seq_type.__name__} "
@@ -200,7 +276,18 @@ class TierGroupMixins:
 
         pass
 
-    def concat(self, new:'TierGroup'):
+    def concat(self:TierGroupType, new:TierType):
+        """Horizontally concatenate a tier group.
+
+        The two tier groups must have the same number of tiers and the same
+        entry classes. All time values of `new` will be rightward shifted
+        according to the original TierGroup or PointsGroup.
+
+
+        Args:
+            new (TierGroupType):
+                A TierGroup or PointsGroup to append.
+        """
         self._class_check(new)
         increment = self.xmax
         for t1, t2 in zip(self, new):

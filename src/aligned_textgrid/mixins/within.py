@@ -10,6 +10,21 @@ Within = TypeVar("Within", 'SequenceInterval', 'SequenceTier', 'SequencePointTie
 Contained = TypeVar("Contained",'SequenceInterval', 'SequenceTier', 'SequencePointTier', 'TierGroup')
 
 class WithinMixins:
+    """A collection of attributes defining within and contains realtions
+
+    Attributes:
+        within (Within):
+            The object that the current object is within.
+        contains (Sequence[Contained]):
+            A list of objects that the current objects contains
+        within_index (int):
+            The current object's index within its' within object.
+        within_path (int):
+            The path of indices from the uppermost container
+            to the current object
+        id (str):
+            An id derived from the `within_path`.
+    """
 
     @property
     def within(self)->Within:

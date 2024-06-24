@@ -45,44 +45,43 @@ def custom_classes(
     `SequenceInterval` subclasses with those names. The first name passed to `class_list`
     will be at the top of the hierarchy, the second name will be the subset class of the 
     first, and so on.
+    
+    Examples:
 
-    To change the order in which the custom classes are *returned*, specify `return_order` 
-    with either indices or class names. For example, if you have Words, Syllables, and Phones in
-    a hierarchical relationship in a textgrid, you can run the following:
+        To change the order in which the custom classes are *returned*, specify `return_order` 
+        with either indices or class names. For example, if you have Words, Syllables, and Phones in
+        a hierarchical relationship in a textgrid, you can run the following:
 
-    ```python
-    custom_classes(["Word", "Syllable", "Phone"])
-    # [alignedTextGrid.custom_classes.Word,
-    #  alignedTextGrid.custom_classes.Syllable,
-    #  alignedTextGrid.custom_classes.Phone]
-    ```
 
-    But if the order of the textgrid tiers has Word as the bottom tier and Phone as the top, you can specify `return_order`
-    like so:
+        ```{python}
+        from aligned_textgrid import custom_classes
 
-    ```python
-    custom_classes(
-        class_list = ["Word", "Syllable", "Phone"],
-        return_order = [2, 1, 0]
-        # or
-        # return_order = ["Phone", "Syllable", "Word]
-    )
-    # [alignedTextGrid.custom_classes.Phone,
-    #  alignedTextGrid.custom_classes.Syllable,
-    #  alignedTextGrid.custom_classes.Word]
-    ```
+        custom_classes(["Word", "Syllable", "Phone"])
+        ```
 
-    This way, you can use `custom_classes()` directly as the `entry_classes` argument in `AlignedTextGrid`
+        But if the order of the textgrid tiers has Word as the bottom tier and Phone as the top, you can specify `return_order`
+        like so:
 
-    ```python
-    AlignedTextGrid(
-        textgrid_path = "syllables.TextGrid",
-        entry_classes = custom_classes(
+        ```{python}
+        custom_classes(
             class_list = ["Word", "Syllable", "Phone"],
             return_order = [2, 1, 0]
+            # or
+            # return_order = ["Phone", "Syllable", "Word]
         )
-    )
-    ```
+        ```
+
+        This way, you can use `custom_classes()` directly as the `entry_classes` argument in `AlignedTextGrid`
+
+        ```python
+        AlignedTextGrid(
+            textgrid_path = "syllables.TextGrid",
+            entry_classes = custom_classes(
+                class_list = ["Word", "Syllable", "Phone"],
+                return_order = [2, 1, 0]
+            )
+        )
+        ```
 
     Args:
         class_list (list[str], optional): 

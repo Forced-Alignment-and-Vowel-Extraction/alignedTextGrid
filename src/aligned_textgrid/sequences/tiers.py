@@ -28,6 +28,10 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
     Given a `praatio` `IntervalTier` or list of `Interval`s, creates
     `entry_class` instances for every interval.
 
+    In addition to the attributes and methods described below,
+    the attributes and methods from [](`~aligned_textgrid.mixins.tiermixins.TierMixins`)
+    and [](`~aligned_textgrid.mixins.within.WithinMixins`) are also available.
+
     Args:
         tier (list[Interval] | list[SequenceInterval] | IntervalTier | Self, optional): 
             A list of interval entries. Defaults to `SequenceList()`.
@@ -308,6 +312,10 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
 class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     """Tier Grouping
 
+    `PointsGroup`s have all the same methods and attributes as
+    [](`~aligned_textgrid.mixins.tiermixins.TierGroupMixins`) and 
+    [](`~aligned_textgrid.mixins.within.WithinMixins`)
+    
     Args:
         tiers (list[SequenceTier]): A list of sequence tiers that are 
             meant to be in hierarchical relationships with eachother
