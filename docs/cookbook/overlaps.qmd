@@ -46,30 +46,44 @@ Now, we'll loop through these phones of interest. First we'll
 ```{python}
 for phone in all_phones:
 
-    self_index = all_phones.index(phone)
-    phone.set_feature("overlapped", False)
+    phone.set_feature("overlapped", False)       # <1>
 
-    overlap = (phone.start < all_phones.ends) & \
-              (all_phones.starts < phone.end)
+    overlap = (                                  # <2>
+        (phone.start < all_phones.ends) &        # <2>
+        (all_phones.starts < phone.end)          # <2>
+    )                                            # <2>
 
-    overlappers = np.argwhere(overlap) \
-                    .squeeze() \
-                    .tolist()
-    
+    overlappers = (                              # <3>
+        np.argwhere(overlap)                     # <3>
+          .squeeze()                             # <3>
+          .tolist()                              # <3>
+    )                                            # <3>
+     
+    if overlap.sum() > 1:                        # <4>
 
-    if overlap.sum() > 1:
-        overlappers.remove(self_index)
-        overlapper_list = [
-            all_phones[idx] 
-            for idx in overlappers
-        ]
+        self_index = all_phones.index(phone)     # <5>
+        overlappers.remove(self_index)           # <5>
 
-        phone.set_feature("overlapped", True)
-        phone.set_feature(
-            "overlapper", 
-            SequenceList(*overlapper_list)
-        )
+        overlapper_list = [                      # <6>
+            all_phones[idx]                      # <6>
+            for idx in overlappers               # <6>
+        ]                                        # <6>
+
+        phone.set_feature("overlapped", True)    # <7>
+
+        phone.set_feature(                       # <8>
+            "overlapper",                        # <8>
+            SequenceList(*overlapper_list)       # <8>
+        )                                        # <8>
 ```
+1. Default to intervals *not* being overlapped.
+2. This will be an array with `False` if an interval doesn't overlap with our target phone, and `True` if it does.
+3. This will return a list if indices where `overlap` is `True`.
+4. All intervals overlap with themselves, so we check to see if there's more than one overlap.
+5. For adding a list of overlapping intervals, remove our target interval from the index list.
+6. Create the list of overlapping phone.
+7. Set the `overlapped` flag
+8. Keep track of *which* intervals over overlapping.
 
 Let's grab one of the overlapped phones.
 
