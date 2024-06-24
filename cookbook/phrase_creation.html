@@ -206,6 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#interleave-a-new-phrase-tier" id="toc-interleave-a-new-phrase-tier" class="nav-link active" data-scroll-target="#interleave-a-new-phrase-tier">Interleave a new Phrase tier</a></li>
   <li><a href="#iterate-through-phrase-and-fuse" id="toc-iterate-through-phrase-and-fuse" class="nav-link" data-scroll-target="#iterate-through-phrase-and-fuse">Iterate through phrase and fuse</a></li>
+  <li><a href="#more-ideas" id="toc-more-ideas" class="nav-link" data-scroll-target="#more-ideas">More ideas</a></li>
   </ul>
 </nav>
     </div>
@@ -249,7 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>When working with force-aligned TextGrid with a Word and Phone tier, you can also add Phrase tier.</p>
-<div id="12933ecb" class="cell" data-execution_count="1">
+<div id="814e152b" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid, custom_classes</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>atg <span class="op">=</span> AlignedTextGrid(</span>
@@ -260,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="interleave-a-new-phrase-tier" class="level2">
 <h2 class="anchored" data-anchor-id="interleave-a-new-phrase-tier">Interleave a new Phrase tier</h2>
 <p>First, we need to interleave a new tier class above Word, copying its timing and labels.</p>
-<div id="b8da3c37" class="cell" data-execution_count="2">
+<div id="9fad61be" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>atg.interleave_class(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">"Phrase"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    above <span class="op">=</span> <span class="st">"Word"</span>,</span>
@@ -277,7 +278,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="iterate-through-phrase-and-fuse" class="level2">
 <h2 class="anchored" data-anchor-id="iterate-through-phrase-and-fuse">Iterate through phrase and fuse</h2>
 <p>We need to define a function that will take an existing phrase label and add on an incoming label.</p>
-<div id="909cd6ce" class="cell" data-execution_count="3">
+<div id="1db42496" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_phrase_label(a_label, b_label):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(b_label) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        a_label <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>a_label<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>b_label<span class="sc">}</span><span class="ss">"</span></span>
@@ -285,31 +286,67 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a_label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>fuse_rightwards()</code> method will fuse the following interval to the current interval and pop the following interval from the tier. Therfore, we don’t want to use a <code>for</code>-loop.</p>
-<p>Instead, we’ll use a <code>while</code> loop, which will end when we reach the end of the <code>Phrase</code> (when <code>fol.label == #</code>). We’ll update the interval we are fusing with when</p>
+<p>Instead, we’ll use a <code>while</code> loop, which will end when we reach the end of the <code>Phrase</code> tier. We’ll update the interval we are fusing with when</p>
 <ul>
 <li>Its current interval label is “” (or a pause)</li>
 <li>The following interval label is “” and longer than 220 ms.</li>
 </ul>
 <p>The <code>continue</code> keyword under the <code>if</code> statements bumps us back to the top of the <code>while</code> loop, which will check to see if we’re at the end of the Phrase tier.</p>
-<div id="c2c56ef7" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>this_interval <span class="op">=</span> atg[<span class="dv">0</span>].Phrase.first</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> this_interval.fol.label <span class="op">!=</span> <span class="st">"#"</span>:</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> this_interval.label <span class="op">==</span> <span class="st">""</span>:</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        this_interval <span class="op">=</span> this_interval.fol</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> this_interval.fol.label <span class="op">==</span> <span class="st">""</span> <span class="kw">and</span> this_interval.fol.duration <span class="op">&gt;</span> <span class="fl">0.220</span>:</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        this_interval <span class="op">=</span> this_interval.fol</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    this_interval.fuse_rightwards(label_fun <span class="op">=</span> make_phrase_label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6419c2ef" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-1" class="code-annotation-target"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>this_interval <span class="op">=</span> atg[<span class="dv">0</span>].Phrase.first</span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-3" class="code-annotation-target"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> this_interval <span class="kw">is</span> <span class="kw">not</span> atg[<span class="dv">0</span>].Phrase.last:</span>
+<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3">3</button><span id="annotated-cell-4-5" class="code-annotation-target"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> this_interval.label <span class="op">==</span> <span class="st">""</span>:</span>
+<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a>        this_interval <span class="op">=</span> this_interval.fol</span>
+<span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="4">4</button><span id="annotated-cell-4-9" class="code-annotation-target"><a href="#annotated-cell-4-9" aria-hidden="true" tabindex="-1"></a>    following_long_pause <span class="op">=</span> (</span>
+<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-hidden="true" tabindex="-1"></a>        this_interval.fol.label <span class="op">==</span> <span class="st">""</span></span>
+<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span></span>
+<span id="annotated-cell-4-12"><a href="#annotated-cell-4-12" aria-hidden="true" tabindex="-1"></a>        this_interval.fol.duration <span class="op">&gt;=</span> <span class="fl">0.220</span></span>
+<span id="annotated-cell-4-13"><a href="#annotated-cell-4-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="5">5</button><span id="annotated-cell-4-15" class="code-annotation-target"><a href="#annotated-cell-4-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> following_long_pause:</span>
+<span id="annotated-cell-4-16"><a href="#annotated-cell-4-16" aria-hidden="true" tabindex="-1"></a>        this_interval <span class="op">=</span> this_interval.fol</span>
+<span id="annotated-cell-4-17"><a href="#annotated-cell-4-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="annotated-cell-4-18"><a href="#annotated-cell-4-18" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="6">6</button><span id="annotated-cell-4-19" class="code-annotation-target"><a href="#annotated-cell-4-19" aria-hidden="true" tabindex="-1"></a>    this_interval.fuse_rightwards(</span>
+<span id="annotated-cell-4-20"><a href="#annotated-cell-4-20" aria-hidden="true" tabindex="-1"></a>        label_fun <span class="op">=</span> make_phrase_label</span>
+<span id="annotated-cell-4-21"><a href="#annotated-cell-4-21" aria-hidden="true" tabindex="-1"></a>    )</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="1" data-code-annotation="1">Manually begin at the first interval.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="3" data-code-annotation="2">The value of <code>.last</code> is dynamically updated, so this is safe.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="5,6,7" data-code-annotation="3">If we are <em>currently</em> in a pause interval, move to the next interval.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="9,10,11,12,13" data-code-annotation="4">Get a <code>True</code> or <code>False</code> if the next interval is a pause equal to or greater than 220ms.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="15,16,17" data-code-annotation="5">If the following interval is a long pause, update <code>this_interval</code> to be the following interval. The previous <code>if</code> statement will keep bumping us along until we get to a non-pause interval.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="19,20,21" data-code-annotation="6">If neither of the previous <code>if</code> statements were triggered, we fuse <code>this_interval</code> with the following interval.</span>
+</dd>
+</dl>
+</div>
 </div>
 <p>We can check on the results.</p>
-<div id="bf29e233" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> phrase <span class="kw">in</span> atg[<span class="dv">0</span>].Phrase[<span class="dv">0</span>:<span class="dv">10</span>]:</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(phrase.label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9b1d828d" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> phrase <span class="kw">in</span> atg[<span class="dv">0</span>].Phrase[<span class="dv">0</span>:<span class="dv">10</span>]:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(phrase.label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 when the sunlight strikes raindrops in the air they act like a prism and formza rainbow
@@ -321,6 +358,44 @@ these take the shape of a long round arch
 with its path high above and its two ends apparently beyond the horizon
 
 there is according to legend a boiling pot of gold at one end</code></pre>
+</div>
+</div>
+<p>And just for clarity, each non-pause word is now a subset member of a phrase interval.</p>
+<div id="124da612" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    atg[<span class="dv">0</span>].Word[<span class="dv">1</span>].label,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    atg[<span class="dv">0</span>].Word[<span class="dv">1</span>].within.label</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>('when',
+ 'when the sunlight strikes raindrops in the air they act like a prism and formza rainbow')</code></pre>
+</div>
+</div>
+</section>
+<section id="more-ideas" class="level2">
+<h2 class="anchored" data-anchor-id="more-ideas">More ideas</h2>
+<p>We can also, for example, get a list of the duration of pauses that occur <em>within</em> a phrase.</p>
+<div id="47a75aa7" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>in_phrase_pauses <span class="op">=</span> [</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    interval</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> interval <span class="kw">in</span> atg[<span class="dv">0</span>].Word</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> interval.label <span class="op">==</span> <span class="st">""</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> interval.within.label <span class="op">!=</span> <span class="st">""</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>pause_durs <span class="op">=</span> np.array([</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    interval.duration</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> interval <span class="kw">in</span> in_phrase_pauses</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>pause_durs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>array([0.16, 0.11, 0.03, 0.03, 0.03, 0.22, 0.04, 0.04, 0.15, 0.08, 0.06,
+       0.04, 0.06, 0.03, 0.03, 0.12, 0.03, 0.03, 0.05, 0.04, 0.14, 0.06,
+       0.21, 0.05, 0.03, 0.03, 0.08, 0.03, 0.04, 0.06, 0.14, 0.03, 0.03,
+       0.03, 0.03])</code></pre>
 </div>
 </div>
 
