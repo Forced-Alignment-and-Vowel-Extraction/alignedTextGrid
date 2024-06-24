@@ -1,10 +1,11 @@
 from praatio.utilities.constants import Point
-from aligned_textgrid.mixins.mixins import PrecedenceMixins, InTierMixins
+from aligned_textgrid.mixins.mixins import PrecedenceMixins, InTierMixins, SequenceBaseClass
 from aligned_textgrid.mixins.within import WithinMixins
 from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.sequences.sequences import SequenceInterval
 import warnings
 import numpy as np
+from typing import TYPE_CHECKING
 
 import sys
 if sys.version_info >= (3,11):
@@ -12,8 +13,10 @@ if sys.version_info >= (3,11):
 else:
     from typing_extensions import Self
 
+if TYPE_CHECKING:
+    from aligned_textgrid import SequencePointTier
 
-class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
+class  SequencePoint(SequenceBaseClass, PrecedenceMixins, InTierMixins, WithinMixins):
     """Sequence Points
     
     Args:
@@ -64,11 +67,11 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
 
     def __init__(
             self,
-            point: list|tuple|Point|Self = (0, "")
+            point: list|tuple|Point|Self = (None, None)
         ):
-
+        self._seq_type = SequencePoint
         if isinstance(point, SequencePoint):
-            point = (point.time, point.label)
+            point = Point(point.time, point.label)
 
         if len(point) > 2:
             raise ValueError((
@@ -76,17 +79,19 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
                 "no more than 2 values long. "
                 f"{len(point)} were provided."
             ))
+
         point = Point(*point)
+
 
         self.time = point.time
         self.label = point.label
 
-        self.intier = None
-        self.tiername = None
+        self.intier:'SequencePointTier|None' = None
+        self.tiername:str|None = None
         self.pointspool = None
 
-        self.fol = None
-        self.prev = None
+        self.fol:SequencePoint|None = None
+        self.prev:SequencePoint|None = None
 
         if self.label != "#":
             self.set_final()
@@ -106,12 +111,31 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     
     def __getitem__(self, idex):
         warnings.warn("Indexing is not valid for a SequencePoint")
-        return None    
+        return None
+    
+    def __add__(self, x):
+        warnings.warn("+ is not implemented for SequencePoint")
+        return self
+    
+    def append(self, x):
+        warnings.warn("append() is not implemented for SequencePoint")
     
     ## Properties
     @property
     def entry_class(self):
         return self.__class__
+
+    @property
+    def time(self):
+        return self._time
+    
+    @time.setter
+    def time(self, time):
+        self._time = time
+
+    @property
+    def start(self):
+        return self.time
 
     @property
     def fol_distance(self):
@@ -140,6 +164,9 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
             return None        
 
     ## methods
+    def _shift(self, increment):
+        self.time += increment
+
     def distance_from(
             self, 
             entry: Self|SequenceInterval
@@ -198,4 +225,4 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
             return tier[self.get_interval_index_at_time(tier)]
 
     
-    
+SequencePoint._set_seq_type(SequencePoint)

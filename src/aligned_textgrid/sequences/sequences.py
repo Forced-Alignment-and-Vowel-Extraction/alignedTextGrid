@@ -7,18 +7,23 @@ import aligned_textgrid
 from praatio.utilities.constants import Interval
 import praatio
 from praatio.data_classes.interval_tier import IntervalTier
-from aligned_textgrid.mixins.mixins import InTierMixins, PrecedenceMixins
+from aligned_textgrid.mixins.mixins import InTierMixins, PrecedenceMixins, SequenceBaseClass
 from aligned_textgrid.mixins.within import WithinMixins
+from aligned_textgrid.sequence_list import SequenceList
 from typing import Type, Any
 import numpy as np
 import warnings
 import sys
 from collections.abc import Sequence
+from typing import TYPE_CHECKING
 
 if sys.version_info >= (3,11):
     from typing import Self
 else:
     from typing_extensions import Self
+
+if TYPE_CHECKING:
+    from aligned_textgrid import SequenceTier
 
 class HierarchyMixins:
 
@@ -33,8 +38,8 @@ class HierarchyMixins:
     @classmethod
     def set_superset_class(
             cls, 
-            superset_class: type = None
-        ):
+            superset_class: type['SequenceInterval'] = None
+        ) -> None:
         """_Set the superset class_
 
         Args:
@@ -60,7 +65,7 @@ class HierarchyMixins:
             raise Exception(f"Unknown error setting {superset_class.__name__} as superset class of {cls.__name__}")
         
     @classmethod
-    def set_subset_class(cls, subset_class = None):
+    def set_subset_class(cls, subset_class:type['SequenceInterval'] = None)->None:
         """summary
 
         Args:
@@ -87,7 +92,30 @@ class HierarchyMixins:
 
 class InstanceMixins(HierarchyMixins, WithinMixins):
 
-    def set_super_instance(self, super_instance = None):
+
+    def __add__(self, other:'SequenceInterval')->'SequenceInterval':
+        self_copy:SequenceInterval = self.entry_class(self)
+        self_copy.__dict__ = self.__dict__
+
+        if issubclass(self.entry_class, other.superset_class):
+            self_copy.subset_list += [other]
+            return self_copy
+        if issubclass(self.entry_class, other.subset_class):
+            other.subset_list += [self_copy]
+            return self_copy
+        
+        raise ValueError("An added SequenceInterval must either be a subset or superset class of the original.")
+
+    def append(self, other:'SequenceInterval')->None:
+        if issubclass(self.subset_class, other.entry_class):
+            self.subset_list += [other]
+            if self.intier and self.intier.within:
+                self_tier_idx = self.intier.within_index
+                self.intier.within[self_tier_idx+1].append(other)
+            return
+        raise ValueError("Appended SequenceInterval must be the subset class of the original.")
+
+    def set_super_instance(self, super_instance:'SequenceInterval' = None)->None:
         """Sets the specific superset relationship
 
         Args:
@@ -107,7 +135,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
 
     ## Subset Methods
         
-    def set_subset_list(self, subset_list = None):
+    def set_subset_list(self, subset_list:SequenceList['SequenceInterval'] = None)->None:
         """Appends all objects to the `subset_list`
 
         Args:
@@ -117,16 +145,20 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
                 set as the `super_instance` of all objects in the list.
         """
 
-        self.subset_list = []
+        self._subset_list = SequenceList()
+        if subset_list is None:
+            return
         if all([isinstance(subint, self.subset_class) for subint in subset_list]):
             for element in subset_list:
                 self.append_subset_list(element)
+            self._set_within()
             self._set_subset_precedence()
+            #self.validate()
         else:
             subset_class_set = set([type(x).__name__ for x in subset_list])
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_list contained {subset_class_set}")
 
-    def append_subset_list(self, subset_instance = None):
+    def append_subset_list(self, subset_instance:SequenceList['SequenceInterval'] = None)->None:
         """Append a single item to subset list
 
         Args:
@@ -137,72 +169,70 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
                 `subset_list` are reset.
         """
 
-        if isinstance(subset_instance, self.subset_class) and not subset_instance in self.subset_list:
+        if isinstance(subset_instance, self.subset_class) and not subset_instance in self._subset_list:
             if subset_instance.super_instance:
                 subset_instance.remove_superset()
-            self.subset_list.append(subset_instance)
+            self._subset_list.append(subset_instance)
             self._set_subset_precedence()
             # avoid recursion
             if not self is subset_instance.super_instance:
                 subset_instance.set_super_instance(self)
+            #self.validate()
         elif isinstance(subset_instance, self.subset_class):
             pass
         else:
             raise Exception(f"The subset_class was defined as {self.subset_class.__name__}, but provided subset_instance was {type(subset_instance).__name__}")
         
-    def remove_from_subset_list(self, subset_instance = None):
+    def remove_from_subset_list(self, subset_instance:'SequenceInterval' = None)->None:
         """Remove a sequence interval from the subset list
 
         Args:
             subset_instance (SequenceInterval): The sequence interval to remove.
         """
-        if subset_instance not in self.subset_list:
+        if subset_instance not in self._subset_list:
             #warnings.warn("Provided subset_instance was not in the subset list")
             return
         
-        self.subset_list.remove(subset_instance)
+        self._subset_list.remove(subset_instance)
         subset_instance.super_instance = None
         subset_instance.within = None
         self._set_subset_precedence()
+        #self.validate()
     
-    def remove_superset(self):
+    def remove_superset(self)->None:
         """Remove the superset instance from the current subset class
         """
         
         if self.super_instance is None:
-            warnings.warn("Provided SequenceInterval has no superset instance")
             return
+        if self in self.super_instance.subset_list:
+            self.super_instance.remove_from_subset_list(self)
         
-        self.super_instance.remove_from_subset_list(self)
+        self.super_instance = None
+        self.within = None
 
 
-    def _set_subset_precedence(self):
+
+    def _set_subset_precedence(self)->None:
         """summary
             Private method. Sorts subset list and re-sets precedence 
             relationshops.
         """
-
-        self._sort_subsetlist()
-        for idx, p in enumerate(self.subset_list):
+        for idx, p in enumerate(self._subset_list):
             if idx == 0:
                 p.set_initial()
             else:
-                p.set_prev(self.subset_list[idx-1])
-            if idx == len(self.subset_list)-1:
+                p.set_prev(self._subset_list[idx-1])
+            if idx == len(self._subset_list)-1:
                 p.set_final()
             else:
-                p.set_fol(self.subset_list[idx+1])
+                p.set_fol(self._subset_list[idx+1])
 
-    def _sort_subsetlist(self):
+    def _set_within(self)->None:
         """summary
-            Private method. Sorts the subset_list
+            Private method. Sets within
         """
-        if len(self.subset_list) > 0:
-            item_starts = self.sub_starts
-            item_order = np.argsort(item_starts)
-            self.subset_list = [self.subset_list[idx] for idx in item_order]
-        
-        self.contains = self.subset_list
+        self.contains = self._subset_list
 
     ## Subset Validation
     def validate(self) -> bool:
@@ -227,42 +257,47 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
         validation_concerns = []
         if len(self.subset_list) == 0:
             return True
-        else:
-            if not np.allclose(self.start, self.sub_starts[0]):
-                if self.start < self.sub_starts[0]:
-                    validation_concerns.append(
-                        "First subset interval starts after current interval"
-                    )
-                else:
-                    validation_concerns.append(
-                        "First subset interval starts before current interval"
-                    )
-            if not np.allclose(self.end, self.sub_ends[-1]):
-                if self.end > self.sub_ends[-1]:
-                    validation_concerns.append(
-                        "Last subset interval ends before current interval"
-                    )
-                else:
-                    validation_concerns.append(
-                        "Last subset interval ends after current interval"
-                    )
-            if not np.allclose(self.sub_starts[1:], self.sub_ends[:-1]):
+        
+        if self.start is None:
+            return True
+
+        if not np.allclose(self.start, self.sub_starts[0]):
+            if self.start < self.sub_starts[0]:
                 validation_concerns.append(
-                    "Not all subintervals fit snugly"
+                    "First subset interval starts after current interval"
                 )
-            ## prepping messages
-            if len(validation_concerns) == 0:
-                return True
             else:
-                validation_warn = "\n".join(validation_concerns)
-                warnings.warn(validation_warn)
-                return False         
+                validation_concerns.append(
+                    "First subset interval starts before current interval"
+                )
+        if not np.allclose(self.end, self.sub_ends[-1]):
+            if self.end > self.sub_ends[-1]:
+                validation_concerns.append(
+                    "Last subset interval ends before current interval"
+                )
+            else:
+                validation_concerns.append(
+                    "Last subset interval ends after current interval"
+                )
+        if not np.allclose(self.sub_starts[1:], self.sub_ends[:-1]):
+            validation_concerns.append(
+                "Not all subintervals fit snugly"
+            )
+        ## prepping messages
+        if len(validation_concerns) == 0:
+            return True
+
+        validation_warn = "\n".join(validation_concerns)
+        warnings.warn(validation_warn)
+        return False         
                 
 class HierarchyPart(HierarchyMixins):
     def __init__(self):
         pass
 
-class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, HierarchyPart):
+
+
+class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, PrecedenceMixins, HierarchyPart):
     """
     A class to describe an interval with precedence relationships and hierarchical relationships
 
@@ -332,6 +367,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
         *,
         Interval = None
     ):
+        self._seq_type = SequenceInterval
         if Interval:
             interval = Interval
 
@@ -341,8 +377,6 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
                 interval.end,
                 interval.label
             )
-        rep_none = 3 - len(interval)
-        interval += tuple([None]) * rep_none
 
         if len(interval) > 3:
             raise ValueError((
@@ -366,22 +400,22 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
         if self.label != "#":
             self.set_initial()
 
-        self.subset_list = []
+        self._subset_list = SequenceList()
         self.super_instance= None
 
-        self.intier = None
+        self.intier:'SequenceTier|None' = None
 
-    def __contains__(self, item):
+    def __contains__(self, item:'SequenceInterval')->bool:
         return item in self.subset_list
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx:int)->'SequenceInterval':
         return self.subset_list[idx]
 
     def __iter__(self):
         self.current = 0
         return self
     
-    def __len__(self):
+    def __len__(self)->int:
         return len(self.subset_list)
     
     def __next__(self):
@@ -394,7 +428,7 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
         
     def index(
             self,
-            subset_instance
+            subset_instance:'SequenceInterval'
     ) -> int:
         """Returns subset instance index
 
@@ -409,19 +443,15 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
 
     def pop(
             self,
-            subset_instance
-    ):
+            subset_instance:'SequenceInterval'
+    ) -> bool:
         """Pop a sequence interval from the subset list
 
         Args:
             subset_instance (SequenceInterval): A sequence interval to pop
         """
-        if subset_instance in self.subset_list:
-            pop_idx = self.index(subset_instance)
-            self.subset_list.pop(pop_idx)
-            self._set_subset_precedence()
-        else:
-            raise Exception("Subset instance not in subset list")
+        self._subset_list.pop(subset_instance)
+        self._set_subset_precedence()
     
     def __repr__(self) -> str:
         out_string = f"Class {type(self).__name__}, label: {self.label}"
@@ -443,46 +473,100 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
     
     # properties
     @property
-    def sub_starts(self):
-        if len(self.subset_list) > 0:
-            start_arr = np.array([
-                seg.start for seg in self.subset_list
-            ])
-            return start_arr
-        else:
-            return np.array([])
+    def subset_list(self)->SequenceList['SequenceInterval']:
+        return self._subset_list
+    
+    @subset_list.setter
+    def subset_list(self, intervals: list[Self]|SequenceList[Self])->None:
+        orig_values = self.subset_list
+        intervals = SequenceList(*intervals)
+        self.set_subset_list(intervals)
+        for orig in orig_values:
+
+            if not orig in self.subset_list:
+                orig.remove_superset()
+
+    @property
+    def start(self)->float:
+        return self._start
+    
+    @start.setter
+    def start(self, time:float):
+        self._start = time
+
+    @property
+    def end(self)->float:
+        return self._end
+    
+    @end.setter
+    def end(self, time:float):
+        self._end = time
+
+    @property
+    def sub_starts(self)->np.array:
+        return self.subset_list.starts
         
     @property
-    def sub_ends(self):
-        if len(self.subset_list) > 0:
-            end_arr = np.array([
-                seg.end for seg in self.subset_list
-            ])
-            return end_arr
-        else:
-            return np.array([])
+    def sub_ends(self)->np.array:
+        return self.subset_list.ends
     
     @property
-    def sub_labels(self):
+    def sub_labels(self) -> list[str]:
+        return self.subset_list.labels
+    
+    def _shift(self, increment:float)->None:
+        self.start += increment
+        self.end += increment
         if len(self.subset_list) > 0:
-            lab_list = [seg.label for seg in self.subset_list]
-            return lab_list
-        else:
-            return []
+            self.subset_list._shift(increment)
         
     @property
     def duration(self) -> float:
         return self.end - self.start
     
     @property
-    def entry_class(self):
+    def entry_class(self)->type['SequenceInterval']:
         return self.__class__
-      
+    
+    def cleanup(self)->None:
+        if isinstance(self.subset_class, Bottom):
+            return
+        if not len(self.subset_list) > 0:
+            self.append(
+                self.subset_class((
+                    self.start,
+                    self.end,
+                    ""
+                ))
+            )
+            return
+        
+        to_add = SequenceList()
+
+        if not np.allclose(self.start, self.sub_starts[0]):
+            new_interval = self.subset_class((self.start, self.sub_starts[0], ""))
+            to_add += [new_interval]
+        
+        if not np.allclose(self.end, self.sub_ends[-1]):
+            new_interval = self.subset_class((self.sub_ends[-1], self.end, ""))
+            to_add += [new_interval]
+
+        for idx, interval in enumerate(self.subset_list):
+            if idx + 1 == len(self):
+                break
+
+            if not np.allclose(interval.end, self.subset_list[idx+1].start):
+                new_interval = self.subset_class((interval.end,self.subset_list[idx+1].start, ""))
+                to_add += [new_interval]
+            
+        for interval in to_add:
+            self.append(interval)
+
     ## Fusion
     def fuse_rightwards(
             self, 
             label_fun = lambda x, y: " ".join([x, y])
-        ):
+        ) -> None:
         """Fuse the current segment with the following segment
 
         Args:
@@ -497,23 +581,23 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
             fuser.fol = fusee.fol
             fuser.label = label_fun(fuser.label, fusee.label)
 
-            new_list = fuser.subset_list + fusee.subset_list
-            fuser.set_subset_list(new_list)
-            
+            new_list = fuser._subset_list + fusee.subset_list
+            fuser.subset_list = new_list
+
             if fuser.superset_class is Top and fuser.intier:
                 fuser.intier.pop(fusee)
             else:
                 if fuser.intier:
                     fuser.intier.pop(fusee)
-                if fuser.super_instance:
-                    fuser.super_instance.pop(fusee)                    
+                if fuser.super_instance and fusee in fuser.super_instance:
+                    fuser.super_instance.subset_list.remove(fusee)                    
         else:
             raise Exception("Cannot fuse rightwards at right edge")
         
     def fuse_leftwards(
             self, 
             label_fun = lambda x, y: " ".join([x, y])
-        ):
+        )->None:
         """Fuse the current segment with the previous segment
 
         Args:
@@ -522,30 +606,29 @@ class SequenceInterval(InstanceMixins, InTierMixins, PrecedenceMixins, Hierarchy
         fusee = self.prev
         fuser = self
 
-
         if not fusee.label == "#":
 
             fuser.start = fusee.start
             fuser.prev = fusee.prev
             fuser.label = label_fun(fusee.label, fuser.label)
 
-            new_list = fusee.subset_list + fuser.subset_list
-            fuser.set_subset_list(new_list)
-            
+            new_list = fusee.subset_list + fuser._subset_list
+
+            fuser.subset_list = new_list
             if fuser.superset_class is Top and fuser.intier:
                 fuser.intier.pop(fusee)
             else:
                 if fuser.intier:
                     fuser.intier.pop(fusee)
-                if fuser.super_instance:
-                    fuser.super_instance.pop(fusee)                    
+                if fuser.super_instance and fusee in fuser.super_instance:
+                    fuser.super_instance.subset_list.remove(fusee)                    
         else:
             raise Exception("Cannot fuse leftwards at right edge")
     
-    def fuse_rightward(self):
+    def fuse_rightward(self)->None:
         self.fuse_rightwards()
 
-    def fuse_leftward(self):
+    def fuse_leftward(self)->None:
         self.fuse_leftwards()        
 
     ## Extensions and Saving
@@ -589,3 +672,4 @@ Top.set_superset_class()
 Bottom.set_subset_class()
 SequenceInterval.set_superset_class(Top)
 SequenceInterval.set_subset_class(Bottom)
+SequenceInterval._set_seq_type(SequenceInterval)

@@ -25,7 +25,6 @@ def sequence_to_df(
     class_name = type(obj).__name__
 
     if isinstance(obj, SequencePoint):
-        obj.start = obj.time
         attributes_to_get.pop(
             attributes_to_get.index("end")
         )

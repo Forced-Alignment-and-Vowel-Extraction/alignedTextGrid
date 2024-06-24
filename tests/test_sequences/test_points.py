@@ -13,10 +13,10 @@ class TestSequencePointDefault:
         assert self.seq_point.__class__ is SequencePoint
     
     def test_default_time(self):
-        assert self.seq_point.time == 0
+        assert self.seq_point.time is None
 
     def test_default_label(self):
-        assert self.seq_point.label == ""
+        assert self.seq_point.label is None
     
     def test_default_fol(self):
         assert self.seq_point.fol.label == "#"
@@ -83,6 +83,14 @@ class TestPrecedence:
         out_point = self.seq_point_a.return_point()
         assert isinstance(out_point, Point)
 
+
+class TestTiming:
+
+    def test_shift(self):
+        seq_point_a = SequencePoint(Point(1, "a"))
+
+        seq_point_a._shift(2)
+        assert seq_point_a.time == 3
 
 class TestDistances:
     seq_point_a = SequencePoint(Point(1, "a"))
