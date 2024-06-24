@@ -1,10 +1,40 @@
 from praatio.utilities.constants import Interval, Point
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.data_classes.point_tier import PointTier
-from typing import Type, Any
-import numpy as np
+from typing import Type, Any, TYPE_CHECKING, TypeVar
 import warnings
+import sys
+if sys.version_info >= (3,11):
+    from typing import Self
+else:
+    from typing_extensions import Self
 
+if TYPE_CHECKING:
+    from aligned_textgrid import SequenceInterval, SequencePoint
+
+SeqType = TypeVar("SeqType", 'SequenceInterval', 'SequencePoint')
+PraatioType = TypeVar("PraatioType", Interval, Point)
+
+class SequenceBaseClass:
+
+    @classmethod
+    def _cast(cls, obj:SeqType, re_init = False)->SeqType:
+        if not isinstance(obj, SequenceBaseClass):
+            obj = cls(obj)
+            return obj
+        assert isinstance(obj, cls._seq_type), \
+            f"A {obj._seq_type.__name__} can only be cast to another {obj._seq_type.__name__}"
+        
+        obj.__class__ = cls
+
+        if re_init:
+            obj.__init__(obj)
+        
+        return obj
+
+    @classmethod
+    def _set_seq_type(cls:SeqType, cls2:SeqType):
+        cls._seq_type = cls2
 
 class PrecedenceMixins:
     """Methods and attributes for SequenceIntervals and SequencePoints
@@ -15,7 +45,7 @@ class PrecedenceMixins:
     """
 
     @property
-    def first(self):
+    def first(self)->'SequenceInterval':
         if hasattr(self, "subset_list") and len(self.subset_list) > 0:
             return self.subset_list[0]
         if hasattr(self, "subset_list"):
@@ -24,7 +54,7 @@ class PrecedenceMixins:
         raise AttributeError(f"{type(self).__name__} is not indexable.")
                 
     @property
-    def last(self):
+    def last(self)->'SequenceInterval':
         if hasattr(self, "subset_list") and len(self.subset_list) > 0:
             return self.subset_list[-1]
         if hasattr(self, "subset_list"):
@@ -33,7 +63,9 @@ class PrecedenceMixins:
         raise AttributeError(f"{type(self).__name__} is not indexable.")        
 
     def set_fol(
-            self, next_int):
+            self:SeqType, 
+            next_int:SeqType
+        )->None:
         """Sets the following instance
 
         Args:
@@ -54,7 +86,10 @@ class PrecedenceMixins:
         else:
             raise Exception(f"Following segment must be an instance of {type(self).__name__}")
 
-    def set_prev(self, prev_int):
+    def set_prev(
+            self:SeqType, 
+            prev_int:SeqType
+        )->None:
         """Sets the previous intance
 
         Args:
@@ -75,27 +110,27 @@ class PrecedenceMixins:
         else:
             raise Exception(f"Previous segment must be an instance of {type(self).__name__}")
     
-    def set_final(self):
+    def set_final(self)->None:
         """Sets the current object as having no `fol` entry
         
         While `self.fol` is defined for these entries, the actual
         instance does not appear in `self.super_instance.subset_list`
         """
         
-        if hasattr(self, "start"):
+        if "Interval" in self._seq_type.__name__:
             self.set_fol(type(self)(Interval(None, None, "#")))
-        elif hasattr(self, "time"):
+        elif "Point" in self._seq_type.__name__:
             self.set_fol(type(self)(Point(None, "#")))
 
-    def set_initial(self):
+    def set_initial(self)->None:
         """Sets the current object as having no `prev` entry
 
         While `self.prev` is defined for these entries, the actual 
         instance does not appear in `self.super_instance.subset_list`
         """
-        if hasattr(self, "start"):
+        if "Interval" in self._seq_type.__name__:
             self.set_prev(type(self)(Interval(None, None, "#")))
-        elif hasattr(self, "time"):
+        elif "Point" in self._seq_type.__name__:
             self.set_prev(type(self)(Point(None, "#")))
 
 class InTierMixins:
@@ -108,16 +143,16 @@ class InTierMixins:
 
     ## Tier operations
     @property
-    def tier_index(self):
+    def tier_index(self:SeqType)->int:
         if not self.intier is None:
             return self.intier.index(self)
         else:
             return None
     
     def get_tierwise(
-            self,
+            self:SeqType,
             idx:int = 0
-        ):
+        )->SeqType:
         """Get entry by relative tier index
 
         Returns a SequenceInterval or SequencePoint from an index position relative to
@@ -146,8 +181,21 @@ class InTierMixins:
             return self.intier[self.tier_index + idx]
         else:
             return None
+        
+    def return_praatio(self)->Interval|Point:
+        """Return the correct `praatio` class.
 
-    def return_interval(self) -> Interval:
+        Returns:
+            (Interval|Point):
+                A `praatio` Interval or Point.
+        """
+        if "Interval" in self._seq_type.__name__:
+            return self.return_interval()
+        
+        if "Point" in self._seq_type.__name__:
+            return self.return_point()
+
+    def return_interval(self:'SequenceInterval') -> Interval:
         """Return current object as `Interval`
         
         Will be useful for saving back to textgrid
@@ -157,7 +205,7 @@ class InTierMixins:
         """
         return Interval(self.start, self.end, self.label)
     
-    def return_point(self) -> Point:
+    def return_point(self:'SequencePoint') -> Point:
         """Return current object as `Point`
 
         Returns:

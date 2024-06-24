@@ -16,6 +16,7 @@ from typing import Type, Sequence, Literal
 from copy import copy
 import numpy as np
 from collections.abc import Sequence
+from pathlib import Path
 import warnings
 
 
@@ -23,9 +24,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
     """An aligned Textgrid
 
     Args:
-        textgrid (Textgrid, optional): A `praatio` TextGrid
-        textgrid_path (str, optional): A path to a TextGrid file to be 
-            read in with `praatio.textgrid.openTextgrid`
+        textgrid (str|Path|praatio.textgrid.Textgrid, optional): A `praatio` TextGrid
         entry_classes (Sequence[Sequence[Type[SequenceInterval]]] | Sequence[Type[SequenceInterval]], optional): 
             If a single list of `SequenceInterval` subclasses is given, they will be
             repeated as many times as necessary to assign a class to every tier. 
@@ -54,23 +53,21 @@ class AlignedTextGrid(Sequence, WithinMixins):
 
     def __init__(
         self,
-        textgrid: Textgrid = None,
-        textgrid_path: str =  None,
+        textgrid: Textgrid|str|Path = None,
         entry_classes: 
             Sequence[Sequence[Type[SequenceInterval]]] |
             Sequence[Type[SequenceInterval]]
-              = [SequenceInterval]
+              = [SequenceInterval],
+        *,
+        textgrid_path: str =  None
     ):
+        self.entry_classes = None
         self.entry_classes = self._reclone_classes(entry_classes)
+        if textgrid_path:
+            textgrid = textgrid_path
+
         if textgrid:
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(textgrid, self.entry_classes)
-        elif textgrid_path:
-            tg = openTextgrid(
-                fnFullPath=textgrid_path, 
-                includeEmptyIntervals=True,
-                duplicateNamesMode='rename'
-            )
-            self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
+            self._process_textgrid_arg(textgrid)
         else:
             warnings.warn('Initializing an empty AlignedTextGrid')
             self._init_empty()
@@ -112,6 +109,20 @@ class AlignedTextGrid(Sequence, WithinMixins):
     
     def __setstate__(self, d):
         self.__dict__ = d
+
+    def _process_textgrid_arg(self, arg):
+        if isinstance(arg, str) or isinstance(arg, Path):
+            arg_str = str(arg)
+            tg = openTextgrid(
+                fnFullPath=arg_str, 
+                includeEmptyIntervals=True,
+                duplicateNamesMode='rename'
+            )
+        
+        if isinstance(arg, Textgrid):
+            tg = arg
+        
+        self.tg_tiers, self.entry_classes = self._nestify_tiers(tg, self.entry_classes)
 
     def _extend_classes(
             self, 
@@ -158,6 +169,17 @@ class AlignedTextGrid(Sequence, WithinMixins):
         
         unique_classes = list(set(flat_classes))
 
+        orig_classes = []
+        orig_class_names = []
+        if self.entry_classes:
+            orig_classes = [c for tg in self.entry_classes for c in tg]
+            orig_class_names = [c.__name__ for c in orig_classes]
+    
+        
+        already_cloned = [c.__name__ in orig_classes for c in flat_classes]
+        if all(already_cloned):
+            return
+
         points = [c for c in unique_classes if issubclass(c, SequencePoint)]
         tops = [
             c 
@@ -166,8 +188,23 @@ class AlignedTextGrid(Sequence, WithinMixins):
             if issubclass(c.superset_class, Top)
         ]
 
-        points_clone = [clone_class(p) for p  in points]
-        tops_clone = [clone_class(t) for t in tops]
+        points_clone = []
+        for p in points:
+            if p.__name__ in orig_class_names:
+                points_clone.append(
+                    orig_classes[orig_class_names.index(p.__name__)]
+                )
+            else:
+                points_clone.append(clone_class(p))
+        tops_clone = []
+        for t in tops:
+            if t.__name__ in orig_class_names:
+                tops_clone.append(
+                    orig_classes[orig_class_names.index(t.__name__)]
+                )
+            else:
+                tops_clone.append(clone_class(t))
+
         full_seq_clone = []
         for tclone in tops_clone:
             full_seq_clone += get_class_hierarchy(tclone, [])
@@ -319,22 +356,138 @@ class AlignedTextGrid(Sequence, WithinMixins):
             setattr(self, name, self.tier_groups[idx])
 
     @property
-    def tier_names(self):
+    def tier_names(self) -> list[str]:
         if len(self) == 0:
             raise ValueError('No tier names in an empty TextGrid.')
         return [x.tier_names for x in self.tier_groups]
 
     @property
-    def xmin(self):
+    def xmin(self)->np.array:
         if len(self) == 0:
             raise ValueError('No minimum time for empty TextGrid.')
         return np.array([tgroup.xmin for tgroup in self.tier_groups]).min()
 
     @property
-    def xmax(self):
+    def xmax(self)->np.array:
         if len(self) == 0:
             raise ValueError('No maximum time for empty TextGrid.')
         return np.array([tgroup.xmax for tgroup in self.tier_groups]).max()
+    
+    def append(self, tier_group:TierGroup):
+        """Append a new TierGroup to an existing 
+        AlignedTextGrid.
+
+        Examples:
+            ```{python}
+            #| warning: false
+            from aligned_textgrid import Word, Phone, SequenceTier, TierGroup, AlignedTextGrid
+
+            speaker1 = TierGroup([
+                SequenceTier([
+                    Word((0,10, "Hi"))
+                ]),
+                SequenceTier([
+                    Phone((0,5, "HH")),
+                    Phone((5,10, "AY"))
+                ])
+            ])
+
+            speaker2 = TierGroup([
+                SequenceTier([
+                    Word((10,20, "Hi"))
+                ]),
+                SequenceTier([
+                    Phone((10,15, "HH")),
+                    Phone((15,20, "AY"))
+                ])
+            ])
+
+            atg = AlignedTextGrid()
+
+            atg.append(speaker1)
+            atg.append(speaker2)
+
+            print(atg)
+            ```
+
+        Args:
+            tier_group (TierGroup):
+                The TierGroup to append to the AlignedTextGrid
+        """
+        new_classes = self._reclone_classes(tier_group.entry_classes)
+        for cl, tier in zip(new_classes, tier_group):
+            entries = [cl._cast(i) for i in tier]
+            tier.__init__(entries)
+        
+        tier_group.__init__(tier_group)
+     
+        self.tier_groups.append(tier_group)
+        self.entry_classes = [[tier.entry_class for tier in tg] for tg in self.tier_groups]
+
+    def cleanup(self)->None:
+        """Cleanup gaps in AlignedTextGrid
+        
+        If any tiers have time gaps between 
+        intervals, missing subset or superset intervals
+        or TierGroups with different start and ent times,
+        this will clean them up by adding intervals with 
+        a blank label.
+
+        """
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            for tg in self.tier_groups:
+                tg.cleanup()
+            
+            interval_tgs = [tg for tg in self if isinstance(tg, TierGroup)]
+            tg_starts = np.array([tg.xmin for tg in interval_tgs])
+            tg_ends = np.array([tg.xmax for tg in interval_tgs])
+
+            if np.allclose(tg_starts.min(), tg_starts.max()) and \
+            np.allclose(tg_ends.min(), tg_ends.max()):
+                return
+            
+            for tg in self.tier_groups:
+                if np.allclose(tg.xmin, tg_starts.min()):
+                    continue
+
+                start = tg_starts.min()
+                end = tg.xmin
+
+                tg_classes = tg.entry_classes
+
+                empty_intervals = [c((start, end, "")) for c in tg_classes]
+                for tier, interval in zip(tg, empty_intervals):
+                    tier.append(interval)
+
+                
+            for tg in self.tier_groups:
+                if np.allclose(tg.xmax, tg_starts.max()):
+                    continue
+
+                start = tg.xmax
+                end = tg_ends.max()
+
+                tg_classes = tg.entry_classes
+                
+                empty_intervals = [c((start, end, "")) for c in tg_classes]
+                for tier, interval in zip(tg, empty_intervals):
+                    tier.append(interval)
+                
+    def shift(
+            self,
+            increment: float
+    ):
+        """Shift all times (interval starts & ends and point times)
+        by the given increment.
+
+        Args:
+            increment (float):
+                The increment by which to shift all times.
+                Could be positive or negative.
+        """
+        for gr in self:
+            gr.shift(increment)
     
     def interleave_class(
             self, 

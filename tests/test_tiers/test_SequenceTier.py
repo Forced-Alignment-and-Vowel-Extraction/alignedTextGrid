@@ -1,6 +1,7 @@
 import pytest
 from aligned_textgrid.sequences.sequences import *
 from aligned_textgrid.sequences.tiers import *
+from aligned_textgrid import Word, Phone
 import numpy as np
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
@@ -49,6 +50,26 @@ class TestSequenceTierDefault:
     def test_default_getitme(self):
         with pytest.raises(IndexError):
             _ = self.default_tier[0]
+
+class TestTierMaking:
+
+    def test_class_setting(self):
+        the = Word((0,1,"the"))
+        dog = Word((1,2,"dog"))
+        tier = SequenceTier([the, dog])
+        assert issubclass(tier.entry_class, Word)
+        assert all([isinstance(x, Word) for x in tier])
+
+        tier2 = SequenceTier([the, dog], entry_class=Phone)
+        assert issubclass(tier2.entry_class, Phone)
+        assert all([isinstance(x, Phone) for x in tier2])
+
+        tier3 = SequenceTier(tier2, entry_class=Word)
+        assert issubclass(tier3.entry_class, Word)
+        assert all([isinstance(x, Word) for x in tier3])
+
+    
+
 
 class TestReadTier:
     read_tg = openTextgrid(
@@ -124,6 +145,55 @@ class TestReadTier:
 
         orig_labels = [x.label for x in self.read_tg.tiers[0].entries]
         assert all([x in orig_labels for x in word_tier.labels])
+
+    def test_time_setting(self):
+        word_tier1 = SequenceTier(
+            self.read_tg.tiers[0], 
+            entry_class=self.MyWord
+        )
+
+        word_tier2 = SequenceTier(
+            self.read_tg.tiers[0], 
+            entry_class=self.MyWord
+        )        
+
+        n = len(word_tier1.sequence_list)
+        fake_times = np.linspace(0, 1, n)
+
+        word_tier1.starts = fake_times
+        assert np.all(fake_times == word_tier1.starts)
+        assert not np.all(word_tier2.starts == word_tier1.starts)
+
+        word_tier1.ends = fake_times
+        assert np.all(fake_times == word_tier1.ends)
+        assert not np.all(word_tier2.ends == word_tier1.ends)
+
+        too_short = np.linspace(0, 1, n - 20)
+        with pytest.raises(Exception):
+            word_tier1.starts = too_short
+
+        with pytest.raises(Exception):
+            word_tier1.ends = too_short
+
+
+    def test_shift(self):
+        word_tier1 = SequenceTier(
+            self.read_tg.tiers[0], 
+            entry_class=self.MyWord
+        )
+
+        word_tier2 = SequenceTier(
+            self.read_tg.tiers[0], 
+            entry_class=self.MyWord
+        )        
+
+        word_tier1._shift(5)
+
+        s_shifts = word_tier1.starts - word_tier2.starts
+        e_shifts = word_tier1.ends - word_tier2.ends
+
+        assert np.all(np.isclose(s_shifts, 5))
+        assert np.all(np.isclose(e_shifts, 5))
 
     def test_in_get_len(self):
         word_tier = SequenceTier(

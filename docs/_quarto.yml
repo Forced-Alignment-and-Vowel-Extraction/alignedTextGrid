@@ -53,18 +53,6 @@ website:
               - usage/05_Outputs/00_to_textgrid.ipynb
               - usage/05_Outputs/01_to_dataframe.ipynb              
               - usage/05_Outputs/02_pickling.ipynb
-  #         - section: Processing patterns
-  #           contents: 
-  #             - getting-started/single-file.qmd
-  #             - getting-started/directory.qmd
-  #         - section: Customizing a recoding scheme
-  #           contents:
-  #             - getting-started/rule-scheme-basics.qmd
-  #             - getting-started/rule-application.qmd
-  #             - section: Details
-  #               contents:
-  #                 - getting-started/condition-attributes.qmd
-  #                 - getting-started/condition-relations.qmd
 
 format:
   html: 
@@ -72,6 +60,7 @@ format:
       light: flatly
       dark: darkly
     toc: true
+    code-annotations: hover
 
 # tell quarto to read the generated sidebar
 metadata-files:
@@ -111,6 +100,8 @@ quartodoc:
         These classes define common attributes and methods available
         to intervals and points.
       contents:
+        - package: aligned_textgrid.mixins.within
+          name: WithinMixins
         - package: aligned_textgrid.mixins.mixins
           name: PrecedenceMixins
         - package: aligned_textgrid.mixins.mixins
@@ -133,7 +124,10 @@ quartodoc:
         don't have hierarchical relationships defined.
       contents:
         - package:  aligned_textgrid.points.points
-          name: SequencePoint                  
+          name: SequencePoint 
+    - title: SequenceList
+      contents:
+        - SequenceList              
     - title: Tiers
       desc: Tiers Classes
     - subtitle: Common Features
@@ -155,6 +149,8 @@ quartodoc:
           name: SequencePointTier
         - package: aligned_textgrid.sequences.tiers
           name: TierGroup
+        - package: aligned_textgrid.points.tiers
+          name: PointsGroup        
     - title: TextGrids
       desc: TextGrid Classes
       contents: 

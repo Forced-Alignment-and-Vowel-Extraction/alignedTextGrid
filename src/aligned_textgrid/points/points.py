@@ -1,20 +1,49 @@
 from praatio.utilities.constants import Point
-from aligned_textgrid.mixins.mixins import PrecedenceMixins, InTierMixins
+from aligned_textgrid.mixins.mixins import PrecedenceMixins, InTierMixins, SequenceBaseClass
 from aligned_textgrid.mixins.within import WithinMixins
 from aligned_textgrid.sequences.tiers import SequenceTier
 from aligned_textgrid.sequences.sequences import SequenceInterval
-from typing_extensions import Self
 import warnings
 import numpy as np
+from typing import TYPE_CHECKING
 
-from typing import Union
+import sys
+if sys.version_info >= (3,11):
+    from typing import Self
+else:
+    from typing_extensions import Self
 
-class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
+if TYPE_CHECKING:
+    from aligned_textgrid import SequencePointTier
+
+class  SequencePoint(SequenceBaseClass, PrecedenceMixins, InTierMixins, WithinMixins):
     """Sequence Points
     
     Args:
-        point (Point): a `praatio.point` object
+        point (list|tuple|Point|Self):
+            A list or tuple of a time and label value.
     
+    Examples:
+        ```{python}
+        from aligned_textgrid import SequencePoint, SequenceInterval
+
+        first_point = SequencePoint((0, "first"))
+        print(first_point)
+        ```
+
+        ```{python}
+        second_point = SequencePoint((1, "second"))
+        interval = SequenceInterval((0.5, 2, "word"))
+
+        print(
+            first_point.distance_from(second_point)
+        )
+
+        print(
+            first_point.distance_from(interval)
+        )
+        ```
+
     Attributes:
         ...:
             All attributes and methods included in PrecedenceMixins and InTierMixins
@@ -38,21 +67,31 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
 
     def __init__(
             self,
-            point = Point(0, "")
+            point: list|tuple|Point|Self = (None, None)
         ):
-        super().__init__()
-        if not point:
-            point = Point(None, None)
-        
+        self._seq_type = SequencePoint
+        if isinstance(point, SequencePoint):
+            point = Point(point.time, point.label)
+
+        if len(point) > 2:
+            raise ValueError((
+                "The tuple to create a SequencePoint should be "
+                "no more than 2 values long. "
+                f"{len(point)} were provided."
+            ))
+
+        point = Point(*point)
+
+
         self.time = point.time
         self.label = point.label
 
-        self.intier = None
-        self.tiername = None
+        self.intier:'SequencePointTier|None' = None
+        self.tiername:str|None = None
         self.pointspool = None
 
-        self.fol = None
-        self.prev = None
+        self.fol:SequencePoint|None = None
+        self.prev:SequencePoint|None = None
 
         if self.label != "#":
             self.set_final()
@@ -72,9 +111,32 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
     
     def __getitem__(self, idex):
         warnings.warn("Indexing is not valid for a SequencePoint")
-        return None    
+        return None
+    
+    def __add__(self, x):
+        warnings.warn("+ is not implemented for SequencePoint")
+        return self
+    
+    def append(self, x):
+        warnings.warn("append() is not implemented for SequencePoint")
     
     ## Properties
+    @property
+    def entry_class(self):
+        return self.__class__
+
+    @property
+    def time(self):
+        return self._time
+    
+    @time.setter
+    def time(self, time):
+        self._time = time
+
+    @property
+    def start(self):
+        return self.time
+
     @property
     def fol_distance(self):
         if self.fol and self.fol.time:
@@ -102,10 +164,13 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
             return None        
 
     ## methods
+    def _shift(self, increment):
+        self.time += increment
+
     def distance_from(
             self, 
             entry: Self|SequenceInterval
-        ) -> Union[float, np.array]:
+        ) -> np.array:
         """Distance from an entry
 
         Args:
@@ -114,12 +179,12 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
                 point from
 
         Returns:
-            (float | np.array):
+            (np.array):
                 a single value in the case of a point, a numpy array in
                 the case of an interval.
         """
         if isinstance(entry, SequencePoint):
-            return self.time - entry.time
+            return np.array(self.time - entry.time)
         
         if isinstance(entry, SequenceInterval):
             entry_times = np.array([entry.start, entry.end])
@@ -160,4 +225,4 @@ class  SequencePoint(PrecedenceMixins, InTierMixins, WithinMixins):
             return tier[self.get_interval_index_at_time(tier)]
 
     
-    
+SequencePoint._set_seq_type(SequencePoint)

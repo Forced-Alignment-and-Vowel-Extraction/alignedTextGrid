@@ -1,5 +1,6 @@
 import pytest
 from aligned_textgrid.sequences.sequences import *
+from aligned_textgrid.sequence_list import SequenceList
 from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import *
 import numpy as np
@@ -18,7 +19,7 @@ class TestSequenceIntervalDefault:
             super().__init__(Interval = Interval)
 
     def test_default_class(self):
-        assert self.seq_int.__class__ is SequenceInterval
+        assert isinstance(self.seq_int, SequenceInterval)
     
     def test_default_super_class(self):
         assert self.seq_int.superset_class is Top
@@ -30,7 +31,7 @@ class TestSequenceIntervalDefault:
         assert self.seq_int.super_instance is None
 
     def test_default_subset_list(self):
-        assert type(self.seq_int.subset_list) is list
+        assert isinstance(self.seq_int.subset_list, SequenceList)
         assert len(self.seq_int.subset_list) == 0
 
     def test_default_sub_starts(self):
@@ -74,9 +75,44 @@ class TestSequenceIntervalDefault:
         local_sample = self.SampleClassI()
         assert local_sample.tier_index is None
 
-    def test_defaul_getby(self):
+    def test_default_getby(self):
         local_sample = self.SampleClassI()
         assert local_sample.get_tierwise(1) is None
+
+class TestSequenceIntervalCreation:
+
+    def test_empty(self):
+        test_int = SequenceInterval()
+
+    def test_list(self):
+        test_int = SequenceInterval([0, 1, "test"])
+        assert isinstance(test_int, SequenceInterval)
+
+        with pytest.raises(ValueError):
+            SequenceInterval([1, 2, 3, 4])
+
+
+    def test_tup(self):
+        test_int = SequenceInterval((0,1,"test"))
+        assert isinstance(test_int, SequenceInterval)
+
+        with pytest.raises(ValueError):
+            SequenceInterval((1, 2, 3, 4))
+    
+    def test_self(self):
+        class MyInterval(SequenceInterval):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+        
+        test_int = SequenceInterval((0, 1, "test"))
+        new_int = MyInterval(test_int)
+
+        assert isinstance(new_int, MyInterval)
+        assert new_int.start == test_int.start
+        assert new_int.end == test_int.end
+        assert new_int.label == test_int.label
+    
+
 
 class TestSuperSubClassSetting:
     class LocalClassA(SequenceInterval):
@@ -366,8 +402,8 @@ class TestHierarchy:
     def test_subset_pop(self):
         upper1 = self.UpperClass(Interval(0,10,"upper"))
         lower1 = self.LowerClass(Interval(0,5,"lower1"))
-        lower2 = self.LowerClass(Interval(5,10,"lower2"))
-        lower3 = self.LowerClass(Interval(5,10,"lower2"))
+        lower2 = self.LowerClass(Interval(5,8,"lower2"))
+        lower3 = self.LowerClass(Interval(8,10,"lower3"))
 
         upper1.set_subset_list([lower1, lower2, lower3])
 

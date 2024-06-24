@@ -7,6 +7,7 @@ import numpy as np
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
 from praatio.textgrid import openTextgrid
+from pathlib import Path
 
 class MyWord(SequenceInterval):
     def __init__(self, Interval = Interval(None, None, None)):
@@ -34,6 +35,31 @@ class TestReadFile:
             includeEmptyIntervals=True
         )
         atg = AlignedTextGrid(textgrid = tg)
+
+    def test_read_arg(self):
+        """
+        Test that the first unnamed arg can process
+        str, Path, and praatio.Textgrid classes correctly.
+        """
+        tg = openTextgrid(
+            fnFullPath="tests/test_data/KY25A_1.TextGrid",
+            includeEmptyIntervals=True
+        )        
+
+        atg1 = AlignedTextGrid(
+            "tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+        atg2 = AlignedTextGrid(
+            Path("tests/test_data/KY25A_1.TextGrid"),
+            entry_classes=[Word, Phone]
+        )
+        atg3 = AlignedTextGrid(
+           tg,
+            entry_classes=[Word, Phone]
+        )
+
+        assert len(atg1) == len(atg2) == len(atg3)
 
 class TestBasicRead:
 
@@ -267,6 +293,35 @@ class TestTierGroupNames:
                 textgrid_path="tests/test_data/josef-fruehwald_speaker_dup.TextGrid",
                 entry_classes=[Word, Phone]
             )
+class TestTierGroupShift:
+    def test_tiergroup_shift(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=[Word, Phone]
+        )
+
+        tgr = tg[0]
+        orig_starts = [
+            tier.starts for tier in tgr
+        ]
+        orig_ends = [
+            tier.ends for tier in tgr
+        ]
+
+        tgr.shift(3)
+
+        new_starts = [
+            tier.starts for tier in tgr
+        ]
+        new_ends = [
+            tier.ends for tier in tgr
+        ]
+
+        for o, n in zip(orig_starts, new_starts):
+            assert np.all(np.isclose(n-o, 3))
+        for o, n in zip(orig_ends, new_ends):
+            assert np.all(np.isclose(n-o, 3))
+
 class TestInterleave:
     
    
@@ -437,6 +492,42 @@ class TestInterleave:
                 below = Word,
                 timing_from="Word"
             )
+
+class TestTextGridShift:
+
+    def test_positive_shift(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=custom_classes(["Word", "Phone"])
+        )
+
+        orig_xmin = tg.xmin
+        orig_xmax = tg.xmax
+
+        tg.shift(3)
+
+        new_xmin = tg.xmin
+        new_xmax = tg.xmax
+
+        assert np.isclose(new_xmin - orig_xmin, 3)
+        assert np.isclose(new_xmax - orig_xmax, 3)
+
+    def test_negative_shift(self):
+        tg = AlignedTextGrid(
+            textgrid_path="tests/test_data/KY25A_1.TextGrid",
+            entry_classes=custom_classes(["Word", "Phone"])
+        )
+
+        orig_xmin = tg.xmin
+        orig_xmax = tg.xmax
+
+        tg.shift(-3)
+
+        new_xmin = tg.xmin
+        new_xmax = tg.xmax
+
+        assert np.isclose(new_xmin - orig_xmin, -3)
+        assert np.isclose(new_xmax - orig_xmax, -3)
 
 class TestPop:
 

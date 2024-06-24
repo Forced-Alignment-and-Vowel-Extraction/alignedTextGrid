@@ -13,16 +13,44 @@ class TestSequencePointDefault:
         assert self.seq_point.__class__ is SequencePoint
     
     def test_default_time(self):
-        assert self.seq_point.time == 0
+        assert self.seq_point.time is None
 
     def test_default_label(self):
-        assert self.seq_point.label == ""
+        assert self.seq_point.label is None
     
     def test_default_fol(self):
         assert self.seq_point.fol.label == "#"
     
     def test_default_prev(self):
         assert self.seq_point.prev.label == "#"
+
+class TestPointCreation:
+
+    def test_list(self):
+        seq_point = SequencePoint([0, "test"])
+        assert isinstance(seq_point, SequencePoint)
+
+        with pytest.raises(ValueError):
+            SequencePoint([1,2,3])
+
+    def test_tuple(self):
+        seq_point = SequencePoint((0, "test"))
+        assert isinstance(seq_point, SequencePoint)
+
+        with pytest.raises(ValueError):
+            assert SequencePoint((1,2,3))
+
+    def test_self(self):
+        class MyPoint(SequencePoint):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+        
+        seq_point = SequencePoint((0, "test"))
+        new_point = MyPoint(seq_point)
+
+        assert isinstance(new_point, MyPoint)
+        assert new_point.time == seq_point.time
+        assert new_point.label == seq_point.label
 
 class TestPrecedence:
     seq_point_a = SequencePoint(Point(1, "a"))
@@ -55,6 +83,14 @@ class TestPrecedence:
         out_point = self.seq_point_a.return_point()
         assert isinstance(out_point, Point)
 
+
+class TestTiming:
+
+    def test_shift(self):
+        seq_point_a = SequencePoint(Point(1, "a"))
+
+        seq_point_a._shift(2)
+        assert seq_point_a.time == 3
 
 class TestDistances:
     seq_point_a = SequencePoint(Point(1, "a"))
