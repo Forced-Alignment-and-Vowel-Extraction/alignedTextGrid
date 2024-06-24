@@ -1,0 +1,79 @@
+---
+title: Phrase Creation
+author: Josef Fruehwald
+date: last-modified
+description: "Create a phrase tier by fusing word sequences."
+---
+
+When working with force-aligned TextGrid with a Word and Phone tier,
+you can also add Phrase tier.
+
+```{python}
+from aligned_textgrid import AlignedTextGrid, custom_classes
+
+atg = AlignedTextGrid(
+    "resources/josef-fruehwald_speaker.TextGrid", 
+    entry_classes = custom_classes(["Word", "Phone"])
+)
+```
+
+## Interleave a new Phrase tier
+
+First, we need to interleave a new tier class above Word, 
+copying its timing and labels.
+
+```{python}
+atg.interleave_class(
+    name = "Phrase",
+    above = "Word",
+    timing_from = "below",
+    copy_labels = True
+)
+
+print(atg)
+```
+
+## Iterate through phrase and fuse
+
+We need to define a function that will take an existing phrase label
+and add on an incoming label.
+
+```{python}
+def make_phrase_label(a_label, b_label):
+    if len(b_label) > 0:
+        a_label = f"{a_label} {b_label}"
+    
+    return a_label
+```
+
+The `fuse_rightwards()` method will fuse the following interval to the current interval and pop the following interval from the tier. Therfore, we don't want to use a `for`-loop.
+
+Instead, we'll use a `while` loop, which will end when we reach the end of the `Phrase` (when `fol.label == #`). We'll update the interval we are fusing with when
+
+- Its current interval label is "" (or a pause)
+- The following interval label is "" and longer than 220 ms.
+
+The `continue` keyword under the `if` statements bumps us back to the top of the `while` loop, which will check to see if we're at the end of the Phrase tier.
+
+```{python}
+this_interval = atg[0].Phrase.first
+
+while this_interval.fol.label != "#":
+
+    if this_interval.label == "":
+        this_interval = this_interval.fol
+        continue
+    
+    if this_interval.fol.label == "" and this_interval.fol.duration > 0.220:
+        this_interval = this_interval.fol
+        continue
+
+    this_interval.fuse_rightwards(label_fun = make_phrase_label)
+```
+
+We can check on the results.
+
+```{python}
+for phrase in atg[0].Phrase[0:10]:
+    print(phrase.label)
+```

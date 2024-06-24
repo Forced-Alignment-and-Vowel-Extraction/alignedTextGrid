@@ -1,0 +1,83 @@
+---
+title: Detect Overlaps
+author: Josef Fruehwald
+date: last-modified
+---
+
+When working with a multi-speaker textgrid, you may want to know if a word or phone is overlapped by another speaker's speech.
+Here, we'll detect these overlaps and set an `overlapped` feature
+on each interval.
+
+```{python}
+from aligned_textgrid import AlignedTextGrid, custom_classes, SequenceList
+import numpy as np
+
+atg = AlignedTextGrid(
+    "resources/KY25A_1.TextGrid",
+    entry_classes = custom_classes(["Word", "Phone"])
+)
+```
+
+## Overlap Detection
+
+We'll get all phones that aren't silences.
+
+```{python}
+all_phones = [
+    phone
+    for group in atg
+    for phone in group.Phone
+    if phone.label != ""
+]
+```
+
+
+```{python}
+starts = np.array([
+    phone.start
+    for phone in all_phones
+])
+
+ends = np.array([
+    phone.end
+    for phone in all_phones
+])
+```
+
+```{python}
+for phone in all_phones:
+    self_index = all_phones.index(phone)
+    phone.set_feature("overlapped", False)
+
+    overlap = (phone.start < ends) & (starts < phone.end)
+    overlappers = np.argwhere(overlap).squeeze().tolist()
+    
+
+    if overlap.sum() > 1:
+        overlappers.remove(self_index)
+        overlapper_list = [all_phones[idx] for idx in overlappers]
+
+        phone.set_feature("overlapped", True)
+        phone.set_feature("overlapper", SequenceList(*overlapper_list))
+```
+
+```{python}
+#| echo: false
+overlapped_phones = [phone for phone in all_phones if phone.overlapped]
+
+print(
+    f"Overlapped: {(overlapped_phones[0].start, overlapped_phones[0].end, overlapped_phones[0].label)}"
+)
+
+print(
+    f"Overlapped word: {overlapped_phones[0].within.label}"
+)
+
+print(
+    f"Overlappers: {(overlapped_phones[0].overlapper.starts, overlapped_phones[0].overlapper.ends, overlapped_phones[0].overlapper.labels)}"
+)
+
+print(
+    f"Overlapper words: {[x.within.label for x in overlapped_phones[0].overlapper]}"
+)
+```

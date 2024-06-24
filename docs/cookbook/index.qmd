@@ -1,0 +1,6 @@
+---
+title: aligned-textgrid cookbook
+listing: table
+contents: "./"
+fields: [file-modified, title, description, reading-time]
+---
