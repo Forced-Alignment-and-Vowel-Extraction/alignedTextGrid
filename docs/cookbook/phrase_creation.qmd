@@ -48,7 +48,7 @@ def make_phrase_label(a_label, b_label):
 
 The `fuse_rightwards()` method will fuse the following interval to the current interval and pop the following interval from the tier. Therfore, we don't want to use a `for`-loop.
 
-Instead, we'll use a `while` loop, which will end when we reach the end of the `Phrase` (when `fol.label == #`). We'll update the interval we are fusing with when
+Instead, we'll use a `while` loop, which will end when we reach the end of the `Phrase` tier. We'll update the interval we are fusing with when
 
 - Its current interval label is "" (or a pause)
 - The following interval label is "" and longer than 220 ms.
@@ -56,24 +56,69 @@ Instead, we'll use a `while` loop, which will end when we reach the end of the `
 The `continue` keyword under the `if` statements bumps us back to the top of the `while` loop, which will check to see if we're at the end of the Phrase tier.
 
 ```{python}
-this_interval = atg[0].Phrase.first
+this_interval = atg[0].Phrase.first    # <1>
 
-while this_interval.fol.label != "#":
+while this_interval is not atg[0].Phrase.last: # <2>
 
-    if this_interval.label == "":
-        this_interval = this_interval.fol
-        continue
+    if this_interval.label == "":           # <3>
+        this_interval = this_interval.fol   # <3>
+        continue                            # <3>
     
-    if this_interval.fol.label == "" and this_interval.fol.duration > 0.220:
-        this_interval = this_interval.fol
-        continue
+    following_long_pause = (                # <4>
+        this_interval.fol.label == ""       # <4>
+        and                                 # <4>
+        this_interval.fol.duration >= 0.220 # <4>
+    )                                       # <4>
 
-    this_interval.fuse_rightwards(label_fun = make_phrase_label)
+    if following_long_pause:                # <5> 
+        this_interval = this_interval.fol   # <5>
+        continue                            # <5>
+
+    this_interval.fuse_rightwards(          # <6>
+        label_fun = make_phrase_label       # <6>
+    )                                       # <6>
 ```
+1. Manually begin at the first interval.
+2. The value of `.last` is dynamically updated, so this is safe.
+3. If we are *currently* in a pause interval, move to the next interval.
+4. Get a `True` or `False` if the next interval is a pause equal to or greater than 220ms.
+5. If the following interval is a long pause, update `this_interval` to be the following interval. The previous `if` statement will keep bumping us along until we get to a non-pause interval. 
+6. If neither of the previous `if` statements were triggered, we fuse `this_interval` with the following interval.
 
 We can check on the results.
 
 ```{python}
 for phrase in atg[0].Phrase[0:10]:
     print(phrase.label)
+```
+
+And just for clarity, each non-pause word is now a subset member of a phrase interval.
+
+```{python}
+(
+    atg[0].Word[1].label,
+    atg[0].Word[1].within.label
+)
+```
+
+## More ideas
+
+We can also, for example, get a list of the duration of pauses that occur *within* a phrase.
+
+```{python}
+import numpy as np
+
+in_phrase_pauses = [
+    interval
+    for interval in atg[0].Word
+    if interval.label == ""
+    if interval.within.label != ""
+]
+
+pause_durs = np.array([
+    interval.duration
+    for interval in in_phrase_pauses
+])
+
+pause_durs
 ```
