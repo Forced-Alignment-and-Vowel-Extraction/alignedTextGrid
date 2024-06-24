@@ -13,8 +13,10 @@ website:
     left:
       - file: index.qmd
         text: Get Started
+      - file: cookbook/index.qmd    
+        text: Cookbook
       - href: reference/
-        text: Reference        
+        text: Reference
     right:
       - icon: github
         href: https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid/      
@@ -53,7 +55,11 @@ website:
               - usage/05_Outputs/00_to_textgrid.ipynb
               - usage/05_Outputs/01_to_dataframe.ipynb              
               - usage/05_Outputs/02_pickling.ipynb
-
+      - id: aligned-textgrid-cookbook
+        title: Cookbook
+        contents:
+          - cookbook/index.qmd
+          - auto: "cookbook/*"
 format:
   html: 
     theme:
