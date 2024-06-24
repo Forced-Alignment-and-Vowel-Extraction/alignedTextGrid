@@ -434,7 +434,8 @@ class AlignedTextGrid(Sequence, WithinMixins):
         a blank label.
 
         """
-        with warnings.simplefilter("ignore"):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
             for tg in self.tier_groups:
                 tg.cleanup()
             
