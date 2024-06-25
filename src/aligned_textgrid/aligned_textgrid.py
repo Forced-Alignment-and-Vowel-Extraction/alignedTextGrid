@@ -12,7 +12,7 @@ from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
 from aligned_textgrid.points.tiers import SequencePointTier, PointsGroup
 from aligned_textgrid.mixins.within import WithinMixins
 from aligned_textgrid.custom_classes import custom_classes, clone_class, get_class_hierarchy
-from typing import Type, Sequence, Literal
+from typing import Type, Literal
 from copy import copy
 import numpy as np
 from collections.abc import Sequence

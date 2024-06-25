@@ -1,4 +1,5 @@
-from typing import TypeVar, Sequence, TYPE_CHECKING
+from collections.abc import Sequence
+from typing import TypeVar, TYPE_CHECKING
 if TYPE_CHECKING:
     from aligned_textgrid import SequenceInterval, \
         SequenceTier,\
