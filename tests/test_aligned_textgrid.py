@@ -119,6 +119,45 @@ class TestMultiRead:
         assert len(atg_multi[0]) == 2 and len(atg_multi[2]) == 2
         assert len(atg_multi[1]) == 1 and len(atg_multi[3]) == 1
 
+class TestManualCreation:
+    def test_manual_creation(self):
+        tg1 = TierGroup()
+        tg2 = TierGroup()
+
+        atg = AlignedTextGrid([tg1, tg2])
+
+        assert tg1 in atg
+        assert tg2 in atg
+
+        assert tg1 in atg.contains
+        assert tg2 in atg.contains
+
+        assert tg1.within is atg
+        assert tg2.within is atg
+
+    def test_append(self):
+        atg = AlignedTextGrid(
+            "tests/test_data/KY25A_1.TextGrid", 
+            entry_classes=[MyWord, MyPhone]
+        )
+
+        orig_tgr = atg[0]
+        word_tier = orig_tgr.MyWord
+        phone_tier = orig_tgr.MyPhone
+
+        empty_tgr = TierGroup()
+
+        atg.append(empty_tgr)
+
+        assert orig_tgr in atg
+        assert empty_tgr in atg
+
+        assert orig_tgr.within is atg
+        assert empty_tgr.within is atg
+
+        assert atg[0].MyWord is word_tier
+        assert atg[0].MyPhone is phone_tier
+
 class TestClassSetting:
     atg1 = AlignedTextGrid(
         textgrid_path="tests/test_data/KY25A_1.TextGrid", 

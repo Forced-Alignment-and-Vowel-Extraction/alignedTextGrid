@@ -232,7 +232,7 @@ class PointsGroup(Sequence, TierGroupMixins, WithinMixins):
     [](`~aligned_textgrid.mixins.within.WithinMixins`)
 
     Args:
-        tiers (list[SequencePointTier]: 
+        tiers (list[SequencePointTier]|PointsGroup): 
             A list of SequencePointTiers
     
     Attributes:
@@ -240,8 +240,10 @@ class PointsGroup(Sequence, TierGroupMixins, WithinMixins):
     """    
     def __init__(
             self,
-            tiers: list[SequencePointTier] = [SequencePointTier()]
+            tiers: list[SequencePointTier]|Self = [SequencePointTier()]
     ):
+        if isinstance(tiers, PointsGroup):
+            tiers = [tier for tier in tiers]
         self.tier_list = tiers
         self.contains = self.tier_list
         self._set_tier_names()
