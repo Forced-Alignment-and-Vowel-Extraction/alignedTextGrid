@@ -439,7 +439,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
         new_classes = self._swap_classes(tier_group.entry_classes, self._cloned_classes)
         for cl, tier in zip(new_classes, tier_group):
             entries = [cl._cast(i) for i in tier]
-            tier.__init__(entries)
+            tier.__init__(entries, entry_class = cl)
         
         tier_group.__init__(tier_group)
      
