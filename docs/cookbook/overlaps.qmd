@@ -1,0 +1,119 @@
+---
+title: Detect Overlaps
+author: Josef Fruehwald
+date: last-modified
+---
+
+When working with a multi-speaker textgrid, you may want to know if a word or phone is overlapped by another speaker's speech.
+Here, we'll detect these overlaps and set an `overlapped` feature
+on each interval.
+
+```{python}
+from aligned_textgrid import AlignedTextGrid, custom_classes, SequenceList
+import numpy as np
+
+atg = AlignedTextGrid(
+    "resources/KY25A_1.TextGrid",
+    entry_classes = custom_classes(["Word", "Phone"])
+)
+```
+
+## Overlap Detection
+
+We'll get all phones that aren't silences and create a SequenceList from them.
+SequenceList have convenience attributes to return an array of the start
+and end times of SequenceIntervals within them.
+
+```{python}
+all_phones = SequenceList(
+    *[
+        phone
+        for group in atg
+        for phone in group.Phone
+        if phone.label != ""
+    ]
+)
+```
+
+Now, we'll loop through these phones of interest. First we'll
+
+- Set every phones "overlapped" feature to False. This will remain false if it is not overlapped.
+- Check for any overlaps with the formula (x_start < y_end) & (y_start < x_end). 
+- This will be true once for all phones (when compared to itself), so if this is true more than once, the interval is overlapped.
+- We'll aslo set an "overlapper" feature which is a list of the intervals that are doing the overlapping.
+
+
+```{python}
+for phone in all_phones:
+
+    phone.set_feature("overlapped", False)       # <1>
+
+    overlap = (                                  # <2>
+        (phone.start < all_phones.ends) &        # <2>
+        (all_phones.starts < phone.end)          # <2>
+    )                                            # <2>
+
+    overlappers = (                              # <3>
+        np.argwhere(overlap)                     # <3>
+          .squeeze()                             # <3>
+          .tolist()                              # <3>
+    )                                            # <3>
+     
+    if overlap.sum() > 1:                        # <4>
+
+        self_index = all_phones.index(phone)     # <5>
+        overlappers.remove(self_index)           # <5>
+
+        overlapper_list = [                      # <6>
+            all_phones[idx]                      # <6>
+            for idx in overlappers               # <6>
+        ]                                        # <6>
+
+        phone.set_feature("overlapped", True)    # <7>
+
+        phone.set_feature(                       # <8>
+            "overlapper",                        # <8>
+            SequenceList(*overlapper_list)       # <8>
+        )                                        # <8>
+```
+1. Default to intervals *not* being overlapped.
+2. This will be an array with `False` if an interval doesn't overlap with our target phone, and `True` if it does.
+3. This will return a list if indices where `overlap` is `True`.
+4. All intervals overlap with themselves, so we check to see if there's more than one overlap.
+5. For adding a list of overlapping intervals, remove our target interval from the index list.
+6. Create the list of overlapping phone.
+7. Set the `overlapped` flag
+8. Keep track of *which* intervals over overlapping.
+
+Let's grab one of the overlapped phones.
+
+```{python}
+overlapped_phones = [
+    phone 
+    for phone in all_phones 
+    if phone.overlapped
+]
+
+one_phone = overlapped_phones[0]
+```
+
+We can inspect its timing and compare it to the overlappers.
+
+```{python}
+#| code-fold: true
+print(
+    f"Overlapped: {(one_phone.start, one_phone.end, one_phone.label)}"
+)
+
+print(
+    f"Overlapped word: {one_phone.within.label}"
+)
+
+print(
+    f"Overlapper: {one_phone.overlapper.starts, one_phone.overlapper.ends, one_phone.overlapper.labels}"
+)
+
+print(
+    f"Overlapper words: {[x.within.label for x in one_phone.overlapper]}"
+)
+```

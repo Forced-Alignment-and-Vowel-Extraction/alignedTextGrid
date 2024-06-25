@@ -400,6 +400,73 @@ class TestTierGroups:
 
         assert word1.fol is word2
 
+class TestATG:
+
+    def test_atg_append(self):
+        tg1 = TierGroup()
+        tg2 = TierGroup()
+        pg1 = PointsGroup()
+        atg = AlignedTextGrid()
+
+        atg.append(tg1)
+        atg.append(tg2)
+        atg.append(pg1)
+
+        assert tg1 in atg
+        assert tg2 in atg
+        assert pg1 in atg
+
+        assert tg1 in atg.contains
+        assert tg2 in atg.contains
+        assert pg1 in atg.contains
+
+        assert tg1.within is atg
+        assert tg2.within is atg
+        assert pg1.within is atg
+
+    def test_clone_on_append(self):
+        MyWord, = custom_classes(["MyWord"])
+        tgr = TierGroup([
+            SequenceTier([
+                MyWord((0,10,"test"))
+            ])
+        ])
+
+        atg = AlignedTextGrid()
+        atg.append(tgr)
+
+        assert tgr in atg
+
+        assert not tgr.entry_classes[0] is MyWord
+        assert tgr.entry_classes[0].__name__ == "MyWord"
+        assert isinstance(tgr.MyWord.first, MyWord)
+
+    def test_clone_reuse(self):
+        MyWord, = custom_classes(["MyWord"])
+        tgr1 = TierGroup([
+            SequenceTier([
+                MyWord((0,10,"test"))
+            ])
+        ])
+
+        tgr2 = TierGroup([
+            SequenceTier([
+                MyWord((0,10,"test"))
+            ])
+        ])
+
+        atg = AlignedTextGrid()
+
+        assert tgr1.entry_classes[0] is MyWord
+        assert tgr2.entry_classes[0] is MyWord
+
+        atg.append(tgr1)
+        atg.append(tgr2)
+
+        assert not tgr1.entry_classes[0] is MyWord
+        assert not tgr2.entry_classes[0] is MyWord
+
+        assert tgr1.entry_classes[0] is tgr2.entry_classes[0]
 
 class TestCleanups:
     def test_sequence_cleanup(self):
