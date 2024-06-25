@@ -468,6 +468,28 @@ class TestATG:
 
         assert tgr1.entry_classes[0] is tgr2.entry_classes[0]
 
+    def test_piecemeal_append(self):
+        MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
+
+        word_tier = SequenceTier([
+            MyWord((0, 10, "a")),
+            MyWord((10,15,"b"))
+        ])
+
+        phone_tier = SequenceTier([
+            MyPhone((0, 10, "AA")),
+            MyPhone((10, 15,"BB"))
+        ])
+
+        tier_group = TierGroup([word_tier])
+
+        atg = AlignedTextGrid([tier_group])
+
+        atg[0].append(phone_tier)
+
+        assert phone_tier in tier_group
+        assert tier_group in atg
+
 class TestCleanups:
     def test_sequence_cleanup(self):
         MyWord, MyPhone = custom_classes(["MyWord", "MyPhone"])
