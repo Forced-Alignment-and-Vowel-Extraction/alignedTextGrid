@@ -20,7 +20,7 @@ atg = AlignedTextGrid(
 
 ## Overlap Detection
 
-We'll get all phones that aren't silences and create a SequenceList from them.
+We'll get all phones that aren't silences and create a [](`~aligned_textgrid.SequenceList`) from them.
 SequenceList have convenience attributes to return an array of the start
 and end times of SequenceIntervals within them.
 
