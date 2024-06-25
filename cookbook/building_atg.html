@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Josef Fruehwakd">
+<meta name="dcterms.date" content="2024-06-25">
 
-<title>aligned-textgrid</title>
+<title>aligned-textgrid - Building an AlignedTextGrid</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +66,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../reference/PrStr.html" rel="next">
-<link href="../reference/Word.html" rel="prev">
+<link href="../cookbook/overlaps.html" rel="next">
+<link href="../cookbook/index.html" rel="prev">
 <link href="../assets/logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -157,7 +159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Custom Classes</li><li class="breadcrumb-item"><a href="../reference/Word.html">Word and Phone Classes</a></li><li class="breadcrumb-item"><a href="../reference/Phone.html">Phone</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/building_atg.html">Building an AlignedTextGrid</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -167,7 +169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
       <img src="../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
@@ -176,332 +178,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Function reference</span></a>
+  <a href="../cookbook/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">aligned-textgrid cookbook</span></a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Sequence Classes</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
- <span class="menu-text">Common Features</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/WithinMixins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">WithinMixins</span></a>
+  <a href="../cookbook/building_atg.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Building an AlignedTextGrid</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/PrecedenceMixins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PrecedenceMixins</span></a>
+  <a href="../cookbook/overlaps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Detect Overlaps</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/InTierMixins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">InTierMixins</span></a>
+  <a href="../cookbook/phrase_creation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Phrase Creation</span></a>
   </div>
 </li>
-      </ul>
-  </li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
- <span class="menu-text">Intervals</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/SequenceInterval.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">SequenceInterval</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/Top.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Top</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/Bottom.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Bottom</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
- <span class="menu-text">Points</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/SequencePoint.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">SequencePoint</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">SequenceList</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/SequenceList.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">SequenceList</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
- <span class="menu-text">Tiers</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
- <span class="menu-text">Common Features</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/TierMixins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">TierMixins</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/TierGroupMixins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">TierGroupMixins</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
- <span class="menu-text">Tiers and Tier Groups</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/SequenceTier.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">SequenceTier</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/SequencePointTier.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">SequencePointTier</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/TierGroup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">TierGroup</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/PointsGroup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PointsGroup</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
- <span class="menu-text">TextGrids</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/AlignedTextGrid.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">AlignedTextGrid</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">
- <span class="menu-text">Custom Classes</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">
- <span class="menu-text">Custom Class Creation</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/custom_classes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">custom_classes</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/custom_classes.clone_class.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">custom_classes.clone_class</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/custom_classes.get_class_hierarchy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">custom_classes.get_class_hierarchy</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="true">
- <span class="menu-text">Word and Phone Classes</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/Word.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Word</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/Phone.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Phone</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="false">
- <span class="menu-text">PoLaR Classes</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/PrStr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PrStr</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/ToBI.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ToBI</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/ToBI.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ToBI</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/TurningPoints.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">TurningPoints</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/Ranges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Ranges</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/Levels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Levels</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/Misc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Misc</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" aria-expanded="true">
- <span class="menu-text">DataFrame outputs</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/to_df.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">to_df</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -512,12 +210,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#parameters" id="toc-parameters" class="nav-link active" data-scroll-target="#parameters">Parameters</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
-  <li><a href="#attributes" id="toc-attributes" class="nav-link" data-scroll-target="#attributes">Attributes</a></li>
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
+  <li><a href="#use-append" id="toc-use-append" class="nav-link active" data-scroll-target="#use-append">Use append</a></li>
+  <li><a href="#interval-first-approach" id="toc-interval-first-approach" class="nav-link" data-scroll-target="#interval-first-approach">Interval-first approach</a>
   <ul class="collapse">
-  <li><a href="#aligned_textgrid.sequences.word_and_phone.Phone.set_word" id="toc-aligned_textgrid.sequences.word_and_phone.Phone.set_word" class="nav-link" data-scroll-target="#aligned_textgrid.sequences.word_and_phone.Phone.set_word">set_word</a></li>
+  <li><a href="#creating-the-intervals" id="toc-creating-the-intervals" class="nav-link" data-scroll-target="#creating-the-intervals">Creating the intervals</a></li>
+  <li><a href="#setting-subset-membership" id="toc-setting-subset-membership" class="nav-link" data-scroll-target="#setting-subset-membership">Setting subset membership</a></li>
+  <li><a href="#set-up-the-tiers" id="toc-set-up-the-tiers" class="nav-link" data-scroll-target="#set-up-the-tiers">Set up the tiers</a></li>
+  <li><a href="#appending-the-intervals" id="toc-appending-the-intervals" class="nav-link" data-scroll-target="#appending-the-intervals">Appending the intervals</a></li>
+  <li><a href="#creating-the-alignedtextgrid" id="toc-creating-the-alignedtextgrid" class="nav-link" data-scroll-target="#creating-the-alignedtextgrid">Creating the AlignedTextGrid</a></li>
+  <li><a href="#reference-is-maintained" id="toc-reference-is-maintained" class="nav-link" data-scroll-target="#reference-is-maintained">Reference is maintained</a></li>
+  </ul></li>
+  <li><a href="#textgrid-first-approach" id="toc-textgrid-first-approach" class="nav-link" data-scroll-target="#textgrid-first-approach">TextGrid first approach</a>
+  <ul class="collapse">
+  <li><a href="#initializing-the-textgrid" id="toc-initializing-the-textgrid" class="nav-link" data-scroll-target="#initializing-the-textgrid">Initializing the TextGrid</a></li>
+  <li><a href="#adding-the-tiergroup" id="toc-adding-the-tiergroup" class="nav-link" data-scroll-target="#adding-the-tiergroup">Adding the TierGroup</a></li>
+  <li><a href="#adding-the-intervals" id="toc-adding-the-intervals" class="nav-link" data-scroll-target="#adding-the-intervals">Adding the Intervals</a></li>
+  <li><a href="#double-checking" id="toc-double-checking" class="nav-link" data-scroll-target="#double-checking">Double checking</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -525,16 +233,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Custom Classes</li><li class="breadcrumb-item"><a href="../reference/Word.html">Word and Phone Classes</a></li><li class="breadcrumb-item"><a href="../reference/Phone.html">Phone</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Phone</h1>
+<h1 class="title">Building an AlignedTextGrid</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Josef Fruehwakd </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 25, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -544,117 +264,205 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><code>sequences.word_and_phone.Phone(self, interval=(None, None, None), *, Interval=None)</code></p>
-<p>A Phone subclass of <a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval"><code>SequenceInterval</code></a></p>
-<p>Has all the same methods and attributes as <a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval"><code>SequenceInterval</code></a> in addition to attributes described below. <code>superset_class</code> set to <a href="../reference/Word.html#aligned_textgrid.sequences.word_and_phone.Word"><code>Word</code></a>, and <code>subset_class</code> set to <a href="../reference/Bottom.html#aligned_textgrid.sequences.sequences.Bottom"><code>Bottom</code></a></p>
-<section id="parameters" class="level2">
-<h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>interval</code></td>
-<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a> | <a href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a> | <code>Interval</code> | <a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a></td>
-<td>A tuple or list of start, end and label, or another <a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval"><code>SequenceInterval</code></a></td>
-<td><code>(None, None, None)</code></td>
-</tr>
-</tbody>
-</table>
+<p>In this recipe, we’ll build an AlignedTextGrid “by hand.” The principles will be similar if you were building one programmatically from other kinds of timing and label data.</p>
+<section id="use-append" class="level2">
+<h2 class="anchored" data-anchor-id="use-append">Use append</h2>
+<p>The safest way to go about building an AlignedTextGrid so that you don’t inadvertently start creating copies of your intervals and tiers is to stick to the <code>.append()</code> methods for these various objects.</p>
 </section>
-<section id="examples" class="level2">
-<h2 class="anchored" data-anchor-id="examples">Examples</h2>
-<div id="a0763f29" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> Word, Phone</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>DH <span class="op">=</span> Phone((<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">"DH"</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>AH0 <span class="op">=</span> Phone((<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"AH0"</span>))</span>
+<section id="interval-first-approach" class="level2">
+<h2 class="anchored" data-anchor-id="interval-first-approach">Interval-first approach</h2>
+<p>One way you could go about doing things is to</p>
+<ul>
+<li><p>build up some intervals and set up their super/subset relationships</p></li>
+<li><p>then add the intervals to tiers</p></li>
+<li><p>add the tiers to tiergroups</p></li>
+<li><p>add the tiergroups to textgrids</p></li>
+</ul>
+<p>First, we’ll set up with our imports.</p>
+<div id="43289142" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid, <span class="op">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    TierGroup, <span class="op">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    SequenceTier, <span class="op">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    custom_classes</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>THE <span class="op">=</span> Word((<span class="dv">0</span>, <span class="dv">2</span>, <span class="st">"THE"</span>))</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>DH.set_word(THE)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>AH0.set_word(THE)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    (</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"The phone is </span><span class="sc">{</span>DH<span class="sc">.</span>label<span class="sc">}</span><span class="ss">. "</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"The next phone is </span><span class="sc">{</span>DH<span class="sc">.</span>fol<span class="sc">.</span>label<span class="sc">}</span><span class="ss">. "</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"It is in the word </span><span class="sc">{</span>DH<span class="sc">.</span>inword<span class="sc">.</span>label<span class="sc">}</span><span class="ss">."</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>The phone is DH. The next phone is AH0. It is in the word THE.</code></pre>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Word, Phone <span class="op">=</span> custom_classes([<span class="st">"Word"</span>, <span class="st">"Phone"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="creating-the-intervals" class="level3">
+<h3 class="anchored" data-anchor-id="creating-the-intervals">Creating the intervals</h3>
+<p>Next, we’ll build some words and their phones.</p>
+<div id="d867b255" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>the <span class="op">=</span> Word((<span class="dv">0</span>, <span class="dv">10</span>, <span class="st">"the"</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dog <span class="op">=</span> Word((<span class="dv">10</span>, <span class="dv">25</span>, <span class="st">"dog"</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>DH  <span class="op">=</span> Phone((<span class="dv">0</span>, <span class="dv">5</span>, <span class="st">"DH"</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>AH0 <span class="op">=</span> Phone((<span class="dv">5</span>, <span class="dv">10</span>, <span class="st">"AH0"</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>D   <span class="op">=</span> Phone((<span class="dv">10</span>, <span class="dv">15</span>, <span class="st">"D"</span>))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>AO1 <span class="op">=</span> Phone((<span class="dv">15</span>, <span class="dv">20</span>, <span class="st">"A01"</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>G   <span class="op">=</span> Phone((<span class="dv">20</span>, <span class="dv">25</span>, <span class="st">"G"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="setting-subset-membership" class="level3">
+<h3 class="anchored" data-anchor-id="setting-subset-membership">Setting subset membership</h3>
+<p>Now, we can append the appropriate phones to their words.</p>
+<div id="431e05ff" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> phone <span class="kw">in</span> [DH, AH0]:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    the.append(phone)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> phone <span class="kw">in</span> [D, AO1, G]:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    dog.append(phone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can check to make sure everything got appended right.</p>
+<div id="18008ad2" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the first phone of 'the' is DH</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>the.first <span class="kw">is</span> DH</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>True</code></pre>
+</div>
+</div>
+<div id="da688207" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the last phone of 'dog' is G</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dog.last <span class="kw">is</span> G</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>True</code></pre>
 </div>
 </div>
 </section>
-<section id="attributes" class="level2">
-<h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>inword</td>
-<td><a href="../reference/Word.html#aligned_textgrid.sequences.word_and_phone.Word">Word</a></td>
-<td>The word instance this phone appears in.</td>
-</tr>
-</tbody>
-</table>
+<section id="set-up-the-tiers" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-the-tiers">Set up the tiers</h3>
+<p>Now, we’ll create an empty TierGroup that has a Word and Phone tier.</p>
+<div id="01503d19" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tier_group <span class="op">=</span> TierGroup([</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    SequenceTier(entry_class<span class="op">=</span>Word),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    SequenceTier(entry_class<span class="op">=</span>Phone)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="methods" class="level2">
-<h2 class="anchored" data-anchor-id="methods">Methods</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="#aligned_textgrid.sequences.word_and_phone.Phone.set_word">set_word</a></td>
-<td><em>Convenience function to set word for this Phone</em></td>
-</tr>
-</tbody>
-</table>
-<section id="aligned_textgrid.sequences.word_and_phone.Phone.set_word" class="level3">
-<h3 class="anchored" data-anchor-id="aligned_textgrid.sequences.word_and_phone.Phone.set_word">set_word</h3>
-<p><code>sequences.word_and_phone.Phone.set_word(word)</code></p>
-<p><em>Convenience function to set word for this Phone</em></p>
-<section id="parameters-1" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-1">Parameters</h4>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>word</code></td>
-<td><a href="../reference/Word.html#aligned_textgrid.sequences.word_and_phone.Word">Word</a></td>
-<td>Word instance.</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
-</table>
+<section id="appending-the-intervals" class="level3">
+<h3 class="anchored" data-anchor-id="appending-the-intervals">Appending the intervals</h3>
+<p>If we append <code>the</code> and <code>dog</code> to the Word tier, their phones will now be automatically added to the phone tier.</p>
+<div id="1453f268" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tier_group.Word.append(the)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>tier_group.Word.append(dog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We’ll double check that the phones were automatically appended.</p>
+<div id="025dad38" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tier_group.Phone.labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>['DH', 'AH0', 'D', 'A01', 'G']</code></pre>
+</div>
+</div>
+</section>
+<section id="creating-the-alignedtextgrid" class="level3">
+<h3 class="anchored" data-anchor-id="creating-the-alignedtextgrid">Creating the AlignedTextGrid</h3>
+<p>Now, we can wrap this in an AlignedTextGrid so we can save it to a new TextGrid file, or any other analysis purpose.</p>
+<div id="abd26f2d" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>atg <span class="op">=</span> AlignedTextGrid([tier_group])</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>atg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>AlignedTextGrid with 1 groups named ['group_0'] each with [2] tiers. [['Word', 'Phone']]</code></pre>
+</div>
+</div>
+</section>
+<section id="reference-is-maintained" class="level3">
+<h3 class="anchored" data-anchor-id="reference-is-maintained">Reference is maintained</h3>
+<p>Just to confirm that the reference to all objects has been maintained, let’s double check that our original words and phones are in the textgrid.</p>
+<div id="37889593" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>the <span class="kw">in</span> atg.group_0.Word</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>True</code></pre>
+</div>
+</div>
+<div id="87d198b9" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>AO1 <span class="kw">in</span> atg.group_0.Phone</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>True</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="textgrid-first-approach" class="level2">
+<h2 class="anchored" data-anchor-id="textgrid-first-approach">TextGrid first approach</h2>
+<p>We could also take a TextGrid first approach, and then add each component piece by piece.</p>
+<section id="initializing-the-textgrid" class="level3">
+<h3 class="anchored" data-anchor-id="initializing-the-textgrid">Initializing the TextGrid</h3>
+<div id="f97f11c7" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>atg <span class="op">=</span> AlignedTextGrid()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>atg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>AlignedTextGrid with 0 groups named [] each with [] tiers. []</code></pre>
+</div>
+</div>
+</section>
+<section id="adding-the-tiergroup" class="level3">
+<h3 class="anchored" data-anchor-id="adding-the-tiergroup">Adding the TierGroup</h3>
+<div id="1633af10" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>tier_group <span class="op">=</span> TierGroup([</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    SequenceTier(entry_class<span class="op">=</span>Word),</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    SequenceTier(entry_class<span class="op">=</span>Phone)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>atg.append(tier_group)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>atg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>AlignedTextGrid with 1 groups named ['group_0'] each with [2] tiers. [['Word', 'Phone']]</code></pre>
+</div>
+</div>
+</section>
+<section id="adding-the-intervals" class="level3">
+<h3 class="anchored" data-anchor-id="adding-the-intervals">Adding the Intervals</h3>
+<p>For this part, I’m going to use some pythony tricks to make things a little easier. First the words.</p>
+<div id="73f5f064" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>word_times <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">25</span>]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>word_labels <span class="op">=</span> [<span class="st">"the"</span>, <span class="st">"dog"</span>]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>word_generator <span class="op">=</span> <span class="bu">zip</span>(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    word_times[<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>], </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    word_times[<span class="dv">1</span>:], </span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    word_labels)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> start, end, label <span class="kw">in</span> word_generator:</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    atg.group_0.Word.append(</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        Word((start, end, label))</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now the phones</p>
+<div id="b842aabc" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>phone_times <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>]</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>phone_labels <span class="op">=</span> [<span class="st">"DH"</span>, <span class="st">"AH0"</span>, <span class="st">"D"</span>, <span class="st">"AO1"</span>, <span class="st">"G"</span>]</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>phone_generator <span class="op">=</span> <span class="bu">zip</span>(</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    phone_times[<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>],</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    phone_times[<span class="dv">1</span>:],</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    phone_labels</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> start, end, label <span class="kw">in</span> phone_generator:</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    atg.group_0.Phone.append(</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        Phone((start, end, label))</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="double-checking" class="level3">
+<h3 class="anchored" data-anchor-id="double-checking">Double checking</h3>
+<p>We can double check that everything is properly related.</p>
+<div id="b6e57862" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>new_the <span class="op">=</span> atg.group_0.Word.first</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>new_dog <span class="op">=</span> atg.group_0.Word.last</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>new_the.sub_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>['DH', 'AH0']</code></pre>
+</div>
+</div>
+<div id="4d4070ca" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>new_dog.sub_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>['D', 'AO1', 'G']</code></pre>
+</div>
+</div>
 
 
-</section>
 </section>
 </section>
 
@@ -1253,13 +1061,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../reference/Word.html" class="pagination-link" aria-label="Word">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Word</span>
+      <a href="../cookbook/index.html" class="pagination-link" aria-label="aligned-textgrid cookbook">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">aligned-textgrid cookbook</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../reference/PrStr.html" class="pagination-link" aria-label="PrStr">
-        <span class="nav-page-text">PrStr</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../cookbook/overlaps.html" class="pagination-link" aria-label="Detect Overlaps">
+        <span class="nav-page-text">Detect Overlaps</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
