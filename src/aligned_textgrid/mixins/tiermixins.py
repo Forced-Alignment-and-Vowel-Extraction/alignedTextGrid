@@ -232,7 +232,12 @@ class TierGroupMixins:
                 f"Only a tier of {self._seq_type.__name__} "
                 f"can be appended to a {self.__class__.__name__}"
             ))
-
+        
+        if self.within:
+            self.within._reclone_classes([new.entry_class])
+            new_class, = self.within._swap_classes([new.entry_class], self.within._cloned_classes)
+            new.__init__(new, entry_class=new_class)
+        
         possible_set = {SequenceBaseClass}
         existing_set = set()
         if len(self) > 0:
