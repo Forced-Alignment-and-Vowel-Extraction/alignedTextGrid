@@ -279,7 +279,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>add the tiergroups to textgrids</p></li>
 </ul>
 <p>First, we’ll set up with our imports.</p>
-<div id="8af28527" class="cell" data-execution_count="1">
+<div id="3bf7b39f" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> AlignedTextGrid, <span class="op">\</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    TierGroup, <span class="op">\</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    SequenceTier, <span class="op">\</span></span>
@@ -290,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="creating-the-intervals" class="level3">
 <h3 class="anchored" data-anchor-id="creating-the-intervals">Creating the intervals</h3>
 <p>Next, we’ll build some words and their phones.</p>
-<div id="d460342c" class="cell" data-execution_count="2">
+<div id="574a103d" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>the <span class="op">=</span> Word((<span class="dv">0</span>, <span class="dv">10</span>, <span class="st">"the"</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dog <span class="op">=</span> Word((<span class="dv">10</span>, <span class="dv">25</span>, <span class="st">"dog"</span>))</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -305,7 +305,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="setting-subset-membership" class="level3">
 <h3 class="anchored" data-anchor-id="setting-subset-membership">Setting subset membership</h3>
 <p>Now, we can append the appropriate phones to their words.</p>
-<div id="2602d596" class="cell" data-execution_count="3">
+<div id="48e052ef" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> phone <span class="kw">in</span> [DH, AH0]:</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    the.append(phone)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -313,14 +313,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    dog.append(phone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can check to make sure everything got appended right.</p>
-<div id="4a50024b" class="cell" data-execution_count="4">
+<div id="29f936bd" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the first phone of 'the' is DH</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>the.first <span class="kw">is</span> DH</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>True</code></pre>
 </div>
 </div>
-<div id="4ac44514" class="cell" data-execution_count="5">
+<div id="a83f8411" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the last phone of 'dog' is G</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dog.last <span class="kw">is</span> G</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
@@ -331,7 +331,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="set-up-the-tiers" class="level3">
 <h3 class="anchored" data-anchor-id="set-up-the-tiers">Set up the tiers</h3>
 <p>Now, we’ll create an empty TierGroup that has a Word and Phone tier.</p>
-<div id="80642cd0" class="cell" data-execution_count="6">
+<div id="af40566a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tier_group <span class="op">=</span> TierGroup([</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    SequenceTier(entry_class<span class="op">=</span>Word),</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    SequenceTier(entry_class<span class="op">=</span>Phone)</span>
@@ -341,12 +341,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="appending-the-intervals" class="level3">
 <h3 class="anchored" data-anchor-id="appending-the-intervals">Appending the intervals</h3>
 <p>If we append <code>the</code> and <code>dog</code> to the Word tier, their phones will now be automatically added to the phone tier.</p>
-<div id="8b27bf4e" class="cell" data-execution_count="7">
+<div id="628d7b55" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tier_group.Word.append(the)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>tier_group.Word.append(dog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We’ll double check that the phones were automatically appended.</p>
-<div id="baecfbf5" class="cell" data-execution_count="8">
+<div id="c8aac798" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tier_group.Phone.labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>['DH', 'AH0', 'D', 'A01', 'G']</code></pre>
@@ -356,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="creating-the-alignedtextgrid" class="level3">
 <h3 class="anchored" data-anchor-id="creating-the-alignedtextgrid">Creating the AlignedTextGrid</h3>
 <p>Now, we can wrap this in an AlignedTextGrid so we can save it to a new TextGrid file, or any other analysis purpose.</p>
-<div id="1f5c2f90" class="cell" data-execution_count="9">
+<div id="0838c65c" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>atg <span class="op">=</span> AlignedTextGrid([tier_group])</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>atg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
@@ -367,13 +367,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="reference-is-maintained" class="level3">
 <h3 class="anchored" data-anchor-id="reference-is-maintained">Reference is maintained</h3>
 <p>Just to confirm that the reference to all objects has been maintained, let’s double check that our original words and phones are in the textgrid.</p>
-<div id="fd2eaf96" class="cell" data-execution_count="10">
+<div id="f2c6c001" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>the <span class="kw">in</span> atg.group_0.Word</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>True</code></pre>
 </div>
 </div>
-<div id="ef8b4f85" class="cell" data-execution_count="11">
+<div id="9c5718bb" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>AO1 <span class="kw">in</span> atg.group_0.Phone</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>True</code></pre>
@@ -386,7 +386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We could also take a TextGrid first approach, and then add each component piece by piece.</p>
 <section id="initializing-the-textgrid" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-the-textgrid">Initializing the TextGrid</h3>
-<div id="3e16b2ca" class="cell" data-execution_count="12">
+<div id="91a7a526" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>atg <span class="op">=</span> AlignedTextGrid()</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>atg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
@@ -396,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="adding-the-tiergroup" class="level3">
 <h3 class="anchored" data-anchor-id="adding-the-tiergroup">Adding the TierGroup</h3>
-<div id="c642d5ea" class="cell" data-execution_count="13">
+<div id="3c81b737" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>tier_group <span class="op">=</span> TierGroup([</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    SequenceTier(entry_class<span class="op">=</span>Word),</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    SequenceTier(entry_class<span class="op">=</span>Phone)</span>
@@ -412,7 +412,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="adding-the-intervals" class="level3">
 <h3 class="anchored" data-anchor-id="adding-the-intervals">Adding the Intervals</h3>
 <p>For this part, I’m going to use some pythony tricks to make things a little easier. First the words.</p>
-<div id="f8821d4a" class="cell" data-execution_count="14">
+<div id="4421849d" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>word_times <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">25</span>]</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>word_labels <span class="op">=</span> [<span class="st">"the"</span>, <span class="st">"dog"</span>]</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -427,7 +427,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now the phones</p>
-<div id="0181323b" class="cell" data-execution_count="15">
+<div id="f35deb88" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>phone_times <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>]</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>phone_labels <span class="op">=</span> [<span class="st">"DH"</span>, <span class="st">"AH0"</span>, <span class="st">"D"</span>, <span class="st">"AO1"</span>, <span class="st">"G"</span>]</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -446,7 +446,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="double-checking" class="level3">
 <h3 class="anchored" data-anchor-id="double-checking">Double checking</h3>
 <p>We can double check that everything is properly related.</p>
-<div id="40314d28" class="cell" data-execution_count="16">
+<div id="4bd039df" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>new_the <span class="op">=</span> atg.group_0.Word.first</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>new_dog <span class="op">=</span> atg.group_0.Word.last</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -455,7 +455,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>['DH', 'AH0']</code></pre>
 </div>
 </div>
-<div id="19d49b0b" class="cell" data-execution_count="17">
+<div id="d234bb24" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>new_dog.sub_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <pre><code>['D', 'AO1', 'G']</code></pre>
@@ -464,7 +464,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 <section id="session-info" class="level4 unnumbered unlisted">
 <h4 class="unnumbered unlisted anchored" data-anchor-id="session-info">Session Info</h4>
-<div id="9bf5d046" class="cell" data-execution_count="18">
+<div id="42aa998a" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
@@ -478,8 +478,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Python version: 3.11.9 (main, Jun 20 2024, 16:02:53) [GCC 11.4.0]
-aligned-textgrid version: 0.7.0</code></pre>
+<pre><code>Python version: 3.11.9 (main, May  9 2024, 14:13:20) [GCC 11.4.0]
+aligned-textgrid version: 0.7.4</code></pre>
 </div>
 </div>
 
