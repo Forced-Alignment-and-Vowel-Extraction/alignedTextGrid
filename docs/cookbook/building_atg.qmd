@@ -201,3 +201,6 @@ new_the.sub_labels
 ```{python}
 new_dog.sub_labels
 ```
+
+
+{{< include includes/_session_info.qmd >}}

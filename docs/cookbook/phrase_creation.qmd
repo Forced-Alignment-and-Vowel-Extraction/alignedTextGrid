@@ -122,3 +122,5 @@ pause_durs = np.array([
 
 pause_durs
 ```
+
+{{< include includes/_session_info.qmd >}}
