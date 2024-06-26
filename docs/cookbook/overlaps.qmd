@@ -117,3 +117,5 @@ print(
     f"Overlapper words: {[x.within.label for x in one_phone.overlapper]}"
 )
 ```
+
+{{< include includes/_session_info.qmd >}}
