@@ -28,6 +28,12 @@ jobs:
             poetry run python objects.py            
             poetry run quartodoc interlinks
       - uses: quarto-dev/quarto-actions/setup@v2
+      - name: Load cached quarto freeze
+        id: cached-quarto-freeze
+        uses: actions/cache@v3
+        with:
+            path: docs/_freeze
+            key: ${{ runner.os }}-freeze
       - name: Render and publish to gh pages
         run: |
           git config --global user.email "quarto-github-actions-publish@example.com"
