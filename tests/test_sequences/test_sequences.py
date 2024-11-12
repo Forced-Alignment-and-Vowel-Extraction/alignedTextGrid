@@ -175,19 +175,18 @@ class TestSuperSubClassSetting:
         new_instanceB = self.LocalClassB()
         assert self.pre_instanceA.superset_class is self.LocalClassB
         assert new_instanceA.superset_class is self.LocalClassB
+        assert self.pre_instanceA.superset_class is self.LocalClassB
 
-        assert self.pre_instanceB.subset_class is self.LocalClassA
-        assert new_instanceB.subset_class is self.LocalClassA
-
-
-    def test_postsetting_instances(self):
         try:
             self.pre_instanceA.set_super_instance(self.pre_instanceB)
         except Exception as exc:
             assert False, f"{exc}"
 
         assert self.pre_instanceA.super_instance is self.pre_instanceB
-        assert self.pre_instanceA in self.pre_instanceB.subset_list
+        assert self.pre_instanceA in self.pre_instanceB.subset_list            
+
+        assert self.pre_instanceB.subset_class is self.LocalClassA
+        assert new_instanceB.subset_class is self.LocalClassA
 
 class TestPrecedence:
     class LocalClassA(SequenceInterval):

@@ -33,8 +33,18 @@ class SequenceList(Sequence):
     def __init__(self, *args:SeqVar):
         self._values = []
         self.entry_class = None
-        for arg in args:
-            self.append(arg)
+        if len(args) > 0:
+            pass
+        else:
+            return
+        all_ecs = set([arg.entry_class for arg in args])
+
+        if len(all_ecs) > 1:
+            raise ValueError("All values must have the same class.")
+        
+        self.entry_class = all_ecs.pop()
+        self._values += args
+        self._sort()
 
     def __getitem__(self:Sequence[SeqVar], idx:int)->SeqVar:
         return self._values[idx]
@@ -103,6 +113,7 @@ class SequenceList(Sequence):
     def _entry_class_checker(self, value) -> None:
         if self.entry_class is None:
             self.entry_class = value.entry_class
+            return
         
         if not (issubclass(self.entry_class, value.entry_class) 
                 or issubclass(value.entry_class, self.entry_class)):
@@ -181,7 +192,18 @@ class SequenceList(Sequence):
             increment = self.ends[-1]
         if shift:
             value._shift(increment)
-
+        
+        this_time = 0
+        if hasattr(value, "start"):
+            this_time = value.start
+        elif hasattr(value, "time"):
+            this_time = value.time
+        
+        if len(self.starts) > 0 and all(self.starts):
+            insert_idx = self.starts.searchsorted(this_time)
+            self._values.insert(insert_idx, value)
+            return
+        
         self._values.append(value)
         self._sort()
 
