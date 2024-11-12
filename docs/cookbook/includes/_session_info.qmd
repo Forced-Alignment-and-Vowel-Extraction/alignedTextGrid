@@ -1,0 +1,18 @@
+
+---------
+
+#### Session Info {.unnumbered .unlisted}
+
+```{python}
+#| code-fold: true
+
+import sys
+import aligned_textgrid
+
+print(
+    (
+        f"Python version: {sys.version}\n"
+        f"aligned-textgrid version: {aligned_textgrid.__version__}"
+    )
+)
+```

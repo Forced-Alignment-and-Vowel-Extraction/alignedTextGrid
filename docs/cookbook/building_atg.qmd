@@ -1,0 +1,206 @@
+---
+title: Building an AlignedTextGrid
+author: Josef Fruehwakd
+date: last-modified
+---
+
+In this recipe, we'll build an AlignedTextGrid "by hand." The principles will be similar if 
+you were building one programmatically from other kinds of timing and label data.
+
+## Use append
+
+The safest way to go about building an AlignedTextGrid so that you don't
+inadvertently start creating copies of your intervals and tiers is to stick to
+the `.append()` methods for these various objects.
+
+## Interval-first approach
+
+One way you could go about doing things is to 
+
+- build up some intervals and set up their super/subset relationships
+
+- then add the intervals to tiers
+
+- add the tiers to tiergroups
+
+- add the tiergroups to textgrids
+
+First, we'll set up with our imports.
+```{python}
+from aligned_textgrid import AlignedTextGrid, \
+    TierGroup, \
+    SequenceTier, \
+    custom_classes
+
+Word, Phone = custom_classes(["Word", "Phone"])
+```
+
+### Creating the intervals
+
+Next, we'll build some words and their phones.
+
+```{python}
+the = Word((0, 10, "the"))
+dog = Word((10, 25, "dog"))
+
+DH  = Phone((0, 5, "DH"))
+AH0 = Phone((5, 10, "AH0"))
+
+D   = Phone((10, 15, "D"))
+AO1 = Phone((15, 20, "A01"))
+G   = Phone((20, 25, "G"))
+
+```
+
+### Setting subset membership
+
+Now, we can append the appropriate phones to their words.
+
+```{python}
+for phone in [DH, AH0]:
+    the.append(phone)
+
+for phone in [D, AO1, G]:
+    dog.append(phone)
+```
+
+We can check to make sure everything got appended right.
+
+```{python}
+# the first phone of 'the' is DH
+the.first is DH
+```
+
+```{python}
+# the last phone of 'dog' is G
+dog.last is G
+```
+
+### Set up the tiers
+
+Now, we'll create an empty TierGroup that has a Word and Phone tier.
+
+```{python}
+tier_group = TierGroup([
+    SequenceTier(entry_class=Word),
+    SequenceTier(entry_class=Phone)
+])
+```
+
+### Appending the intervals
+
+If we append `the` and `dog` to the Word tier, their phones will now be automatically added to the phone tier.
+
+```{python}
+tier_group.Word.append(the)
+tier_group.Word.append(dog)
+```
+
+We'll double check that the phones were automatically appended.
+
+```{python}
+tier_group.Phone.labels
+```
+
+### Creating the AlignedTextGrid
+
+Now, we can wrap this in an AlignedTextGrid so we can save it to a new TextGrid file, or any other analysis purpose.
+
+```{python}
+atg = AlignedTextGrid([tier_group])
+atg
+```
+
+### Reference is maintained
+
+Just to confirm that the reference to all objects has been maintained, let's double check that our original words and phones are in the textgrid.
+
+```{python}
+the in atg.group_0.Word
+```
+
+```{python}
+AO1 in atg.group_0.Phone
+```
+
+
+## TextGrid first approach
+
+We could also take a TextGrid first approach, and then add each component piece by piece.
+
+### Initializing the TextGrid
+
+```{python}
+#| warning: false
+atg = AlignedTextGrid()
+atg
+```
+
+
+### Adding the TierGroup
+
+```{python}
+tier_group = TierGroup([
+    SequenceTier(entry_class=Word),
+    SequenceTier(entry_class=Phone)
+])
+
+atg.append(tier_group)
+atg
+```
+
+### Adding the Intervals
+
+For this part, I'm going to use some pythony tricks to make things a little easier. First the words.
+
+```{python}
+word_times = [0,10,25]
+word_labels = ["the", "dog"]
+
+word_generator = zip(
+    word_times[0:-1], 
+    word_times[1:], 
+    word_labels)
+
+for start, end, label in word_generator:
+    atg.group_0.Word.append(
+        Word((start, end, label))
+    )
+```
+
+Now the phones
+
+```{python}
+#| warning: false
+phone_times = [0, 5, 10, 15, 20, 25]
+phone_labels = ["DH", "AH0", "D", "AO1", "G"]
+
+phone_generator = zip(
+    phone_times[0:-1],
+    phone_times[1:],
+    phone_labels
+)
+
+for start, end, label in phone_generator:
+    atg.group_0.Phone.append(
+        Phone((start, end, label))
+    )
+```
+
+### Double checking
+
+We can double check that everything is properly related.
+
+```{python}
+new_the = atg.group_0.Word.first
+new_dog = atg.group_0.Word.last
+
+new_the.sub_labels
+```
+
+```{python}
+new_dog.sub_labels
+```
+
+
+{{< include includes/_session_info.qmd >}}

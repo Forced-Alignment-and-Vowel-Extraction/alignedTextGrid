@@ -3,7 +3,7 @@ Module includes the `SequenceInterval` base class as well as
 `Top` and `Bottom` classes.
 """
 
-import aligned_textgrid
+#import aligned_textgrid
 from praatio.utilities.constants import Interval
 import praatio
 from praatio.data_classes.interval_tier import IntervalTier
@@ -145,13 +145,18 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
                 set as the `super_instance` of all objects in the list.
         """
 
-        self._subset_list = SequenceList()
         if subset_list is None:
             return
+
         if all([isinstance(subint, self.subset_class) for subint in subset_list]):
+            self._subset_list = SequenceList(*subset_list)
             for element in subset_list:
-                self.append_subset_list(element)
-            self._set_within()
+                if not self is element.super_instance:
+                    element.remove_superset()
+                    element.super_instance = self
+
+            #self._set_within()
+            self.contains = self._subset_list
             self._set_subset_precedence()
             #self.validate()
         else:

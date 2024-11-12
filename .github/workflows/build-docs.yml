@@ -18,17 +18,8 @@ jobs:
         with:
             virtualenvs-create: true
             virtualenvs-in-project: true
-            installer-parallel: true
-  
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v3
-        with:
-            path: .venv
-            key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}          
-    
+            installer-parallel: true    
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --with docs
       - name: Quarto Doc Build
         run: |
@@ -37,6 +28,12 @@ jobs:
             poetry run python objects.py            
             poetry run quartodoc interlinks
       - uses: quarto-dev/quarto-actions/setup@v2
+      - name: Load cached quarto freeze
+        id: cached-quarto-freeze
+        uses: actions/cache@v3
+        with:
+            path: docs/_freeze
+            key: ${{ runner.os }}-freeze
       - name: Render and publish to gh pages
         run: |
           git config --global user.email "quarto-github-actions-publish@example.com"
