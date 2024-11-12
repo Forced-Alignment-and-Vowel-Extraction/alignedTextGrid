@@ -147,11 +147,16 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
 
         if subset_list is None:
             return
-        
+
         if all([isinstance(subint, self.subset_class) for subint in subset_list]):
-            self._subset_list = SequenceList()
+            self._subset_list = SequenceList(*subset_list)
             for element in subset_list:
-                self.append_subset_list(element)
+                if not self is element.super_instance:
+                    element.remove_superset()
+                    element.set_super_instance(self)
+
+                # self.append_subset_list(element)
+            
             self._set_within()
             self._set_subset_precedence()
             #self.validate()
