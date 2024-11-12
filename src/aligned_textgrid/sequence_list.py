@@ -111,7 +111,7 @@ class SequenceList(Sequence):
         item_order = np.argsort(self.starts)
         self._values = [self._values[idx] for idx in item_order]
 
-    @wrap(log_class.entering, log_class.exiting)    
+    #@wrap(log_class.entering, log_class.exiting)    
     def _entry_class_checker(self, value) -> None:
         if self.entry_class is None:
             self.entry_class = value.entry_class
