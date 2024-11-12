@@ -153,11 +153,10 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             for element in subset_list:
                 if not self is element.super_instance:
                     element.remove_superset()
-                    element.set_super_instance(self)
+                    element.super_instance = self
 
-                # self.append_subset_list(element)
-            
-            self._set_within()
+            #self._set_within()
+            self.contains = self._subset_list
             self._set_subset_precedence()
             #self.validate()
         else:

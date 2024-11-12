@@ -102,14 +102,16 @@ class SequenceList(Sequence):
         return self._values.__repr__()
             
     def _sort(self)->None:
-        if len(self._values) > 0:
-            if hasattr(self[0], "start"):
-                item_starts = np.array([x.start for x in self._values])
-            if hasattr(self[0], "time"):
-                item_starts = np.array([x.time for x in self._values])
-            item_order = np.argsort(item_starts)
-            self._values = [self._values[idx] for idx in item_order]
-    
+        if len(self._values) < 1:
+            return
+        
+        if np.all(self.starts[:-1] <= self.starts[1:]):
+            return
+
+        item_order = np.argsort(self.starts)
+        self._values = [self._values[idx] for idx in item_order]
+
+    @wrap(log_class.entering, log_class.exiting)    
     def _entry_class_checker(self, value) -> None:
         if self.entry_class is None:
             self.entry_class = value.entry_class
@@ -205,7 +207,6 @@ class SequenceList(Sequence):
             return
         
         self._values.append(value)
-        self._sort()
 
     def concat(self:Sequence[SeqVar], intervals:Sequence[SeqVar])->None:
         """Concatenate two sequence lists
