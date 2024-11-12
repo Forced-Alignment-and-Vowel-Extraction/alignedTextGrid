@@ -8,9 +8,19 @@ from aligned_textgrid.sequence_list import SequenceList
 from aligned_textgrid.custom_classes import custom_classes
 from aligned_textgrid.outputs.to_dataframe import to_df
 
-from importlib.metadata import version 
+from importlib.metadata import version
 
-__version__ = version("aligned_textgrid")
+from pathlib import Path
+import toml
+
+__version__ = "unknown"
+# adopt path to your pyproject.toml
+pyproject_toml_file = Path(__file__).parent.parent.parent / "pyproject.toml"
+if pyproject_toml_file.exists() and pyproject_toml_file.is_file():
+    data = toml.load(pyproject_toml_file)
+    # check project.version
+    if "tool" in data and "poetry" in data["tool"] and "version" in data["tool"]["poetry"]:
+        __version__ = data["tool"]["poetry"]["version"]
 
 __all__ = [
     "SequenceInterval",
