@@ -145,10 +145,11 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
                 set as the `super_instance` of all objects in the list.
         """
 
-        self._subset_list = SequenceList()
         if subset_list is None:
             return
+        
         if all([isinstance(subint, self.subset_class) for subint in subset_list]):
+            self._subset_list = SequenceList()
             for element in subset_list:
                 self.append_subset_list(element)
             self._set_within()
