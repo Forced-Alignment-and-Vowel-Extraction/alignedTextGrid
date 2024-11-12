@@ -20,6 +20,7 @@ praatio = "^6.0.0"
 numpy = "^1.24.2"
 polars = "^0.20.18"
 cloudpickle = "^3.0.0"
+toml = "^0.10.2"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0.0"
