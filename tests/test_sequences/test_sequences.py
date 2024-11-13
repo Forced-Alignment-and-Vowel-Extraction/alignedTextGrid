@@ -586,7 +586,32 @@ class TestFusion:
             ):
             super().__init__(Interval)
 
-    Lower.set_superset_class(Upper)                        
+    Lower.set_superset_class(Upper)
+
+    def test_rightward_alias(self):
+        fuser = self.SampleClass(Interval(0,1,"one"))
+        fusee = self.SampleClass(Interval(1, 2, "two"))
+        fuser.set_fol(fusee)
+
+        try:
+            fuser.fuse_rightward(label_fun = lambda x, y: x + "." + y)
+        except:
+            assert False
+
+        assert fuser.label == "one.two"
+
+    def test_leftward_alias(self):
+        fusee = self.SampleClass(Interval(0,1,"one"))
+        fuser = self.SampleClass(Interval(1, 2, "two"))
+        fuser.set_prev(fusee)
+
+        try:
+            fuser.fuse_leftward(label_fun = lambda x, y: x + "." + y)
+        except:
+            assert False
+
+        assert fuser.label == "one.two"        
+
 
     def test_rightwards_simple(self):
         fuser = self.SampleClass(Interval(0,1,"one"))
