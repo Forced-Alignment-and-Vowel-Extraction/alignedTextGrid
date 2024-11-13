@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aligned_textgrid"
-version = "0.7.5"
+version = "0.7.6"
 description = "Classes for defining sequential information from TextGrids"
 authors = ["JoFrhwld <JoFrhwld@gmail.com>", "chrisbrickhouse <brickhouse@stanford.edu>"]
 license = "GPL-3.0-or-later"
