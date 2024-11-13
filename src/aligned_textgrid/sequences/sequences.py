@@ -629,12 +629,14 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
                     fuser.super_instance.subset_list.remove(fusee)                    
         else:
             raise Exception("Cannot fuse leftwards at right edge")
+        
+        return self
     
-    def fuse_rightward(self)->None:
-        self.fuse_rightwards()
+    def fuse_rightward(self, *args, **kwargs)->None:
+        self.fuse_rightwards(*args, **kwargs)
 
-    def fuse_leftward(self)->None:
-        self.fuse_leftwards()        
+    def fuse_leftward(self, *args, **kwargs)->None:
+        self.fuse_leftwards(*args, **kwargs)        
 
     ## Extensions and Saving
     def set_feature(
