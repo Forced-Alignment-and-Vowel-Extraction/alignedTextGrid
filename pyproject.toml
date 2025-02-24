@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aligned_textgrid"
-version = "0.7.7"
+version = "0.7.8"
 description = "Classes for defining sequential information from TextGrids"
 authors = ["JoFrhwld <JoFrhwld@gmail.com>", "chrisbrickhouse <brickhouse@stanford.edu>"]
 license = "GPL-3.0-or-later"
@@ -20,7 +20,7 @@ praatio = "^6.0.0"
 cloudpickle = "^3.0.0"
 toml = "^0.10.2"
 polars = "^1.23.0"
-numpy = "^2.2.3"
+numpy = "^2.1.0"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0.0"
