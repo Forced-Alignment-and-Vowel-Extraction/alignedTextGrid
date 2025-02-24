@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aligned_textgrid"
-version = "0.7.6"
+version = "0.7.7"
 description = "Classes for defining sequential information from TextGrids"
 authors = ["JoFrhwld <JoFrhwld@gmail.com>", "chrisbrickhouse <brickhouse@stanford.edu>"]
 license = "GPL-3.0-or-later"
@@ -17,10 +17,10 @@ repository = "https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTe
 [tool.poetry.dependencies]
 python = "^3.10"
 praatio = "^6.0.0"
-numpy = "^1.24.2"
-polars = "^0.20.18"
 cloudpickle = "^3.0.0"
 toml = "^0.10.2"
+polars = "^1.23.0"
+numpy = "^2.2.3"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0.0"
