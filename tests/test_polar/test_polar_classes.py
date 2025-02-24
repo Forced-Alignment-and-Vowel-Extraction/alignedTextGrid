@@ -73,7 +73,7 @@ class TestPolarClasses:
         assert all(is_sequence)
 
         all_lows = [x.low for x in self.ptg.Ranges]
-        is_float = [isinstance(x, np.float_) for x in all_lows]
+        is_float = [isinstance(x, np.floating) for x in all_lows]
         assert all(is_float)
 
         is_number = [not np.isnan(x) for x in all_lows]
