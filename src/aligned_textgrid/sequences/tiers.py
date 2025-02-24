@@ -128,6 +128,17 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
 
 
     def __getitem__(self, idx:int)->SequenceInterval:
+        if idx >= len(self.sequence_list) or idx < -len(self.sequence_list):
+            warnings.warn(
+                (
+                    f"Provided index ({idx}) "
+                    f"to object {self.__class__.__name__} "
+                    "is out of range."
+                ),
+                category = RuntimeWarning,
+            )
+            return None
+        
         return self.sequence_list[idx]
 
     def __len__(self)->int:
