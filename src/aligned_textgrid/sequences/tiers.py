@@ -253,6 +253,9 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
                 self.entry_class((this_end, next_start, ""))
             ]
 
+            for interval in self:
+                interval.cleanup()
+
         if self.within:
             self.within.re_relate()
 
@@ -376,22 +379,31 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
                 lower_durations = (lower_ends - lower_starts)
 
                 overlaps = (mins-maxes)
+                
+                if overlaps.size < 1:
+                    continue
                 max_overlaps = overlaps.max(axis = 1)
 
                 upper_container = overlaps.argmax(axis = 1)
                 lower_idx = np.arange(len(lower_tier))
 
-                starts = np.array([
+                _starts = np.array([
                     lower_idx[upper_container==idx].min()
+                    if (upper_container == idx).sum() > 0
+                    else -1
                     for idx in range(len(upper_tier))
                 ])
 
-                ends = np.array([
+                _ends = np.array([
                     lower_idx[upper_container==idx].max()+1
+                    if (upper_container == idx).sum() > 0
+                    else -1
                     for idx in range(len(upper_tier))
                 ])
 
-
+                starts = np.ma.masked_array(_starts, _starts < 0)
+                ends = np.ma.masked_array(_ends, _ends < 0)
+                
                 mismatches = lower_durations - max_overlaps
                 any_mismatch = bool(np.any(mismatches > 0))
 
@@ -407,14 +419,14 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
                         f"The largest mismatch was {float(mismatches.max()):.3f}s"
                     )
 
-                # starts = np.searchsorted(lower_starts, upper_starts, side = "left")
-                # ends = np.searchsorted(lower_ends, upper_ends, side = "right")
-                # if not np.all(starts[1:] == ends[:-1]):
-                #     warnings.warn("Some intervals on subset tier have no superset instance")
-
-                lower_sequences = [
-                    lower_tier[starts[idx]:ends[idx]] for idx,_ in enumerate(upper_tier)
-                ]
+                lower_sequences = []
+                for idx, _ in enumerate(upper_tier):
+                    if np.ma.is_masked(starts[idx]):
+                        lower_sequences.append([])
+                    else:
+                        lower_sequences.append(
+                            lower_tier[starts[idx]:ends[idx]]
+                        )
                 
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)

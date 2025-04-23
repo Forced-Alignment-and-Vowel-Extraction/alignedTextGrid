@@ -534,16 +534,18 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
         return self.__class__
     
     def cleanup(self)->None:
-        if isinstance(self.subset_class, Bottom):
+        if issubclass(self.subset_class, Bottom):
             return
         if not len(self.subset_list) > 0:
+            new = self.subset_class((
+                self.start,
+                self.end,
+                ""
+            ))
             self.append(
-                self.subset_class((
-                    self.start,
-                    self.end,
-                    ""
-                ))
+                new
             )
+            new.cleanup()
             return
         
         to_add = SequenceList()
