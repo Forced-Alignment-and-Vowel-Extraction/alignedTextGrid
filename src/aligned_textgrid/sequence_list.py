@@ -239,7 +239,10 @@ class SequenceList(Sequence):
             x (SequenceInterval):
                 The SequenceInterval to remove.
         """
-        self._values.remove(x)
+        self_tuples = [tuple(x.return_praatio()) for x in self]
+        x_tuple = tuple(x.return_praatio())        
+        pop_idx = self_tuples.index(x_tuple)
+        self._values.pop(pop_idx)
         if hasattr(x, "super_instance"):
             x.remove_superset()
 
@@ -251,8 +254,9 @@ class SequenceList(Sequence):
                 SequenceInterval to pop
         """
         if x in self:
-            pop_idx = self.index(x)
+            self_tuples = [tuple(x.return_praatio()) for x in self]
+            x_tuple = tuple(x.return_praatio())        
+            pop_idx = self_tuples.index(x_tuple)
             self._values.pop(pop_idx)
             if hasattr(x, "super_instance"):
-                print("removing")
                 x.remove_superset()

@@ -247,7 +247,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         for s,e in zip(new_starts, new_ends):
             new = self.entry_class((s, e, ""))
             self.sequence_list.append(new)
-        
+
         if issubclass(self.subset_class, Bottom):
             if self.within:
                 self.within.re_relate()
@@ -468,18 +468,32 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
                                 lowers[0].entry_class((s, e, ""))
                             )
 
+                u_durs = np.array([
+                    u.end - u.start
+                    for u in upper_tier
+                ])
+
+                l_durs = np.array([
+                    (l.ends - l.starts).sum()
+                    for l in lower_sequences
+                ])
+
+                squish = not np.allclose(u_durs, l_durs)
+
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
-                    if not any_mismatch:
-                        continue
 
-                    s_start = np.array([u.start, u.first.start]).max()
-                    s_end = np.array([u.end, u.last.end]).min()
 
-                    u.start = s_start
-                    u.first.start = s_start
-                    u.end = s_end
-                    u.last.end = s_end
+                    if any_mismatch:
+                        s_start = np.array([u.start, u.first.start]).max()
+                        s_end = np.array([u.end, u.last.end]).min()
+                        u.start = s_start
+                        u.first.start = s_start
+                        u.end = s_end
+                        u.last.end = s_end
+                    
+                    if squish:
+                        u.cleanup()
     
     def __getitem__(
             self,
