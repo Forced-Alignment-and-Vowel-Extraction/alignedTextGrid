@@ -141,6 +141,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
         tg_tiers, entry_classes = self._nestify_tiers(tg, entry_classes)
         tier_groups = self._relate_tiers(tg_tiers, entry_classes)
         self.tier_groups = tier_groups
+        self.cleanup()
 
 
     def _extend_classes(
@@ -460,7 +461,8 @@ class AlignedTextGrid(Sequence, WithinMixins):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             for tg in self.tier_groups:
-                tg.cleanup()
+                if isinstance(tg, TierGroup):
+                    tg.cleanup()
             
             interval_tgs = [tg for tg in self if isinstance(tg, TierGroup)]
             tg_starts = np.array([tg.xmin for tg in interval_tgs])

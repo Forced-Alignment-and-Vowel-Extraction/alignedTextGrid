@@ -551,19 +551,37 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
         This will fill any gaps between intervals with intervals
         with an empty label.
         """
-        for idx, tier in enumerate(self):
-            if issubclass(tier.subset_class, Bottom):
-                break
+        not_tight = False
+        
+        for tier in self:
+            starts = tier.starts
+            ends = tier.ends
 
-            for interval in tier:
-                interval.cleanup()
+            if not np.allclose(
+                starts[1:], ends[:-1]
+            ):
+                not_tight = True
+        
+        if not not_tight:
+            print(not_tight)
+            return
+        
+        for tier in self:
+            tier.cleanup()
+
+        # for idx, tier in enumerate(self):
+        #     if issubclass(tier.subset_class, Bottom):
+        #         break
+
+        #     for interval in tier:
+        #         interval.cleanup()
         
         for idx, tier in enumerate(reversed(self)):
             for interval in tier:
                 self._project_up(interval)
 
-        for tier in self:
-            tier.cleanup()
+        # for tier in self:
+        #     tier.cleanup()
         
         self.re_relate()
 
