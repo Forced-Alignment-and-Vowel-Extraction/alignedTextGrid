@@ -246,7 +246,6 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         new_ends = boundaries[1:][~np.isin(boundaries[1:], self.ends)]
         for s,e in zip(new_starts, new_ends):
             new = self.entry_class((s, e, ""))
-            print("appending empty")
             self.sequence_list.append(new)
         
         if issubclass(self.subset_class, Bottom):
