@@ -47,9 +47,11 @@ class TestSequenceTierDefault:
     def test_default_xmax(self):
         assert self.default_tier.xmax is None
 
-    def test_default_getitme(self):
-        with pytest.raises(IndexError):
+    def test_default_getitem(self):
+        with pytest.warns(RuntimeWarning):
             _ = self.default_tier[0]
+
+    
 
 class TestTierMaking:
 
