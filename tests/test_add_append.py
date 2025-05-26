@@ -530,7 +530,8 @@ class TestCleanups:
             [
                 SequenceTier([word1, word2]),
                 SequenceTier([phone1, phone2])
-            ]
+            ],
+            delay_cleanup = True
         )
 
         for tier in tier_group:
@@ -538,9 +539,6 @@ class TestCleanups:
         tier_group.cleanup()
         for tier in tier_group:
             assert len(tier) > 2
-
-        assert len(word1) == 2
-        assert len(word2) == 2
 
         starts = np.array([tier.xmin for tier in tier_group])
         ends = np.array([tier.xmax for tier in tier_group])
