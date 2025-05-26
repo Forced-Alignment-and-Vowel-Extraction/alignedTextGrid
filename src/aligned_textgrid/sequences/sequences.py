@@ -111,7 +111,7 @@ class InstanceMixins(HierarchyMixins, WithinMixins):
             self.subset_list += [other]
             if self.intier and self.intier.within:
                 self_tier_idx = self.intier.within_index
-                self.intier.within[self_tier_idx+1].append(other)
+                self.intier.within[self_tier_idx+1].append(other, re_relate = False)
             return
         raise ValueError("Appended SequenceInterval must be the subset class of the original.")
 
@@ -533,35 +533,47 @@ class SequenceInterval(SequenceBaseClass, InstanceMixins, InTierMixins, Preceden
     def entry_class(self)->type['SequenceInterval']:
         return self.__class__
     
-    def cleanup(self)->None:
-        if isinstance(self.subset_class, Bottom):
+    def cleanup(self, internal=True)->None:
+
+        # If at Bottom, don't build down
+        if issubclass(self.subset_class, Bottom):
             return
-        if not len(self.subset_list) > 0:
+        
+        # If empty subset list,
+        # create co-terminous interval and append.
+        if len(self.subset_list) < 1:
+            new = self.subset_class((
+                self.start,
+                self.end,
+                ""
+            ))
             self.append(
-                self.subset_class((
-                    self.start,
-                    self.end,
-                    ""
-                ))
+                new
             )
+
+            # Drill down to Bottom
+            new.cleanup()
             return
+        
+        if not internal: 
+            return 
         
         to_add = SequenceList()
 
-        if not np.allclose(self.start, self.sub_starts[0]):
-            new_interval = self.subset_class((self.start, self.sub_starts[0], ""))
+        if not np.allclose(self.start, self.first.start):
+            new_interval = self.subset_class((self.start, self.first.start, ""))
             to_add += [new_interval]
         
-        if not np.allclose(self.end, self.sub_ends[-1]):
-            new_interval = self.subset_class((self.sub_ends[-1], self.end, ""))
+        if not np.allclose(self.end, self.last.end):
+            new_interval = self.subset_class((self.last.end, self.end, ""))
             to_add += [new_interval]
 
         for idx, interval in enumerate(self.subset_list):
             if idx + 1 == len(self):
                 break
 
-            if not np.allclose(interval.end, self.subset_list[idx+1].start):
-                new_interval = self.subset_class((interval.end,self.subset_list[idx+1].start, ""))
+            if not np.allclose(interval.end, self[idx+1].start):
+                new_interval = self.subset_class((interval.end,self[idx+1].start, ""))
                 to_add += [new_interval]
             
         for interval in to_add:
