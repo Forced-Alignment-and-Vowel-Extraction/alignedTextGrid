@@ -158,23 +158,6 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         """
         entry.intier = self
         entry.tiername = self.name
-    
-    def _project_up(self, interval:SequenceInterval)->None:
-        """
-        Copy super instance up
-        """
-        if issubclass(interval.superset_class, Top):
-            return
-        up_index = interval.intier.within_index - 1
-        up_tier:SequenceTier = interval.intier.within[up_index]
-        midp = interval.start + (interval.duration/2)
-        if not up_tier.get_interval_at_time(midp) is None:
-            return
-        new_interval = up_tier.entry_class((
-            interval.start,
-            interval.end,
-            ""
-        ))
         
     def pop(
             self,
