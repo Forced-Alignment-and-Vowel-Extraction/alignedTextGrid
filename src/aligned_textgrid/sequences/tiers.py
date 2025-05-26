@@ -363,7 +363,8 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     """
     def __init__(
         self,
-        tiers: list[SequenceTier]|Self = [SequenceTier()]
+        tiers: list[SequenceTier]|Self = [SequenceTier()],
+        delay_cleanup = False
     ):
         name = None        
         if hasattr(tiers, "name"):
@@ -483,8 +484,12 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
 
+                    if len(u) == 0:
+                        u.append(
+                            u.subset_class((u.start, u.end, ""))
+                        )
 
-                    if any_mismatch:
+                    if any_mismatch and not delay_cleanup:
                         s_start = np.array([u.start, u.first.start]).max()
                         s_end = np.array([u.end, u.last.end]).min()
                         u.start = s_start
@@ -492,7 +497,7 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
                         u.end = s_end
                         u.last.end = s_end
                     
-                    if squish:
+                    if squish and not delay_cleanup:
                         u.cleanup()
     
     def __getitem__(
