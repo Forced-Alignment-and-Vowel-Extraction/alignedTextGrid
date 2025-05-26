@@ -4,8 +4,10 @@ Module containing AlignedTextGrid class
 
 from praatio.utilities.constants import Interval
 from praatio.data_classes.interval_tier import IntervalTier
+from praatio.data_classes.point_tier import PointTier
 from praatio.data_classes.textgrid import Textgrid
 from praatio.textgrid import openTextgrid
+from aligned_textgrid.mixins.mixins import SequenceBaseClass
 from aligned_textgrid.sequences.sequences import SequenceInterval, Top, Bottom
 from aligned_textgrid.points.points import SequencePoint
 from aligned_textgrid.sequences.tiers import SequenceTier, TierGroup
@@ -141,13 +143,14 @@ class AlignedTextGrid(Sequence, WithinMixins):
         tg_tiers, entry_classes = self._nestify_tiers(tg, entry_classes)
         tier_groups = self._relate_tiers(tg_tiers, entry_classes)
         self.tier_groups = tier_groups
+        self.cleanup()
 
 
     def _extend_classes(
             self, 
             tg: Textgrid, 
             entry_classes
-        ):
+        ) -> list[list[Type[SequenceBaseClass]]]:
         """summary
 
         Args:
@@ -240,7 +243,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
         self,
         textgrid: Textgrid,
         entry_classes: list
-    ):
+    )->tuple[list[list[IntervalTier|PointTier]], list[list[Type[SequenceBaseClass]]]]:
         """_private method to nestify tiers_
 
         Takes a flat list of tiers and nests them according to 
@@ -303,7 +306,11 @@ class AlignedTextGrid(Sequence, WithinMixins):
         
         return tier_list, entry_list
 
-    def _relate_tiers(self, tg_tiers, entry_classes):
+    def _relate_tiers(
+            self, 
+            tg_tiers: list[list[IntervalTier|PointTier]], 
+            entry_classes: list[list[Type[SequenceBaseClass]]]
+        )->list[TierGroup|PointsGroup]:
         """_Private method_
 
         creates RelatedTier objects for each set of
@@ -315,6 +322,8 @@ class AlignedTextGrid(Sequence, WithinMixins):
 
         tier_groups = []
         self._reclone_classes(entry_classes)
+        # This check seems overly cautious, since 
+        # _nestify_tiers should always return a list of lists.
         if type(entry_classes[0]) is list:
             entry_classes = [self._swap_classes(ecs, self._cloned_classes) for ecs in entry_classes]
         else:
@@ -460,7 +469,8 @@ class AlignedTextGrid(Sequence, WithinMixins):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             for tg in self.tier_groups:
-                tg.cleanup()
+                if isinstance(tg, TierGroup):
+                    tg.cleanup()
             
             interval_tgs = [tg for tg in self if isinstance(tg, TierGroup)]
             tg_starts = np.array([tg.xmin for tg in interval_tgs])
@@ -481,7 +491,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
 
                 empty_intervals = [c((start, end, "")) for c in tg_classes]
                 for tier, interval in zip(tg, empty_intervals):
-                    tier.append(interval)
+                    tier.append(interval, re_relate = False)
 
                 
             for tg in self.tier_groups:
@@ -495,7 +505,10 @@ class AlignedTextGrid(Sequence, WithinMixins):
                 
                 empty_intervals = [c((start, end, "")) for c in tg_classes]
                 for tier, interval in zip(tg, empty_intervals):
-                    tier.append(interval)
+                    tier.append(interval, re_relate = False)
+            
+            # for tg in self.tier_groups:
+            #     tg.re_relate()
                 
     def shift(
             self,

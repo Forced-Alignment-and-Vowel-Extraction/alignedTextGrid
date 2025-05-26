@@ -11,6 +11,7 @@ from aligned_textgrid.mixins.tiermixins import TierMixins, TierGroupMixins
 from aligned_textgrid.mixins.within import WithinMixins
 from aligned_textgrid.sequence_list import SequenceList
 import numpy as np
+import numpy.typing as npt
 from typing import Type
 from collections.abc import Sequence
 
@@ -157,7 +158,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         """
         entry.intier = self
         entry.tiername = self.name
-    
+        
     def pop(
             self,
             entry:SequenceInterval
@@ -188,11 +189,11 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         self.__set_precedence()        
 
     @property
-    def starts(self)->np.array:
+    def starts(self)->npt.NDArray:
         return np.array([x.start for x in self.sequence_list])
     
     @starts.setter
-    def starts(self, times):
+    def starts(self, times:npt.NDArray):
         if not len(self.sequence_list) == len(times):
             raise Exception("There aren't the same number of new start times as intervals")
         
@@ -200,11 +201,11 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
             i.start = t
 
     @property
-    def ends(self)->np.array:
+    def ends(self)->npt.NDArray:
         return np.array([x.end for x in self.sequence_list])
 
     @ends.setter
-    def ends(self, times):
+    def ends(self, times:npt.NDArray):
         if not len(self.sequence_list) == len(times):
             raise Exception("There aren't the same number of new start times as intervals")
         
@@ -236,25 +237,52 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
     def cleanup(self)->None:
         """
         Insert empty intervals where there are gaps in the existing tier.
-        """
-        existing_intervals = self.sequence_list
-        for i in range(len(existing_intervals)):
-            if i+1 == len(existing_intervals):
-                break
+        """            
+        if np.allclose(self.starts[1:], self.ends[:-1]):
+            return
+        
+        boundaries = np.unique(np.concatenate([self.starts, self.ends]))
+        new_starts = boundaries[:-1][~np.isin(boundaries[:-1], self.starts)]
+        new_ends = boundaries[1:][~np.isin(boundaries[1:], self.ends)]
+        for s,e in zip(new_starts, new_ends):
+            new = self.entry_class((s, e, ""))
+            self.sequence_list.append(new)
 
-            this_end = existing_intervals[i].end
-            next_start = existing_intervals[i+1].start
-            
-            if np.allclose(this_end, next_start):
-                continue
-            
-            ## triggers precedence resetting
-            self.sequence_list += [
-                self.entry_class((this_end, next_start, ""))
-            ]
-
+        if issubclass(self.subset_class, Bottom):
+            if self.within:
+                self.within.re_relate()
+                return
+        
         if self.within:
-            self.within.re_relate()
+            next_tier = self.within[self.within_index+1]
+            next_tier.cleanup()
+
+        # existing_intervals = self.sequence_list
+
+        # n_existing = len(existing_intervals)
+        # for i in range(len(existing_intervals)):
+        #     if i+1 == len(existing_intervals):
+        #         break
+
+        #     this_end = existing_intervals[i].end
+        #     next_start = existing_intervals[i+1].start
+            
+        #     if np.allclose(this_end, next_start):
+        #         continue
+            
+        #     ## triggers precedence resetting
+        #     self.sequence_list += [
+        #         self.entry_class((this_end, next_start, ""))
+        #     ]
+
+        # if n_existing == len(self.sequence_list):
+        #     return
+
+        # for interval in self:
+        #     interval.cleanup()
+
+        # if self.within:
+        #     self.within.re_relate()
 
     def get_interval_at_time(
             self, 
@@ -335,7 +363,8 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
     """
     def __init__(
         self,
-        tiers: list[SequenceTier]|Self = [SequenceTier()]
+        tiers: list[SequenceTier]|Self = [SequenceTier()],
+        delay_cleanup = False
     ):
         name = None        
         if hasattr(tiers, "name"):
@@ -358,28 +387,119 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
                     
                     entry.remove_superset()
         #self.entry_classes = [x.__class__ for x in self.tier_list]
-        for idx, tier in enumerate(self.tier_list):
-            if idx == len(self.tier_list)-1:
+        for tidx, tier in enumerate(self.tier_list):
+            if tidx == len(self.tier_list)-1:
                 break
             else:
-                upper_tier = self.tier_list[idx]
-                lower_tier = self.tier_list[idx+1]
+                upper_tier = self.tier_list[tidx]
+                lower_tier = self.tier_list[tidx+1]
 
                 upper_starts = upper_tier.starts
                 upper_ends = upper_tier.ends
                 lower_starts = lower_tier.starts
                 lower_ends = lower_tier.ends
-                
-                starts = np.searchsorted(lower_starts, upper_starts, side = "left")
-                ends = np.searchsorted(lower_ends, upper_ends, side = "right")
-                if not np.all(starts[1:] == ends[:-1]):
-                    warnings.warn("Some intervals on subset tier have no superset instance")
 
-                lower_sequences = [lower_tier[starts[idx]:ends[idx]] for idx,_ in enumerate(upper_tier)]
+                # This calculates how much each pairwise
+                # comparison of intervals overlap
+                mins = np.minimum.outer(lower_ends, upper_ends)
+                maxes = np.maximum.outer(lower_starts, upper_starts)
+                overlaps = (mins-maxes)
+
+                if overlaps.size < 1:
+                    continue
+
+                max_overlaps = overlaps.max(axis = 1)
+                lower_durations = (lower_ends - lower_starts)
+
+                # For each lower interval
+                # get the index of the upper interval
+                # it has the most overlap with.
+                upper_container = overlaps.argmax(axis = 1)
+                lower_idx = np.arange(len(lower_tier))
+
+                _starts = np.array([
+                    lower_idx[upper_container==idx].min()
+                    if (upper_container == idx).sum() > 0
+                    else -1
+                    for idx in range(len(upper_tier))
+                ])
+
+                _ends = np.array([
+                    lower_idx[upper_container==idx].max()+1
+                    if (upper_container == idx).sum() > 0
+                    else -1
+                    for idx in range(len(upper_tier))
+                ])
+
+                starts = np.ma.masked_array(_starts, _starts < 0)
+                ends = np.ma.masked_array(_ends, _ends < 0)
                 
+                mismatches = lower_durations - max_overlaps
+                any_mismatch = bool(np.any(mismatches > 0))
+
+                # any_mismatch = bool(np.any(start_match > 0))
+
+                if any_mismatch:
+                    mismatches = mismatches[mismatches>0]
+                    warnings.warn(
+                        f"There were {mismatches.size} boundaries "
+                        f"between a {upper_tier.entry_class.__name__} tier and "
+                        f"and a {lower_tier.entry_class.__name__} "
+                        "that didn't exactly match. "
+                        f"The largest mismatch was {float(mismatches.max()):.3f}s"
+                    )
+
+                lower_sequences = []
+                for idx, _ in enumerate(upper_tier):
+                    if np.ma.is_masked(starts[idx]):
+                        lower_sequences.append(SequenceList())
+                    else:
+                        lower_sequences.append(
+                            SequenceList(*lower_tier[starts[idx]:ends[idx]])
+                        )
+
+                # Close internal gaps
+                for lowers in lower_sequences:
+                    if not np.allclose(lowers.starts[1:], lowers.ends[:1]):
+                        boundaries = np.unique(np.concat([lowers.starts, lowers.ends]))
+                        new_starts = boundaries[:-1][~np.isin(boundaries[:-1], lowers.starts)]
+                        new_ends = boundaries[1:][~np.isin(boundaries[1:], lowers.ends)]
+                        for s, e in zip(new_starts, new_ends):
+                            lowers.append(
+                                lowers[0].entry_class((s, e, ""))
+                            )
+
+                u_durs = np.array([
+                    u.end - u.start
+                    for u in upper_tier
+                ])
+
+                l_durs = np.array([
+                    (l.ends - l.starts).sum()
+                    for l in lower_sequences
+                ])
+
+                squish = not np.allclose(u_durs, l_durs)
+
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
-                    u.validate()
+                    if len(u) == 0:
+                        new =  u.subset_class((u.start, u.end, ""))
+                        u.append(
+                           new
+                        )
+                        lower_tier.append(new, re_relate = False)
+                        
+                    if any_mismatch and not delay_cleanup:
+                        s_start = np.array([u.start, u.first.start]).max()
+                        s_end = np.array([u.end, u.last.end]).min()
+                        u.start = s_start
+                        u.first.start = s_start
+                        u.end = s_end
+                        u.last.end = s_end
+                    
+                    if squish and not delay_cleanup:
+                        u.cleanup()
     
     def __getitem__(
             self,
@@ -484,24 +604,41 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
             ""
         ))
 
-        up_tier.append(new_interval)
+        up_tier.append(new_interval, re_relate = False)
         
     def cleanup(self) -> None:
         """
         This will fill any gaps between intervals with intervals
         with an empty label.
         """
-        for idx, tier in enumerate(self):
-            if issubclass(tier.subset_class, Bottom):
-                break
-
-            for interval in tier:
-                interval.cleanup()
+        not_tight = False
         
-        for idx, tier in enumerate(reversed(self)):
-            for interval in tier:
-                self._project_up(interval)
+        for tier in self:
+            starts = tier.starts
+            ends = tier.ends
 
+            if not np.allclose(
+                starts[1:], ends[:-1]
+            ):
+                not_tight = True
+
+            if issubclass(tier.entry_class, Top):
+                continue
+
+            any_orphans = any([
+                not i.within
+                for i in tier
+            ])
+
+            if any_orphans:
+                for i in tier:
+                    if not i.within:
+                        self._project_up(i)
+                self.re_relate()        
+
+        if not not_tight:
+            return
+        
         for tier in self:
             tier.cleanup()
         
