@@ -491,7 +491,7 @@ class AlignedTextGrid(Sequence, WithinMixins):
 
                 empty_intervals = [c((start, end, "")) for c in tg_classes]
                 for tier, interval in zip(tg, empty_intervals):
-                    tier.append(interval)
+                    tier.append(interval, re_relate = False)
 
                 
             for tg in self.tier_groups:
@@ -505,7 +505,10 @@ class AlignedTextGrid(Sequence, WithinMixins):
                 
                 empty_intervals = [c((start, end, "")) for c in tg_classes]
                 for tier, interval in zip(tg, empty_intervals):
-                    tier.append(interval)
+                    tier.append(interval, re_relate = False)
+            
+            # for tg in self.tier_groups:
+            #     tg.re_relate()
                 
     def shift(
             self,

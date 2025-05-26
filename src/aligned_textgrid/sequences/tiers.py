@@ -159,6 +159,23 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         entry.intier = self
         entry.tiername = self.name
     
+    def _project_up(self, interval:SequenceInterval)->None:
+        """
+        Copy super instance up
+        """
+        if issubclass(interval.superset_class, Top):
+            return
+        up_index = interval.intier.within_index - 1
+        up_tier:SequenceTier = interval.intier.within[up_index]
+        midp = interval.start + (interval.duration/2)
+        if not up_tier.get_interval_at_time(midp) is None:
+            return
+        new_interval = up_tier.entry_class((
+            interval.start,
+            interval.end,
+            ""
+        ))
+        
     def pop(
             self,
             entry:SequenceInterval
@@ -251,7 +268,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         if issubclass(self.subset_class, Bottom):
             if self.within:
                 self.within.re_relate()
-            return
+                return
         
         if self.within:
             next_tier = self.within[self.within_index+1]
@@ -387,12 +404,12 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
                     
                     entry.remove_superset()
         #self.entry_classes = [x.__class__ for x in self.tier_list]
-        for idx, tier in enumerate(self.tier_list):
-            if idx == len(self.tier_list)-1:
+        for tidx, tier in enumerate(self.tier_list):
+            if tidx == len(self.tier_list)-1:
                 break
             else:
-                upper_tier = self.tier_list[idx]
-                lower_tier = self.tier_list[idx+1]
+                upper_tier = self.tier_list[tidx]
+                lower_tier = self.tier_list[tidx+1]
 
                 upper_starts = upper_tier.starts
                 upper_ends = upper_tier.ends
@@ -483,12 +500,13 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
 
                 for u,l in zip(upper_tier, lower_sequences):
                     u.set_subset_list(l)
-
                     if len(u) == 0:
+                        new =  u.subset_class((u.start, u.end, ""))
                         u.append(
-                            u.subset_class((u.start, u.end, ""))
+                           new
                         )
-
+                        lower_tier.append(new, re_relate = False)
+                        
                     if any_mismatch and not delay_cleanup:
                         s_start = np.array([u.start, u.first.start]).max()
                         s_end = np.array([u.end, u.last.end]).min()
@@ -603,7 +621,7 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
             ""
         ))
 
-        up_tier.append(new_interval)
+        up_tier.append(new_interval, re_relate = False)
         
     def cleanup(self) -> None:
         """
@@ -620,26 +638,26 @@ class TierGroup(Sequence,TierGroupMixins, WithinMixins):
                 starts[1:], ends[:-1]
             ):
                 not_tight = True
-        
+
+            if issubclass(tier.entry_class, Top):
+                continue
+
+            any_orphans = any([
+                not i.within
+                for i in tier
+            ])
+
+            if any_orphans:
+                for i in tier:
+                    if not i.within:
+                        self._project_up(i)
+                self.re_relate()        
+
         if not not_tight:
             return
         
         for tier in self:
             tier.cleanup()
-
-        # for idx, tier in enumerate(self):
-        #     if issubclass(tier.subset_class, Bottom):
-        #         break
-
-        #     for interval in tier:
-        #         interval.cleanup()
-        
-        # for idx, tier in enumerate(reversed(self)):
-        #     for interval in tier:
-        #         self._project_up(interval)
-
-        # for tier in self:
-        #     tier.cleanup()
         
         self.re_relate()
 
