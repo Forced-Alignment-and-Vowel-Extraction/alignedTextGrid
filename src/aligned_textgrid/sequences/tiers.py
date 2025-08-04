@@ -307,7 +307,7 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
         else:
             return None
     
-    def return_tier(self) -> IntervalTier:
+    def return_tier(self, name:str|None = None) -> IntervalTier:
         """Returns a `praatio` interval tier
 
         Returns:
@@ -315,8 +315,11 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
                 A `praatio` interval tier. Useful for saving results
                 back as a Praat TextGrid.
         """
+        
+        if name is None:
+            name = self.name
         all_intervals = [entry.return_interval() for entry in self.sequence_list]
-        interval_tier = IntervalTier(name = self.name, entries = all_intervals)
+        interval_tier = IntervalTier(name = name, entries = all_intervals)
         return interval_tier
 
     

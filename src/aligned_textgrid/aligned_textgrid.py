@@ -794,9 +794,16 @@ class AlignedTextGrid(Sequence, WithinMixins):
                 A `praatio` `Textgrid`
         """
         out_tg = Textgrid()
+        tier_names = []
+        dup_idx = 0
         for group in self.tier_groups:
             for tier in group:
-                out_tg.addTier(tier = tier.return_tier())
+                name = tier.name
+                if name in tier_names:
+                    name = f"{name}_{dup_idx}"
+                    dup_idx += 1 
+                tier_names += [name]
+                out_tg.addTier(tier = tier.return_tier(name))
         return out_tg
 
     def save_textgrid(

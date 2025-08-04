@@ -1,10 +1,11 @@
-from aligned_textgrid import AlignedTextGrid, Word, Phone
+from aligned_textgrid import AlignedTextGrid, Word, Phone, SequenceTier, TierGroup, custom_classes
 from aligned_textgrid.polar.polar_classes import PrStr, ToBI, \
     TurningPoints, Ranges, Levels, Misc
 from aligned_textgrid.polar.polar_grid import PolarGrid
 from aligned_textgrid.outputs.to_dataframe import to_df
 from functools import reduce
 import cloudpickle
+import tempfile
 class TestDataframes:
 
     atg = AlignedTextGrid(
@@ -83,3 +84,38 @@ class TestPickle:
     )
     def test_pickling(self):
         assert cloudpickle.loads(cloudpickle.dumps(self.atg))
+
+class TestCustomWrite:
+
+    def test_write(self):
+        Transcript, = custom_classes(["Transcript"])
+        the_dog = Transcript((0, 10, "the dog"))
+        the_cat = Transcript((10, 25, "dog cat"))
+        speaker1 = TierGroup([SequenceTier(entry_class=Transcript)])
+        speaker2 = TierGroup([SequenceTier(entry_class=Transcript)])
+
+        speaker1[0].append(the_dog)
+        speaker2[0].append(the_cat)
+        atg = AlignedTextGrid([speaker1, speaker2])
+        tmp_file = tempfile.TemporaryFile()
+        atg.save_textgrid(tmp_file.name)
+
+
+        # for phone in [DH, AH0]:
+        #     the.append(phone)
+
+        # for phone in [D, AO1, G]:
+        #     dog.append(phone)        
+
+        # tier_group = TierGroup([
+        #     SequenceTier(entry_class=Word),
+        #     SequenceTier(entry_class=Phone)
+        # ])
+
+        # tier_group.Word.append(the)
+        # tier_group.Word.append(dog)
+
+        # atg = AlignedTextGrid([tier_group])
+
+        
+
