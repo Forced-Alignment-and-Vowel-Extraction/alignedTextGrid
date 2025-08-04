@@ -202,14 +202,16 @@ class SequencePointTier(Sequence, TierMixins, WithinMixins):
         out_idx = self.get_nearest_point_index(time)
         return self.sequence_list[out_idx]
 
-    def return_tier(self) -> PointTier:
+    def return_tier(self, name:str|None = None) -> PointTier:
         """Returns SequencePointTier as a `praatio` PointTier
 
         Returns:
             (PointTier): A `praatio` point tier
         """
+        if name is None:
+            name = self.name
         all_points = [entry.return_point() for entry in self.sequence_list]
-        point_tier = PointTier(name = self.name, entries=all_points)
+        point_tier = PointTier(name = name, entries=all_points)
         return(point_tier)
     
     def save_as_tg(

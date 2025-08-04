@@ -1,4 +1,4 @@
-from aligned_textgrid import AlignedTextGrid, Word, Phone
+from aligned_textgrid import AlignedTextGrid, Word, Phone, SequenceTier, TierGroup, custom_classes
 from aligned_textgrid.polar.polar_classes import PrStr, ToBI, \
     TurningPoints, Ranges, Levels, Misc
 from aligned_textgrid.polar.polar_grid import PolarGrid
@@ -83,3 +83,20 @@ class TestPickle:
     )
     def test_pickling(self):
         assert cloudpickle.loads(cloudpickle.dumps(self.atg))
+
+class TestCustomWrite:
+
+    def test_write(self):
+        Transcript, = custom_classes(["Transcript"])
+        the_dog = Transcript((0, 10, "the dog"))
+        the_cat = Transcript((10, 25, "dog cat"))
+        speaker1 = TierGroup([SequenceTier(entry_class=Transcript)])
+        speaker2 = TierGroup([SequenceTier(entry_class=Transcript)])
+
+        speaker1[0].append(the_dog)
+        speaker2[0].append(the_cat)
+        atg = AlignedTextGrid([speaker1, speaker2])
+        assert atg.return_textgrid()
+
+        
+
