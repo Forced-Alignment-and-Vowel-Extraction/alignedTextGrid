@@ -5,7 +5,6 @@ from aligned_textgrid.polar.polar_grid import PolarGrid
 from aligned_textgrid.outputs.to_dataframe import to_df
 from functools import reduce
 import cloudpickle
-import tempfile
 class TestDataframes:
 
     atg = AlignedTextGrid(
@@ -97,25 +96,7 @@ class TestCustomWrite:
         speaker1[0].append(the_dog)
         speaker2[0].append(the_cat)
         atg = AlignedTextGrid([speaker1, speaker2])
-        tmp_file = tempfile.TemporaryFile()
-        atg.save_textgrid(tmp_file.name)
-
-
-        # for phone in [DH, AH0]:
-        #     the.append(phone)
-
-        # for phone in [D, AO1, G]:
-        #     dog.append(phone)        
-
-        # tier_group = TierGroup([
-        #     SequenceTier(entry_class=Word),
-        #     SequenceTier(entry_class=Phone)
-        # ])
-
-        # tier_group.Word.append(the)
-        # tier_group.Word.append(dog)
-
-        # atg = AlignedTextGrid([tier_group])
+        assert atg.return_textgrid()
 
         
 
