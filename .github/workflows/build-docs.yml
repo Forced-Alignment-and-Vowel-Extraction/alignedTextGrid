@@ -13,29 +13,28 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7    
         with:
-            virtualenvs-create: true
-            virtualenvs-in-project: true
-            installer-parallel: true    
-      - name: Install dependencies
-        run: poetry install --no-interaction --with docs
-      - name: Quarto Doc Build
+          enable-cache: true                        
+      - name: Install project
+        run: uv sync --group docs
+      - name: Run quartodoc build
         run: |
-            cd docs
-            poetry run quartodoc build
-            poetry run python objects.py            
-            poetry run quartodoc interlinks
-      - uses: quarto-dev/quarto-actions/setup@v2
+          cd docs
+          uv run quartodoc build
+          uv run python objects.py
+          uv run quartodoc interlinks
+      - name: Setup quarto
+        uses: quarto-dev/quarto-actions/setup@v2
       - name: Load cached quarto freeze
         id: cached-quarto-freeze
         uses: actions/cache@v3
         with:
             path: docs/_freeze
             key: ${{ runner.os }}-freeze
-      - name: Render and publish to gh pages
+      - name: Render and publush to gh-pages
         run: |
           git config --global user.email "quarto-github-actions-publish@example.com"
           git config --global user.name "Quarto GHA Workflow Runner"
-          poetry run quarto publish gh-pages docs --no-browser
+          uv run quarto publish gh-pages docs --no-browser
