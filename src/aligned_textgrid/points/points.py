@@ -200,8 +200,7 @@ class  SequencePoint(SequenceBaseClass, PrecedenceMixins, InTierMixins, WithinMi
             tier (SequenceTier): A SequenceTier.
 
         Returns:
-            (int): 
-              The index of the SequenceInterval within which the point falls
+            (int): The index of the SequenceInterval within which the point falls
         """
         if tier and isinstance(tier, SequenceTier):
             int_idx = tier.get_interval_at_time(self.time)

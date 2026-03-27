@@ -236,9 +236,6 @@ class PointsGroup(Sequence, TierGroupMixins, WithinMixins):
     Args:
         tiers (list[SequencePointTier]|PointsGroup): 
             A list of SequencePointTiers
-    
-    Attributes:
-            A list of the entry classes
     """    
     def __init__(
             self,
