@@ -76,8 +76,6 @@ class SequenceTier(Sequence, TierMixins, WithinMixins):
             The minumum end time of the tier
         name (str):
             The name of the tier
-        [] : Indexable. Returns a SequenceInterval
-        : Iterable
     """
     def __init__(
         self,

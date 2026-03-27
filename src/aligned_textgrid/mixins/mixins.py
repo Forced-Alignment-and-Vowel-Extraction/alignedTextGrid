@@ -138,7 +138,7 @@ class InTierMixins:
 
     Attributes:
         tier_index (int):
-          Index of the current entry within its tier
+            Index of the current entry within its tier
     """
 
     ## Tier operations

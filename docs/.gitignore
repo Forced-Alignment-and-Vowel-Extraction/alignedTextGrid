@@ -4,3 +4,4 @@ reference/
 _inv/
 objects.txt
 _freeze
+**/*.quarto_ipynb

@@ -12,7 +12,7 @@ class PrStr(SequencePoint):
 
     Attributes:
         ...:
-           All methods and attributes from SequencePoint
+            All methods and attributes from SequencePoint
         certainty (str):
             If a '?' was appended to a point label, `'uncertain'`, otherwise
             `'certain'`
