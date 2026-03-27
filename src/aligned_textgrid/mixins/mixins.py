@@ -166,8 +166,7 @@ class InTierMixins:
             in the initial position within its subset list, this will not be the same as
             `.prev` 
 
-        This will raise an ordinary IndexError if the relative index exceeds the length
-        of the tier.
+        If the provided index is out of range, this will generate RuntimeWarning.
 
         Args:
             idx (int, optional): 
@@ -177,10 +176,10 @@ class InTierMixins:
         Returns:
             (SequenceInterval|SequencePoint): The entry at the relative index
         """
-        if not self.intier is None:
-            return self.intier[self.tier_index + idx]
-        else:
+        if self.inter is None:
             return None
+        
+        return self.intier[self.tier_index + idx]
         
     def return_praatio(self)->Interval|Point:
         """Return the correct `praatio` class.
