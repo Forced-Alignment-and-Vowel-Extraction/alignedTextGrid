@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>custom_classes – aligned-textgrid</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -74,14 +77,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3fced2653c1411365395c6308d7f7025.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-1e815c4c50043f7e8fc9161d15dcdabb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-3fced2653c1411365395c6308d7f7025.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-baf333abd407eb98d8b56c64a19f8930.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c9d21391a4140639dac49c26faef9edc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-baf333abd407eb98d8b56c64a19f8930.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -293,7 +296,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="../index.html" aria-current="page"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
@@ -335,7 +338,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
       </div>
     <div class="sidebar-menu-container"> 
@@ -678,8 +682,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#examples" id="toc-examples" class="nav-link active" data-scroll-target="#examples">Examples</a></li>
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link active" data-scroll-target="#parameters">Parameters</a></li>
   <li><a href="#returns" id="toc-returns" class="nav-link" data-scroll-target="#returns">Returns</a></li>
   </ul>
 </nav>
@@ -707,47 +710,70 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><code>custom_classes.custom_classes(class_list=[], return_order=None, points=[])</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>custom_classes.custom_classes(class_list<span class="op">=</span>[], return_order<span class="op">=</span><span class="va">None</span>, points<span class="op">=</span>[])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Generate custom interval classes</p>
 <p>Passing <code>custom_classes()</code> a list of Sequence names wil return a list of <code>SequenceInterval</code> subclasses with those names. The first name passed to <code>class_list</code> will be at the top of the hierarchy, the second name will be the subset class of the first, and so on.</p>
-<section id="examples" class="level2">
-<h2 class="anchored" data-anchor-id="examples">Examples</h2>
-<p>To change the order in which the custom classes are <em>returned</em>, specify <code>return_order</code> with either indices or class names. For example, if you have Words, Syllables, and Phones in a hierarchical relationship in a textgrid, you can run the following:</p>
-<div id="ed8ee88e" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aligned_textgrid <span class="im">import</span> custom_classes</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>custom_classes([<span class="st">"Word"</span>, <span class="st">"Syllable"</span>, <span class="st">"Phone"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>[aligned_textgrid.sequences.sequences.Word,
+<p>Examples:</p>
+<pre><code>To change the order in which the custom classes are *returned*, specify `return_order` 
+with either indices or class names. For example, if you have Words, Syllables, and Phones in
+a hierarchical relationship in a textgrid, you can run the following:
+
+
+
+::: {#b9759364 .cell execution_count=1}
+``` {.python .cell-code}
+from aligned_textgrid import custom_classes
+
+custom_classes(["Word", "Syllable", "Phone"])
+```
+
+::: {.cell-output .cell-output-display execution_count=1}
+```
+[aligned_textgrid.sequences.sequences.Word,
  aligned_textgrid.sequences.sequences.Syllable,
- aligned_textgrid.sequences.sequences.Phone]</code></pre>
-</div>
-</div>
-<p>But if the order of the textgrid tiers has Word as the bottom tier and Phone as the top, you can specify <code>return_order</code> like so:</p>
-<div id="5b00f671" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>custom_classes(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    class_list <span class="op">=</span> [<span class="st">"Word"</span>, <span class="st">"Syllable"</span>, <span class="st">"Phone"</span>],</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    return_order <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>]</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># or</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># return_order = ["Phone", "Syllable", "Word]</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<pre><code>[aligned_textgrid.sequences.sequences.Phone,
+ aligned_textgrid.sequences.sequences.Phone]
+```
+:::
+:::
+
+
+But if the order of the textgrid tiers has Word as the bottom tier and Phone as the top, you can specify `return_order`
+like so:
+
+
+::: {#bddebab9 .cell execution_count=2}
+``` {.python .cell-code}
+custom_classes(
+    class_list = ["Word", "Syllable", "Phone"],
+    return_order = [2, 1, 0]
+    # or
+    # return_order = ["Phone", "Syllable", "Word]
+)
+```
+
+::: {.cell-output .cell-output-display execution_count=2}
+```
+[aligned_textgrid.sequences.sequences.Phone,
  aligned_textgrid.sequences.sequences.Syllable,
- aligned_textgrid.sequences.sequences.Word]</code></pre>
-</div>
-</div>
-<p>This way, you can use <code>custom_classes()</code> directly as the <code>entry_classes</code> argument in <code>AlignedTextGrid</code></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>AlignedTextGrid(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    textgrid_path <span class="op">=</span> <span class="st">"syllables.TextGrid"</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    entry_classes <span class="op">=</span> custom_classes(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        class_list <span class="op">=</span> [<span class="st">"Word"</span>, <span class="st">"Syllable"</span>, <span class="st">"Phone"</span>],</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        return_order <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>]</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="parameters" class="level2">
-<h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
+ aligned_textgrid.sequences.sequences.Word]
+```
+:::
+:::
+
+
+This way, you can use `custom_classes()` directly as the `entry_classes` argument in `AlignedTextGrid`
+
+```python
+AlignedTextGrid(
+    textgrid_path = "syllables.TextGrid",
+    entry_classes = custom_classes(
+        class_list = ["Word", "Syllable", "Phone"],
+        return_order = [2, 1, 0]
+    )
+)
+```</code></pre>
+<section id="parameters" class="level2 doc-section doc-section-parameters">
+<h2 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -759,19 +785,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>class_list</code></td>
+<td>class_list</td>
 <td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</td>
 <td>A list of desired class names, in their hierarchical order. Defaults to [].</td>
 <td><code>[]</code></td>
 </tr>
 <tr class="even">
-<td><code>return_order</code></td>
+<td>return_order</td>
 <td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>] | <a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/functions.html#int">int</a>] | None</td>
 <td>A return order for the custom classes, if not in hierarchical order. Defaults to None.</td>
 <td><code>None</code></td>
 </tr>
 <tr class="odd">
-<td><code>points</code></td>
+<td>points</td>
 <td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/functions.html#int">int</a>]</td>
 <td>Indices of which classes should be points, rather than intervals</td>
 <td><code>[]</code></td>
@@ -779,18 +805,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns" class="level2">
-<h2 class="anchored" data-anchor-id="returns">Returns</h2>
+<section id="returns" class="level2 doc-section doc-section-returns">
+<h2 class="doc-section doc-section-returns anchored" data-anchor-id="returns">Returns</h2>
 <table class="caption-top table">
 <thead>
 <tr class="header">
+<th>Name</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a href="../reference/SequenceInterval.html#aligned_textgrid.sequences.sequences.SequenceInterval">SequenceInterval</a>]]</td>
+<td></td>
+<td><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<code>SequenceInterval</code>]]</td>
 <td>A list of custom <code>SequenceInterval</code> subclasses</td>
 </tr>
 </tbody>
@@ -864,13 +892,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
