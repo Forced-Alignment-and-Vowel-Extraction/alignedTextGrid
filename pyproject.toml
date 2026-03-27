@@ -1,7 +1,7 @@
 [project]
 name = "aligned_textgrid"
 packages = [{include = "aligned_textgrid", from="src"}]
-version = "0.8.1"
+version = "0.8.2a1"
 description = "Classes for defining sequential information from TextGrids"
 authors = [
   {name="Josef Fruehwald", email = "JoFrhwld@gmail.com>"}, 
