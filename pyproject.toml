@@ -1,46 +1,45 @@
-[tool.poetry]
+[project]
 name = "aligned_textgrid"
+packages = [{include = "aligned_textgrid", from="src"}]
 version = "0.8.1"
 description = "Classes for defining sequential information from TextGrids"
-authors = ["JoFrhwld <JoFrhwld@gmail.com>", "chrisbrickhouse <brickhouse@stanford.edu>"]
+authors = [
+  {name="Josef Fruehwald", email = "JoFrhwld@gmail.com>"}, 
+  {name="chrisbrickhouse", email = "brickhouse@stanford.edu"}
+]
 license = "GPL-3.0-or-later"
 readme = "README.md"
-packages = [{include = "aligned_textgrid", from="src"}]
-exclude = [
-    "notebooks/",
-    "examples/",
-    "docs/"
-]
 homepage = "https://forced-alignment-and-vowel-extraction.github.io/alignedTextGrid/"
 repository = "https://github.com/Forced-Alignment-and-Vowel-Extraction/alignedTextGrid"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-praatio = "^6.0.0"
-cloudpickle = "^3.0.0"
-toml = "^0.10.2"
-polars = "^1.23.0"
-numpy = "^2.1.0"
-
-[tool.poetry.group.dev.dependencies]
-jupyter = "^1.0.0"
-
-[tool.poetry.group.test.dependencies]
-pytest = "^7.2.1"
-importlib = "^1.0.4"
-pytest-cov = "^4.0.0"
-pytest-html = "^3.2.0"
-flake8 = "^6.1.0"
-codecov = "^2.1.13"
-
-[tool.poetry.group.docs.dependencies]
-textgrid = "^1.5"
-quartodoc = "0.6.5"
-jupyter = "^1.0.0"
+requires-python = ">=3.10"
+dependencies = [
+    "cloudpickle>=3.1.2",
+    "numpy>=2.2.6",
+    "polars>=1.39.3",
+    "praatio>=6.2.2",
+    "toml>=0.10.2",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.10.0,<0.11.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "jupyter>=1.1.1",
+]
+docs = [
+    "jupyter>=1.1.1",
+    "quartodoc>=0.11.1",
+    "textgrid>=1.6.1",
+]
+test = [
+    "codecov>=2.1.13",
+    "importlib>=1.0.4",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.1.0",
+    "pytest-html>=4.2.0",
+]
 
 [tool.pytest.ini_options]
 addopts = [
